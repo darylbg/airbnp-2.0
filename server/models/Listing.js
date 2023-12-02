@@ -11,7 +11,6 @@ const listingSchema = new Schema(
     },
     contact_method: {
       type: String,
-      required: true,
     },
     listing_image: {
       type: String,
@@ -38,34 +37,34 @@ const listingSchema = new Schema(
     },
     created_at: {
       type: Date,
-      default: Date.now
+      default: Date.now,
     },
-    Amenities: [
+    amenities: [
       {
         type: Schema.Types.ObjectId,
         ref: "Amenity",
-        required: true
+        required: true,
       },
     ],
     notifications: [
       {
         type: Schema.Types.ObjectId,
         ref: "Notification",
-        required: true
+        required: true,
       },
     ],
     reviews: [
       {
         type: Schema.Types.ObjectId,
         ref: "Review",
-        required: true
+        required: true,
       },
     ],
     payments: [
       {
         type: Schema.Types.ObjectId,
         ref: "Payment",
-        required: true
+        required: true,
       },
     ],
   },
