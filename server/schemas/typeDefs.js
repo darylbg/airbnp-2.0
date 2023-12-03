@@ -99,6 +99,7 @@ const typeDefs = gql`
     user(_id: ID!) User!
     # listing queries
     getAllListings: [Listing]
+    getListingsByUser(_id: ID!) [Listing]
   }
 
 
