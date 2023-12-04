@@ -93,6 +93,8 @@ const typeDefs = gql`
     _id: ID!
   }
 
+  
+
   type query {
     # user queries
     user: [User!]!
@@ -102,5 +104,13 @@ const typeDefs = gql`
     getListingsByUser(_id: ID!) [Listing]
   }
 
+  type mutation {
+    createUser:
+    createListing:
+    create: 
+  }
+
 
 `;
+
+module.exports = typeDefs;

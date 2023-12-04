@@ -3,26 +3,16 @@ const { ApolloServer, gql } = require("apollo-server-express");
 const path = require("path");
 
 const db = require("./config/connection");
+const {authMiddleware} = require('./utils/auth');
+const { typeDefs, resolvers } = require('./schemas');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
 
-// test typedefs and resolver to test server connectionss
-const typeDefs = gql`
-  type Query {
-    hello: String
-  }
-`;
-
-const resolvers = {
-  Query: {
-    hello: () => "Hello, World!",
-  },
-};
-
 const server = new ApolloServer({ 
     typeDefs, 
     resolvers,
+    context: authMiddleware,
     introspection: true,
     playground: true,
 });
