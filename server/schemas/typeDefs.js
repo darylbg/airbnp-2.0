@@ -2,15 +2,15 @@ const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
 
-# User
+# Types
   type User {
-    _id: ID!
+    id: ID!
     first_name: String!
     last_name: String!
     display_name: String!
-    gender: String!
+    gender: String
     email: String!
-    created_at: Int!
+    created_at: String
     user_image: String
     saved_listings: [Listing]
     notifications: [Notification]
@@ -19,32 +19,8 @@ const typeDefs = gql`
     booking_history: [Listing]
   }
 
-  input createUser {
-    _id: ID!
-    first_name: String!
-    last_name: String!
-    display_name: String!
-    gender: String!
-    email: String!
-  }
-
-  input updateUser {
-    _id: ID!
-    first_name: String!
-    last_name: String!
-    display_name: String!
-    gender: String!
-    email: String!
-    user_image: String
-  }
-
-    input deleteUser {
-        _id: ID!
-    }
-
-# Listing
   type Listing {
-    _id: ID!
+    id: ID!
     listing_title: String!
     listing_description: String
     contact_method: String
@@ -61,8 +37,67 @@ const typeDefs = gql`
     payments: [Payment]
   }
 
-  input createListing {
-    _id: ID!
+  type Amenity {
+    id: ID!
+    amenity_text: String
+    amenity_icon: String
+    listing_id: ID!
+  }
+
+  type Review {
+    id: ID!
+    rating_value: Int
+    rating_text: String
+    created_at: String
+    user_id: ID!
+    listing_id: ID!
+  }
+
+  type Notification {
+    id: ID!
+    notification_text: String
+    travel_time: String
+    created_at: String
+    user_id: ID!
+    listing_id: ID!
+  }
+
+  type Payment {
+    id: ID!
+    amount_paid: Float
+    guest_quantity: Int
+    currency: String
+    payment_method: String
+    payment_status: String
+    created_at: String
+    user_id: ID!
+    listing_id: ID!
+  }
+
+  # authorization type
+
+  type Auth {
+    token: ID!
+    user: User
+  }
+
+  # inputs
+
+  input userInput {
+    first_name: String!
+    last_name: String!
+    display_name: String!
+    gender: String
+    email: String!
+    user_image: String
+    saved_listings: [savedListingInput]
+  }
+
+  input savedListingInput {
+    listing_id: ID!
+  }
+
+  input listingInput {
     listing_title: String!
     listing_description: String
     contact_method: String
@@ -72,45 +107,54 @@ const typeDefs = gql`
     longitude: Int!
     availability: Boolean!
     price: Float!
-    amenities: [Amenity]
+    amenities: [amenityInput]
   }
 
-  input updateListing {
-    _id: ID!
-    listing_title: String!
-    listing_description: String
-    contact_method: String
-    listing_image: String
-    address: String!
-    latitude: Int!
-    longitude: Int!
-    availability: Boolean!
-    price: Float!
-    amenities: [Amenity]
+  input amenityInput {
+    amenity_text: String
+    amenity_icon: String
   }
-
-  input deleteListing {
-    _id: ID!
-  }
-
   
+  input reviewInput {
+    rating_value: Int
+    rating_text: String
+  }
 
-  type query {
-    # user queries
-    user: [User!]!
-    user(_id: ID!) User!
-    # listing queries
+  input notificationInput {
+    notification_text: String
+    travel_time: String
+  }
+
+  input paymentInput {
+    amount_paid: Float
+    guest_quantity: Int
+    currency: String
+    payment_method: String
+    payment_status: String
+  }
+
+  # queries
+  type Query {
+    getUserById(id: ID!): User
+    getListingById(id: ID!): Listing
     getAllListings: [Listing]
-    getListingsByUser(_id: ID!) [Listing]
   }
 
-  type mutation {
-    createUser:
-    createListing:
-    create: 
+  # mutations
+  type Mutation {
+    login(email: String!, password: String!): Auth
+    register(userData: userInput!): Auth
+    updateUser(userData: userInput): User
+    createListing(listingData: listingInput): Listing
+    updateListing(id: ID!, listingData: listingInput): Listing
+    deleteListing(id: ID!): User
+    createAmenity(amenityData: amenityInput): Amenity
+    deleteAmenity(id: ID!): Listing
+    createReview(userId: ID!, listingId: ID!, reviewData: reviewInput): Review
+    createNotification(userId: ID!, listingId: ID!, notificationData: notificationInput): Notification
+    createPayment(userId: ID!, listingId: ID!, paymentData: paymentInput): Payment
+    updatePayment(id: ID!, paymentData: paymentInput): Payment
   }
-
-
 `;
 
 module.exports = typeDefs;
