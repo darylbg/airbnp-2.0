@@ -1,6 +1,7 @@
 const express = require("express");
 const { ApolloServer, gql } = require("apollo-server-express");
 const path = require("path");
+const cors = require('cors');
 
 const db = require("./config/connection");
 const {authMiddleware} = require('./utils/auth');
@@ -17,6 +18,7 @@ const server = new ApolloServer({
     playground: true,
 });
 
+app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
@@ -24,10 +26,10 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../client/build")));
 }
 
-// this code block, when enabled, shows a blank page on http://localhost:3001/graphql
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../client/build", "index.html"));
-// });
+// this code block, when enabled, occasionally shows a blank page on http://localhost:3001/graphql
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
+});
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build/index.html"));

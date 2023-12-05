@@ -12,6 +12,7 @@ const typeDefs = gql`
     email: String!
     created_at: String
     user_image: String
+    user_listings: [Listing]
     saved_listings: [Listing]
     notifications: [Notification]
     reviews: [Review]
@@ -31,6 +32,7 @@ const typeDefs = gql`
     availability: Boolean!
     price: Float!
     created_at: String
+    user_id: ID!
     amenities: [Amenity]
     notifications: [Notification]
     reviews: [Review]
@@ -135,8 +137,8 @@ const typeDefs = gql`
 
   # queries
   type Query {
-    getUserById(id: ID!): User
-    getListingById(id: ID!): Listing
+    user(id: ID!): User
+    getListingById(user_id: ID!): Listing
     getAllListings: [Listing]
   }
 

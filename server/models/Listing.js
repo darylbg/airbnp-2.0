@@ -39,6 +39,11 @@ const listingSchema = new Schema(
       type: Date,
       default: Date.now,
     },
+    user_id: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     amenities: [
       {
         type: Schema.Types.ObjectId,

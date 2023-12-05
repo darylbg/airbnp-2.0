@@ -40,6 +40,13 @@ const userSchema = new Schema(
     user_image: {
       type: String,
     },
+    user_listings: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Listing",
+        required: true
+      },
+    ],
     saved_listings: [
       {
         type: Schema.Types.ObjectId,
