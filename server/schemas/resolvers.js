@@ -131,8 +131,8 @@ const resolvers = {
         const newUser = await User.create(userData);
         const token = signToken(newUser);
     
-        console.log('New user data:', JSON.stringify(newUser));
-        return { token, newUser };
+        console.log('token:', JSON.stringify(token));
+        return { token: token, user: newUser };
       } catch (error) {
         console.log(error);
         // Return null or handle the error as needed
