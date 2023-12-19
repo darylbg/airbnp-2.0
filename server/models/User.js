@@ -101,7 +101,7 @@ userSchema.pre("save", async function (next) {
 });
 
 // validate user password to log in
-userSchema.method.isCorrectPassword = async function (password) {
+userSchema.methods.isCorrectPassword = async function (password) {
   return bcrypt.compare(password, this.password);
 };
 
