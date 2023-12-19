@@ -75,7 +75,55 @@ const resolvers = {
   },
 
   Mutation: {
-    // login: 
+    login: async (parent, {email, password}) => {
+      try {
+        const user = await User.findOne({ email })
+        .populate({
+          path: "user_listings",
+          populate: { path: "amenities" },
+          populate: { path: "notifications" },
+          populate: { path: "reviews" },
+          populate: { path: "payments" },
+        })
+        .populate({
+          path: "saved_listings",
+          populate: { path: "amenities" },
+          populate: { path: "notifications" },
+          populate: { path: "reviews" },
+          populate: { path: "payments" },
+        })
+        .populate({ path: "notifications" })
+        .populate({ path: "reviews" })
+        .populate({ path: "payments" })
+        .populate({ path: "booking_history" });
+
+        if (!user) {
+          throw new AuthenticationError('no user found')
+        }
+
+        const correctPw = await user.isCorrectPassword(password);
+        if (!correctPw) {
+          throw new AuthenticationError('incorrect password')
+        }
+
+        const token = signToken(user);
+        return { token, user};
+
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    register: async (parent, {userData}) => {
+      try {
+        const newUser = await User.create(userData);
+        const token = signToken(newUser);
+        console.log(`new user token ${userData}`);
+        return {token, newUser};
+        
+      } catch (error) {
+        console.log(error)
+      }
+    }
   }
 };
 

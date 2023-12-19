@@ -93,6 +93,7 @@ const typeDefs = gql`
     email: String!
     user_image: String
     saved_listings: [savedListingInput]
+    password: String!
   }
 
   input savedListingInput {
