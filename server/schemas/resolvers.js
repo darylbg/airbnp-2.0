@@ -45,102 +45,140 @@ const resolvers = {
     },
 
     getListingById: async (parent, args, context) => {
-        try {
-            if (context.user) {
-                const userListings = await Listing.find({user_id: context.user.id})
-                    .populate({path: 'amenities'})
-                    .populate({path: 'notifications'})
-                    .populate({path: 'reviews'})
-                    .populate({path: 'payments'});
-    
-                return userListings;
-            }
-            throw new AuthenticationError('You need to be logged in!');
-        } catch (error) {
-            console.log(error)
+      try {
+        if (context.user) {
+          const userListings = await Listing.find({ user_id: context.user.id })
+            .populate({ path: "amenities" })
+            .populate({ path: "notifications" })
+            .populate({ path: "reviews" })
+            .populate({ path: "payments" });
+
+          return userListings;
         }
+        throw new AuthenticationError("You need to be logged in!");
+      } catch (error) {
+        console.log(error);
+      }
     },
 
     getAllListings: async (parent, args, context) => {
-        try {
-            const allListings = await Listing.find({})
-            .populate({path: 'amenities'})
-            .populate({path: 'reviews'})
-    
-            return allListings;
-        } catch (error) {
-            console.log(error)
-        }
-    }
+      try {
+        const allListings = await Listing.find({})
+          .populate({ path: "amenities" })
+          .populate({ path: "reviews" });
+
+        return allListings;
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 
   Mutation: {
-    login: async (parent, {email, password}) => {
+    login: async (parent, { email, password }) => {
       try {
         const user = await User.findOne({ email })
-        .populate({
-          path: "user_listings",
-          populate: { path: "amenities" },
-          populate: { path: "notifications" },
-          populate: { path: "reviews" },
-          populate: { path: "payments" },
-        })
-        .populate({
-          path: "saved_listings",
-          populate: { path: "amenities" },
-          populate: { path: "notifications" },
-          populate: { path: "reviews" },
-          populate: { path: "payments" },
-        })
-        .populate({ path: "notifications" })
-        .populate({ path: "reviews" })
-        .populate({ path: "payments" })
-        .populate({ path: "booking_history" });
+          .populate({
+            path: "user_listings",
+            populate: { path: "amenities" },
+            populate: { path: "notifications" },
+            populate: { path: "reviews" },
+            populate: { path: "payments" },
+          })
+          .populate({
+            path: "saved_listings",
+            populate: { path: "amenities" },
+            populate: { path: "notifications" },
+            populate: { path: "reviews" },
+            populate: { path: "payments" },
+          })
+          .populate({ path: "notifications" })
+          .populate({ path: "reviews" })
+          .populate({ path: "payments" })
+          .populate({ path: "booking_history" });
 
         if (!user) {
-          throw new AuthenticationError('no user found')
+          throw new AuthenticationError("no user found");
         }
 
         const correctPw = await user.isCorrectPassword(password);
         if (!correctPw) {
-          throw new AuthenticationError('incorrect password')
+          throw new AuthenticationError("incorrect password");
         }
 
         const token = signToken(user);
-        return { token, user};
-
+        return { token: token, user: user };
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
     register: async (parent, { userData }) => {
       try {
-        console.log('Received user data:', JSON.stringify(userData));
-    
-        const existingUserName = await User.findOne({ display_name: userData.display_name });
+        console.log("Received user data:", JSON.stringify(userData));
+
+        const existingUserName = await User.findOne({
+          display_name: userData.display_name,
+        });
         const existingEmail = await User.findOne({ email: userData.email });
-    
+
         if (existingUserName) {
-          console.log('Username already in use');
-          throw new ApolloError('Username already in use', 'DUPLICATE_DISPLAY_ERROR');
+          console.log("Username already in use");
+          throw new ApolloError(
+            "Username already in use",
+            "DUPLICATE_DISPLAY_ERROR"
+          );
         } else if (existingEmail) {
-          console.log('Email already in use');
-          throw new ApolloError('Email already in use', 'DUPLICATE_EMAIL_ERROR');
+          console.log("Email already in use");
+          throw new ApolloError(
+            "Email already in use",
+            "DUPLICATE_EMAIL_ERROR"
+          );
         }
-    
+
         const newUser = await User.create(userData);
         const token = signToken(newUser);
-    
-        console.log('token:', JSON.stringify(token));
+
+        console.log("token:", JSON.stringify(token));
         return { token: token, user: newUser };
       } catch (error) {
         console.log(error);
         // Return null or handle the error as needed
         throw error;
       }
-    }
-    
-  }
+    },
+    updateUser: async (parent, { userData }, context) => {
+      if (context.user) {
+        try {
+          const updateUser = await User.findByIdAndUpdate(
+            {_id: context.user._id},
+            {
+              $set: {
+                first_name: userData.first_name,
+                last_name: userData.last_name,
+                display_name: userData.display_name,
+                gender: userData.gender,
+                email: userData.email,
+                user_image: userData.user_image,
+                saved_listings: userData.saved_listings,
+                password: userData.password,
+              },
+            },
+            { new: true }
+          );
+          return { user: updateUser };
+        } catch (error) {
+          console.log(error);
+          throw error;
+        }
+      }
+      throw new AuthenticationError("You must be logged in!");
+    },
+    createListing: async (parent, { listingData }, context) => {
+      if (context.user) {
+        console.log(context.user)
+      }
+    },
+  },
 };
 
 module.exports = resolvers;
