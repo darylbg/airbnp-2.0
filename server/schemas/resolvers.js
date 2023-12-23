@@ -9,6 +9,7 @@ const {
 } = require("../models");
 const { signToken } = require("../utils/auth");
 const { model } = require("mongoose");
+const { findByIdAndUpdate } = require("../models/User");
 
 const resolvers = {
   Query: {
@@ -150,7 +151,7 @@ const resolvers = {
       if (context.user) {
         try {
           const updateUser = await User.findByIdAndUpdate(
-            {_id: context.user._id},
+            { _id: context.user._id },
             {
               $set: {
                 first_name: userData.first_name,
@@ -165,7 +166,7 @@ const resolvers = {
             },
             { new: true }
           );
-          return { user: updateUser };
+          return updateUser;
         } catch (error) {
           console.log(error);
           throw error;
@@ -175,7 +176,19 @@ const resolvers = {
     },
     createListing: async (parent, { listingData }, context) => {
       if (context.user) {
-        console.log(context.user)
+        try {
+          const newListing = await Listing.create({
+            user_id: context.user._id,
+            ...listingData,
+          });
+          const updatedUser = await User.findByIdAndUpdate(
+            context.user._id,
+            { $addToSet: { user_listings: listingData._id } },
+            { new: true }
+          ).populate("user_listings");
+
+          return updatedUser;
+        } catch (error) {}
       }
     },
   },

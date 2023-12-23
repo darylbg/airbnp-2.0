@@ -148,7 +148,7 @@ const typeDefs = gql`
     login(email: String!, password: String!): Auth
     register(userData: userInput!): Auth
     updateUser(userData: userInput): User
-    createListing(listingData: listingInput): Listing
+    createListing(listingData: listingInput): User
     updateListing(id: ID!, listingData: listingInput): Listing
     deleteListing(id: ID!): User
     createAmenity(amenityData: amenityInput): Amenity
