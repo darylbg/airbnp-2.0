@@ -188,7 +188,37 @@ const resolvers = {
           ).populate("user_listings");
 
           return updatedUser;
-        } catch (error) {}
+        } catch (error) {
+          throw error;
+        }
+      }
+    },
+    updateListing: async (parent, { id, listingData }, context) => {
+      if (context.user) {
+        try {
+          const updateListing = await Listing.findByIdAndUpdate(
+            { _id: id },
+            {
+              $set: {
+                ...listingData,
+                listing_title: listingData.listing_title,
+                listing_description: listingData.listing_description,
+                contact_method: listingData.contact_method,
+                listing_image: listingData.listing_image,
+                address: listingData.address,
+                latitude: listingData.latitude,
+                longitude: listingData.longitude,
+                availability: listingData.availability,
+                price: listingData.price,
+              },
+            },
+            { new: true }
+          );
+          return updateListing;
+        } catch (error) {
+          console.log(error);
+          throw error;
+        }
       }
     },
   },
