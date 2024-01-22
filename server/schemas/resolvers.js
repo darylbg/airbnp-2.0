@@ -8,14 +8,14 @@ const {
   Payment,
 } = require("../models");
 const { signToken } = require("../utils/auth");
-const { model } = require("mongoose");
+const { model, default: mongoose } = require("mongoose");
 const { findByIdAndUpdate } = require("../models/User");
 
 const resolvers = {
   Query: {
     user: async (parent, args, context) => {
-      try {
-        if (context.user) {
+      if (context.user) {
+        try {
           const userData = await User.findOne({ id: context.user.id })
             .select("-__v -password")
             .populate({
@@ -37,12 +37,11 @@ const resolvers = {
             .populate({ path: "payments" })
             .populate({ path: "booking_history" });
           return userData;
-        } else {
-          throw new AuthenticationError("You need to be logged in");
+        } catch (error) {
+          console.log(error);
         }
-      } catch (error) {
-        console.log(error);
       }
+      throw new AuthenticationError("You need to be logged in");
     },
 
     getListingById: async (parent, args, context) => {
@@ -108,6 +107,7 @@ const resolvers = {
         }
 
         const token = signToken(user);
+        console.log("token on login:", JSON.stringify(token));
         return { token: token, user: user };
       } catch (error) {
         console.log(error);
@@ -181,9 +181,10 @@ const resolvers = {
             user_id: context.user._id,
             ...listingData,
           });
-          const updatedUser = await User.findByIdAndUpdate(
-            context.user._id,
-            { $addToSet: { user_listings: listingData._id } },
+          const userId = new mongoose.Types.ObjectId(context.user._id);
+          const updatedUser = await User.findOneAndUpdate(
+            { _id: userId },
+            { $addToSet: { user_listings: newListing } },
             { new: true }
           ).populate("user_listings");
 
@@ -192,12 +193,14 @@ const resolvers = {
           throw error;
         }
       }
+      throw new AuthenticationError("You must be logged in!");
     },
-    updateListing: async (parent, { id, listingData }, context) => {
+
+    updateListing: async (parent, { listingId, listingData }, context) => {
       if (context.user) {
         try {
           const updateListing = await Listing.findByIdAndUpdate(
-            { _id: id },
+            { _id: listingId },
             {
               $set: {
                 ...listingData,
@@ -220,6 +223,55 @@ const resolvers = {
           throw error;
         }
       }
+      throw new AuthenticationError("You must be logged in!");
+    },
+
+    deleteListing: async (parent, { listingId }, context) => {
+      if (context.user) {
+        try {
+          const listing = await Listing.findByIdAndDelete({ _id: listingId });
+
+          if (!listing) {
+            throw new Error("Listing not found!");
+          }
+
+          const user = await User.findOneAndUpdate(
+            { _id: context.user._id }, // Use _id instead of id
+            { $pull: { user_listings: { _id: listingId } } },
+            { new: true }
+          ).populate("user_listings");
+
+          return user;
+        } catch (error) {
+          console.error(error);
+          throw error;
+        }
+      } else {
+        throw new AuthenticationError("You must be logged in!");
+      }
+    },
+    createAmenity: async (parent, { listingId, amenityData }, context) => {
+      if (context.user) {
+        try {
+          const amenity = await Amenity.create({
+            listing_id: listingId,
+            ...amenityData,
+          });
+    
+          const listing = await Listing.findOneAndUpdate(
+            { _id: listingId },
+            { $push: { amenities: amenity } }, // Use $push to add the amenity to the array
+            { new: true }
+          );
+    
+          return listing;
+        } catch (error) {
+          console.error(error);
+          throw error;
+        }
+      }
+    
+      throw new AuthenticationError("You must be logged in!");
     },
   },
 };

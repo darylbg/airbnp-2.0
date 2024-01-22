@@ -108,7 +108,7 @@ const typeDefs = gql`
     address: String!
     latitude: Int!
     longitude: Int!
-    availability: Boolean!
+    availability: Boolean
     price: Float!
     amenities: [amenityInput]
   }
@@ -149,14 +149,14 @@ const typeDefs = gql`
     register(userData: userInput!): Auth
     updateUser(userData: userInput): User
     createListing(listingData: listingInput): User
-    updateListing(id: ID!, listingData: listingInput): Listing
-    deleteListing(id: ID!): User
-    createAmenity(amenityData: amenityInput): Amenity
-    deleteAmenity(id: ID!): Listing
+    updateListing(listingId: ID!, listingData: listingInput): Listing
+    deleteListing(listingId: ID!): User
+    createAmenity(listingId: ID!, amenityData: amenityInput): Amenity
+    deleteAmenity(amenityId: ID!): Listing
     createReview(userId: ID!, listingId: ID!, reviewData: reviewInput): Review
     createNotification(userId: ID!, listingId: ID!, notificationData: notificationInput): Notification
     createPayment(userId: ID!, listingId: ID!, paymentData: paymentInput): Payment
-    updatePayment(id: ID!, paymentData: paymentInput): Payment
+    updatePayment(paymentId: ID!, paymentData: paymentInput): Payment
   }
 `;
 

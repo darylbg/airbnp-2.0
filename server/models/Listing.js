@@ -29,7 +29,8 @@ const listingSchema = new Schema(
     },
     availability: {
       type: Boolean,
-      required: true,
+      default: false,
+      required: true
     },
     price: {
       type: Number,
