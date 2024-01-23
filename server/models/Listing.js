@@ -49,7 +49,7 @@ const listingSchema = new Schema(
       {
         type: Schema.Types.ObjectId,
         ref: "Amenity",
-        // required: true,
+        required: true,
       },
     ],
     notifications: [

@@ -18,7 +18,8 @@ const resolvers = {
         try {
           const userData = await User.findOne({ _id: context.user._id })
             .select("-__v -password")
-            .populate("user_listings");
+            .populate("user_listings")
+            .populate("amenities");
           console.log("user_listings", context.user.user_listings);
           return userData;
         } catch (error) {
@@ -225,20 +226,35 @@ const resolvers = {
             listing_id: listingId,
             ...amenityData,
           });
-
+          const listing_id = new mongoose.Types.ObjectId(listingId);
           const listing = await Listing.findOneAndUpdate(
-            { _id: listingId },
-            { $push: { amenities: amenity.toObject() } }, // Use $push to add the amenity to the array
+            { _id: listing_id },
+            { $push: { amenities: amenity } },
             { new: true }
           ).populate("amenities");
-
-          return amenity;
+            console.log("listing", listing);
+          return listing;
         } catch (error) {
           console.error(error);
           throw error;
         }
       }
 
+      throw new AuthenticationError("You must be logged in!");
+    },
+    deleteAmenity: async (parents, { amenityId }, context) => {
+      if (context.user) {
+        try {
+          const amenity = await Amenity.findByIdAndDelete({ _id: amenityId });
+          const listing = await Listing.findByIdAndUpdate(
+            { _id: amenityId },
+            { $pull: { amenities: { _id: amenityId } } }
+          ).populate("amenities");
+          return listing;
+        } catch (error) {
+          console.log(error);
+        }
+      }
       throw new AuthenticationError("You must be logged in!");
     },
   },

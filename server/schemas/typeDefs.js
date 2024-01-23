@@ -151,7 +151,7 @@ const typeDefs = gql`
     createListing(listingData: listingInput): User
     updateListing(listingId: ID!, listingData: listingInput): Listing
     deleteListing(listingId: ID!): User
-    createAmenity(listingId: ID!, amenityData: amenityInput): Amenity
+    createAmenity(listingId: ID!, amenityData: amenityInput): Listing
     deleteAmenity(amenityId: ID!): Listing
     createReview(userId: ID!, listingId: ID!, reviewData: reviewInput): Review
     createNotification(userId: ID!, listingId: ID!, notificationData: notificationInput): Notification
