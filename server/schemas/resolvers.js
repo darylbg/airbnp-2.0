@@ -16,26 +16,10 @@ const resolvers = {
     user: async (parent, args, context) => {
       if (context.user) {
         try {
-          const userData = await User.findOne({ id: context.user.id })
+          const userData = await User.findOne({ _id: context.user._id })
             .select("-__v -password")
-            .populate({
-              path: "user_listings",
-              populate: { path: "amenities" },
-              populate: { path: "notifications" },
-              populate: { path: "reviews" },
-              populate: { path: "payments" },
-            })
-            .populate({
-              path: "saved_listings",
-              populate: { path: "amenities" },
-              populate: { path: "notifications" },
-              populate: { path: "reviews" },
-              populate: { path: "payments" },
-            })
-            .populate({ path: "notifications" })
-            .populate({ path: "reviews" })
-            .populate({ path: "payments" })
-            .populate({ path: "booking_history" });
+            .populate("user_listings");
+          console.log("user_listings", context.user.user_listings);
           return userData;
         } catch (error) {
           console.log(error);
@@ -77,25 +61,9 @@ const resolvers = {
   Mutation: {
     login: async (parent, { email, password }) => {
       try {
-        const user = await User.findOne({ email })
-          .populate({
-            path: "user_listings",
-            populate: { path: "amenities" },
-            populate: { path: "notifications" },
-            populate: { path: "reviews" },
-            populate: { path: "payments" },
-          })
-          .populate({
-            path: "saved_listings",
-            populate: { path: "amenities" },
-            populate: { path: "notifications" },
-            populate: { path: "reviews" },
-            populate: { path: "payments" },
-          })
-          .populate({ path: "notifications" })
-          .populate({ path: "reviews" })
-          .populate({ path: "payments" })
-          .populate({ path: "booking_history" });
+        const user = await User.findOne({ email }).populate({
+          path: "user_listings",
+        });
 
         if (!user) {
           throw new AuthenticationError("no user found");
@@ -257,20 +225,20 @@ const resolvers = {
             listing_id: listingId,
             ...amenityData,
           });
-    
+
           const listing = await Listing.findOneAndUpdate(
             { _id: listingId },
-            { $push: { amenities: amenity } }, // Use $push to add the amenity to the array
+            { $push: { amenities: amenity.toObject() } }, // Use $push to add the amenity to the array
             { new: true }
-          );
-    
-          return listing;
+          ).populate("amenities");
+
+          return amenity;
         } catch (error) {
           console.error(error);
           throw error;
         }
       }
-    
+
       throw new AuthenticationError("You must be logged in!");
     },
   },

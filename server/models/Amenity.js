@@ -10,13 +10,11 @@ const amenitySchema = new Schema(
       type: String,
       required: true,
     },
-    listing_id: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Listing",
-        required: true
-      },
-    ],
+    listing_id: {
+      type: Schema.Types.ObjectId,
+      ref: "Listing",
+      required: true,
+    },
   },
   {
     toJSON: {

@@ -89,7 +89,7 @@ const typeDefs = gql`
     first_name: String!
     last_name: String!
     display_name: String!
-    gender: String
+    gender: String!
     email: String!
     user_image: String
     saved_listings: [savedListingInput]
