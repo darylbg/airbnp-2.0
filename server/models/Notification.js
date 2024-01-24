@@ -17,20 +17,17 @@ const notificationSchema = new Schema(
       type: Date,
       default: Date.now,
     },
-    user_id: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-        required: true
-      },
-    ],
-    listing_id: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Listing",
-        required: true
-      },
-    ],
+    user_id: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+
+    listing_id: {
+      type: Schema.Types.ObjectId,
+      ref: "Listing",
+      required: true,
+    },
   },
   {
     toJSON: {

@@ -34,7 +34,7 @@ const typeDefs = gql`
     created_at: String
     user_id: ID!
     amenities: [Amenity]
-    notifications: [Notification]
+    # notifications: [Notification]
     reviews: [Review]
     payments: [Payment]
   }
@@ -57,8 +57,9 @@ const typeDefs = gql`
 
   type Notification {
     id: ID!
-    notification_text: String
-    travel_time: String
+    notification_text: String!
+    notification_type: String!
+    travel_time: String!
     created_at: String
     user_id: ID!
     listing_id: ID!
@@ -126,6 +127,7 @@ const typeDefs = gql`
   input notificationInput {
     notification_text: String
     travel_time: String
+    notification_type: String
   }
 
   input paymentInput {
@@ -153,9 +155,9 @@ const typeDefs = gql`
     deleteListing(listingId: ID!): User
     createAmenity(listingId: ID!, amenityData: amenityInput): Listing
     deleteAmenity(amenityId: ID!): Listing
-    createReview(userId: ID!, listingId: ID!, reviewData: reviewInput): Review
-    createNotification(userId: ID!, listingId: ID!, notificationData: notificationInput): Notification
-    createPayment(userId: ID!, listingId: ID!, paymentData: paymentInput): Payment
+    createReview(listingId: ID!, reviewData: reviewInput): Review
+    createNotification(listingId: ID!, notificationData: notificationInput): Notification
+    createPayment(listingId: ID!, paymentData: paymentInput): Payment
     updatePayment(paymentId: ID!, paymentData: paymentInput): Payment
   }
 `;

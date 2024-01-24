@@ -34,7 +34,7 @@ const resolvers = {
         if (context.user) {
           const userListings = await Listing.find({ user_id: context.user.id })
             .populate({ path: "amenities" })
-            .populate({ path: "notifications" })
+            // .populate({ path: "notifications" })
             .populate({ path: "reviews" })
             .populate({ path: "payments" });
 
@@ -50,7 +50,9 @@ const resolvers = {
       try {
         const allListings = await Listing.find({})
           .populate({ path: "amenities" })
-          .populate({ path: "reviews" });
+          // .populate({ path: "notifications" })
+          .populate({ path: "reviews" })
+          .populate({ path: "payments" });
 
         return allListings;
       } catch (error) {
@@ -231,8 +233,12 @@ const resolvers = {
             { _id: listing_id },
             { $push: { amenities: amenity } },
             { new: true }
-          ).populate("amenities");
-            console.log("listing", listing);
+          )
+            .populate({ path: "amenities" })
+            // .populate({ path: "notifications" })
+            .populate({ path: "reviews" })
+            .populate({ path: "payments" });
+          console.log("listing", listing);
           return listing;
         } catch (error) {
           console.error(error);
@@ -245,12 +251,114 @@ const resolvers = {
     deleteAmenity: async (parents, { amenityId }, context) => {
       if (context.user) {
         try {
-          const amenity = await Amenity.findByIdAndDelete({ _id: amenityId });
+          const amenity = await Amenity.findByIdAndDelete(amenityId);
           const listing = await Listing.findByIdAndUpdate(
-            { _id: amenityId },
-            { $pull: { amenities: { _id: amenityId } } }
-          ).populate("amenities");
+            { _id: amenity.listing_id },
+            { $pull: { amenities: { _id: amenityId } } },
+            { new: true }
+          )
+            .populate({ path: "amenities" })
+            // .populate({ path: "notifications" })
+            .populate({ path: "reviews" })
+            .populate({ path: "payments" });
           return listing;
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      throw new AuthenticationError("You must be logged in!");
+    },
+    createReview: async (parent, { listingId, reviewData }, context) => {
+      if (context.user) {
+        console.log("user", context.user._id);
+        try {
+          const review = await Review.create({
+            user_id: context.user._id,
+            listing_id: listingId,
+            ...reviewData,
+          });
+          console.log("listingId", listingId);
+          console.log("reviewData", reviewData);
+          const listing = await Listing.findOneAndUpdate(
+            { _id: listingId },
+            { $push: { reviews: review } },
+            { new: true }
+          )
+            .populate({ path: "amenities" })
+            // .populate({ path: "notifications" })
+            .populate({ path: "reviews" })
+            .populate({ path: "payments" });
+
+          return review;
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      throw new AuthenticationError("You must be logged in!");
+    },
+    createNotification: async (
+      parent,
+      { userId, listingId, notificationData },
+      context
+    ) => {
+      if (context.user) {
+        try {
+          const notification = await Notification.create({
+            user_id: context.user._id,
+            listing_id: listingId,
+            ...notificationData,
+          });
+
+          const listing = await Listing.findById({ _id: listingId });
+          const user = await User.findOneAndUpdate(
+            { _id: listing.user_id },
+            { $push: { notifications: notification } },
+            { new: true }
+          );
+          return notification;
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      throw new AuthenticationError("You must be logged in!");
+    },
+    createPayment: async (parent, { listingId, paymentData }, context) => {
+      if (context.user) {
+        try {
+          const payment = await Payment.create({
+            user_id: context.user._id,
+            listing_id: listingId,
+            ...paymentData,
+          });
+          const listing = await Listing.findById({ _id: listingId });
+          const user = await User.findOneAndUpdate(
+            { _id: listing.user_id },
+            { $push: { payments: payment } },
+            { new: true }
+          );
+
+          return payment;
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      throw new AuthenticationError("You must be logged in!");
+    },
+    updatePayment: async (parent, { paymentId, paymentData }, context) => {
+      if (context.user) {
+        try {
+          const payment = await Payment.findOneAndUpdate(
+            { _id: paymentId },
+            {
+              amount_paid: paymentData.amount_paid,
+              guest_quantity: paymentData.guest_quantity,
+              currency: paymentData.currency,
+              payment_method: paymentData.payment_method,
+              payment_status: paymentData.payment_status,
+            },
+            {new: true}
+          );
+          return payment;
         } catch (error) {
           console.log(error);
         }
