@@ -1,0 +1,116 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+
+:root {
+    --navy-blue: #28355e;
+    --navy-blue-darker: #253154;
+    
+    --blue: #4070ff;
+    --blue-darker: #3965f0;
+    
+    --cyan: #3cbbb9;
+    --cyan-darker: #38b1ab;
+    
+    --olive: #d0e0ae;
+    --olive-darker: #c5d59c;
+    
+    --gold: #ecc84b;
+    --gold-darker: #e3bc45;
+    
+    --pink: #ff385c;
+    --pink-darker: #f73555;
+    
+    --black-100: #28355e;
+    --black-100-darker: #253154;
+    
+    --black-75: #404040;
+    --black-75-darker: #3b3b3b;
+    
+    --black-50: #7e7e7e;
+    --black-50-darker: #757575;
+    
+    --black-25: #bbbbbb;
+    --black-25-darker: #b3b3b3;
+    
+    --black-10: #e5e5e5;
+    --black-10-darker: #dddcdc;
+    
+    --black-2: #fafafa;
+    --black-2-darker: #f5f5f5;
+    
+    --white: #fff;
+    --white-darker: #f8f8f8; /* White cannot be made darker, so this is the closest approximation */
+    
+}
+
+* {
+  /* font-family: "Open Sans", sans-serif; */
+  font-family: "Inter", sans-serif;
+}
+
+.mobile-navbar-root {
+    width: 100vw;
+    position: fixed;
+    bottom: 0;
+    padding: 12px 0;
+    border-top: 1px solid var(--black-10);
+    background-color: var(--white);
+}
+
+.mobile-navbar-list {
+    display: flex;
+    justify-content: space-around;
+    margin: 0;
+    padding: 0;
+}
+
+.mobile-navbar-item {
+    list-style-type: none;
+    width: 100%;
+}
+
+.mobile-navbar-link {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--black-75);
+    gap: 5px;
+} 
+
+.mobile-navbar-link:hover {
+    color: var(--blue-darker);
+    transition: all ease-in-out 0.2s;
+} 
+
+.mobile-navbar-icon {
+    font-size: 30px;
+    font-weight: lighter;
+}
+
+.mobile-navbar-text {
+    font-size: 11px;
+   
+}
+
+@media screen and (min-width: 750px) {
+    .mobile-navbar-root {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 550px) {
+
+    .mobile-navbar-root {
+        padding: 8px 0;
+    }
+
+    .mobile-navbar-icon {
+        font-size: 20px;
+        font-weight: lighter;
+    }
+    
+    .mobile-navbar-text {
+        font-size: 8px;
+       
+    }
+}

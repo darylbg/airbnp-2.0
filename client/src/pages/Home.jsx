@@ -4,8 +4,8 @@ import Register from '../components/Register';
 export default function Home() {
   return (
     <div>
-      home
-      <Register />
+      {/* home */}
+      {/* <Register /> */}
     </div>
   )
 }
