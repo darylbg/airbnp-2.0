@@ -1,13 +1,33 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import * as Dialog from "@radix-ui/react-dialog";
 import { HamburgerMenuIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 
-import SignIn from "../SignInDialog";
+import SignInForm from "../SignInForm";
+import RegisterForm from "../RegisterForm";
 import "./Navbar.css";
 
 export default function Navbar() {
+  const [toggleSignInRegister, setToggleSignInRegister] = useState(true);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  console.log("toggleSignInRegister", toggleSignInRegister);
+  console.log("dialogOpen", dialogOpen);
+  const signInModalRef = useRef();
+
+  // set sign in form to display on open when dialog is closed
+  useEffect(() => {
+    if (!dialogOpen) {
+      setToggleSignInRegister(true);
+    }
+  }, [dialogOpen]);
+
+  // toggle between sign in and register forms
+  const handleSignInRegisterToggle = (e) => {
+    e.preventDefault();
+    setToggleSignInRegister(!toggleSignInRegister);
+  };
+
   return (
     <>
       <NavigationMenu.Root className="navigation-menu-root">
@@ -46,14 +66,29 @@ export default function Navbar() {
             </NavigationMenu.Link>
           </NavigationMenu.Item>
           <NavigationMenu.Item className="navigation-menu-item">
-            <Dialog.Root>
-              <Dialog.Trigger className="sign-in-button ">
+            <Dialog.Root
+              open={dialogOpen}
+              onOpenChange={() => setDialogOpen(!dialogOpen)}
+            >
+              <Dialog.Trigger
+                className="sign-in-button"
+                onClick={() => setDialogOpen(false)}
+                ref={signInModalRef}
+              >
                 Sign in
               </Dialog.Trigger>
               <Dialog.Portal>
                 <Dialog.Overlay className="signIn-dialog-overlay" />
                 <Dialog.Content className="signIn-dialog-content">
-                  <SignIn />
+                  {toggleSignInRegister ? (
+                    <SignInForm
+                      handleSignInRegisterToggle={handleSignInRegisterToggle}
+                    />
+                  ) : (
+                    <RegisterForm
+                      handleSignInRegisterToggle={handleSignInRegisterToggle}
+                    />
+                  )}
                   <Dialog.Close asChild>
                     <span class="material-symbols-outlined signIn-dialog-close">
                       close

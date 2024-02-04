@@ -5,7 +5,7 @@ import * as Form from "@radix-ui/react-form";
 
 import "./SignInDialog.css";
 
-export default function index() {
+export default function index({handleSignInRegisterToggle}) {
   return (
     <>
       <div className="signIn-dialog-logo"></div>
@@ -41,6 +41,14 @@ export default function index() {
           </button>
         </Form.Submit>
       </Form.Root>
+      <div className="">
+        <p>
+          Don't have an account?
+          <span onClick={handleSignInRegisterToggle}>
+            <strong> Register here</strong>
+          </span>
+        </p>
+      </div>
     </>
   );
 }

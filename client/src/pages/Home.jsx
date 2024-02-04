@@ -1,6 +1,6 @@
 import React from 'react';
 import Register from '../components/Register';
-import SignIn from "../components/SignInDialog"
+import SignIn from "../components/SignInForm"
 
 export default function Home() {
   return (
