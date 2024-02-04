@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
+import * as Dialog from "@radix-ui/react-dialog";
 import { HamburgerMenuIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 
+import SignIn from "../SignInDialog";
 import "./Navbar.css";
 
 export default function Navbar() {
@@ -44,9 +46,22 @@ export default function Navbar() {
             </NavigationMenu.Link>
           </NavigationMenu.Item>
           <NavigationMenu.Item className="navigation-menu-item">
-            <NavigationMenu.Link asChild>
-              <button className="sign-in-button">Sign in</button>
-            </NavigationMenu.Link>
+            <Dialog.Root>
+              <Dialog.Trigger className="sign-in-button ">
+                Sign in
+              </Dialog.Trigger>
+              <Dialog.Portal>
+                <Dialog.Overlay className="signIn-dialog-overlay" />
+                <Dialog.Content className="signIn-dialog-content">
+                  <SignIn />
+                  <Dialog.Close asChild>
+                    <span class="material-symbols-outlined signIn-dialog-close">
+                      close
+                    </span>
+                  </Dialog.Close>
+                </Dialog.Content>
+              </Dialog.Portal>
+            </Dialog.Root>
           </NavigationMenu.Item>
           <NavigationMenu.Item className="navigation-menu-item navigation-menu-dropdown">
             <NavigationMenu.Trigger className="navigation-menu-trigger">

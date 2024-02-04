@@ -74,7 +74,7 @@
 
 .navigation-menu-search:hover {
     background-color: var(--blue-darker);
-    transition: all ease-in-out 0.2s;
+    transition: all ease-in-out 0.1s;
   }
 
 .navigation-menu-search a {
@@ -110,25 +110,7 @@
 
 .navigation-menu-link:hover {
   color: var(--blue-darker);
-  transition: all ease-in-out 0.2s;
-}
-
-.sign-in-button {
-  height: 34px;
-  padding: 0 10px;
-  cursor: pointer;
-  border: 1px solid var(--blue);
-  border-radius: 4px;
-  background-color: var(--white);
-  color: var(--blue);
-  font-weight: 500;
-}
-
-.sign-in-button:hover {
-  border: 1px solid var(--blue);
-  background-color: var(--blue);
-  color: var(--white);
-  font-weight: 500;
+  transition: all ease-in-out 0.1s;
 }
 
 .navigation-menu-dropdown {
