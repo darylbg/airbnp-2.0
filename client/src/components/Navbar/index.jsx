@@ -11,11 +11,8 @@ import "./Navbar.css";
 export default function Navbar() {
   const [toggleSignInRegister, setToggleSignInRegister] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
-  console.log("toggleSignInRegister", toggleSignInRegister);
-  console.log("dialogOpen", dialogOpen);
-  const signInModalRef = useRef();
 
-  // set sign in form to display on open when dialog is closed
+  // set sign in form to default display when dialog is opened
   useEffect(() => {
     if (!dialogOpen) {
       setToggleSignInRegister(true);
@@ -71,10 +68,7 @@ export default function Navbar() {
               onOpenChange={() => setDialogOpen(!dialogOpen)}
             >
               <Dialog.Trigger
-                className="sign-in-button"
-                onClick={() => setDialogOpen(false)}
-                ref={signInModalRef}
-              >
+                className="sign-in-button">
                 Sign in
               </Dialog.Trigger>
               <Dialog.Portal>
@@ -90,7 +84,7 @@ export default function Navbar() {
                     />
                   )}
                   <Dialog.Close asChild>
-                    <span class="material-symbols-outlined signIn-dialog-close">
+                    <span className="material-symbols-outlined signIn-dialog-close">
                       close
                     </span>
                   </Dialog.Close>
