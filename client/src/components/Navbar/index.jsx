@@ -134,4 +134,5 @@ export default function Navbar() {
       </NavigationMenu.Root>
     </>
   );
-}
+};
+

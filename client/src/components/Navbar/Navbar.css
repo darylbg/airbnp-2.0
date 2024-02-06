@@ -149,12 +149,6 @@
   padding-right: 5px;
 }
 
-@media screen and (max-width: 750px) {
-  .navigation-menu-root {
-    display: none;
-  }
-}
-
 .sign-in-button {
   height: 34px;
   padding: 0 10px;
@@ -208,4 +202,17 @@
   background-color: var(--black-10);
   transition: all ease-in-out 0.1s;
   cursor: pointer;
+}
+
+@media screen and (max-width: 750px) {
+  .navigation-menu-root {
+    display: none;
+  }
+
+  /* .signIn-dialog-content {
+    position: fixed;
+    bottom: 0%;
+    height: 90vh;
+    width: 100vw;
+  } */
 }
