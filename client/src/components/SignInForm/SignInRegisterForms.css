@@ -49,6 +49,19 @@
   font-family: "Inter", sans-serif;
 }
 
+.signInRegister-form {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.signInRegister-form::-webkit-scrollbar {
+  display: none;
+}
+
 .signIn-form-header,
 .register-form-header {
   display: flex;
@@ -92,7 +105,8 @@
 
 .password-input-wrapper input {
   flex: 1;
-  padding-right: 44px;
+  padding-right: 40px;
+    width: 100%;
 }
 
 .password-visibility {
@@ -115,7 +129,7 @@
 
 .field-label {
   padding-bottom: 5px;
-  font-size: 15px;
+  font-size: 0.8em;
   font-weight: 600;
 }
 
@@ -157,4 +171,17 @@
 
 .signInRegister-form-toggle p span:hover {
   cursor: pointer;
+}
+
+@media screen and (max-width: 750px) {
+  .register-form,
+  .signIn-form {
+    max-width: 450px;
+    /* width: 90%; */
+  }
+
+  .form-field input {
+    height: 40px;
+    font-size: 15px;
+  }
 }

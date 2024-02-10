@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, forwardRef } from "react";
 import { Link } from "react-router-dom";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -8,7 +8,7 @@ import SignInForm from "../SignInForm";
 import RegisterForm from "../RegisterForm";
 import "./MobileNavbar.css";
 
-export default function MobileNavbar() {
+const MobileNavbar = forwardRef((props, ref) => {
   const [toggleSignInRegister, setToggleSignInRegister] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -25,6 +25,7 @@ export default function MobileNavbar() {
     setToggleSignInRegister(!toggleSignInRegister);
   };
   return (
+    <>
     <NavigationMenu.Root className="mobile-navbar-root">
       <NavigationMenu.List className="mobile-navbar-list">
         <NavigationMenu.Item className="mobile-navbar-item">
@@ -86,6 +87,7 @@ export default function MobileNavbar() {
             <Dialog.Root
               open={dialogOpen}
               onOpenChange={() => setDialogOpen(!dialogOpen)}
+              ref={ref}
             >
               <Dialog.Trigger className="sign-in-button mobile-signIn-button">
                 <span className="material-symbols-outlined mobile-navbar-icon">
@@ -117,6 +119,10 @@ export default function MobileNavbar() {
         </NavigationMenu.Item>
       </NavigationMenu.List>
     </NavigationMenu.Root>
+    </>
   );
-};
+});
+
+export default MobileNavbar;
+
 

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Form from "@radix-ui/react-form";
-
+import { useMutation } from "@apollo/client";
+import { UseDispatch, useDispatch } from "react-redux";
 import { REGISTER } from "../../utils/mutations";
 
 import "../SignInForm/SignInRegisterForms.css";
@@ -20,20 +21,24 @@ export default function RegisterForm({ handleSignInRegisterToggle }) {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    // defaultValues: {
-    //   firstName: "",
-    //   lastName: "",
-    //   email: "",
-    //   password: "",
-    // },
+    defaultValues: {
+      // firstName: "",
+      // lastName: "",
+      // email: "",
+      // password: "",
+    },
   });
-
+  console.log(errors)
   const onSubmit = (data) => {
-    console.log("formData", data);
+    // console.log("formData", data);
+    // console.log(errors)
   };
 
+  const [registerUser] = useMutation(REGISTER);
+  const dispatch = useDispatch();
+  
   return (
-    <>
+    <div className="signInRegister-form">
       <div className="register-form-header">
         <div className="register-form-logo"></div>
         <h2>Welcome to Airbnp!</h2>
@@ -47,45 +52,40 @@ export default function RegisterForm({ handleSignInRegisterToggle }) {
           <Form.Control asChild>
             <input
               type="text"
-              placeholder="John"
                 {...register("firstName", {
                   required: "This is required",
                 })}
             />
           </Form.Control>
-          <Form.Message className="field-message">
-            {errors.firstName?.message}
-          </Form.Message>
+          <div className="field-message">{errors.firstName?.message}</div>
         </Form.Field>
         <Form.Field className="form-field" name="lastName">
           <Form.Label className="field-label">Last name</Form.Label>
           <Form.Control asChild>
             <input
               type="text"
-              placeholder="Smith"
                 {...register("lastName", {
                   required: "This is required",
                 })}
             />
           </Form.Control>
-          <Form.Message className="field-message" >
+          <div className="field-message" >
             {errors.lastName?.message}
-          </Form.Message>
+          </div>
         </Form.Field>
         <Form.Field className="form-field" name="email">
           <Form.Label className="field-label">Email</Form.Label>
           <Form.Control asChild>
             <input
               type="text"
-              placeholder="johnsmith@mail.com"
                 {...register("email", {
                   required: "This is required",
                 })}
             />
           </Form.Control>
-          <Form.Message className="field-message" >
+          <div className="field-message" >
             {errors.email?.message}
-          </Form.Message>
+          </div>
         </Form.Field>
         <Form.Field className="form-field" name="password">
           <Form.Label className="field-label">Password</Form.Label>
@@ -93,10 +93,9 @@ export default function RegisterForm({ handleSignInRegisterToggle }) {
             <Form.Control asChild>
               <input
                 type={passwordVisibility ? "text" : "password"}
-                placeholder="Must have at least 6 characters"
                 {...register("password", {
                   required: "This is required",
-                  minLength: { value: 8, message: "characters" },
+                  minLength: { value: 8, message: "Minimum 8 characters" },
                 })}
               />
             </Form.Control>
@@ -109,9 +108,9 @@ export default function RegisterForm({ handleSignInRegisterToggle }) {
               </span>
             </div>
           </div>
-          <Form.Message className="field-message" >
+          <div className="field-message" >
             {errors.password?.message}
-          </Form.Message>
+          </div>
         </Form.Field>
         <Form.Field className="form-submit-button">
           <Form.Submit asChild>
@@ -129,7 +128,7 @@ export default function RegisterForm({ handleSignInRegisterToggle }) {
           </span>
         </p>
       </div>
-    </>
+    </div>
   );
 }
 

@@ -26,7 +26,7 @@ export default function SignInForm({ handleSignInRegisterToggle }) {
         <Form.Field className="form-field" name="email">
           <Form.Label className="field-label">Email</Form.Label>
           <Form.Control asChild>
-            <input type="text" placeholder="johnsmith@mail.com" />
+            <input type="text" />
           </Form.Control>
           <Form.Message className="field-message" match="">
             Please enter your email
@@ -36,7 +36,7 @@ export default function SignInForm({ handleSignInRegisterToggle }) {
           <Form.Label className="field-label">Password</Form.Label>
           <div className="password-input-wrapper">
             <Form.Control asChild>
-              <input type={passwordVisibility? "text" : "password"} placeholder="" />
+              <input type={passwordVisibility? "text" : "password"} />
             </Form.Control>
             <div className="password-visibility">
               <span
