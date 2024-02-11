@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Form from "@radix-ui/react-form";
 import { useMutation } from "@apollo/client";
-import { UseDispatch, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
+import Auth from "../../utils/auth";
+import { login_user } from "../../reducers/authReducer";
 import { REGISTER } from "../../utils/mutations";
 
 import "../SignInForm/SignInRegisterForms.css";
@@ -29,13 +31,32 @@ export default function RegisterForm({ handleSignInRegisterToggle }) {
     },
   });
   console.log(errors)
-  const onSubmit = (data) => {
-    // console.log("formData", data);
-    // console.log(errors)
+
+  const dispatch = useDispatch();
+
+  const [registerUser] = useMutation(REGISTER, {
+    onError: (error) => {
+      console.log("Registration failed:", error);
+    },
+    onCompleted: (data) => {
+      // Handle successful registration here, such as logging in the user
+      console.log("User registered successfully:", data);
+      const { token } = data.register;
+      Auth.login(token);
+      dispatch(login_user(token));
+      // Redirect or update UI as needed
+    }
+  });
+
+  const onSubmit = async (data) => {
+    try {
+      await registerUser({ variables: { input: data } });
+    } catch (error) {
+      console.log("Error registering user:", error);
+    }
   };
 
-  const [registerUser] = useMutation(REGISTER);
-  const dispatch = useDispatch();
+
   
   return (
     <div className="signInRegister-form">
