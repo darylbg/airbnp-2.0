@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
-export const REGISTER = gql`
-  mutation Mutation($userData: userInput!) {
+export const REGISTER_MUTATION = gql`
+  mutation register($userData: userInput!) {
     register(userData: $userData) {
       token
       user {
@@ -9,6 +9,7 @@ export const REGISTER = gql`
         first_name
         last_name
         gender 
+        display_name
       }
     }
   }
