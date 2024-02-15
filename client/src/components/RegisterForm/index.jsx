@@ -1,45 +1,81 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { ApolloError } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import * as Form from "@radix-ui/react-form";
 import { useMutation } from "@apollo/client";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Auth from "../../utils/auth";
 import { login_user } from "../../reducers/authReducer";
 import { REGISTER_MUTATION } from "../../utils/mutations";
 
 import "../SignInForm/SignInRegisterForms.css";
 
-export default function RegisterForm({ handleSignInRegisterToggle }) {
+export default function RegisterForm({
+  handleSignInRegisterToggle,
+  handleSignInRegisterSuccess,
+  setDialogOpen,
+}) {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
   const {
     register,
     handleSubmit,
+    setError,
+    clearErrors,
+    setValue,
     formState: { errors },
   } = useForm({
-    defaultValues: {},
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+    },
+    criteriaMode: "all",
   });
 
   const [registerMutation, { error }] = useMutation(REGISTER_MUTATION);
-
+  const navigate = useNavigate();
+  console.log("email errors", errors.email);
   const onSubmit = async (formData) => {
     const displayName = formData.firstName + formData.lastName;
-    const registeredUser = await registerMutation({
-      variables: {
-        userData: {
-          first_name: formData.firstName,
-          last_name: formData.lastName,
-          display_name: displayName,
-          email: formData.email,
-          password: formData.password,
+    try {
+      const registeredUser = await registerMutation({
+        variables: {
+          userData: {
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+            display_name: displayName,
+            email: formData.email,
+            password: formData.password,
+          },
         },
-      },
-    });
-    if (error) {
-      console.log("registeredUser errors", error);
-    }
+      });
 
-    console.log("registeredUser", registeredUser);
+      console.log("registeredUser", registeredUser);
+
+      Auth.login(registeredUser.data.register.token);
+      // handleSignInRegisterSuccess();
+      // setDialogOpen(false)
+    } catch (error) {
+      console.log(error.graphQLErrors);
+      if (error.graphQLErrors && error.graphQLErrors.length > 0) {
+        const firstGraphQLError = error.graphQLErrors[0];
+        setError("graphQL", {
+          type: "graphQL",
+          message: "graphql error",
+        });
+      }
+    }
+  };
+
+  // Sets validation on email input. onchange, clears the grpahql errors and resets required check from useForm
+  const handleEmailValidation = (e) => {
+    setValue("email", e.target.value, {
+      shouldValidate: true,
+    });
+    clearErrors("graphQL");
   };
 
   // toggle password input between hidden and visible text
@@ -88,9 +124,11 @@ export default function RegisterForm({ handleSignInRegisterToggle }) {
               {...register("email", {
                 required: "This is required",
               })}
+              onChange={handleEmailValidation}
             />
           </Form.Control>
           <div className="field-message">{errors.email?.message}</div>
+          <div className="field-message">{errors.graphQL?.message}</div>
         </Form.Field>
         <Form.Field className="form-field" name="password">
           <Form.Label className="field-label">Password</Form.Label>

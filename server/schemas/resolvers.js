@@ -88,18 +88,8 @@ const resolvers = {
       try {
         console.log("Received user data:", JSON.stringify(userData));
 
-        // const existingUserName = await User.findOne({
-        //   display_name: userData.display_name,
-        // });
         const existingEmail = await User.findOne({ email: userData.email });
 
-        // if (existingUserName) {
-        //   console.log("Username already in use");
-        //   throw new ApolloError(
-        //     "Username already in use",
-        //     "DUPLICATE_DISPLAY_ERROR"
-        //   );
-        // } else 
         if (existingEmail) {
           console.log("Email already in use");
           throw new ApolloError(
