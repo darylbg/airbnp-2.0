@@ -5,11 +5,19 @@ export const REGISTER_MUTATION = gql`
     register(userData: $userData) {
       token
       user {
+        id
         email
         first_name
         last_name
-        gender 
+        gender
         display_name
+        user_image
+        user_listings
+        saved_listings
+        notifications
+        reviews
+        payments
+        booking_history
       }
     }
   }
@@ -46,4 +54,3 @@ export const LOGIN = gql`
     }
   }
 `;
-

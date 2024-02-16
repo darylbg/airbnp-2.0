@@ -86,8 +86,6 @@ const resolvers = {
     },
     register: async (parent, { userData }) => {
       try {
-        console.log("Received user data:", JSON.stringify(userData));
-
         const existingEmail = await User.findOne({ email: userData.email });
 
         if (existingEmail) {

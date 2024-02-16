@@ -25,11 +25,15 @@ export default function Navbar() {
     setToggleSignInRegister(!toggleSignInRegister);
   };
 
-  const handleSignInRegisterSuccess = (e) => {
-    e.preventDefault();
-    // setDialogOpen(false);
-    console.log("handleSignInRegisterSuccess")
+  const handleSignInRegisterSuccess = () => {
+    // e.preventDefault();
+    setDialogOpen(false);
+    console.log("handleSignInRegisterSuccess success")
   };
+
+  const test = () => {
+    console.log("tested")
+  }
 
   return (
     <>
@@ -90,6 +94,7 @@ export default function Navbar() {
                       handleSignInRegisterToggle={handleSignInRegisterToggle}
                       handleSignInRegisterSuccess={handleSignInRegisterSuccess}
                       setDialogOpen={setDialogOpen}
+                      test={test}
                     />
                   )}
                   <Dialog.Close asChild>

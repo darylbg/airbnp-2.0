@@ -3,7 +3,7 @@ import { ApolloError } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import * as Form from "@radix-ui/react-form";
 import { useMutation } from "@apollo/client";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Auth from "../../utils/auth";
 import { login_user } from "../../reducers/authReducer";
@@ -14,9 +14,14 @@ import "../SignInForm/SignInRegisterForms.css";
 export default function RegisterForm({
   handleSignInRegisterToggle,
   handleSignInRegisterSuccess,
-  setDialogOpen,
+  // setDialogOpen,
+  test,
 }) {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
+
+  const { auth } = useSelector((state) => state);
+  const thisUser = auth.user;
+  console.log("this user", thisUser);
 
   const {
     register,
@@ -24,7 +29,8 @@ export default function RegisterForm({
     setError,
     clearErrors,
     setValue,
-    formState: { errors },
+    reset,
+    formState: { errors, isSubmitSuccessful },
   } = useForm({
     defaultValues: {
       firstName: "",
@@ -36,8 +42,8 @@ export default function RegisterForm({
   });
 
   const [registerMutation, { error }] = useMutation(REGISTER_MUTATION);
-  const navigate = useNavigate();
-  console.log("email errors", errors.email);
+  const dispatch = useDispatch();
+
   const onSubmit = async (formData) => {
     const displayName = formData.firstName + formData.lastName;
     try {
@@ -49,22 +55,57 @@ export default function RegisterForm({
             display_name: displayName,
             email: formData.email,
             password: formData.password,
+            gender: "",
+            user_image: "",
+            user_listings: [],
+            saved_listings: [],
+            notifications: [],
+            reviews: [],
+            payments: [],
+            booking_history: [],
           },
         },
       });
+      const registeredUserData = registeredUser.data.register;
+      dispatch(
+        login_user({
+          token: registeredUserData.token,
+          id: registeredUserData.user.id,
+          ...registeredUserData.user
+          // id: registeredUserData.user.id,
+          // first_name: registeredUserData.user.first_name,
+          // last_name: registeredUserData.user.last_name,
+          // display_name: registeredUserData.user.display_name,
+          // gender: registeredUserData.user.gender,
+          // email: registeredUserData.user.email,
+          // user_image: registeredUserData.user.user_image,
+          // user_listings: registeredUserData.user.user_listings,
+          // saved_listings: registeredUserData.user.saved_listings,
+          // notifications: registeredUserData.user.notifications,
+          // reviews: registeredUserData.user.reviews,
+          // payments: registeredUserData.user.payments,
+          // booking_history: registeredUserData.user.booking_history,
+        })
+      );
 
       console.log("registeredUser", registeredUser);
 
       Auth.login(registeredUser.data.register.token);
+      test();
       // handleSignInRegisterSuccess();
       // setDialogOpen(false)
     } catch (error) {
+      // console.log(error)
       console.log(error.graphQLErrors);
       if (error.graphQLErrors && error.graphQLErrors.length > 0) {
-        const firstGraphQLError = error.graphQLErrors[0];
-        setError("graphQL", {
-          type: "graphQL",
-          message: "graphql error",
+        const firstGraphQLErrorCode = error.graphQLErrors[0].extensions.code;
+        setError("graphQLError", {
+          type: "graphQLError",
+          message: `${
+            firstGraphQLErrorCode === "DUPLICATE_EMAIL_ERROR"
+              ? "Email already in use"
+              : "Error, please try again"
+          }`,
         });
       }
     }
@@ -75,8 +116,20 @@ export default function RegisterForm({
     setValue("email", e.target.value, {
       shouldValidate: true,
     });
-    clearErrors("graphQL");
+    clearErrors("graphQLError");
   };
+
+  // reset fields to empty after successful registration
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+      });
+    }
+  }, [isSubmitSuccessful, reset]);
 
   // toggle password input between hidden and visible text
   const togglePasswordVisibility = (e) => {
@@ -87,6 +140,7 @@ export default function RegisterForm({
   return (
     <div className="signInRegister-form">
       <div className="register-form-header">
+        <button onClick={handleSignInRegisterSuccess}>click</button>
         <div className="register-form-logo"></div>
         <h2>Welcome to Airbnp!</h2>
         <p>Sign up to your account here</p>
@@ -123,12 +177,16 @@ export default function RegisterForm({
               type="text"
               {...register("email", {
                 required: "This is required",
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: "Invalid email address",
+                },
               })}
               onChange={handleEmailValidation}
             />
           </Form.Control>
           <div className="field-message">{errors.email?.message}</div>
-          <div className="field-message">{errors.graphQL?.message}</div>
+          <div className="field-message">{errors.graphQLError?.message}</div>
         </Form.Field>
         <Form.Field className="form-field" name="password">
           <Form.Label className="field-label">Password</Form.Label>
