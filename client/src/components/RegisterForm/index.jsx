@@ -19,9 +19,9 @@ export default function RegisterForm({
 }) {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
-  const { auth } = useSelector((state) => state);
-  const thisUser = auth.user;
-  console.log("this user", thisUser);
+  // const { auth } = useSelector((state) => state);
+  // const thisUser = auth.user;
+  // console.log("this user", thisUser);
 
   const {
     register,

@@ -9,7 +9,7 @@ export default function GetAllListings() {
     useEffect(() => {
         try {
             if (data) {
-                console.log(data)
+                // console.log(data)
                 setListings(data)
             }
         } catch (error) {

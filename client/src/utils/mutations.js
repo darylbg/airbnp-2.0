@@ -12,12 +12,24 @@ export const REGISTER_MUTATION = gql`
         gender
         display_name
         user_image
-        user_listings
-        saved_listings
-        notifications
-        reviews
-        payments
-        booking_history
+        user_listings {
+          id
+        }
+        saved_listings {
+          id
+        }
+        notifications {
+          id
+        }
+        reviews {
+          id
+        }
+        payments {
+          id
+        }
+        booking_history {
+          id
+        }
       }
     }
   }
