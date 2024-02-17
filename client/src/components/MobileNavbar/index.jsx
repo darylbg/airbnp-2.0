@@ -1,8 +1,10 @@
 import React, { useState, useEffect, forwardRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import {  useSelector } from "react-redux";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import * as Dialog from "@radix-ui/react-dialog";
 import { HomeIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import Auth from "../../utils/auth";
 
 import SignInForm from "../SignInForm";
 import RegisterForm from "../RegisterForm";
@@ -12,6 +14,9 @@ const MobileNavbar = forwardRef((props, ref) => {
   const [toggleSignInRegister, setToggleSignInRegister] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
 
+  const {isLoggedIn} = useSelector((state) => state.auth);
+  console.log(isLoggedIn)
+  const navigate = useNavigate();
   // set sign in form to default display when dialog is opened
   useEffect(() => {
     if (!dialogOpen) {
@@ -24,6 +29,13 @@ const MobileNavbar = forwardRef((props, ref) => {
     e.preventDefault();
     setToggleSignInRegister(!toggleSignInRegister);
   };
+
+  const logout = (e) => {
+    e.preventDefault();
+    Auth.logout();
+    navigate("/");
+  };
+
   return (
     <>
     <NavigationMenu.Root className="mobile-navbar-root">
@@ -71,7 +83,8 @@ const MobileNavbar = forwardRef((props, ref) => {
             </Link>
           </NavigationMenu.Link>
         </NavigationMenu.Item>
-        <NavigationMenu.Item className="mobile-navbar-item">
+        {isLoggedIn ? (
+          <NavigationMenu.Item className="mobile-navbar-item">
           <NavigationMenu.Link className="mobile-navbar-link" asChild>
             <Link to="/account">
               {" "}
@@ -82,7 +95,8 @@ const MobileNavbar = forwardRef((props, ref) => {
             </Link>
           </NavigationMenu.Link>
         </NavigationMenu.Item>
-        <NavigationMenu.Item className="mobile-navbar-item">
+        ) : (
+          <NavigationMenu.Item className="mobile-navbar-item">
           <NavigationMenu.Link className="mobile-navbar-link" asChild>
             <Dialog.Root
               open={dialogOpen}
@@ -117,6 +131,7 @@ const MobileNavbar = forwardRef((props, ref) => {
             </Dialog.Root>
           </NavigationMenu.Link>
         </NavigationMenu.Item>
+        )}
       </NavigationMenu.List>
     </NavigationMenu.Root>
     </>

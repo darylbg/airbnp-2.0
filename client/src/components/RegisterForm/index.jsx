@@ -72,19 +72,6 @@ export default function RegisterForm({
           token: registeredUserData.token,
           id: registeredUserData.user.id,
           ...registeredUserData.user
-          // id: registeredUserData.user.id,
-          // first_name: registeredUserData.user.first_name,
-          // last_name: registeredUserData.user.last_name,
-          // display_name: registeredUserData.user.display_name,
-          // gender: registeredUserData.user.gender,
-          // email: registeredUserData.user.email,
-          // user_image: registeredUserData.user.user_image,
-          // user_listings: registeredUserData.user.user_listings,
-          // saved_listings: registeredUserData.user.saved_listings,
-          // notifications: registeredUserData.user.notifications,
-          // reviews: registeredUserData.user.reviews,
-          // payments: registeredUserData.user.payments,
-          // booking_history: registeredUserData.user.booking_history,
         })
       );
 

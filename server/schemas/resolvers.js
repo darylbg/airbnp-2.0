@@ -69,12 +69,12 @@ const resolvers = {
         });
 
         if (!user) {
-          throw new AuthenticationError("no user found");
+          throw new ApolloError("User not found, please register", "NO_USER_FOUND_ERROR");
         }
 
         const correctPw = await user.isCorrectPassword(password);
         if (!correctPw) {
-          throw new AuthenticationError("incorrect password");
+          throw new ApolloError("Incorrect password", "INCORRECT_PASSWORD_ERROR");
         }
 
         const token = signToken(user);
@@ -82,6 +82,7 @@ const resolvers = {
         return { token: token, user: user };
       } catch (error) {
         console.log(error);
+        throw error
       }
     },
     register: async (parent, { userData }) => {

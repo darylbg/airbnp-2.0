@@ -35,31 +35,34 @@ export const REGISTER_MUTATION = gql`
   }
 `;
 
-export const LOGIN = gql`
+export const SIGN_IN_MUTATION = gql`
   mutation Login($email: String!, $password: String!) {
     login(email: $email, password: $password) {
       token
       user {
-        display_name
+        id
         email
         first_name
-        gender
-        id
         last_name
+        gender
+        display_name
         user_image
-        notifications {
-          id
-        }
-        payments {
-          id
-        }
-        reviews {
+        user_listings {
           id
         }
         saved_listings {
           id
         }
-        user_listings {
+        notifications {
+          id
+        }
+        reviews {
+          id
+        }
+        payments {
+          id
+        }
+        booking_history {
           id
         }
       }

@@ -1,13 +1,79 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useMutation } from "@apollo/client";
+import { ApolloError, useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import * as Form from "@radix-ui/react-form";
+import { SIGN_IN_MUTATION } from "../../utils/mutations";
 
 import "./SignInRegisterForms.css";
+import { login_user } from "../../reducers/authReducer";
 
 export default function SignInForm({ handleSignInRegisterToggle }) {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const {
+    register,
+    handleSubmit,
+    setError,
+    setValue,
+    clearErrors,
+    formState: { errors },
+  } = useForm();
+
+  const [signInMutation] = useMutation(SIGN_IN_MUTATION);
+
+  const handleSignInSubmit = async (formData) => {
+    try {
+      const loggedInUser = await signInMutation({
+        variables: { email: formData.email, password: formData.password },
+      });
+      const loggedInUserData = loggedInUser.data.login
+      console.log("logged in", loggedInUserData);
+      dispatch(
+        login_user({
+          token: loggedInUserData.token,
+          id: loggedInUserData.user.id,
+          ...loggedInUserData.user
+        })
+      )
+    } catch (error) {
+      if (error.graphQLErrors) {
+        if (error.graphQLErrors && error.graphQLErrors.length > 0) {
+          const firstGraphQLErrorCode = error.graphQLErrors[0].extensions.code;
+          switch (firstGraphQLErrorCode) {
+            case "NO_USER_FOUND_ERROR":
+              setError("noUserFoundError", {
+                type: "noUserFoundError",
+                message: "User not found, please register",
+              });
+              break;
+            case "INCORRECT_PASSWORD_ERROR":
+              setError("incorrectPasswordError", {
+                type: "incorrectPasswordError",
+                message: "Incorrect password",
+              });
+          }
+        }
+      }
+    }
+  };
+
+  const handleEmailValidation = (e) => {
+    setValue("email", e.target.value, {
+      shouldValidate: true,
+    });
+    clearErrors("noUserFoundError");
+    clearErrors("incorrectPasswordError");
+  };
+
+  const handlePasswordValidation = (e) => {
+    setValue("password", e.target.value, {
+      shouldValidate: true,
+    });
+    clearErrors("incorrectPasswordError");
+  };
 
   // toggle password input between hidden and visible text
   const togglePasswordVisibility = (e) => {
@@ -22,34 +88,49 @@ export default function SignInForm({ handleSignInRegisterToggle }) {
         <h2>Welcome to Airbnp!</h2>
         <p>Sign in to view your account</p>
       </div>
-      <Form.Root className="signIn-form">
+      <Form.Root
+        className="signIn-form"
+        onSubmit={handleSubmit(handleSignInSubmit)}
+      >
         <Form.Field className="form-field" name="email">
           <Form.Label className="field-label">Email</Form.Label>
           <Form.Control asChild>
-            <input type="text" />
+            <input
+              type="text"
+              {...register("email", {
+                required: "This is required",
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: "Invalid email address",
+                },
+              })}
+              onChange={handleEmailValidation}
+            />
           </Form.Control>
-          <Form.Message className="field-message" match="">
-            Please enter your email
-          </Form.Message>
+          <div className="field-message">{errors.email?.message}</div>
+          <div className="field-message">{errors.noUserFoundError?.message}</div>
         </Form.Field>
         <Form.Field className="form-field" name="password">
           <Form.Label className="field-label">Password</Form.Label>
           <div className="password-input-wrapper">
             <Form.Control asChild>
-              <input type={passwordVisibility? "text" : "password"} />
+              <input
+                type={passwordVisibility ? "text" : "password"}
+                {...register("password", { required: "This is required" })}
+                onChange={handlePasswordValidation}
+              />
             </Form.Control>
             <div className="password-visibility">
               <span
                 className="material-symbols-outlined"
                 onClick={togglePasswordVisibility}
               >
-                {passwordVisibility? "visibility" : "visibility_off"}
+                {passwordVisibility ? "visibility" : "visibility_off"}
               </span>
             </div>
           </div>
-          <Form.Message className="field-message" match="">
-            Please enter your email
-          </Form.Message>
+          <div className="field-message">{errors.password?.message}</div>
+          <div className="field-message">{errors.incorrectPasswordError?.message}</div>
         </Form.Field>
         <Form.Field className="form-submit-button">
           <Form.Submit asChild>
@@ -69,5 +150,4 @@ export default function SignInForm({ handleSignInRegisterToggle }) {
       </div>
     </>
   );
-};
-
+}
