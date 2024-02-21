@@ -11,6 +11,7 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Navbar from "./components/Navbar";
+import Dashboard from "./pages/Dashboard";
 import MobileNavbar from "./components/MobileNavbar";
 import "./App.css";
 
@@ -43,6 +44,7 @@ function App() {
             <Route path="/" element={<Home />}></Route>
             <Route path="/about" element={<About />}></Route>
             <Route path="/contact" element={<Contact />}></Route>
+            <Route path="/dashboard" element={<Dashboard />}></Route>
           </Routes>
           <MobileNavbar />
         </div>

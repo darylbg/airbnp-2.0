@@ -38,6 +38,7 @@ const userSchema = new Schema(
     },
     user_image: {
       type: String,
+      default: "https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
     },
     user_listings: [
       {
