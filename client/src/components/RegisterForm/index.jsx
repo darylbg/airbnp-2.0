@@ -13,9 +13,6 @@ import "../SignInForm/SignInRegisterForms.css";
 
 export default function RegisterForm({
   handleSignInRegisterToggle,
-  handleSignInRegisterSuccess,
-  // setDialogOpen,
-  test,
 }) {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
@@ -56,7 +53,7 @@ export default function RegisterForm({
             email: formData.email,
             password: formData.password,
             gender: "",
-            user_image: "",
+            user_image: "https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg",
             user_listings: [],
             saved_listings: [],
             notifications: [],
@@ -78,9 +75,6 @@ export default function RegisterForm({
       console.log("registeredUser", registeredUser);
 
       Auth.login(registeredUser.data.register.token);
-      test();
-      // handleSignInRegisterSuccess();
-      // setDialogOpen(false)
     } catch (error) {
       // console.log(error)
       console.log(error.graphQLErrors);
@@ -127,7 +121,6 @@ export default function RegisterForm({
   return (
     <div className="signInRegister-form">
       <div className="register-form-header">
-        <button onClick={handleSignInRegisterSuccess}>click</button>
         <div className="register-form-logo"></div>
         <h2>Welcome to Airbnp!</h2>
         <p>Sign up to your account here</p>

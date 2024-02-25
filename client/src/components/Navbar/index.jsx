@@ -10,7 +10,9 @@ import SignInForm from "../SignInForm";
 import RegisterForm from "../RegisterForm";
 import "./Navbar.css";
 
-export default function Navbar() {
+export default function Navbar({
+
+}) {
   const [toggleSignInRegister, setToggleSignInRegister] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -29,16 +31,6 @@ export default function Navbar() {
   const handleSignInRegisterToggle = (e) => {
     e.preventDefault();
     setToggleSignInRegister(!toggleSignInRegister);
-  };
-
-  const handleSignInRegisterSuccess = () => {
-    // e.preventDefault();
-    setDialogOpen(false);
-    console.log("handleSignInRegisterSuccess success");
-  };
-
-  const test = () => {
-    console.log("tested");
   };
 
   const logout = (e) => {
@@ -144,18 +136,10 @@ export default function Navbar() {
                     {toggleSignInRegister ? (
                       <SignInForm
                         handleSignInRegisterToggle={handleSignInRegisterToggle}
-                        handleSignInRegisterSuccess={
-                          handleSignInRegisterSuccess
-                        }
                       />
                     ) : (
                       <RegisterForm
                         handleSignInRegisterToggle={handleSignInRegisterToggle}
-                        handleSignInRegisterSuccess={
-                          handleSignInRegisterSuccess
-                        }
-                        setDialogOpen={setDialogOpen}
-                        test={test}
                       />
                     )}
                     <Dialog.Close asChild>
