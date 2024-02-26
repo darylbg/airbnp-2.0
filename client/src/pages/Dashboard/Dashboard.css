@@ -103,7 +103,7 @@
 }
 
 .dashboard-menu-item button .material-symbols-outlined {
-    padding-right: 20px;
+    margin-right: 20px;
 }
 
 .dashboard-menu-item button:last-child {
@@ -125,15 +125,18 @@
     width: 40px;
     object-fit: cover;
     object-position: center center;
-    flex: auto;
     border-radius: 50%;
     border: 1px solid var(--pink);
+    margin: 0 10px 10px 0;
 }
 
 .dashboard-menu-footer h3 {
     flex: auto;
-    margin: 0;
+    margin: 0 0 10px 0;
     align-self: center;
+    text-align: center;
+    text-wrap: nowrap;
+    overflow: hidden;
 }
 
 .dashboard-menu-footer p {
@@ -141,6 +144,8 @@
     padding: 0;
     margin: 0;
     text-align: center;
+    text-wrap: nowrap;
+    overflow: hidden;
 }
 
 .dashboard-content {
@@ -149,11 +154,39 @@
     background-color: var(--black-5);
 }
 
+.active-dashboard-tab {
+    background-color: var(--black-10) !important;
+}
+
+.active-dashboard-tab .material-symbols-outlined {
+    color: var(--pink) !important;
+}
+
+
 @media screen and (max-width: 768px) {
 
     .dashboard-menu {
         max-width: fit-content;
         min-width: fit-content;
         width: fit-content;
+        justify-content: center;
+    }
+
+    .dashboard-menu-items {
+        padding-left: 0;
+    }
+
+    .dashboard-menu-item button {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        padding: 15px 15px 15px 20px;
+    }
+
+    .dashboard-menu-item button .material-symbols-outlined {
+        margin-right: 0px;
+    }
+
+    .dashboard-menu-footer img {
+        margin: 0 0 10px 0;
     }
 }
