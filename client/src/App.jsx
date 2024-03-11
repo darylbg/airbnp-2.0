@@ -13,6 +13,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
 import MobileNavbar from "./components/MobileNavbar";
 import "./App.css";
 
@@ -41,13 +42,16 @@ function App() {
       <Router>
         <div className="app-div">
           <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />}></Route>
-            <Route path="/about" element={<About />}></Route>
-            <Route path="/contact" element={<Contact />}></Route>
-            <Route path="/dashboard" element={<Dashboard />}></Route>
-          </Routes>
-          <MobileNavbar />
+          <div className="app-pages">
+            <Routes>
+              <Route path="/" element={<Home />}></Route>
+              <Route path="/about" element={<About />}></Route>
+              <Route path="/contact" element={<Contact />}></Route>
+              <Route path="/dashboard" element={<Dashboard />}></Route>
+              <Route path="/profile" element={<Profile />}></Route>
+            </Routes><MobileNavbar />
+          </div>
+          
         </div>
       </Router>
     </ApolloProvider>

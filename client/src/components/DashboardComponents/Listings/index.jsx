@@ -1,9 +1,10 @@
-import React from 'react'
+import React from 'react';
+import DashboardHeader from "../DashboardHeader";
 
 export default function Listings() {
   return (
     <div>
-      Listings
+      <DashboardHeader />
     </div>
   )
 }

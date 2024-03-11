@@ -43,7 +43,7 @@ const MobileNavbar = forwardRef((props, ref) => {
         <NavigationMenu.List className="mobile-navbar-list">
           <NavigationMenu.Item className="mobile-navbar-item">
             <NavigationMenu.Link className="mobile-navbar-link" asChild>
-              <Link to="/">
+              <Link to="/" onClick={() => setToggleAccountSubmenu(false)}>
                 <span className="material-symbols-outlined mobile-navbar-icon">
                   Home
                 </span>
@@ -53,7 +53,7 @@ const MobileNavbar = forwardRef((props, ref) => {
           </NavigationMenu.Item>
           <NavigationMenu.Item className="mobile-navbar-item">
             <NavigationMenu.Link className="mobile-navbar-link" asChild>
-              <Link to="/search">
+              <Link to="/search" onClick={() => setToggleAccountSubmenu(false)}>
                 {" "}
                 <span className="material-symbols-outlined mobile-navbar-icon">
                   Search
@@ -64,7 +64,7 @@ const MobileNavbar = forwardRef((props, ref) => {
           </NavigationMenu.Item>
           <NavigationMenu.Item className="mobile-navbar-item">
             <NavigationMenu.Link className="mobile-navbar-link" asChild>
-              <Link to="/about">
+              <Link to="/about" onClick={() => setToggleAccountSubmenu(false)}>
                 {" "}
                 <span className="material-symbols-outlined mobile-navbar-icon">
                   description
@@ -75,7 +75,7 @@ const MobileNavbar = forwardRef((props, ref) => {
           </NavigationMenu.Item>
           <NavigationMenu.Item className="mobile-navbar-item">
             <NavigationMenu.Link className="mobile-navbar-link" asChild>
-              <Link to="/contact">
+              <Link to="/contact" onClick={() => setToggleAccountSubmenu(false)}>
                 {" "}
                 <span className="material-symbols-outlined mobile-navbar-icon">
                   Call
@@ -145,7 +145,7 @@ const MobileNavbar = forwardRef((props, ref) => {
           <NavigationMenu.List>
             <NavigationMenu.Item className="mobile-navbar-item">
               <NavigationMenu.Link className="mobile-navbar-link" asChild>
-                <Link to="/account" onClick={() => setToggleAccountSubmenu(!toggleAccountSubmenu)}>
+                <Link to="/profile" onClick={() => setToggleAccountSubmenu(false)}>
                   {" "}
                   <span className="material-symbols-outlined mobile-navbar-icon">
                     account_circle
@@ -156,7 +156,7 @@ const MobileNavbar = forwardRef((props, ref) => {
             </NavigationMenu.Item>
             <NavigationMenu.Item className="mobile-navbar-item">
               <NavigationMenu.Link className="mobile-navbar-link" asChild>
-                <Link to="/dashboard" onClick={(() => setToggleAccountSubmenu(!toggleAccountSubmenu))}>
+                <Link to="/dashboard" onClick={(() => setToggleAccountSubmenu(false))}>
                   {" "}
                   <span className="material-symbols-outlined mobile-navbar-icon">
                     <span class="material-symbols-outlined">

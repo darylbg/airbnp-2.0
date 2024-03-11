@@ -92,10 +92,10 @@ export default function Navbar({
                 <NavigationMenu.Item className="navigation-menu-item" asChild>
                   <NavigationMenu.Link asChild>
                     <Link
-                      to="/account"
+                      to="/profile"
                       className="navigation-menu-link dropdown-menu-link"
                     >
-                      Account
+                      Profile
                     </Link>
                   </NavigationMenu.Link>
                 </NavigationMenu.Item>

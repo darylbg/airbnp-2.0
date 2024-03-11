@@ -26,7 +26,7 @@ export default function Dashboard() {
                   className={activeDashboardTab === 0 ? "active-dashboard-tab" : ""}
                   >
                     <span className="material-symbols-outlined">today</span>
-                    <span className="hide-on-sm">Bookings</span>
+                    <span className="hide-on-sm text">Bookings</span>
                   </button>
                 </div>
                 <div className="dashboard-menu-item">
@@ -34,7 +34,7 @@ export default function Dashboard() {
                   className={activeDashboardTab === 1 ? "active-dashboard-tab" : ""}
                   >
                     <span className="material-symbols-outlined">list</span>
-                    <span className="hide-on-sm">Listings</span>
+                    <span className="hide-on-sm text">Listings</span>
                   </button>
                 </div>
                 <div className="dashboard-menu-item">
@@ -44,7 +44,7 @@ export default function Dashboard() {
                     <span className="material-symbols-outlined">
                       Notifications
                     </span>
-                    <span className="hide-on-sm">Notifications</span>
+                    <span className="hide-on-sm text">Notifications</span>
                   </button>
                 </div>
                 <div className="dashboard-menu-item">
@@ -52,7 +52,7 @@ export default function Dashboard() {
                   className={activeDashboardTab === 3 ? "active-dashboard-tab" : ""}
                   >
                     <span className="material-symbols-outlined">payments</span>
-                    <span className="hide-on-sm">Payments</span>
+                    <span className="hide-on-sm text">Payments</span>
                   </button>
                 </div>
                 <div className="dashboard-menu-item">
@@ -60,7 +60,7 @@ export default function Dashboard() {
                   className={activeDashboardTab === 4 ? "active-dashboard-tab" : ""}
                   >
                     <span className="material-symbols-outlined">reviews</span>
-                    <span className="hide-on-sm">Reviews</span>
+                    <span className="hide-on-sm text">Reviews</span>
                   </button>
                 </div>
               </div>
