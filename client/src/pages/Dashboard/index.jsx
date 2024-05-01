@@ -14,7 +14,6 @@ export default function Dashboard() {
 
   const handleActiveTab = (e) => {
     e.preventDefault();
-    
   };
 
   const toggleMobileDashboardMenu = (e) => {
@@ -40,10 +39,13 @@ export default function Dashboard() {
               <div className="dashboard-menu-items">
                 <div className="dashboard-menu-item">
                   <button
-                    onClick={() => setActiveDashboardTab(0)}
-                    className={
-                      activeDashboardTab === 0 ? "active-dashboard-tab" : ""
-                    }
+                    onClick={() => {
+                      setActiveDashboardTab(0);
+                      setMobileDashboardMenu(false);
+                    }}
+                    className={`clickable
+                    ${activeDashboardTab === 0 ? "active-dashboard-tab" : ""}`
+                  }
                   >
                     <span className="material-symbols-outlined">today</span>
                     <span className="text">Bookings</span>
@@ -51,10 +53,13 @@ export default function Dashboard() {
                 </div>
                 <div className="dashboard-menu-item">
                   <button
-                    onClick={() => setActiveDashboardTab(1)}
-                    className={
-                      activeDashboardTab === 1 ? "active-dashboard-tab" : ""
-                    }
+                    onClick={() => {
+                      setActiveDashboardTab(1);
+                      setMobileDashboardMenu(false);
+                    }}
+                    className={`clickable
+                    ${activeDashboardTab === 1 ? "active-dashboard-tab" : ""}`
+                  }
                   >
                     <span className="material-symbols-outlined">list</span>
                     <span className="text">Listings</span>
@@ -62,10 +67,13 @@ export default function Dashboard() {
                 </div>
                 <div className="dashboard-menu-item">
                   <button
-                    onClick={() => setActiveDashboardTab(2)}
-                    className={
-                      activeDashboardTab === 2 ? "active-dashboard-tab" : ""
-                    }
+                    onClick={() => {
+                      setActiveDashboardTab(2);
+                      setMobileDashboardMenu(false);
+                    }}
+                    className={`clickable
+                    ${activeDashboardTab === 2 ? "active-dashboard-tab" : ""}`
+                  }
                   >
                     <span className="material-symbols-outlined">
                       Notifications
@@ -75,10 +83,13 @@ export default function Dashboard() {
                 </div>
                 <div className="dashboard-menu-item">
                   <button
-                    onClick={() => setActiveDashboardTab(3)}
-                    className={
-                      activeDashboardTab === 3 ? "active-dashboard-tab" : ""
-                    }
+                    onClick={() => {
+                      setActiveDashboardTab(3);
+                      setMobileDashboardMenu(false);
+                    }}
+                    className={`clickable
+                    ${activeDashboardTab === 3 ? "active-dashboard-tab" : ""}`
+                  }
                   >
                     <span className="material-symbols-outlined">payments</span>
                     <span className="text">Payments</span>
@@ -86,9 +97,12 @@ export default function Dashboard() {
                 </div>
                 <div className="dashboard-menu-item">
                   <button
-                    onClick={() => setActiveDashboardTab(4)}
-                    className={
-                      activeDashboardTab === 4 ? "active-dashboard-tab" : ""
+                    onClick={() => {
+                      setActiveDashboardTab(4);
+                      setMobileDashboardMenu(false);
+                    }}
+                    className={`clickable
+                      ${activeDashboardTab === 4 ? "active-dashboard-tab" : ""}`
                     }
                   >
                     <span className="material-symbols-outlined">reviews</span>
@@ -107,10 +121,10 @@ export default function Dashboard() {
               </div>
             </div>
             <div className="mobile-dashboard-menu hide-on-md">
-              <button
-                onClick={toggleMobileDashboardMenu}
-              >
-                <span className="material-symbols-outlined">menu</span>
+              <button onClick={toggleMobileDashboardMenu} className="clickable">
+                <span className="material-symbols-outlined">
+                  {mobileDashboardMenu ? "close" : "menu"}
+                </span>
               </button>
               <div className="menu-header">
                 <h3>Dashboard</h3>

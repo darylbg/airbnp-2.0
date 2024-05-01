@@ -52,7 +52,7 @@
   display: flex;
   flex-direction: row;
   height: calc(100vh - 54px);
-  background-color: var(--black-100);
+  background-color: var(--white);
 }
 
 .dashboard-menu {
@@ -62,7 +62,7 @@
   flex-direction: column;
   flex: 0.2;
   justify-content: space-between;
-  background-color: var(--black-100);
+  background-color: var(--white);
   padding: 50px 10px 50px 20px;
 }
 
@@ -91,47 +91,40 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: var(--black-100);
+  background-color: var(--white);
   border: none;
   width: 100%;
   padding: 8px 10px;
   border-radius: 10px;
   border: 1px solid transparent;
+  line-height: 100%;
 }
 
 .dashboard-menu-item button:hover {
   cursor: pointer;
-  /* background-color: var(--black-90); */
+  background-color: var(--black-10);
 }
 
-.dashboard-menu-item button:hover > .text {
-    color: var(--white);
-  }
+.active-dashboard-tab {
+  background: linear-gradient(var(--black-10), var(--black-10)) padding-box,
+    linear-gradient(to right, var(--pink), var(--black-25) 50%) border-box !important;
+  border-radius: 10px !important;
+  border: 1px solid transparent !important;
+}
 
-  .active-dashboard-tab {
-    background: linear-gradient(var(--black-90), var(--black-90)) padding-box,
-      linear-gradient(to right, var(--pink), var(--black-75) 50%) border-box !important;
-    border-radius: 10px !important;
-    border: 1px solid transparent !important;
-  }
-  
-  .active-dashboard-tab .material-symbols-outlined {
-    color: var(--pink) !important;
-  }
-  
-  .active-dashboard-tab .text {
-    color: var(--white) !important;
-  }
+.active-dashboard-tab .material-symbols-outlined {
+  color: var(--pink) !important;
+}
 
 .dashboard-menu-item button .material-symbols-outlined {
   margin-right: 20px;
-  color: var(--black-25);
+  color: var(--black-100);
   font-weight: 200px;
 }
 
 .dashboard-menu-item button .text {
-  color: var(--black-25);
-  font-weight: 300;
+  color: var(--black-100);
+  /* font-weight: 300; */
   font-size: 0.9rem;
 }
 
@@ -171,54 +164,54 @@
 /* mobile dashboard menu */
 
 .mobile-dashboard-menu {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    background-color: var(--black-100);
-    z-index: 99;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: var(--white);
+  z-index: 99;
+  align-items: center;
 }
 
 .mobile-dashboard-menu-open {
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: 0;
-    transition: all ease .3s;
-    padding: 50px 10px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  transition: all ease 0.3s;
+  padding: 50px 20px;
 }
 
 .mobile-dashboard-menu-closed {
-    left: -100%;
-    right: 0;
-    bottom: 0;
-    top: 0;
-    transition: all ease .3s;
-    padding: 50px 0;
+  left: -100%;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  transition: all ease 0.3s;
+  /* padding: 50px 0px; */
 }
 
 .mobile-dashboard-menu button {
-    background-color: transparent;
-    border: none;
+  background-color: transparent;
+  border: none;
 }
 
 .mobile-dashboard-menu button:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .mobile-dashboard-menu button .material-symbols-outlined {
-    color: var(--white);
+  color: var(--black-100);
 }
 
 .mobile-dashboard-menu .menu-header h3 {
-    color: var(--black-50);
-    margin: 0;
+  color: var(--black-50);
+  margin: 0;
 }
 
 .mobile-dashboard-menu .menu-avatar img {
-    height: 35px;
-    width: 35px;
-    border-radius: 10px;
+  height: 35px;
+  width: 35px;
+  border-radius: 10px;
 }
 
 /* dashboard content */
@@ -227,16 +220,16 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  background-color: var(--white);
+  background-color: var(--black-5);
   margin: 10px;
   border-radius: 10px;
-  padding: 10px;
+  padding: 1rem;
 }
 
 @media screen and (min-width: 768px) {
-    .hide-on-md {
-        display: none;
-    }
+  .hide-on-md {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -251,7 +244,10 @@
     max-width: 100%;
     z-index: 98;
     justify-content: flex-end;
-    
+  }
+
+  .mobile-dashboard-menu-closed {
+    padding: 50px 0px;
   }
 
   .dashboard-menu-footer {

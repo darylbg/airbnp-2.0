@@ -45,43 +45,23 @@
     
 }
 
-
-.dashboard-header {
-    display: flex;
-    justify-content: space-between;
+.window-control-button {
+    height: 30px;
+    width: 30px;
+    border: none;
+    border-radius: 50%;
     background-color: var(--white);
-    padding-bottom: 10px;
-    align-items: center;
-}
-
-.header-title {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 15px;
-}
-
-.header-title .title-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--black-100);
-    border-radius: 10px;
-    border: 2px solid var(--black-25);
+    padding: 0;
 }
 
-.header-title .title-icon .material-symbols-outlined {
-    color: var(--white);
-    padding: 5px 10px;
+.window-control-button .material-symbols-outlined {
+    font-size: 1.1rem;
 }
 
-.header-title .title-text h3 {
-    margin: 0;
-    font-size: 20px;
-}
-
-.header-title .title-text p {
-    margin: 0;
-    color: var(--black-50);
-    font-size: 13px;
+.window-control-button:hover {
+    background-color: var(--black-5);
+    cursor: pointer;
 }

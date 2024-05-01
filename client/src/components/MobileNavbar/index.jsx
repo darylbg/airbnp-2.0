@@ -16,7 +16,6 @@ const MobileNavbar = forwardRef((props, ref) => {
   const [toggleAccountSubmenu, setToggleAccountSubmenu] = useState(false);
 
   const { isLoggedIn } = useSelector((state) => state.auth);
-  console.log(isLoggedIn);
   const navigate = useNavigate();
   // set sign in form to default display when dialog is opened
   useEffect(() => {
@@ -42,7 +41,7 @@ const MobileNavbar = forwardRef((props, ref) => {
       <NavigationMenu.Root className="mobile-navbar-root">
         <NavigationMenu.List className="mobile-navbar-list">
           <NavigationMenu.Item className="mobile-navbar-item">
-            <NavigationMenu.Link className="mobile-navbar-link" asChild>
+            <NavigationMenu.Link className="mobile-navbar-link clickable" asChild>
               <Link to="/" onClick={() => setToggleAccountSubmenu(false)}>
                 <span className="material-symbols-outlined mobile-navbar-icon">
                   Home
@@ -52,7 +51,7 @@ const MobileNavbar = forwardRef((props, ref) => {
             </NavigationMenu.Link>
           </NavigationMenu.Item>
           <NavigationMenu.Item className="mobile-navbar-item">
-            <NavigationMenu.Link className="mobile-navbar-link" asChild>
+            <NavigationMenu.Link className="mobile-navbar-link clickable" asChild>
               <Link to="/search" onClick={() => setToggleAccountSubmenu(false)}>
                 {" "}
                 <span className="material-symbols-outlined mobile-navbar-icon">
@@ -63,7 +62,7 @@ const MobileNavbar = forwardRef((props, ref) => {
             </NavigationMenu.Link>
           </NavigationMenu.Item>
           <NavigationMenu.Item className="mobile-navbar-item">
-            <NavigationMenu.Link className="mobile-navbar-link" asChild>
+            <NavigationMenu.Link className="mobile-navbar-link clickable" asChild>
               <Link to="/about" onClick={() => setToggleAccountSubmenu(false)}>
                 {" "}
                 <span className="material-symbols-outlined mobile-navbar-icon">
@@ -74,7 +73,7 @@ const MobileNavbar = forwardRef((props, ref) => {
             </NavigationMenu.Link>
           </NavigationMenu.Item>
           <NavigationMenu.Item className="mobile-navbar-item">
-            <NavigationMenu.Link className="mobile-navbar-link" asChild>
+            <NavigationMenu.Link className="mobile-navbar-link clickable" asChild>
               <Link to="/contact" onClick={() => setToggleAccountSubmenu(false)}>
                 {" "}
                 <span className="material-symbols-outlined mobile-navbar-icon">
@@ -86,7 +85,7 @@ const MobileNavbar = forwardRef((props, ref) => {
           </NavigationMenu.Item>
           {isLoggedIn ? (
             <NavigationMenu.Item className="mobile-navbar-item">
-              <NavigationMenu.Link className="mobile-navbar-link" asChild>
+              <NavigationMenu.Link className="mobile-navbar-link clickable" asChild>
                 {/* trigger submenu open/close */}
                 <Link onClick={() => setToggleAccountSubmenu(!toggleAccountSubmenu)}>
                   {" "}
@@ -105,7 +104,7 @@ const MobileNavbar = forwardRef((props, ref) => {
                   onOpenChange={() => setDialogOpen(!dialogOpen)}
                   ref={ref}
                 >
-                  <Dialog.Trigger className="sign-in-button mobile-signIn-button">
+                  <Dialog.Trigger className="sign-in-button mobile-signIn-button clickable">
                     <span className="material-symbols-outlined mobile-navbar-icon">
                       account_circle
                     </span>
@@ -127,7 +126,7 @@ const MobileNavbar = forwardRef((props, ref) => {
                           }
                         />
                       )}
-                      <Dialog.Close asChild>
+                      <Dialog.Close asChild className=" clickable">
                         <span className="material-symbols-outlined signIn-dialog-close">
                           close
                         </span>
@@ -144,7 +143,7 @@ const MobileNavbar = forwardRef((props, ref) => {
           <NavigationMenu.Sub className="mobile-account-submenu">
           <NavigationMenu.List>
             <NavigationMenu.Item className="mobile-navbar-item">
-              <NavigationMenu.Link className="mobile-navbar-link" asChild>
+              <NavigationMenu.Link className="mobile-navbar-link clickable" asChild>
                 <Link to="/profile" onClick={() => setToggleAccountSubmenu(false)}>
                   {" "}
                   <span className="material-symbols-outlined mobile-navbar-icon">
@@ -155,7 +154,7 @@ const MobileNavbar = forwardRef((props, ref) => {
               </NavigationMenu.Link>
             </NavigationMenu.Item>
             <NavigationMenu.Item className="mobile-navbar-item">
-              <NavigationMenu.Link className="mobile-navbar-link" asChild>
+              <NavigationMenu.Link className="mobile-navbar-link clickable" asChild>
                 <Link to="/dashboard" onClick={(() => setToggleAccountSubmenu(false))}>
                   {" "}
                   <span className="material-symbols-outlined mobile-navbar-icon">
@@ -168,7 +167,7 @@ const MobileNavbar = forwardRef((props, ref) => {
               </NavigationMenu.Link>
             </NavigationMenu.Item>
             <NavigationMenu.Item className="mobile-navbar-item">
-              <NavigationMenu.Link className="mobile-navbar-link" asChild>
+              <NavigationMenu.Link className="mobile-navbar-link clickable" asChild>
                 <Link onClick={logout}>
                   {" "}
                   <span className="material-symbols-outlined mobile-navbar-icon">

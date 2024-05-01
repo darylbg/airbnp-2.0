@@ -72,12 +72,12 @@ export default function RegisterForm({
         })
       );
 
-      console.log("registeredUser", registeredUser);
+      // console.log("registeredUser", registeredUser);
 
       Auth.login(registeredUser.data.register.token);
     } catch (error) {
       // console.log(error)
-      console.log(error.graphQLErrors);
+      // console.log(error.graphQLErrors);
       if (error.graphQLErrors && error.graphQLErrors.length > 0) {
         const firstGraphQLErrorCode = error.graphQLErrors[0].extensions.code;
         setError("graphQLError", {

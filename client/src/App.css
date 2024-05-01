@@ -1,5 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
 
+
+/* base font size */
+
+html {
+  font-size: 16px;
+}
+
 :root {
   --navy-blue: #28355e;
   --navy-blue-darker: #253154;
@@ -71,4 +78,10 @@ body {
   .hide-on-sm {
     display: none;
   }
+
+  .clickable:active {
+    transform: scale(0.98) !important;
+    transition: all ease 0.05s;
+    /* line-height: 100%; */
+}
 }
