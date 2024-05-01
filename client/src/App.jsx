@@ -15,7 +15,7 @@ import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import MobileNavbar from "./components/MobileNavbar";
-import "./App.css";
+import "./Global.css";
 
 const httpLink = createHttpLink({
   uri: "http://localhost:3001/graphql",

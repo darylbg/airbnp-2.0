@@ -120,8 +120,8 @@ export default function RegisterForm({
 
   return (
     <div className="signInRegister-form">
-      <div className="register-form-header">
-        <div className="register-form-logo"></div>
+      <div className="signInRegister-form-header">
+        <div className="logo"></div>
         <h2>Welcome to Airbnp!</h2>
         <p>Sign up to your account here</p>
       </div>

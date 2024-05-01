@@ -8,13 +8,13 @@ import Auth from "../../utils/auth";
 
 import SignInForm from "../SignInForm";
 import RegisterForm from "../RegisterForm";
+import Logo from "../../assets/images/logo_colour_50px.png";
 import "./Navbar.css";
 
-export default function Navbar({
-
-}) {
+export default function Navbar({}) {
   const [toggleSignInRegister, setToggleSignInRegister] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   const { isLoggedIn } = useSelector((state) => state.auth);
 
@@ -26,6 +26,17 @@ export default function Navbar({
       setToggleSignInRegister(true);
     }
   }, [dialogOpen]);
+
+  // set shadow on navbar when page scrolled
+  useEffect(() => {
+    const handlePageScroll = (event) => {
+      window.scrollY > 0 ? setScrolled(true) : setScrolled(false);
+    };
+    window.addEventListener('scroll', handlePageScroll);
+    return () => {
+      window.removeEventListener('scroll', handlePageScroll);
+    };
+  }, []);
 
   // toggle between sign in and register forms
   const handleSignInRegisterToggle = (e) => {
@@ -41,16 +52,19 @@ export default function Navbar({
 
   return (
     <>
-      <NavigationMenu.Root className="navigation-menu-root">
+      <NavigationMenu.Root className={`navigation-menu-root ${scrolled ? "window-scrolled" : "" }`}>
         {/* logo */}
         <div className="navigation-menu-logo">
-          <Link to="/">airbnp</Link>
+          <Link to="/"><img src={Logo}></img>AIRBNP</Link>
         </div>
         {/* centered search button */}
         <div className="navigation-menu-search">
           <Link to="/search" className="">
             Search
-            <MagnifyingGlassIcon />
+            {/* <MagnifyingGlassIcon /> */}
+            <span class="material-symbols-outlined">
+              <span class="material-symbols-outlined">location_searching</span>
+            </span>
           </Link>
         </div>
         {/* right aligned menu */}
@@ -83,6 +97,7 @@ export default function Navbar({
                   src="https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
                   alt="Profile"
                 />
+                {/* <span className="material-symbols-outlined">menu</span> */}
                 <HamburgerMenuIcon
                   className="hamburger-menu-icon"
                   aria-hidden

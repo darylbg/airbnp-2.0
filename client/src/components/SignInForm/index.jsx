@@ -82,9 +82,9 @@ export default function SignInForm({ handleSignInRegisterToggle }) {
   };
 
   return (
-    <>
-      <div className="signIn-form-header">
-        <div className="signIn-form-logo"></div>
+    <div className="signInRegister-form">
+      <div className="signInRegister-form-header">
+        <div className="logo"></div>
         <h2>Welcome to Airbnp!</h2>
         <p>Sign in to view your account</p>
       </div>
@@ -148,6 +148,6 @@ export default function SignInForm({ handleSignInRegisterToggle }) {
           </span>
         </p>
       </div>
-    </>
+    </div>
   );
 }

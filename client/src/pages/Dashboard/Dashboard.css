@@ -1,58 +1,11 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
-
-:root {
-  --navy-blue: #28355e;
-  --navy-blue-darker: #253154;
-
-  --blue: #4070ff;
-  --blue-darker: #3965f0;
-
-  --cyan: #3cbbb9;
-  --cyan-darker: #38b1ab;
-
-  --olive: #d0e0ae;
-  --olive-darker: #c5d59c;
-
-  --gold: #ecc84b;
-  --gold-darker: #e3bc45;
-
-  --pink: #ff385c;
-  --pink-darker: #f73555;
-
-  --black-100: #131313;
-  --black-100-darker: #101010;
-
-  --black-90: #1a1919;
-
-  --black-75: #404040;
-  --black-75-darker: #3b3b3b;
-
-  --black-50: #7e7e7e;
-  --black-50-darker: #757575;
-
-  --black-25: #bbbbbb;
-  --black-25-darker: #b3b3b3;
-
-  --black-10: #e5e5e5;
-  --black-10-darker: #dddcdc;
-
-  --black-5: #f2f2f2;
-  --black-5-darker: #ededed;
-
-  --black-2: #fafafa;
-  --black-2-darker: #f5f5f5;
-
-  --white: #fff;
-  --white-darker: #f8f8f8; /* White cannot be made darker, so this is the closest approximation */
-}
-
-/* Dashboard page component */
+/* Dashboard page */
 
 .dashboard {
   display: flex;
   flex-direction: row;
   height: calc(100vh - 54px);
   background-color: var(--white);
+  flex: 1;
 }
 
 .dashboard-menu {
@@ -63,7 +16,7 @@
   flex: 0.2;
   justify-content: space-between;
   background-color: var(--white);
-  padding: 50px 10px 50px 20px;
+  padding: 50px 10px 50px 10px;
 }
 
 .dashboard-menu-title {
@@ -72,8 +25,9 @@
 }
 
 .dashboard-menu-title h2 {
-  font-size: 0.9rem;
+  text-align: center;
   margin: 0;
+  color: var(--black-50);
 }
 
 .dashboard-menu-items {
@@ -124,8 +78,8 @@
 
 .dashboard-menu-item button .text {
   color: var(--black-100);
-  /* font-weight: 300; */
-  font-size: 0.9rem;
+  font-weight: 400;
+  font-size: 1rem;
 }
 
 .dashboard-menu-footer {
@@ -144,21 +98,21 @@
   object-fit: cover;
   object-position: center center;
   border-radius: 50%;
-  border: 1px solid var(--pink);
+  border: 1px solid var(--blue);
   margin-bottom: 10px;
 }
 
 .dashboard-menu-footer h3 {
   margin: 0;
-  color: var(--black-25);
+  color: var(--black-90);
   font-weight: 600;
 }
 
 .dashboard-menu-footer p {
   padding: 0;
   margin: 0;
-  color: var(--black-50);
-  font-weight: 200;
+  color: var(--black-75);
+  font-weight: 300;
 }
 
 /* mobile dashboard menu */
@@ -243,7 +197,7 @@
     position: absolute;
     max-width: 100%;
     z-index: 98;
-    justify-content: flex-end;
+    justify-content: center;
   }
 
   .mobile-dashboard-menu-closed {
@@ -251,7 +205,8 @@
   }
 
   .dashboard-menu-footer {
-    margin-top: 5rem;
+    /* margin-top: 5rem; */
+    display: none;
   }
 
   .dashboard-content {
