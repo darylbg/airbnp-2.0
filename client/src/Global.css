@@ -81,9 +81,9 @@ body {
 
 @media screen and (min-width: 768px) {
   .app-pages {
-    padding-top: 54px;
+    padding-top: 58px;
     display: flex;
-    min-height: calc(100vh - 54px);
+    min-height: calc(100vh - 58px);
   }
 }
 
