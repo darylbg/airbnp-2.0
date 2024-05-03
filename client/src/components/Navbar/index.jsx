@@ -62,8 +62,8 @@ export default function Navbar({}) {
           <Link to="/search" className="">
             Search
             {/* <MagnifyingGlassIcon /> */}
-            <span class="material-symbols-outlined">
-              <span class="material-symbols-outlined">location_searching</span>
+            <span className="material-symbols-outlined">
+              <span className="material-symbols-outlined">location_searching</span>
             </span>
           </Link>
         </div>

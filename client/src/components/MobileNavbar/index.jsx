@@ -158,7 +158,7 @@ const MobileNavbar = forwardRef((props, ref) => {
                 <Link to="/dashboard" onClick={(() => setToggleAccountSubmenu(false))}>
                   {" "}
                   <span className="material-symbols-outlined mobile-navbar-icon">
-                    <span class="material-symbols-outlined">
+                    <span className="material-symbols-outlined">
                       dashboard_customize
                     </span>
                   </span>

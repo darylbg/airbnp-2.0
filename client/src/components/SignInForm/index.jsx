@@ -7,6 +7,7 @@ import { SIGN_IN_MUTATION } from "../../utils/mutations";
 
 import "./SignInRegisterForms.css";
 import { login_user } from "../../reducers/authReducer";
+import { graphQLResultHasError } from "@apollo/client/utilities";
 
 export default function SignInForm({ handleSignInRegisterToggle }) {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
@@ -39,6 +40,7 @@ export default function SignInForm({ handleSignInRegisterToggle }) {
         })
       )
     } catch (error) {
+      // console.log(error);
       if (error.graphQLErrors) {
         if (error.graphQLErrors && error.graphQLErrors.length > 0) {
           const firstGraphQLErrorCode = error.graphQLErrors[0].extensions.code;
@@ -54,8 +56,17 @@ export default function SignInForm({ handleSignInRegisterToggle }) {
                 type: "incorrectPasswordError",
                 message: "Incorrect password",
               });
+              break;
+            default:
+              console.log("sign in error");
           }
         }
+      } else {
+        console.log(error);
+        setError("otherLoginError", {
+          type: "otherLoginError",
+          message: "Something went wrong, please try again",
+        });
       }
     }
   };
@@ -131,6 +142,7 @@ export default function SignInForm({ handleSignInRegisterToggle }) {
           </div>
           <div className="field-message">{errors.password?.message}</div>
           <div className="field-message">{errors.incorrectPasswordError?.message}</div>
+          <div className="field-message">{errors.otherLoginError?.message}</div>
         </Form.Field>
         <Form.Field className="form-submit-button">
           <Form.Submit asChild>

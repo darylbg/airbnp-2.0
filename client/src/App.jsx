@@ -14,6 +14,13 @@ import Contact from "./pages/Contact";
 import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
+import PersonalInfo from "./components/ProfileSubComponents/PersonalInfo";
+import LoginAndSecurity from "./components/ProfileSubComponents/LoginAndSecurity";
+import ProfileComponentsMenu from "./components/ProfileSubComponents/ProfileComponentsMenu";
+import PaymentInfo from "./components/ProfileSubComponents/PaymentInfo";
+import BookingHistory from "./components/ProfileSubComponents/BookingHistory";
+import PrivacyPolicy from "./components/ProfileSubComponents/PrivacyPolicy";
+import TermsAndConditions from "./components/ProfileSubComponents/TermsAndConditions";
 import MobileNavbar from "./components/MobileNavbar";
 import "./Global.css";
 
@@ -45,13 +52,27 @@ function App() {
           <div className="app-pages">
             <Routes>
               <Route path="/" element={<Home />}></Route>
-              <Route path="/about" element={<About />}></Route>
-              <Route path="/contact" element={<Contact />}></Route>
-              <Route path="/dashboard" element={<Dashboard />}></Route>
-              <Route path="/profile" element={<Profile />}></Route>
-            </Routes><MobileNavbar />
+              <Route path="about" element={<About />}></Route>
+              <Route path="contact" element={<Contact />}></Route>
+              <Route path="dashboard" element={<Dashboard />}></Route>
+              <Route path="profile" element={<Profile />}>
+                <Route path="" element={<ProfileComponentsMenu />} />
+                <Route path="personal-info" element={<PersonalInfo />} />
+                <Route
+                  path="login-and-security"
+                  element={<LoginAndSecurity />}
+                />
+                <Route path="booking-history" element={<BookingHistory />} />
+                <Route path="payment-info" element={<PaymentInfo />} />
+                <Route path="privacy-policy" element={<PrivacyPolicy />} />
+                <Route
+                  path="terms-and-conditions"
+                  element={<TermsAndConditions />}
+                />
+              </Route>
+            </Routes>
+            <MobileNavbar />
           </div>
-          
         </div>
       </Router>
     </ApolloProvider>

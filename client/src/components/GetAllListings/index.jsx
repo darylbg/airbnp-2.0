@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
-import {GET_ALL_LISTINGS} from "../../utils/Queries"
+import {GET_ALL_LISTINGS} from "../../utils/queries"
 
 export default function GetAllListings() {
     const {error, loading, data} = useQuery(GET_ALL_LISTINGS);
