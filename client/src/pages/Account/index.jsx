@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import {
   BrowserRouter,
   Routes,
@@ -8,9 +9,11 @@ import {
   useParams,
   useLocation,
 } from "react-router-dom";
-import "./Profile.css";
+import "./Account.css";
 
 export default function Account() {
+  const currentUser = useSelector((state) => state.auth.user);
+  console.log("account user", currentUser);
   // splits url into breadcrumbs and links
   const { pathname } = useLocation();
   const pathSegments = pathname.split("/").filter((segment) => segment);
@@ -18,7 +21,21 @@ export default function Account() {
   return (
     <div className="profile-page">
       <div className="profile-page-breadcrumbs">
-        <h3>Profile</h3>
+        <div className="account-header">
+          <h1 className="page-header">Account</h1>
+          <div className="account-subheader">
+            <div className="subheader-details">
+              <strong>
+                {currentUser.first_name} {currentUser.last_name}
+              </strong>
+              {", "}
+              {currentUser.email}
+            </div>
+            <Link to="/profile" className="subheader-link">
+              Go to profile
+            </Link>
+          </div>
+        </div>
         <nav aria-label="breadcrumbs">
           <ol className="breadcrumbs">
             {pathSegments.map((segment, index) => (

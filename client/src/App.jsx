@@ -15,13 +15,13 @@ import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
 import Account from "./pages/Account";
 import Profile from "./pages/Profile";
-import PersonalInfo from "./components/ProfileSubComponents/PersonalInfo";
-import LoginAndSecurity from "./components/ProfileSubComponents/LoginAndSecurity";
-import ProfileComponentsMenu from "./components/ProfileSubComponents/ProfileComponentsMenu";
-import PaymentInfo from "./components/ProfileSubComponents/PaymentInfo";
-import BookingHistory from "./components/ProfileSubComponents/BookingHistory";
-import PrivacyPolicy from "./components/ProfileSubComponents/PrivacyPolicy";
-import TermsAndConditions from "./components/ProfileSubComponents/TermsAndConditions";
+import PersonalInfo from "./components/AccountSubComponents/PersonalInfo";
+import LoginAndSecurity from "./components/AccountSubComponents/LoginAndSecurity";
+import AccountComponentsMenu from "./components/AccountSubComponents/AccountComponentsMenu";
+import PaymentInfo from "./components/AccountSubComponents/PaymentInfo";
+import BookingHistory from "./components/AccountSubComponents/BookingHistory";
+import PrivacyPolicy from "./components/AccountSubComponents/PrivacyPolicy";
+import TermsAndConditions from "./components/AccountSubComponents/TermsAndConditions";
 import MobileNavbar from "./components/MobileNavbar";
 import "./Global.css";
 
@@ -58,7 +58,7 @@ function App() {
               <Route path="dashboard" element={<Dashboard />}></Route>
               <Route path="profile" element={<Profile />}></Route>
               <Route path="account" element={<Account />}>
-                <Route path="" element={<ProfileComponentsMenu />} />
+                <Route path="" element={<AccountComponentsMenu />} />
                 <Route path="personal-info" element={<PersonalInfo />} />
                 <Route
                   path="login-and-security"

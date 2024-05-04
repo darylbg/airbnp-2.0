@@ -9,7 +9,6 @@ import Reviews from "../../components/DashboardComponents/Reviews";
 import "./Dashboard.css";
 export default function Dashboard() {
   const currentUser = useSelector((state) => state.auth);
-  console.log(currentUser);
   const [activeDashboardTab, setActiveDashboardTab] = useState(0);
   const [mobileDashboardMenu, setMobileDashboardMenu] = useState(false);
 

@@ -58,6 +58,12 @@
     font-size: 1rem;
 }
 
+@media screen and (min-width: 1300px) {
+    .profile-menu-cards {
+        grid-gap: 60px;
+    }
+}
+
 @media screen and (max-width: 1000px) {
     .profile-menu-cards {
         grid-template-columns: repeat(2, 1fr);

@@ -3,7 +3,7 @@
     flex-direction: column;
     flex: 1;
     padding: 5%;
-    gap: 50px;
+    gap: 30px;
 }
 
 .profile-page-breadcrumbs {
@@ -20,6 +20,28 @@
 
 .breadcrumb-item a {
     padding: 0 5px;
+}
+
+.account-header {
+    margin: 0 0 50px 0;
+}
+
+.page-header {
+    margin: 0 0 25px 0;
+    font-weight: 500;
+    font-size: 2.5rem;
+}
+
+.account-subheader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+}
+
+.account-subheader .subheader-details {
+    font-size: 1.5rem;
 }
 
 .profile-page-content {

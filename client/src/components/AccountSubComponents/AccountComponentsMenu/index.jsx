@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import "./ProfileComponentsMenu.css";
+import "./AccountComponentsMenu.css";
 
-export default function ProfileComponentsMenu() {
+export default function AccountComponentsMenu() {
   return (
     <ul className="profile-menu-cards">
       <li>
