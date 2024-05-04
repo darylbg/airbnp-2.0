@@ -16,7 +16,8 @@ export default function Navbar({}) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  const { isLoggedIn } = useSelector((state) => state.auth);
+  const { isLoggedIn, user } = useSelector((state) => state.auth);
+  console.log("user image", user.user_image);
 
   const navigate = useNavigate();
 
@@ -94,7 +95,7 @@ export default function Navbar({}) {
             <NavigationMenu.Item className="navigation-menu-item navigation-menu-dropdown">
               <NavigationMenu.Trigger className="navigation-menu-trigger">
                 <img
-                  src="https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
+                  src={user.user_image}
                   alt="Account"
                 />
                 {/* <span className="material-symbols-outlined">menu</span> */}

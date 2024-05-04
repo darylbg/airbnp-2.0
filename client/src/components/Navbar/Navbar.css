@@ -129,6 +129,7 @@
 .navigation-menu-trigger img {
   height: 100%;
   border-radius: 50%;
+  aspect-ratio: 1/1;
 }
 
 .navigation-menu-trigger svg {

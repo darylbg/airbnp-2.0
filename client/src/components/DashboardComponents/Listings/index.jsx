@@ -1,8 +1,7 @@
 import React from "react";
 import { UseSelector, useSelector } from "react-redux";
 import * as Dialog from "@radix-ui/react-dialog";
-import CRUDListing from "../CRUDListing";
-import WindowControlButton from "../WindowControlButton";
+import WindowControlButton from "../../WindowControlButton";
 import "./Listings.css";
 
 export default function Listings() {
@@ -39,9 +38,10 @@ export default function Listings() {
                 <Dialog.Overlay className="listingDialogOverlay">
                   <Dialog.Content className="listingDialogContent">
                   <Dialog.Close asChild>
-                    < WindowControlButton />
+                    {/* <button>close</button> */}
+                    <WindowControlButton />
                   </Dialog.Close>
-                    <CRUDListing />
+                    dialoge
                     <div>hello dialog</div>
                   </Dialog.Content>
                 </Dialog.Overlay>
