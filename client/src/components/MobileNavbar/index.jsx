@@ -92,7 +92,7 @@ const MobileNavbar = forwardRef((props, ref) => {
                   <span className="material-symbols-outlined mobile-navbar-icon">
                     account_circle
                   </span>
-                  <span className="mobile-navbar-text">Account</span>
+                  <span className="mobile-navbar-text">User</span>
                 </Link>
               </NavigationMenu.Link>
             </NavigationMenu.Item>
@@ -142,6 +142,17 @@ const MobileNavbar = forwardRef((props, ref) => {
         {toggleAccountSubmenu? (
           <NavigationMenu.Sub className="mobile-account-submenu">
           <NavigationMenu.List>
+            <NavigationMenu.Item className="mobile-navbar-item">
+              <NavigationMenu.Link className="mobile-navbar-link clickable" asChild>
+                <Link to="/account" onClick={() => setToggleAccountSubmenu(false)}>
+                  {" "}
+                  <span className="material-symbols-outlined mobile-navbar-icon">
+                    manage_accounts
+                  </span>
+                  <span className="mobile-navbar-text">Account</span>
+                </Link>
+              </NavigationMenu.Link>
+            </NavigationMenu.Item>
             <NavigationMenu.Item className="mobile-navbar-item">
               <NavigationMenu.Link className="mobile-navbar-link clickable" asChild>
                 <Link to="/profile" onClick={() => setToggleAccountSubmenu(false)}>

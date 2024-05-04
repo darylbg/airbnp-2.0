@@ -95,7 +95,7 @@ export default function Navbar({}) {
               <NavigationMenu.Trigger className="navigation-menu-trigger">
                 <img
                   src="https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
-                  alt="Profile"
+                  alt="Account"
                 />
                 {/* <span className="material-symbols-outlined">menu</span> */}
                 <HamburgerMenuIcon
@@ -107,7 +107,17 @@ export default function Navbar({}) {
                 <NavigationMenu.Item className="navigation-menu-item" asChild>
                   <NavigationMenu.Link asChild>
                     <Link
-                      to="/profile"
+                      to="/Account"
+                      className="navigation-menu-link dropdown-menu-link"
+                    >
+                      Account
+                    </Link>
+                  </NavigationMenu.Link>
+                </NavigationMenu.Item>
+                <NavigationMenu.Item className="navigation-menu-item" asChild>
+                  <NavigationMenu.Link asChild>
+                    <Link
+                      to="/Profile"
                       className="navigation-menu-link dropdown-menu-link"
                     >
                       Profile

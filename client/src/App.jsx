@@ -13,6 +13,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
+import Account from "./pages/Account";
 import Profile from "./pages/Profile";
 import PersonalInfo from "./components/ProfileSubComponents/PersonalInfo";
 import LoginAndSecurity from "./components/ProfileSubComponents/LoginAndSecurity";
@@ -55,7 +56,8 @@ function App() {
               <Route path="about" element={<About />}></Route>
               <Route path="contact" element={<Contact />}></Route>
               <Route path="dashboard" element={<Dashboard />}></Route>
-              <Route path="profile" element={<Profile />}>
+              <Route path="profile" element={<Profile />}></Route>
+              <Route path="account" element={<Account />}>
                 <Route path="" element={<ProfileComponentsMenu />} />
                 <Route path="personal-info" element={<PersonalInfo />} />
                 <Route
