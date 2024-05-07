@@ -15,7 +15,7 @@ const MobileNavbar = forwardRef((props, ref) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [toggleAccountSubmenu, setToggleAccountSubmenu] = useState(false);
 
-  const { isLoggedIn } = useSelector((state) => state.auth);
+  const { isLoggedIn, user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   // set sign in form to default display when dialog is opened
   useEffect(() => {
@@ -88,10 +88,10 @@ const MobileNavbar = forwardRef((props, ref) => {
               <NavigationMenu.Link className="mobile-navbar-link clickable" asChild>
                 {/* trigger submenu open/close */}
                 <Link onClick={() => setToggleAccountSubmenu(!toggleAccountSubmenu)}>
-                  {" "}
-                  <span className="material-symbols-outlined mobile-navbar-icon">
+                  <img src={user.user_image} alt="user image" className="mobile-navbar-image-icon"/>
+                  {/* <span className="material-symbols-outlined mobile-navbar-icon">
                     account_circle
-                  </span>
+                  </span> */}
                   <span className="mobile-navbar-text">User</span>
                 </Link>
               </NavigationMenu.Link>

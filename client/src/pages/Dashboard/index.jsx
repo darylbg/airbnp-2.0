@@ -44,8 +44,7 @@ export default function Dashboard() {
                       setMobileDashboardMenu(false);
                     }}
                     className={`clickable
-                    ${activeDashboardTab === 0 ? "active-dashboard-tab" : ""}`
-                  }
+                    ${activeDashboardTab === 0 ? "active-dashboard-tab" : ""}`}
                   >
                     <span className="material-symbols-outlined">today</span>
                     <span className="text">Bookings</span>
@@ -58,8 +57,7 @@ export default function Dashboard() {
                       setMobileDashboardMenu(false);
                     }}
                     className={`clickable
-                    ${activeDashboardTab === 1 ? "active-dashboard-tab" : ""}`
-                  }
+                    ${activeDashboardTab === 1 ? "active-dashboard-tab" : ""}`}
                   >
                     <span className="material-symbols-outlined">list</span>
                     <span className="text">Listings</span>
@@ -72,8 +70,7 @@ export default function Dashboard() {
                       setMobileDashboardMenu(false);
                     }}
                     className={`clickable
-                    ${activeDashboardTab === 2 ? "active-dashboard-tab" : ""}`
-                  }
+                    ${activeDashboardTab === 2 ? "active-dashboard-tab" : ""}`}
                   >
                     <span className="material-symbols-outlined">
                       Notifications
@@ -88,8 +85,7 @@ export default function Dashboard() {
                       setMobileDashboardMenu(false);
                     }}
                     className={`clickable
-                    ${activeDashboardTab === 3 ? "active-dashboard-tab" : ""}`
-                  }
+                    ${activeDashboardTab === 3 ? "active-dashboard-tab" : ""}`}
                   >
                     <span className="material-symbols-outlined">payments</span>
                     <span className="text">Payments</span>
@@ -102,8 +98,9 @@ export default function Dashboard() {
                       setMobileDashboardMenu(false);
                     }}
                     className={`clickable
-                      ${activeDashboardTab === 4 ? "active-dashboard-tab" : ""}`
-                    }
+                      ${
+                        activeDashboardTab === 4 ? "active-dashboard-tab" : ""
+                      }`}
                   >
                     <span className="material-symbols-outlined">reviews</span>
                     <span className="text">Reviews</span>
@@ -129,9 +126,7 @@ export default function Dashboard() {
               <div className="menu-header">
                 <h3>Dashboard</h3>
               </div>
-              <div className="menu-avatar">
-                <img src={currentUser.user.user_image} alt="user avatar" />
-              </div>
+              <img src={currentUser.user.user_image} alt="user avatar" className="menu-avatar" />
             </div>
             <div className="dashboard-content">
               {activeDashboardTab === 0 ? <Bookings /> : null}

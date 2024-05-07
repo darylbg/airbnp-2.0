@@ -40,7 +40,7 @@ export default function SignInForm({ handleSignInRegisterToggle }) {
         })
       )
     } catch (error) {
-      // console.log(error);
+      // console.log("sing in errors", error);
       if (error.graphQLErrors) {
         if (error.graphQLErrors && error.graphQLErrors.length > 0) {
           const firstGraphQLErrorCode = error.graphQLErrors[0].extensions.code;
@@ -62,7 +62,7 @@ export default function SignInForm({ handleSignInRegisterToggle }) {
           }
         }
       } else {
-        console.log(error);
+        console.log("other error not graphql", error);
         setError("otherLoginError", {
           type: "otherLoginError",
           message: "Something went wrong, please try again",

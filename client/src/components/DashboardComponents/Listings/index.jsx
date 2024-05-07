@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { UseSelector, useSelector } from "react-redux";
-import * as Dialog from "@radix-ui/react-dialog";
-import WindowControlButton from "../../WindowControlButton";
+import DialogComponent from "../../PrimitiveComponents/DialogComponent/DialogComponent";
 import "./Listings.css";
 
 export default function Listings() {
   const userListings = useSelector((state) => state.auth.user.user_listings);
-  console.log(userListings);
+
+  const [dialog, setDialog] = useState(false);
+
   return (
     <>
       <div className="dashboard-header">
@@ -27,27 +28,20 @@ export default function Listings() {
             </button>
           </div>
           <div className="new-listing">
-            <Dialog.Root>
-              <Dialog.Trigger asChild>
-                <button>
-                  <span className="text">New Listing</span>
-                  <span className="material-symbols-outlined">add</span>
-                </button>
-              </Dialog.Trigger>
-              <Dialog.Portal>
-                <Dialog.Overlay className="listingDialogOverlay">
-                  <Dialog.Content className="listingDialogContent">
-                  <Dialog.Close asChild>
-                    {/* <button>close</button> */}
-                    <WindowControlButton />
-                  </Dialog.Close>
-                    dialoge
-                    <div>hello dialog</div>
-                  </Dialog.Content>
-                </Dialog.Overlay>
-              </Dialog.Portal>
-            </Dialog.Root>
+            <button onClick={() => setDialog(true)}>
+              <span className="text">New Listing</span>
+              <span className="material-symbols-outlined">add</span>
+            </button>
           </div>
+          <DialogComponent
+            className="listing-dialog"
+            openDialog={dialog}
+            closeDialog={() => setDialog(false)}
+            icon="close"
+          >
+            Modal content.
+          </DialogComponent>
+
           <div className="title-text">
             <h3>{userListings.length}</h3>
             <p>listings</p>

@@ -96,7 +96,8 @@
     gap: 25px;
 }
 
-.header-content button {
+.filter-listings button,
+.new-listing button {
     border: none;
     border-radius: 5px;
     display: flex;
@@ -109,12 +110,13 @@
     font-size: 1rem;
 }
 
-.header-content button:hover {
+.filter-listings button:hover,
+.new-listing button:hover {
     cursor: pointer;
     background-color: rgb(0, 0, 0, 0.2);
 }
 
-.header-content .filter-listings button {  
+.filter-listings button {  
     background-color: var(--white);
     color: var(--black-100);
     /* border: 1px solid var(--black-50); */
