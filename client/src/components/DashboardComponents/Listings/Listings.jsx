@@ -38,8 +38,9 @@ export default function Listings() {
             openDialog={dialog}
             closeDialog={() => setDialog(false)}
             icon="close"
+            dialogHeader="Add new listing"
           >
-            Modal content.
+            <p className="dummy-text">listing content</p>
           </DialogComponent>
 
           <div className="title-text">

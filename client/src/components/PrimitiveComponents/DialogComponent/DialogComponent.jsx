@@ -7,6 +7,7 @@ export default function DialogComponent({
   openDialog,
   closeDialog,
   icon,
+  dialogHeader,
   children,
 }) {
   const dialogRef = useRef();
@@ -23,8 +24,12 @@ export default function DialogComponent({
   return (
     <dialog ref={dialogRef} onCancel={closeDialog} className={`dialog ${className} ${openDialog ? "dialog-open" : null}`}>
       <div className="dialog-content">
-      {children}
-      <WindowControlButton action={closeDialog} icon={icon} />
+        <div className="dialog-header">
+          <h4 className="text">{dialogHeader}</h4>
+          <WindowControlButton action={closeDialog} icon={icon} />
+        </div>
+        <div className="dialog-body">{children}</div>
+      
       </div>
     </dialog>
   );
