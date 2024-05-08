@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import LoginRequiredPrompt from "../../components/LoginRequiredPrompt";
 import Bookings from "../../components/DashboardComponents/Bookings";
-import Listings from "../../components/DashboardComponents/Listings";
+import Listings from "../../components/DashboardComponents/Listings/Listings";
 import Notifications from "../../components/DashboardComponents/Notifications";
 import Payments from "../../components/DashboardComponents/Payments";
 import Reviews from "../../components/DashboardComponents/Reviews";

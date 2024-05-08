@@ -82,7 +82,7 @@ const resolvers = {
         return { token: token, user: user };
       } catch (error) {
         console.log(error);
-        throw error
+        throw new ApolloError("Something went wrong, please try again", "SOMETHING_WENT_WRONG");
       }
     },
     register: async (parent, { userData }) => {

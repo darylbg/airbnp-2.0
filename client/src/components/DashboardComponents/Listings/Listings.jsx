@@ -34,7 +34,7 @@ export default function Listings() {
             </button>
           </div>
           <DialogComponent
-            className="listing-dialog"
+            className="new-listing-dialog"
             openDialog={dialog}
             closeDialog={() => setDialog(false)}
             icon="close"

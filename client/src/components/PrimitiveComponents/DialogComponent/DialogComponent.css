@@ -1,0 +1,21 @@
+.dialog {
+  border: none;
+  box-shadow: hsl(206 22% 7% / 35%) 0px 0px 38px -10px,
+    hsl(206 22% 7% / 20%) 0px 0px 20px -15px;
+}
+
+.dialog::backdrop {
+    background-color: rgb(0,0,0,0.2);
+}
+
+.dialog .dialog-content {
+    width: 100%;
+    height: fit-content;
+    padding: 2.5rem;
+    display: flex;
+}
+
+.dialog-open {
+    display: flex;
+    overflow-y: scroll;
+}

@@ -12,7 +12,7 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Navbar from "./components/Navbar";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/Dashboard/Dashboard";
 import Account from "./pages/Account";
 import Profile from "./pages/Profile";
 import PersonalInfo from "./components/AccountSubComponents/PersonalInfo";

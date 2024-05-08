@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-import SignInForm from "../SignInForm";
+import SignInForm from "../SignInForm/SignInForm";
 import RegisterForm from "../RegisterForm";
 
 export default function LoginRequiredPrompt() {

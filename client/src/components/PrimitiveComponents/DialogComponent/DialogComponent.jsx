@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import WindowControlButton from "../WindowControlButton/WindowControlButton";
 
+import "./DialogComponent.css";
 export default function DialogComponent({
   className,
   openDialog,
@@ -8,20 +9,23 @@ export default function DialogComponent({
   icon,
   children,
 }) {
-  const ref = useRef();
+  const dialogRef = useRef();
 
   useEffect(() => {
     if (openDialog) {
-      ref.current?.showModal();
+      dialogRef.current?.showModal();
+      
     } else {
-      ref.current?.close();
+      dialogRef.current?.close();
     }
   }, [openDialog]);
 
   return (
-    <dialog ref={ref} onCancel={closeDialog} className={className}>
+    <dialog ref={dialogRef} onCancel={closeDialog} className={`dialog ${className} ${openDialog ? "dialog-open" : null}`}>
+      <div className="dialog-content">
       {children}
       <WindowControlButton action={closeDialog} icon={icon} />
+      </div>
     </dialog>
   );
 }

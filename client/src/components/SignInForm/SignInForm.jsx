@@ -30,7 +30,7 @@ export default function SignInForm({ handleSignInRegisterToggle }) {
       const loggedInUser = await signInMutation({
         variables: { email: formData.email, password: formData.password },
       });
-      const loggedInUserData = loggedInUser.data.login
+      const loggedInUserData = loggedInUser.data.login;
       console.log("logged in", loggedInUserData);
       dispatch(
         login_user({
@@ -38,31 +38,39 @@ export default function SignInForm({ handleSignInRegisterToggle }) {
           id: loggedInUserData.user.id,
           ...loggedInUserData.user
         })
-      )
+      );
     } catch (error) {
-      // console.log("sing in errors", error);
-      if (error.graphQLErrors) {
-        if (error.graphQLErrors && error.graphQLErrors.length > 0) {
-          const firstGraphQLErrorCode = error.graphQLErrors[0].extensions.code;
-          switch (firstGraphQLErrorCode) {
-            case "NO_USER_FOUND_ERROR":
-              setError("noUserFoundError", {
-                type: "noUserFoundError",
-                message: "User not found, please register",
-              });
-              break;
-            case "INCORRECT_PASSWORD_ERROR":
-              setError("incorrectPasswordError", {
-                type: "incorrectPasswordError",
-                message: "Incorrect password",
-              });
-              break;
-            default:
-              console.log("sign in error");
-          }
+      console.log("Sign in error:", error);
+      if (error.graphQLErrors && error.graphQLErrors.length > 0) {
+        const firstGraphQLErrorCode = error.graphQLErrors[0].extensions.code;
+        switch (firstGraphQLErrorCode) {
+          case "NO_USER_FOUND_ERROR":
+            setError("noUserFoundError", {
+              type: "noUserFoundError",
+              message: "User not found, please register",
+            });
+            break;
+          case "INCORRECT_PASSWORD_ERROR":
+            setError("incorrectPasswordError", {
+              type: "incorrectPasswordError",
+              message: "Incorrect password",
+            });
+            break;
+          default:
+            console.log("Unhandled GraphQL error:", error);
+            setError("otherLoginError", {
+              type: "otherLoginError",
+              message: "Something went wrong, please try again",
+            });
         }
+      } else if (error.networkError) {
+        console.log("Network error:", error.networkError);
+        setError("networkError", {
+          type: "networkError",
+          message: "Network error occurred, please try again",
+        });
       } else {
-        console.log("other error not graphql", error);
+        console.log("Unhandled non-GraphQL error:", error);
         setError("otherLoginError", {
           type: "otherLoginError",
           message: "Something went wrong, please try again",
@@ -70,6 +78,7 @@ export default function SignInForm({ handleSignInRegisterToggle }) {
       }
     }
   };
+  
 
   const handleEmailValidation = (e) => {
     setValue("email", e.target.value, {

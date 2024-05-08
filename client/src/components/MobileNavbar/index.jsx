@@ -6,7 +6,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { HomeIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import Auth from "../../utils/auth";
 
-import SignInForm from "../SignInForm";
+import SignInForm from "../SignInForm/SignInForm";
 import RegisterForm from "../RegisterForm";
 import "./MobileNavbar.css";
 
