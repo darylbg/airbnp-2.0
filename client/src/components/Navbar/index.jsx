@@ -155,7 +155,8 @@ export default function Navbar({}) {
                 onOpenChange={() => setDialogOpen(!dialogOpen)}
               >
                 <Dialog.Trigger className="sign-in-button">
-                  Sign in
+                  <span>Sign in</span>
+                  <span>Register</span>
                 </Dialog.Trigger>
                 <Dialog.Portal>
                   <Dialog.Overlay className="signIn-dialog-overlay" />

@@ -139,13 +139,23 @@
 
 .sign-in-button {
   height: 34px;
-  padding: 0 10px;
+  padding: 0 5px;
   cursor: pointer;
   border: 1px solid var(--blue);
   border-radius: 4px;
   background-color: var(--white);
   color: var(--blue);
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.sign-in-button span {
+  padding: 0 5px;
+}
+
+.sign-in-button span:first-child {
+  border-right: 1px solid var(--blue);
 }
 
 .sign-in-button:hover {
@@ -153,6 +163,10 @@
   background-color: var(--blue);
   color: var(--white);
   font-weight: 500;
+}
+
+.sign-in-button:hover span:first-child {
+  border-right: 1px solid var(--white);
 }
 
 .signIn-dialog-overlay {

@@ -40,7 +40,7 @@ export default function Listings() {
             icon="close"
             dialogHeader="Add new listing"
           >
-            <p className="dummy-text">listing content</p>
+            <p className="">listing content</p>
           </DialogComponent>
 
           <div className="title-text">
