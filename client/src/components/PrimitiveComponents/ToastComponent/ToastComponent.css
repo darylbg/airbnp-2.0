@@ -1,0 +1,27 @@
+/* className "toast" set to toast container in app.jsx */
+
+.toast {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: fit-content;
+    max-width: 85vw;
+}
+
+.toast-span {
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+    align-items: center;
+}
+
+.go3958317564 {
+    margin-right: 0 !important;
+}
+
+@media screen and (max-width: 768px) {
+    .toast-span {
+        font-size: 0.8rem;
+        gap: 15px;
+    }
+}

@@ -11,6 +11,7 @@ import RegisterForm from "../RegisterForm";
 import DialogComponent from "../PrimitiveComponents/DialogComponent/DialogComponent"
 import Logo from "../../assets/images/logo_colour_50px.png";
 import "./Navbar.css";
+import toast from "react-hot-toast";
 
 export default function Navbar({}) {
   const [toggleSignInRegister, setToggleSignInRegister] = useState(true);

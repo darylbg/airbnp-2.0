@@ -7,6 +7,7 @@ import {
 } from "@apollo/client";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { setContext } from "@apollo/client/link/context";
+import { Toaster } from 'react-hot-toast';
 
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -75,6 +76,12 @@ function App() {
             </Routes>
             <MobileNavbar />
           </div>
+          <Toaster
+          position="bottom-right" 
+          toastOptions={{
+            className: "toast",
+            duration: 2000000
+          }}/>
         </div>
       </Router>
     </ApolloProvider>

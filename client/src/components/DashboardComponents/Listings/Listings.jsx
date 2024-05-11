@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { UseSelector, useSelector } from "react-redux";
 import DialogComponent from "../../PrimitiveComponents/DialogComponent/DialogComponent";
+import toast from "react-hot-toast";
 import "./Listings.css";
 
 export default function Listings() {
@@ -49,7 +50,9 @@ export default function Listings() {
           </div>
         </div>
       </div>
-      <div className="dashboard-content"></div>
+      <div className="dashboard-content">
+        <button>click for toast</button>
+      </div>
     </>
   );
 }

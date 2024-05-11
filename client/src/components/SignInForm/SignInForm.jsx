@@ -3,11 +3,14 @@ import { useDispatch } from "react-redux";
 import { ApolloError, useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import * as Form from "@radix-ui/react-form";
+import toast from "react-hot-toast";
+import ToastComponent from "../PrimitiveComponents/ToastComponent/ToastComponent";
 import { SIGN_IN_MUTATION } from "../../utils/mutations";
 
 import "./SignInRegisterForms.css";
 import { login_user } from "../../reducers/authReducer";
 import { graphQLResultHasError } from "@apollo/client/utilities";
+import { TableIcon } from "@radix-ui/react-icons";
 
 export default function SignInForm({ handleSignInRegisterToggle }) {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
@@ -39,6 +42,7 @@ export default function SignInForm({ handleSignInRegisterToggle }) {
           ...loggedInUserData.user
         })
       );
+      toast.success(<ToastComponent message="Successfully signed in."/>);
     } catch (error) {
       console.log("Sign in error:", error);
       if (error.graphQLErrors && error.graphQLErrors.length > 0) {
@@ -60,7 +64,7 @@ export default function SignInForm({ handleSignInRegisterToggle }) {
             console.log("Unhandled GraphQL error:", error);
             setError("otherLoginError", {
               type: "otherLoginError",
-              message: "Something went wrong, please try again",
+              message: "Something went wrong, please refresh the page and try again",
             });
         }
       } else if (error.networkError) {
