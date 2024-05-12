@@ -1,13 +1,18 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { UseSelector, useSelector } from "react-redux";
-import DialogComponent from "../../PrimitiveComponents/DialogComponent/DialogComponent";
 import toast from "react-hot-toast";
+
+import NewListing from "../../NewListing/NewListing";
+import DialogComponent from "../../PrimitiveComponents/DialogComponent/DialogComponent";
 import "./Listings.css";
 
 export default function Listings() {
   const userListings = useSelector((state) => state.auth.user.user_listings);
+  console.log(userListings);
 
-  const [dialog, setDialog] = useState(false);
+  const [newListingDialog, setNewListingDialog] = useState(false);
+  const [filterDialog, setFilterDialog] = useState(false);
 
   return (
     <>
@@ -23,27 +28,35 @@ export default function Listings() {
         </div>
         <div className="header-content">
           <div className="filter-listings">
-            <button>
-              <span className="text">Filter</span>
+            <button onClick={() => setFilterDialog(true)}>
+              <span className="text">Sort</span>
               <span className="material-symbols-outlined">filter_list</span>
             </button>
           </div>
+          <DialogComponent
+            className="filter-dialog full-width-dialog"
+            openDialog={filterDialog}
+            closeDialog={() => setFilterDialog(false)}
+            icon="close"
+            dialogHeader="Filter listings"
+          >
+            <p className="">filter dialog 2</p>
+          </DialogComponent>
           <div className="new-listing">
-            <button onClick={() => setDialog(true)}>
+            <button onClick={() => setNewListingDialog(true)}>
               <span className="text">New Listing</span>
               <span className="material-symbols-outlined">add</span>
             </button>
           </div>
           <DialogComponent
-            className="new-listing-dialog"
-            openDialog={dialog}
-            closeDialog={() => setDialog(false)}
+            className="new-listing-dialog full-width-dialog"
+            openDialog={newListingDialog}
+            closeDialog={() => setNewListingDialog(false)}
             icon="close"
             dialogHeader="Add new listing"
           >
-            <p className="">listing content</p>
+            <NewListing />
           </DialogComponent>
-
           <div className="title-text">
             <h3>{userListings.length}</h3>
             <p>listings</p>
@@ -51,7 +64,16 @@ export default function Listings() {
         </div>
       </div>
       <div className="dashboard-content">
-        <button>click for toast</button>
+        {userListings && userListings.length ? (
+          <div className="">listings</div>
+        ) : (
+          <Link
+            className="no-listings-link"
+            onClick={() => setNewListingDialog(true)}
+          >
+            add your first listing
+          </Link>
+        )}
       </div>
     </>
   );
