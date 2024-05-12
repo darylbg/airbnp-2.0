@@ -143,10 +143,6 @@ const resolvers = {
             ...listingData,
           });
 
-          const newAmenity = await Amenity.create({
-
-          });
-
           const userId = new mongoose.Types.ObjectId(context.user._id);
           const updatedUser = await User.findOneAndUpdate(
             { _id: userId },

@@ -43,7 +43,6 @@ const typeDefs = gql`
     id: ID!
     amenity_text: String
     amenity_icon: String
-    listing_id: ID!
   }
 
   type Review {
@@ -166,7 +165,7 @@ const typeDefs = gql`
     createListing(listingData: listingInput): User
     updateListing(listingId: ID!, listingData: listingInput): Listing
     deleteListing(listingId: ID!): User
-    createAmenity(listingId: ID!, amenityData: amenityInput): Listing
+    createAmenity(amenityData: amenityInput): Listing
     deleteAmenity(amenityId: ID!): Listing
     createReview(listingId: ID!, reviewData: reviewInput): Review
     createNotification(listingId: ID!, notificationData: notificationInput): Notification
