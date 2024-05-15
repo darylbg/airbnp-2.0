@@ -1,0 +1,238 @@
+.home-page {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.home-hero-section {
+    height: calc(100svh - 58px);
+    /* background-color: red; */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.hero-content {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    width: 100%;
+    max-width: 1300px;
+    align-self: center;
+    margin: 2px 0;
+}
+
+.hero-content-text {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 5%;
+    gap: 15%;
+}
+
+.hero-content .hero-content-text .title {
+    container-type: inline-size;
+}
+
+.hero-content-text .title p {
+    font-size: 10cqw;
+    font-weight: 750;
+    color: var(--black-90);
+    margin: 0;
+}
+
+.hero-content-text .text .subtitle-1 {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--black-50);
+    margin: 0;
+}
+.hero-content-text .text .subtitle-2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--black-100);
+    margin: 0;
+}
+
+/* hero section search form */
+
+.hero-search-form {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.hero-search-form .search-field {
+    display: flex;
+}
+
+.hero-search-form .search-field input {
+    width: 100%;
+    border-radius: 50px;
+    padding: 18px 30px;
+    border: 1px solid var(--black-25);
+    flex: 1;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--black-75);
+}
+
+.hero-search-form .search-button button {
+    padding: 18px 30px;
+    background-color: var(--pink);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--white);
+    border: none;
+    border-radius: 50px;
+}
+
+.hero-search-form .search-button button:hover {
+    background-color: var(--pink-darker);
+    cursor: pointer;
+}
+
+.hero-content .hero-content-img {
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.hero-content .hero-content-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.hero-ticker {
+    justify-self: flex-end;
+    height: 60px;
+    display: flex;
+    flex-wrap: nowrap;
+    animation: scrollText 20s infinite linear;
+    width: 200%;
+    margin-bottom: 2px;
+}
+
+@keyframes scrollText {
+    from {
+        transform: translateX(0%);
+   }
+    to {
+        transform: translateX(-50%);
+   }
+}
+
+.hero-ticker .tick {
+    border-top: 1px solid var(--black-25);
+    border-right: 1px solid var(--black-25);
+    border-bottom: 1px solid var(--black-25);
+    width: 12.5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-ticker .tick strong {
+    font-size: 0.9rem;
+    color: var(--black-50);
+}
+
+/* home global sections */
+
+.home-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* how it works steps */
+
+.home-steps-section {
+    background-color: var(--black-10);
+    flex-direction: column;
+}
+
+.home-section-wrapper {
+    width: 100%;
+    max-width: 1300px;
+}
+
+.steps {
+    display: flex;
+    flex-direction: row;
+    gap: 100px;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+}
+
+.step-img {
+    height: 200px;
+    width: 200px;
+    background-color: var(--yellow);
+    border-radius: 50%;
+    position: relative;
+    align-self: flex-start;
+}
+
+.step-img .step-index {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: var(--black-100);
+    color: var(--white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* book now section */
+
+.home-book-now-section {
+    background-color: var(--blue);
+}
+
+.book-now-section-text {
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+@media screen and (min-width: 768px) {
+    .home-hero-section  {
+      height: calc(100svh - 58px);
+    }
+  }
+
+  @media screen and (max-width: 1100px) {
+    .hero-ticker {
+        width: 300%;
+    }
+  }
+  
+  @media screen and (max-width: 768px) {
+    .home-hero-section {
+      height: calc(100svh - 73px);
+    }
+
+    .hero-ticker .tick strong {
+        font-size: 0.8rem;
+    }
+  }
+  
+  @media screen and (max-width: 550px) {
+    .home-hero-section  {
+      min-height: calc(100svh - 52px);
+    }
+  }

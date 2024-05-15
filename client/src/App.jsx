@@ -9,7 +9,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { setContext } from "@apollo/client/link/context";
 import { Toaster } from 'react-hot-toast';
 
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Navbar from "./components/Navbar";
@@ -80,7 +80,7 @@ function App() {
           position="bottom-right" 
           toastOptions={{
             className: "toast",
-            duration: 2000000
+            duration: 5000
           }}/>
         </div>
       </Router>

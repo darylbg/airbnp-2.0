@@ -19,11 +19,13 @@ html {
   --olive: #d0e0ae;
   --olive-darker: #c5d59c;
 
+  --yellow: #EFD476;
+
   --gold: #ecc84b;
   --gold-darker: #e3bc45;
 
   --pink: #ff385c;
-  --pink-darker: #f73555;
+  --pink-darker: #CC2D4A;
 
   --black-100: #131313;
   --black-100-darker: #101010;
@@ -78,6 +80,7 @@ body {
 
 .app-div {
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 /* media queries */
