@@ -1,0 +1,13 @@
+.large-round-button {
+    padding: 18px 30px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 50px;
+    width: fit-content;
+    font-family: var(--inter);
+}
+
+.large-round-button:hover {
+    cursor: pointer;
+}

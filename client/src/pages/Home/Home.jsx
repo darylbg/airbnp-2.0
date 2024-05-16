@@ -2,7 +2,9 @@ import React from "react";
 import * as Form from "@radix-ui/react-form";
 import GetAllListings from "../../components/GetAllListings";
 
+import LargeRoundButton from "../../components/PrimitiveComponents/LargeRoundButton/LargeRoundButton";
 import HeroImage from "../../assets/images/HeroImage.jpg";
+import Phone from "../../assets/images/phone.png";
 import "./Home.css";
 
 export default function Home() {
@@ -27,7 +29,9 @@ export default function Home() {
                 </Form.Field>
                 <Form.Field className="search-button">
                   <Form.Submit asChild>
-                    <button>Find closest locations</button>
+                    <LargeRoundButton className="hero-search-form-button">
+                      Search closest locations
+                    </LargeRoundButton>
                   </Form.Submit>
                 </Form.Field>
               </Form.Root>
@@ -110,7 +114,12 @@ export default function Home() {
             <div className="section-subheading">
               Instantly find close, clean bathrooms to use.
             </div>
-            <button>Book now</button>
+            <LargeRoundButton className="test-button">
+              Find nearest locations
+            </LargeRoundButton>
+          </div>
+          <div className="book-now-section-img">
+            <img src={Phone} alt="" />
           </div>
         </div>
       </section>
