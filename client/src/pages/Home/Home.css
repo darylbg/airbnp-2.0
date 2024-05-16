@@ -260,11 +260,66 @@
 
 /* faq accordion */
 
+.home-faqs-section {
+  padding: 5% 2%;
+}
+
+.AccordionTrigger {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-color: var(--white);
+  border-top: 1px solid var(--black-50);
+  border-bottom: none;
+  border-left: none;
+  border-right: none;
+  justify-content: space-between;
+  /* margin: 0; */
+  padding: 15px 0;
+}
+
+.AccordionTrigger span {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--black-75);
+}
+
+.AccordionTrigger[data-state='open'] > .accordion-icon {
+  transform: rotate(180deg);
+}
+
 .accordion-icon {
   transition: transform 300ms;
 }
-.AccordionTrigger[data-state='open'] > .accordion-icon {
-  transform: rotate(180deg);
+
+/* accordion expand collapse animation */
+
+.AccordionContent {
+  overflow: hidden;
+}
+.AccordionContent[data-state='open'] {
+  animation: slideDown 300ms ease-out;
+}
+.AccordionContent[data-state='closed'] {
+  animation: slideUp 300ms ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
 }
 
 /* media queries */

@@ -123,28 +123,62 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="home-faqs-section">
+      <section className="home-faqs-section home-section">
         <div className="home-section-wrapper">
-          <Accordion.Root type="single" collapsible>
+        <p className="section-heading">FAQ'S</p>
+          <Accordion.Root type="multiple" collapsible>
             <Accordion.Item value="item-1">
-              <Accordion.Header>
+              <Accordion.Header className="AccordionHeader">
                 <Accordion.Trigger className="AccordionTrigger">
-                  <span>Trigger text</span>
+                  <span>QUESTION ONE</span>
                   <span class="material-symbols-outlined accordion-icon">arrow_drop_down</span>
                 </Accordion.Trigger>
               </Accordion.Header>
-              <Accordion.Content>…</Accordion.Content>
+              <Accordion.Content className="AccordionContent">Answer one</Accordion.Content>
             </Accordion.Item>
             <Accordion.Item value="item-2">
               <Accordion.Header>
                 <Accordion.Trigger className="AccordionTrigger">
-                  <span>Trigger text</span>
+                  <span>QUESTION TWO</span>
                   <span class="material-symbols-outlined accordion-icon">
                     arrow_drop_down
                   </span>
                 </Accordion.Trigger>
               </Accordion.Header>
-              <Accordion.Content>…</Accordion.Content>
+              <Accordion.Content className="AccordionContent">Answer two</Accordion.Content>
+            </Accordion.Item>
+            <Accordion.Item value="item-3">
+              <Accordion.Header>
+                <Accordion.Trigger className="AccordionTrigger">
+                  <span>QUESTION THREE</span>
+                  <span class="material-symbols-outlined accordion-icon">
+                    arrow_drop_down
+                  </span>
+                </Accordion.Trigger>
+              </Accordion.Header>
+              <Accordion.Content className="AccordionContent">Answer two</Accordion.Content>
+            </Accordion.Item>
+            <Accordion.Item value="item-4">
+              <Accordion.Header>
+                <Accordion.Trigger className="AccordionTrigger">
+                  <span>QUESTION FOUR</span>
+                  <span class="material-symbols-outlined accordion-icon">
+                    arrow_drop_down
+                  </span>
+                </Accordion.Trigger>
+              </Accordion.Header>
+              <Accordion.Content className="AccordionContent">Answer two</Accordion.Content>
+            </Accordion.Item>
+            <Accordion.Item value="item-5">
+              <Accordion.Header>
+                <Accordion.Trigger className="AccordionTrigger">
+                  <span>QUESTION FIVE</span>
+                  <span class="material-symbols-outlined accordion-icon">
+                    arrow_drop_down
+                  </span>
+                </Accordion.Trigger>
+              </Accordion.Header>
+              <Accordion.Content className="AccordionContent">Answer two</Accordion.Content>
             </Accordion.Item>
           </Accordion.Root>
         </div>

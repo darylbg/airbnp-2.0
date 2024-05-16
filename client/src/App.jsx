@@ -79,8 +79,7 @@ function App() {
           <Toaster
           position="bottom-right" 
           toastOptions={{
-            className: "toast",
-            duration: 5000
+            className: "toast"
           }}/>
         </div>
       </Router>
