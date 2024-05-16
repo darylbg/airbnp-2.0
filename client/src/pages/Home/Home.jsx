@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import * as Form from "@radix-ui/react-form";
 import GetAllListings from "../../components/GetAllListings";
 import * as Accordion from "@radix-ui/react-accordion";
@@ -125,20 +125,26 @@ export default function Home() {
       </section>
       <section className="home-faqs-section">
         <div className="home-section-wrapper">
-          <Accordion.Root>
-            <Accordion.Item>
+          <Accordion.Root type="single" collapsible>
+            <Accordion.Item value="item-1">
               <Accordion.Header>
-                header
-                <Accordion.Trigger>+</Accordion.Trigger>
+                <Accordion.Trigger className="AccordionTrigger">
+                  <span>Trigger text</span>
+                  <span class="material-symbols-outlined accordion-icon">arrow_drop_down</span>
+                </Accordion.Trigger>
               </Accordion.Header>
-              <Accordion.Content>content</Accordion.Content>
+              <Accordion.Content>…</Accordion.Content>
             </Accordion.Item>
-            <Accordion.Item>
+            <Accordion.Item value="item-2">
               <Accordion.Header>
-                header
-                <Accordion.Trigger>+</Accordion.Trigger>
+                <Accordion.Trigger className="AccordionTrigger">
+                  <span>Trigger text</span>
+                  <span class="material-symbols-outlined accordion-icon">
+                    arrow_drop_down
+                  </span>
+                </Accordion.Trigger>
               </Accordion.Header>
-              <Accordion.Content>content</Accordion.Content>
+              <Accordion.Content>…</Accordion.Content>
             </Accordion.Item>
           </Accordion.Root>
         </div>

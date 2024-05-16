@@ -240,7 +240,7 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  justify-content: space-around;
+  justify-content: center;
   gap: 30px;
 }
 
@@ -256,6 +256,15 @@
 .book-now-section-img img {
   max-height: 500px;
   position: relative;
+}
+
+/* faq accordion */
+
+.accordion-icon {
+  transition: transform 300ms;
+}
+.AccordionTrigger[data-state='open'] > .accordion-icon {
+  transform: rotate(180deg);
 }
 
 /* media queries */
