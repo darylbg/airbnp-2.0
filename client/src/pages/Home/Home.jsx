@@ -1,7 +1,7 @@
 import React from "react";
 import * as Form from "@radix-ui/react-form";
 import GetAllListings from "../../components/GetAllListings";
-
+import * as Accordion from "@radix-ui/react-accordion";
 import LargeRoundButton from "../../components/PrimitiveComponents/LargeRoundButton/LargeRoundButton";
 import HeroImage from "../../assets/images/HeroImage.jpg";
 import Phone from "../../assets/images/phone.png";
@@ -16,7 +16,7 @@ export default function Home() {
             <div className="text">
               <p className="subtitle-1">10,000+ available bathrooms for you.</p>
               <div className="title">
-                <p className="section-Heading">Bathrooms available near you</p>
+                <p>Bathrooms available near you</p>
               </div>
               <p className="subtitle-2">Go out stress free</p>
             </div>
@@ -107,23 +107,42 @@ export default function Home() {
       <section className="home-book-now-section home-section">
         <div className="background-pattern"></div>
         <div className="home-section-wrapper">
-          <div className="book-now-section-text">
-            <div className="section-heading">
-              <p>Book now</p>
+          <p className="section-heading">Book now</p>
+          <div className="book-now-section-content">
+            <div className="book-now-section-text">
+              <p className="section-subheading">
+                Instantly find close, clean bathrooms to use.
+              </p>
+              <LargeRoundButton className="test-button">
+                Find nearest locations
+              </LargeRoundButton>
             </div>
-            <div className="section-subheading">
-              Instantly find close, clean bathrooms to use.
+            <div className="book-now-section-img">
+              <img src={Phone} alt="" />
             </div>
-            <LargeRoundButton className="test-button">
-              Find nearest locations
-            </LargeRoundButton>
-          </div>
-          <div className="book-now-section-img">
-            <img src={Phone} alt="" />
           </div>
         </div>
       </section>
-      <section className="home-faqs-section">faqs</section>
+      <section className="home-faqs-section">
+        <div className="home-section-wrapper">
+          <Accordion.Root>
+            <Accordion.Item>
+              <Accordion.Header>
+                header
+                <Accordion.Trigger>+</Accordion.Trigger>
+              </Accordion.Header>
+              <Accordion.Content>content</Accordion.Content>
+            </Accordion.Item>
+            <Accordion.Item>
+              <Accordion.Header>
+                header
+                <Accordion.Trigger>+</Accordion.Trigger>
+              </Accordion.Header>
+              <Accordion.Content>content</Accordion.Content>
+            </Accordion.Item>
+          </Accordion.Root>
+        </div>
+      </section>
       <GetAllListings />
       hoem
     </div>
