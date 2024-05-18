@@ -5,25 +5,25 @@ const expiration = "2h";
 
 module.exports = {
   authMiddleware: function ({ req }) {
-    // allows token to be sent via req.body, req.query, or headers
     let token = req.body.token || req.query.token || req.headers.authorization;
+    console.log(req.headers);
 
-    // Authorization header format: <tokenvalue>
     if (req.headers.authorization) {
       token = token.split(" ").pop().trim();
-      console.log(token)
+      console.log('Token received:', token);
     }
 
     if (!token) {
+      console.log('No token provided');
       return req;
     }
 
     try {
       const { data } = jwt.verify(token, secret, { maxAge: expiration });
       req.user = data;
-      // console.log("user verified:", data)
+      console.log('User verified:', data);
     } catch (error) {
-      console.log("Invalid token:", error);
+      console.log('Invalid token:', error);
     }
 
     return req;
@@ -31,9 +31,6 @@ module.exports = {
   
   signToken: function ({ display_name, email, _id }) {
     const payload = { display_name, email, _id };
-
     return jwt.sign({ data: payload }, secret, { expiresIn: expiration });
   },
 };
-
-

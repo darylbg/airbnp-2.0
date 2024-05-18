@@ -163,7 +163,7 @@ const resolvers = {
     // },
 
     createListing: async (parent, { listingData }, context) => {
-      console.log("listing data", listingData);
+      console.log("context", context.user);
       if (context.user) {
         try {
           // Fetch all available amenities

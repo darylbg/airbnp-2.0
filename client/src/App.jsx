@@ -32,10 +32,12 @@ const httpLink = createHttpLink({
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem("id_token");
+  // console.log("app.js token", token);
   return {
     headers: {
       ...headers,
-      authorization: token ? `${token}` : "",
+      // authorization: token ? `${token}` : "",
+      authorization: token ? `Bearer ${token}` : '',
     },
   };
 });
@@ -48,6 +50,7 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
+
       <Router>
         <div className="app-div">
           <Navbar />

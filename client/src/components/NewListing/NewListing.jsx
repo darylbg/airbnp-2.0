@@ -20,8 +20,11 @@ export default function NewListing() {
   } = useForm();
 
   const [newListingMutation] = useMutation(NEW_LISTING_MUTATION);
+
   const handleNewListing = async (formData, event) => {
     event.preventDefault();
+    const token = localStorage.getItem("auth");
+    console.log("token", token);
     try {
       // console.log(formData);
       const newListing = await newListingMutation({

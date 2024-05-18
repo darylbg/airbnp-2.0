@@ -33,7 +33,6 @@ class AuthService {
 
   login(idToken) {
     localStorage.setItem("id_token", idToken);
-    // if you want to redirect user to a certain page after login 
     // window.location.assign("/");
   }
 

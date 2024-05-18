@@ -6,6 +6,7 @@ import * as Form from "@radix-ui/react-form";
 import toast from "react-hot-toast";
 import ToastComponent from "../PrimitiveComponents/ToastComponent/ToastComponent";
 import { SIGN_IN_MUTATION } from "../../utils/mutations";
+import Auth from "../../utils/auth";
 
 import "./SignInRegisterForms.css";
 import { login_user } from "../../reducers/authReducer";
@@ -42,6 +43,8 @@ export default function SignInForm({ handleSignInRegisterToggle }) {
           ...loggedInUserData.user
         })
       );
+      console.log("loggedin user data", loggedInUser.data.login.token);
+      Auth.login(loggedInUser.data.login.token);
       toast.success(<ToastComponent message="Successfully signed in."/>);
     } catch (error) {
       console.log("Sign in error:", error);
