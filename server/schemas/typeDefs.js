@@ -1,8 +1,7 @@
 const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
-
-# Types
+  # Types
   type User {
     id: ID!
     first_name: String!
@@ -33,16 +32,14 @@ const typeDefs = gql`
     price: Float!
     created_at: String
     user_id: ID!
-    amenities: [Amenity]
-    # notifications: [Notification]
+    amenities: [ListingAmenity]
     reviews: [Review]
     payments: [Payment]
   }
 
-  type Amenity {
-    id: ID!
-    amenity_text: String
-    amenity_icon: String
+  type ListingAmenity {
+    amenity_id: ID!
+    available: Boolean!
   }
 
   type Review {
@@ -123,14 +120,15 @@ const typeDefs = gql`
     longitude: Int!
     availability: Boolean
     price: Float!
-    amenities: [amenityInput]
+    amenities: [ID!] # List of amenity IDs to mark as available
   }
 
   input amenityInput {
-    amenity_text: String
-    amenity_icon: String
+    # amenity_text: String
+    # amenity_icon: String
+    id: ID!
   }
-  
+
   input reviewInput {
     rating_value: Int
     rating_text: String
@@ -162,13 +160,16 @@ const typeDefs = gql`
     login(email: String!, password: String!): Auth
     register(userData: userInput!): Auth
     updateUser(userData: userInput): User
-    createListing(listingData: listingInput): User
+    createListing(listingData: listingInput): Listing
     updateListing(listingId: ID!, listingData: listingInput): Listing
     deleteListing(listingId: ID!): User
     createAmenity(amenityData: amenityInput): Listing
     deleteAmenity(amenityId: ID!): Listing
     createReview(listingId: ID!, reviewData: reviewInput): Review
-    createNotification(listingId: ID!, notificationData: notificationInput): Notification
+    createNotification(
+      listingId: ID!
+      notificationData: notificationInput
+    ): Notification
     createPayment(listingId: ID!, paymentData: paymentInput): Payment
     updatePayment(paymentId: ID!, paymentData: paymentInput): Payment
   }

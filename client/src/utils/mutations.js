@@ -69,3 +69,45 @@ export const SIGN_IN_MUTATION = gql`
     }
   }
 `;
+
+export const NEW_LISTING_MUTATION = gql`
+  mutation CreateListing($listingData: listingInput) {
+    createListing(listingData: $listingData) {
+      id
+      user_id
+      listing_title
+      listing_description
+      listing_image
+      address
+      longitude
+      latitude
+      contact_method
+      amenities {
+        amenity_id
+        available
+      }
+      availability
+      price
+      # reviews {
+      #   created_at
+      #   id
+      #   listing_id
+      #   rating_text
+      #   rating_value
+      #   user_id
+      # }
+      # payments {
+      #   amount_paid
+      #   created_at
+      #   currency
+      #   guest_quantity
+      #   id
+      #   listing_id
+      #   payment_method
+      #   payment_status
+      #   user_id
+      # }
+      created_at
+    }
+  }
+`;

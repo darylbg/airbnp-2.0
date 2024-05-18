@@ -19,7 +19,7 @@ export default function Navbar({}) {
   const [scrolled, setScrolled] = useState(false);
 
   const { isLoggedIn, user } = useSelector((state) => state.auth);
-  console.log("user image", user.user_image);
+  // console.log("user image", user.user_image);
 
   const navigate = useNavigate();
 

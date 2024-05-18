@@ -47,9 +47,15 @@ const listingSchema = new Schema(
     },
     amenities: [
       {
-        type: Schema.Types.ObjectId,
-        ref: "Amenity",
-        required: true,
+        amenity_id: {
+          type: Schema.Types.ObjectId,
+          ref: "Amenity",
+          required: true,
+        },
+        available: {
+          type: Boolean,
+          default: false,
+        },
       },
     ],
     notifications: [

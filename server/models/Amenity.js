@@ -10,11 +10,6 @@ const amenitySchema = new Schema(
       type: String,
       required: true,
     },
-    // listing_id: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: "Listing",
-    //   required: true,
-    // },
   },
   {
     toJSON: {
@@ -28,7 +23,11 @@ const Amenity = model("Amenity", amenitySchema);
 // set available amenities
 const amenityOptions = [
   { amenity_text: "WiFi", amenity_icon: "wifi_icon.png" },
+  { amenity_text: "Shower", amenity_icon: "shower.png" },
   { amenity_text: "Swimming Pool", amenity_icon: "pool_icon.png" },
+  { amenity_text: "Bath", amenity_icon: "bath.png" },
+  { amenity_text: "Hand Towels", amenity_icon: "towels.png" },
+  { amenity_text: "Heating", amenity_icon: "heating.png" },
   // Add more predefined amenities as needed
 ];
 

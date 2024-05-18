@@ -135,12 +135,50 @@ const resolvers = {
       }
       throw new AuthenticationError("You must be logged in!");
     },
+    // createListing: async (parent, { listingData }, context) => {
+    //   console.log("listing data", listingData);
+    //   if (context.user) {
+    //     try {
+    //       const newListing = await Listing.create({
+    //         user_id: context.user._id,
+    //         ...listingData,
+    //         amenities: listingData.amenities.map((id) => new mongoose.Types.ObjectId(id)),  
+    //       });
+
+    //       const userId = new mongoose.Types.ObjectId(context.user._id);
+    //       const updatedUser = await User.findOneAndUpdate(
+    //         { _id: userId },
+    //         { $addToSet: { user_listings: newListing } },
+    //         { new: true }
+    //       ).populate("user_listings");
+
+    //       // return updatedUser;
+    //       return newListing;
+    //     } catch (error) {
+    //       console.log(error);
+    //       throw error;
+    //     }
+    //   }
+    //   throw new AuthenticationError("You must be logged in!");
+    // },
+
     createListing: async (parent, { listingData }, context) => {
+      console.log("listing data", listingData);
       if (context.user) {
         try {
+          // Fetch all available amenities
+          const availableAmenities = await Amenity.find({});
+          
+          // Initialize listing amenities with all available amenities set to false
+          const amenities = availableAmenities.map(amenity => ({
+            amenity_id: amenity._id,
+            available: listingData.amenities.includes(amenity._id.toString())
+          }));
+
           const newListing = await Listing.create({
             user_id: context.user._id,
             ...listingData,
+            amenities,
           });
 
           const userId = new mongoose.Types.ObjectId(context.user._id);
@@ -150,10 +188,10 @@ const resolvers = {
             { new: true }
           ).populate("user_listings");
 
-          return updatedUser;
+          return newListing;  // Returning the created listing
         } catch (error) {
           console.log(error);
-          throw error;
+          throw new Error('Error creating listing');
         }
       }
       throw new AuthenticationError("You must be logged in!");
