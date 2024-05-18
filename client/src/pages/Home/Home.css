@@ -289,7 +289,7 @@
 }
 
 .accordion-icon {
-  transition: transform 300ms;
+  transition: transform 200ms;
 }
 
 /* accordion expand collapse animation */
@@ -298,10 +298,10 @@
   overflow: hidden;
 }
 .AccordionContent[data-state='open'] {
-  animation: slideDown 300ms ease-out;
+  animation: slideDown 200ms ease-out;
 }
 .AccordionContent[data-state='closed'] {
-  animation: slideUp 300ms ease-out;
+  animation: slideUp 200ms ease-in;
 }
 
 @keyframes slideDown {

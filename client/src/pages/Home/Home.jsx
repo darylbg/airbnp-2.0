@@ -5,6 +5,7 @@ import * as Accordion from "@radix-ui/react-accordion";
 import LargeRoundButton from "../../components/PrimitiveComponents/LargeRoundButton/LargeRoundButton";
 import HeroImage from "../../assets/images/HeroImage.jpg";
 import Phone from "../../assets/images/phone.png";
+import Phone1 from "../../assets/images/phone2.png"
 import "./Home.css";
 
 export default function Home() {
@@ -118,7 +119,7 @@ export default function Home() {
               </LargeRoundButton>
             </div>
             <div className="book-now-section-img">
-              <img src={Phone} alt="" />
+              <img src={Phone1} alt="" />
             </div>
           </div>
         </div>
