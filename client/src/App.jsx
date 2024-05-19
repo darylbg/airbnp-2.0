@@ -82,6 +82,7 @@ function App() {
           <Toaster
           position="bottom-right" 
           toastOptions={{
+            duration: 5000,
             className: "toast"
           }}/>
         </div>

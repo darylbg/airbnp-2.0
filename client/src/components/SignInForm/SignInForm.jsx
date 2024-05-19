@@ -50,41 +50,41 @@ export default function SignInForm({ handleSignInRegisterToggle }) {
       if (graphQLErrors && graphQLErrors.length > 0) {
         console.log("graphQLErrors error", graphQLErrors)
       }
-      // if (error.graphQLErrors && error.graphQLErrors.length > 0) {
-      //   const firstGraphQLErrorCode = error.graphQLErrors[0].extensions.code;
-      //   switch (firstGraphQLErrorCode) {
-      //     case "NO_USER_FOUND_ERROR":
-      //       setError("noUserFoundError", {
-      //         type: "noUserFoundError",
-      //         message: "User not found, please register",
-      //       });
-      //       break;
-      //     case "INCORRECT_PASSWORD_ERROR":
-      //       setError("incorrectPasswordError", {
-      //         type: "incorrectPasswordError",
-      //         message: "Incorrect password",
-      //       });
-      //       break;
-      //     default:
-      //       console.log("Unhandled GraphQL error:", error);
-      //       setError("otherLoginError", {
-      //         type: "otherLoginError",
-      //         message: "Something went wrong, please refresh the page and try again",
-      //       });
-      //   }
-      // } else if (error.networkError) {
-      //   console.log("Network error:", error.networkError);
-      //   setError("networkError", {
-      //     type: "networkError",
-      //     message: "Network error occurred, please try again",
-      //   });
-      // } else {
-      //   console.log("Unhandled non-GraphQL error:", error);
-      //   setError("otherLoginError", {
-      //     type: "otherLoginError",
-      //     message: "Something went wrong, please try again",
-      //   });
-      // }
+      if (graphQLErrors && graphQLErrors.length > 0) {
+        const firstGraphQLErrorCode = graphQLErrors[0].extensions.code;
+        switch (firstGraphQLErrorCode) {
+          case "NO_USER_FOUND_ERROR":
+            setError("noUserFoundError", {
+              type: "noUserFoundError",
+              message: "User not found, please register",
+            });
+            break;
+          case "INCORRECT_PASSWORD_ERROR":
+            setError("incorrectPasswordError", {
+              type: "incorrectPasswordError",
+              message: "Incorrect password",
+            });
+            break;
+          default:
+            console.log("Unhandled GraphQL error:", error);
+            setError("otherLoginError", {
+              type: "otherLoginError",
+              message: "Something went wrong, please refresh the page and try again",
+            });
+        }
+      } else if (networkError) {
+        console.log("Network error:", networkError);
+        setError("networkError", {
+          type: "networkError",
+          message: "Network error occurred, please try again",
+        });
+      } else {
+        console.log("Unhandled non-GraphQL error:", error);
+        setError("otherLoginError", {
+          type: "otherLoginError",
+          message: "Something went wrong, please try again",
+        });
+      }
     }
   };
   

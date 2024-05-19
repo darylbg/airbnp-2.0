@@ -88,10 +88,7 @@ const resolvers = {
         return { token, user };
       } catch (error) {
         console.error('Error during login:', error);
-        throw new ApolloError(
-          'Something went wrong, please try again',
-          'SOMETHING_WENT_WRONG'
-        );
+        throw error;
       }
     },
     register: async (parent, { userData }) => {
