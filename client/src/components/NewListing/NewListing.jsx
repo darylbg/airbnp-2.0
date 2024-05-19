@@ -23,23 +23,23 @@ export default function NewListing() {
 
   const handleNewListing = async (formData, event) => {
     event.preventDefault();
-    const token = localStorage.getItem("auth");
-    console.log("token", token);
     try {
-      // console.log(formData);
+      console.log(formData);
       const newListing = await newListingMutation({
         variables: {
-          listing_title: formData.listing_title,
-          listing_description: formData.listing_description,
-          contact_method: formData.contact_method,
-          listing_image: formData.listing_image,
-          address: formData.address,
-          // lat and long will be dynamically address when geolocation is added
-          latitude: 10,
-          longitude: 11,
-          availability: formData.availability,
-          price: formData.price,
-          amenities: "",
+          listingData: {
+            listing_title: formData.listing_title,
+            listing_description: formData.listing_description,
+            contact_method: formData.contact_method,
+            listing_image: formData.listing_image,
+            address: formData.address,
+            // lat and long will be dynamically address when geolocation is added
+            latitude: 10,
+            longitude: 11,
+            availability: formData.availability,
+            price: 4,
+            amenities: [],
+          },
         },
       });
       console.log("successfully added listing", newListing);

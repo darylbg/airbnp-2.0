@@ -65,24 +65,33 @@ const resolvers = {
     login: async (parent, { email, password }) => {
       try {
         const user = await User.findOne({ email }).populate({
-          path: "user_listings",
+          path: 'user_listings',
         });
 
         if (!user) {
-          throw new ApolloError("User not found, please register", "NO_USER_FOUND_ERROR");
+          throw new ApolloError(
+            'User not found, please register',
+            'NO_USER_FOUND_ERROR'
+          );
         }
 
         const correctPw = await user.isCorrectPassword(password);
         if (!correctPw) {
-          throw new ApolloError("Incorrect password", "INCORRECT_PASSWORD_ERROR");
+          throw new ApolloError(
+            'Incorrect password',
+            'INCORRECT_PASSWORD_ERROR'
+          );
         }
 
         const token = signToken(user);
-        console.log("token on login:", JSON.stringify(token));
-        return { token: token, user: user };
+        console.log('token on login:', JSON.stringify(token));
+        return { token, user };
       } catch (error) {
-        console.log(error);
-        throw new ApolloError("Something went wrong, please try again", "SOMETHING_WENT_WRONG");
+        console.error('Error during login:', error);
+        throw new ApolloError(
+          'Something went wrong, please try again',
+          'SOMETHING_WENT_WRONG'
+        );
       }
     },
     register: async (parent, { userData }) => {
@@ -142,7 +151,7 @@ const resolvers = {
     //       const newListing = await Listing.create({
     //         user_id: context.user._id,
     //         ...listingData,
-    //         amenities: listingData.amenities.map((id) => new mongoose.Types.ObjectId(id)),  
+    //         amenities: listingData.amenities.map((id) => new mongoose.Types.ObjectId(id)),
     //       });
 
     //       const userId = new mongoose.Types.ObjectId(context.user._id);
@@ -163,22 +172,23 @@ const resolvers = {
     // },
 
     createListing: async (parent, { listingData }, context) => {
-      console.log("context", context.user);
+      console.log("listingdata", listingData);
       if (context.user) {
         try {
+          // convert price to a float
+          listingData.price = parseFloat(listingData.price);
           // Fetch all available amenities
           const availableAmenities = await Amenity.find({});
-          
+
           // Initialize listing amenities with all available amenities set to false
-          const amenities = availableAmenities.map(amenity => ({
-            amenity_id: amenity._id,
-            available: listingData.amenities.includes(amenity._id.toString())
-          }));
+          // const amenities = availableAmenities.map(amenity => ({
+          //   amenity_id: amenity._id,
+          //   available: listingData.amenities.includes(amenity._id.toString())
+          // }));
 
           const newListing = await Listing.create({
             user_id: context.user._id,
             ...listingData,
-            amenities,
           });
 
           const userId = new mongoose.Types.ObjectId(context.user._id);
@@ -188,10 +198,10 @@ const resolvers = {
             { new: true }
           ).populate("user_listings");
 
-          return newListing;  // Returning the created listing
+          return newListing; // Returning the created listing
         } catch (error) {
           console.log(error);
-          throw new Error('Error creating listing');
+          throw new Error("Error creating listing");
         }
       }
       throw new AuthenticationError("You must be logged in!");
@@ -268,7 +278,6 @@ const resolvers = {
             // .populate({ path: "notifications" })
             .populate({ path: "reviews" })
             .populate({ path: "payments" });
-          console.log("listing", listing);
           return listing;
         } catch (error) {
           console.error(error);
@@ -386,7 +395,7 @@ const resolvers = {
               payment_method: paymentData.payment_method,
               payment_status: paymentData.payment_status,
             },
-            {new: true}
+            { new: true }
           );
           return payment;
         } catch (error) {

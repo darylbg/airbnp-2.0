@@ -88,6 +88,7 @@ export const NEW_LISTING_MUTATION = gql`
       }
       availability
       price
+      created_at
       # reviews {
       #   created_at
       #   id
@@ -107,7 +108,6 @@ export const NEW_LISTING_MUTATION = gql`
       #   payment_status
       #   user_id
       # }
-      created_at
     }
   }
 `;

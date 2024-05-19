@@ -10,8 +10,6 @@ import Auth from "../../utils/auth";
 
 import "./SignInRegisterForms.css";
 import { login_user } from "../../reducers/authReducer";
-import { graphQLResultHasError } from "@apollo/client/utilities";
-import { TableIcon } from "@radix-ui/react-icons";
 
 export default function SignInForm({ handleSignInRegisterToggle }) {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
@@ -45,44 +43,48 @@ export default function SignInForm({ handleSignInRegisterToggle }) {
       );
       console.log("loggedin user data", loggedInUser.data.login.token);
       Auth.login(loggedInUser.data.login.token);
+      
       toast.success(<ToastComponent message="Successfully signed in."/>);
     } catch (error) {
       console.log("Sign in error:", error);
-      if (error.graphQLErrors && error.graphQLErrors.length > 0) {
-        const firstGraphQLErrorCode = error.graphQLErrors[0].extensions.code;
-        switch (firstGraphQLErrorCode) {
-          case "NO_USER_FOUND_ERROR":
-            setError("noUserFoundError", {
-              type: "noUserFoundError",
-              message: "User not found, please register",
-            });
-            break;
-          case "INCORRECT_PASSWORD_ERROR":
-            setError("incorrectPasswordError", {
-              type: "incorrectPasswordError",
-              message: "Incorrect password",
-            });
-            break;
-          default:
-            console.log("Unhandled GraphQL error:", error);
-            setError("otherLoginError", {
-              type: "otherLoginError",
-              message: "Something went wrong, please refresh the page and try again",
-            });
-        }
-      } else if (error.networkError) {
-        console.log("Network error:", error.networkError);
-        setError("networkError", {
-          type: "networkError",
-          message: "Network error occurred, please try again",
-        });
-      } else {
-        console.log("Unhandled non-GraphQL error:", error);
-        setError("otherLoginError", {
-          type: "otherLoginError",
-          message: "Something went wrong, please try again",
-        });
+      if (error.ApolloError) {
+        console.log("appollo error", error.ApolloError)
       }
+      // if (error.graphQLErrors && error.graphQLErrors.length > 0) {
+      //   const firstGraphQLErrorCode = error.graphQLErrors[0].extensions.code;
+      //   switch (firstGraphQLErrorCode) {
+      //     case "NO_USER_FOUND_ERROR":
+      //       setError("noUserFoundError", {
+      //         type: "noUserFoundError",
+      //         message: "User not found, please register",
+      //       });
+      //       break;
+      //     case "INCORRECT_PASSWORD_ERROR":
+      //       setError("incorrectPasswordError", {
+      //         type: "incorrectPasswordError",
+      //         message: "Incorrect password",
+      //       });
+      //       break;
+      //     default:
+      //       console.log("Unhandled GraphQL error:", error);
+      //       setError("otherLoginError", {
+      //         type: "otherLoginError",
+      //         message: "Something went wrong, please refresh the page and try again",
+      //       });
+      //   }
+      // } else if (error.networkError) {
+      //   console.log("Network error:", error.networkError);
+      //   setError("networkError", {
+      //     type: "networkError",
+      //     message: "Network error occurred, please try again",
+      //   });
+      // } else {
+      //   console.log("Unhandled non-GraphQL error:", error);
+      //   setError("otherLoginError", {
+      //     type: "otherLoginError",
+      //     message: "Something went wrong, please try again",
+      //   });
+      // }
     }
   };
   

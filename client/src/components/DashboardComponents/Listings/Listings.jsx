@@ -9,7 +9,6 @@ import "./Listings.css";
 
 export default function Listings() {
   const userListings = useSelector((state) => state.auth.user.user_listings);
-  console.log(userListings);
 
   const [newListingDialog, setNewListingDialog] = useState(false);
   const [filterDialog, setFilterDialog] = useState(false);
