@@ -25,6 +25,8 @@ export default function NewListing() {
     event.preventDefault();
     try {
       console.log(formData);
+      const price = +formData.price;
+      console.log(typeof price);
       const newListing = await newListingMutation({
         variables: {
           listingData: {
@@ -36,8 +38,8 @@ export default function NewListing() {
             // lat and long will be dynamically address when geolocation is added
             latitude: 10,
             longitude: 11,
-            availability: formData.availability,
-            price: 4,
+            availability: false,
+            price: price,
             amenities: [],
           },
         },
@@ -51,11 +53,11 @@ export default function NewListing() {
 
   return (
     <div className="new-listing-container">
-      <Form.Root onSubmit={handleSubmit(handleNewListing)}>
-        <Form.Field className="" name="listing_title">
+      <Form.Root className="new-listing-form" onSubmit={handleSubmit(handleNewListing)}>
+        <Form.Field className="new-listing-form-field" name="listing_title">
           <Form.Label>listing title</Form.Label>
           <Form.Control asChild>
-            <input
+            <textarea
               type="text"
               {...register("listing_title", {
                 required: "This is required",
@@ -64,10 +66,10 @@ export default function NewListing() {
           </Form.Control>
           <div className="field-message">{errors.listing_title?.message}</div>
         </Form.Field>
-        <Form.Field className="" name="listing_description">
+        <Form.Field className="new-listing-form-field" name="listing_description">
           <Form.Label>listing description</Form.Label>
           <Form.Control asChild>
-            <input
+            <textarea
               type="text"
               {...register("listing_description", {
                 required: "This is required",
@@ -78,10 +80,10 @@ export default function NewListing() {
             {errors.listing_description?.message}
           </div>
         </Form.Field>
-        <Form.Field className="" name="contact_method">
+        <Form.Field className="new-listing-form-field" name="contact_method">
           <Form.Label>listing contact method</Form.Label>
           <Form.Control asChild>
-            <input
+            <textarea
               type="text"
               {...register("contact_method", {
                 required: "This is required",
@@ -90,7 +92,7 @@ export default function NewListing() {
           </Form.Control>
           <div className="field-message">{errors.contact_method?.message}</div>
         </Form.Field>
-        <Form.Field className="" name="listing_image">
+        <Form.Field className="new-listing-form-field" name="listing_image">
           <Form.Label>listing image</Form.Label>
           <Form.Control asChild>
             <input
@@ -102,7 +104,7 @@ export default function NewListing() {
           </Form.Control>
           <div className="field-message">{errors.listing_image?.message}</div>
         </Form.Field>
-        <Form.Field className="" name="address">
+        <Form.Field className="new-listing-form-field" name="address">
           <Form.Label>listing address</Form.Label>
           <Form.Control asChild>
             <input
@@ -114,14 +116,7 @@ export default function NewListing() {
           </Form.Control>
           <div className="field-message">{errors.address?.message}</div>
         </Form.Field>
-        <Form.Field className="" name="availability">
-          <Form.Label>listing availability</Form.Label>
-          <Form.Control asChild>
-            <input type="checkbox" {...register("availability")} />
-          </Form.Control>
-          <div className="field-message">{errors.availability?.message}</div>
-        </Form.Field>
-        <Form.Field className="" name="price">
+        <Form.Field className="new-listing-form-field price-form-field" name="price">
           <Form.Label>listing price</Form.Label>
           <Form.Control asChild>
             <input
@@ -133,7 +128,7 @@ export default function NewListing() {
           </Form.Control>
           <div className="field-message">{errors.price?.message}</div>
         </Form.Field>
-        <Form.Field className="" name="availability">
+        <Form.Field className="new-listing-form-field" name="availability">
           <Form.Submit asChild>
             <button>add new listing</button>
           </Form.Submit>
