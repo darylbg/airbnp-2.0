@@ -45,10 +45,10 @@ export default function SignInForm({ handleSignInRegisterToggle }) {
       Auth.login(loggedInUser.data.login.token);
       
       toast.success(<ToastComponent message="Successfully signed in."/>);
-    } catch (error) {
+    } catch ({error, graphQLErrors, networkError}) {
       console.log("Sign in error:", error);
-      if (error.ApolloError) {
-        console.log("appollo error", error.ApolloError)
+      if (graphQLErrors && graphQLErrors.length > 0) {
+        console.log("graphQLErrors error", graphQLErrors)
       }
       // if (error.graphQLErrors && error.graphQLErrors.length > 0) {
       //   const firstGraphQLErrorCode = error.graphQLErrors[0].extensions.code;
