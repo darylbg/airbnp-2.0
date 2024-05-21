@@ -1,28 +1,62 @@
 .new-listing-container {
-    display: flex;
-    flex: 1;
-    justify-content: center;
+  display: flex;
+  flex: 1;
+  justify-content: center;
 }
 
 .new-listing-form {
-    width: 100%;
-    max-width: 600px;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 .new-listing-form-field {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .price-form-field {
-    flex-direction: row;
+  flex-direction: row;
 }
 
 .new-listing-form-field textarea {
-    resize: none;
+  resize: none;
 }
 
+/* image upload widgets */
+
+
+
+.image-upload-widgets {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  height: 250px;
+}
+
+.other-upload-widgets-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.image-upload-widget input[type="file"] {
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.image-upload-widget img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

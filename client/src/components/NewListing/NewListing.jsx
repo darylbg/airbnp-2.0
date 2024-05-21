@@ -1,15 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { ApolloError, useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
+import { Cloudinary } from "@cloudinary/url-gen";
 import * as Form from "@radix-ui/react-form";
 import toast from "react-hot-toast";
 import ToastComponent from "../PrimitiveComponents/ToastComponent/ToastComponent";
 import { NEW_LISTING_MUTATION } from "../../utils/mutations";
+import ImageUploadWidget from "../PrimitiveComponents/ImageUploadWidget/ImageUploadWidget";
 import "./NewListing.css";
 
 export default function NewListing() {
+  const [selectedImages, setSelectedImages] = useState([
+    null,
+    null,
+    null,
+    null,
+    null,
+  ]);
   const dispatch = useDispatch();
+
+  const handleImageSelect = (image, index) => {
+    setSelectedImages((prevImages) => {
+      const newImages = [...prevImages];
+      newImages[index] = image;
+      return newImages;
+    });
+  };
+  console.log("selected images", selectedImages);
+
+  const handleImageRemove = (index) => {
+    const updatedImages = [...selectedImages];
+    updatedImages[index] = null;
+    setSelectedImages(updatedImages);
+  };
 
   const {
     register,
@@ -18,6 +42,8 @@ export default function NewListing() {
     clearErrors,
     formState: { errors },
   } = useForm();
+
+  const cld = new Cloudinary({ cloud: { cloudName: "darylb" } });
 
   const [newListingMutation] = useMutation(NEW_LISTING_MUTATION);
 
@@ -53,7 +79,10 @@ export default function NewListing() {
 
   return (
     <div className="new-listing-container">
-      <Form.Root className="new-listing-form" onSubmit={handleSubmit(handleNewListing)}>
+      <Form.Root
+        className="new-listing-form"
+        onSubmit={handleSubmit(handleNewListing)}
+      >
         <Form.Field className="new-listing-form-field" name="listing_title">
           <Form.Label>listing title</Form.Label>
           <Form.Control asChild>
@@ -66,7 +95,10 @@ export default function NewListing() {
           </Form.Control>
           <div className="field-message">{errors.listing_title?.message}</div>
         </Form.Field>
-        <Form.Field className="new-listing-form-field" name="listing_description">
+        <Form.Field
+          className="new-listing-form-field"
+          name="listing_description"
+        >
           <Form.Label>listing description</Form.Label>
           <Form.Control asChild>
             <textarea
@@ -93,15 +125,29 @@ export default function NewListing() {
           <div className="field-message">{errors.contact_method?.message}</div>
         </Form.Field>
         <Form.Field className="new-listing-form-field" name="listing_image">
-          <Form.Label>listing image</Form.Label>
-          <Form.Control asChild>
-            <input
-              type="text"
-              {...register("listing_image", {
-                required: "This is required",
-              })}
-            />
-          </Form.Control>
+          <Form.Label>Listing Images</Form.Label>
+          <div className="image-upload-widgets">
+            <div className="first-image-widget">
+              <ImageUploadWidget
+                index={0}
+                image={selectedImages[0]}
+                onImageSelect={handleImageSelect}
+                onImageRemove={handleImageRemove}
+              />
+            </div>
+            <div className="other-upload-widgets-grid">
+              {selectedImages.slice(1).map((image, index) => (
+                <div key={index + 1} className="image-upload-widget-container">
+                  <ImageUploadWidget
+                    index={index + 1}
+                    image={image}
+                    onImageSelect={handleImageSelect}
+                    onImageRemove={handleImageRemove}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
           <div className="field-message">{errors.listing_image?.message}</div>
         </Form.Field>
         <Form.Field className="new-listing-form-field" name="address">
@@ -116,7 +162,10 @@ export default function NewListing() {
           </Form.Control>
           <div className="field-message">{errors.address?.message}</div>
         </Form.Field>
-        <Form.Field className="new-listing-form-field price-form-field" name="price">
+        <Form.Field
+          className="new-listing-form-field price-form-field"
+          name="price"
+        >
           <Form.Label>listing price</Form.Label>
           <Form.Control asChild>
             <input

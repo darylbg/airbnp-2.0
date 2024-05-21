@@ -1,0 +1,44 @@
+.image-preview {
+  height: 100px;
+  width: 100px;
+}
+
+/* ImageUploadWidget.css */
+.image-upload-widget {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 1px dashed #ccc; /* Adjust as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.image-upload-widget input[type="file"] {
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+}
+
+.image-upload-widget span {
+  color: #aaa;
+  text-align: center;
+}
+
+.image-remove-button {
+  z-index: 10;
+  display: none !important;
+}
+
+.image-remove-button span {
+    color: var(--red);
+  }
+
+.image-upload-widget:hover .image-remove-button {
+  display: flex !important;
+}
