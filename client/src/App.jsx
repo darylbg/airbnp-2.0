@@ -7,7 +7,7 @@ import {
 } from "@apollo/client";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { setContext } from "@apollo/client/link/context";
-import { Toaster } from 'react-hot-toast';
+import { Toaster } from "react-hot-toast";
 
 import Home from "./pages/Home/Home";
 import About from "./pages/About";
@@ -42,7 +42,7 @@ const authLink = setContext((_, { headers }) => {
     headers: {
       ...headers,
       // authorization: token ? `${token}` : "",
-      authorization: token ? `Bearer ${token}` : '',
+      authorization: token ? `Bearer ${token}` : "",
     },
   };
 });
@@ -53,9 +53,22 @@ const client = new ApolloClient({
 });
 
 function App() {
+  const [windowSize, setWindowSize] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setWindowSize(window.innerWidth);
+    }
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    }
+  }, []);
+  console.log("window size", windowSize)
+
   return (
     <ApolloProvider client={client}>
-
       <Router>
         <div className="app-div">
           <Navbar />
@@ -73,7 +86,7 @@ function App() {
               </Route>
 
               <Route path="profile" element={<Profile />}></Route>
-              
+
               <Route path="account" element={<Account />}>
                 <Route path="" element={<AccountComponentsMenu />} />
                 <Route path="personal-info" element={<PersonalInfo />} />
@@ -93,11 +106,12 @@ function App() {
             <MobileNavbar />
           </div>
           <Toaster
-          position="bottom-right" 
-          toastOptions={{
-            duration: 5000,
-            className: "toast"
-          }}/>
+            position={windowSize > 768 ? "bottom-right" : "top-right"}
+            toastOptions={{
+              duration: 5000,
+              className: "toast",
+            }}
+          />
         </div>
       </Router>
     </ApolloProvider>

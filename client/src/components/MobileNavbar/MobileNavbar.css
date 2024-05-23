@@ -19,6 +19,10 @@
     width: 100%;
 }
 
+.mobile-navbar-item .active {
+    color: var(--blue);
+}
+
 .mobile-navbar-link {
     text-decoration: none;
     display: flex;

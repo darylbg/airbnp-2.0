@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -8,7 +8,7 @@ import authService from "../../utils/auth";
 
 import SignInForm from "../SignInForm/SignInForm";
 import RegisterForm from "../RegisterForm/RegisterForm";
-import DialogComponent from "../PrimitiveComponents/DialogComponent/DialogComponent"
+import DialogComponent from "../PrimitiveComponents/DialogComponent/DialogComponent";
 import Logo from "../../assets/images/logo_colour_50px.png";
 import "./Navbar.css";
 import toast from "react-hot-toast";
@@ -35,9 +35,9 @@ export default function Navbar({}) {
     const handlePageScroll = (event) => {
       window.scrollY > 0 ? setScrolled(true) : setScrolled(false);
     };
-    window.addEventListener('scroll', handlePageScroll);
+    window.addEventListener("scroll", handlePageScroll);
     return () => {
-      window.removeEventListener('scroll', handlePageScroll);
+      window.removeEventListener("scroll", handlePageScroll);
     };
   }, []);
 
@@ -52,15 +52,18 @@ export default function Navbar({}) {
     authService.logout().then(() => {
       window.location.assign("/"); // This reloads the page and redirects to the root URL
     });
-    // navigate("/");
   };
 
   return (
     <>
-      <NavigationMenu.Root className={`navigation-menu-root ${scrolled ? "window-scrolled" : "" }`}>
+      <NavigationMenu.Root
+        className={`navigation-menu-root ${scrolled ? "window-scrolled" : ""}`}
+      >
         {/* logo */}
         <div className="navigation-menu-logo">
-          <Link to="/"><img src={Logo}></img>AIRBNP</Link>
+          <Link to="/">
+            <img src={Logo}></img>AIRBNP
+          </Link>
         </div>
         {/* centered search button */}
         <div className="navigation-menu-search">
@@ -68,40 +71,48 @@ export default function Navbar({}) {
             Search
             {/* <MagnifyingGlassIcon /> */}
             <span className="material-symbols-outlined">
-              <span className="material-symbols-outlined">location_searching</span>
+              <span className="material-symbols-outlined">
+                location_searching
+              </span>
             </span>
           </Link>
         </div>
         {/* right aligned menu */}
         <NavigationMenu.List className="navigation-menu-list">
           <NavigationMenu.Item className="navigation-menu-item">
-            <NavigationMenu.Link asChild>
-              <Link to="/" className="navigation-menu-link">
-                Home
-              </Link>
-            </NavigationMenu.Link>
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                `navigation-menu-link ${isActive ? "active" : ""}`
+              }
+            >
+              Home
+            </NavLink>
           </NavigationMenu.Item>
           <NavigationMenu.Item className="navigation-menu-item">
-            <NavigationMenu.Link asChild>
-              <Link to="/about" className="navigation-menu-link">
-                About us
-              </Link>
-            </NavigationMenu.Link>
+            <NavLink
+              to="/about"
+              className={({ isActive }) =>
+                `navigation-menu-link ${isActive ? "active" : ""}`
+              }
+            >
+              About us
+            </NavLink>
           </NavigationMenu.Item>
           <NavigationMenu.Item className="navigation-menu-item">
-            <NavigationMenu.Link asChild>
-              <Link to="/contact" className="navigation-menu-link">
-                Contact us
-              </Link>
-            </NavigationMenu.Link>
+            <NavLink
+              to="/contact"
+              className={({ isActive }) =>
+                `navigation-menu-link ${isActive ? "active" : ""}`
+              }
+            >
+              Contact us
+            </NavLink>
           </NavigationMenu.Item>
           {isLoggedIn ? (
             <NavigationMenu.Item className="navigation-menu-item navigation-menu-dropdown">
               <NavigationMenu.Trigger className="navigation-menu-trigger">
-                <img
-                  src={user.user_image}
-                  alt="Account"
-                />
+                <img src={user.user_image} alt="Account" />
                 {/* <span className="material-symbols-outlined">menu</span> */}
                 <HamburgerMenuIcon
                   className="hamburger-menu-icon"
@@ -110,44 +121,48 @@ export default function Navbar({}) {
               </NavigationMenu.Trigger>
               <NavigationMenu.Content className="navigation-menu-content">
                 <NavigationMenu.Item className="navigation-menu-item" asChild>
-                  <NavigationMenu.Link asChild>
-                    <Link
-                      to="/Account"
-                      className="navigation-menu-link dropdown-menu-link"
-                    >
-                      Account
-                    </Link>
-                  </NavigationMenu.Link>
+                  <NavLink
+                    to="/account"
+                    className={({ isActive }) =>
+                      `navigation-menu-link dropdown-menu-link ${
+                        isActive ? "active" : ""
+                      }`
+                    }
+                  >
+                    Account
+                  </NavLink>
                 </NavigationMenu.Item>
                 <NavigationMenu.Item className="navigation-menu-item" asChild>
-                  <NavigationMenu.Link asChild>
-                    <Link
-                      to="/Profile"
-                      className="navigation-menu-link dropdown-menu-link"
-                    >
-                      Profile
-                    </Link>
-                  </NavigationMenu.Link>
+                  <NavLink
+                    to="/profile"
+                    className={({ isActive }) =>
+                      `navigation-menu-link dropdown-menu-link ${
+                        isActive ? "active" : ""
+                      }`
+                    }
+                  >
+                    Profile
+                  </NavLink>
                 </NavigationMenu.Item>
                 <NavigationMenu.Item className="navigation-menu-item" asChild>
-                  <NavigationMenu.Link asChild>
-                    <Link
-                      to="/dashboard"
-                      className="navigation-menu-link dropdown-menu-link"
-                    >
-                      Dashboard
-                    </Link>
-                  </NavigationMenu.Link>
+                  <NavLink
+                    to="/dashboard"
+                    className={({ isActive }) =>
+                      `navigation-menu-link dropdown-menu-link ${
+                        isActive ? "active" : ""
+                      }`
+                    }
+                  >
+                    Dashboard
+                  </NavLink>
                 </NavigationMenu.Item>
                 <NavigationMenu.Item className="navigation-menu-item" asChild>
-                  <NavigationMenu.Link asChild>
                     <Link
                       className="navigation-menu-link dropdown-menu-link"
                       onClick={logout}
                     >
                       Logout
                     </Link>
-                  </NavigationMenu.Link>
                 </NavigationMenu.Item>
               </NavigationMenu.Content>
             </NavigationMenu.Item>

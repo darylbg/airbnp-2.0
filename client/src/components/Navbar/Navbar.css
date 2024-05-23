@@ -77,14 +77,20 @@
   list-style-type: none;
 }
 
-.navigation-menu-link {
+.navigation-menu-item .active {
+  color: var(--blue);
+}
+
+.navigation-menu-link,
+.dropdown-menu-link {
   text-decoration: none;
   color: var(--black-75);
   font-family: "Inter", sans-serif;
   font-weight: 500;
 }
 
-.navigation-menu-link:hover {
+.navigation-menu-link:hover,
+.dropdown-menu-link:hover {
   color: var(--blue-darker);
   transition: all ease-in-out 0.1s;
 }
