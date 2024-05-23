@@ -13,7 +13,8 @@ const listingSchema = new Schema(
       type: String,
     },
     listing_image: {
-      type: String,
+      type: [String],
+      required: true
     },
     address: {
       type: String,

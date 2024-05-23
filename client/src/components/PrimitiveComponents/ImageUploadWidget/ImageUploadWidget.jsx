@@ -26,7 +26,6 @@ export default function ImageUploadWidget({
   }, [selectedFile]);
 
   const onSelectFile = (e) => {
-    console.log("file selected");
     if (!e.target.files || e.target.files.length === 0) {
       setSelectedFile(undefined);
       onImageSelect(null, index);

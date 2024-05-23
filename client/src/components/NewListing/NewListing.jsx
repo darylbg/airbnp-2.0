@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { ApolloError, useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
-import { Cloudinary } from "@cloudinary/url-gen";
+// import { Cloudinary } from "@cloudinary/url-gen";
 import * as Form from "@radix-ui/react-form";
 import toast from "react-hot-toast";
 import ToastComponent from "../PrimitiveComponents/ToastComponent/ToastComponent";
@@ -18,6 +18,7 @@ export default function NewListing() {
     null,
     null,
   ]);
+  // console.log(selectedImages);
   const dispatch = useDispatch();
 
   const handleImageSelect = (image, index) => {
@@ -27,7 +28,6 @@ export default function NewListing() {
       return newImages;
     });
   };
-  console.log("selected images", selectedImages);
 
   const handleImageRemove = (index) => {
     const updatedImages = [...selectedImages];
@@ -43,23 +43,42 @@ export default function NewListing() {
     formState: { errors },
   } = useForm();
 
-  const cld = new Cloudinary({ cloud: { cloudName: "darylb" } });
-
   const [newListingMutation] = useMutation(NEW_LISTING_MUTATION);
+
+  // function to convert images to base64 urls
+  const imageToBase64 = (image) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+      reader.readAsDataURL(image);
+    });
+  };
 
   const handleNewListing = async (formData, event) => {
     event.preventDefault();
+    
     try {
-      console.log(formData);
-      const price = +formData.price;
-      console.log(typeof price);
+      const base64URLs = await Promise.all(
+        selectedImages.map(async (image) => {
+          if (image) {
+            return await imageToBase64(image);
+          } else {
+            return null;
+          }
+        })
+      );
+      console.log(base64URLs);
+      let listingImages = base64URLs.filter(item => item !== null);
+      // console.log(listingImages);
+      let price = +formData.price;
       const newListing = await newListingMutation({
         variables: {
           listingData: {
             listing_title: formData.listing_title,
             listing_description: formData.listing_description,
             contact_method: formData.contact_method,
-            listing_image: formData.listing_image,
+            listing_image: listingImages,
             address: formData.address,
             // lat and long will be dynamically address when geolocation is added
             latitude: 10,
@@ -70,11 +89,10 @@ export default function NewListing() {
           },
         },
       });
-      console.log("successfully added listing", newListing);
+      console.log("added new listing", newListing);
     } catch (error) {
       console.log(error);
     }
-    console.log("added new listing");
   };
 
   return (

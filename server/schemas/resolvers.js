@@ -9,7 +9,27 @@ const {
 } = require("../models");
 const { signToken } = require("../utils/auth");
 const { model, default: mongoose } = require("mongoose");
-const { findByIdAndUpdate } = require("../models/User");
+const cloudinary = require("cloudinary");
+// const { findByIdAndUpdate } = require("../models/User");
+
+// configure cloudinary
+cloudinary.config({
+  cloud_name: "darylb",
+  api_key: process.env.cloudinary_api_key,
+  api_secret: process.env.cloudinary_api_secret,
+  secure: true,
+});
+
+// upload preset
+// const uploadFile = async (file) => {
+//   try {
+//     const result = await cloudinary.uploader.upload(file.path, { folder: 'your-folder' });
+//     return result.secure_url;
+//   } catch (error) {
+//     console.error('Error uploading file to Cloudinary:', error);
+//     return null;
+//   }
+// };
 
 const resolvers = {
   Query: {
@@ -65,29 +85,29 @@ const resolvers = {
     login: async (parent, { email, password }) => {
       try {
         const user = await User.findOne({ email }).populate({
-          path: 'user_listings',
+          path: "user_listings",
         });
 
         if (!user) {
           throw new ApolloError(
-            'User not found, please register',
-            'NO_USER_FOUND_ERROR'
+            "User not found, please register",
+            "NO_USER_FOUND_ERROR"
           );
         }
 
         const correctPw = await user.isCorrectPassword(password);
         if (!correctPw) {
           throw new ApolloError(
-            'Incorrect password',
-            'INCORRECT_PASSWORD_ERROR'
+            "Incorrect password",
+            "INCORRECT_PASSWORD_ERROR"
           );
         }
 
         const token = signToken(user);
-        console.log('token on login:', JSON.stringify(token));
+        console.log("token on login:", JSON.stringify(token));
         return { token, user };
       } catch (error) {
-        console.error('Error during login:', error);
+        console.error("Error during login:", error);
         throw error;
       }
     },
@@ -141,51 +161,46 @@ const resolvers = {
       }
       throw new AuthenticationError("You must be logged in!");
     },
-    // createListing: async (parent, { listingData }, context) => {
-    //   console.log("listing data", listingData);
-    //   if (context.user) {
-    //     try {
-    //       const newListing = await Listing.create({
-    //         user_id: context.user._id,
-    //         ...listingData,
-    //         amenities: listingData.amenities.map((id) => new mongoose.Types.ObjectId(id)),
-    //       });
-
-    //       const userId = new mongoose.Types.ObjectId(context.user._id);
-    //       const updatedUser = await User.findOneAndUpdate(
-    //         { _id: userId },
-    //         { $addToSet: { user_listings: newListing } },
-    //         { new: true }
-    //       ).populate("user_listings");
-
-    //       // return updatedUser;
-    //       return newListing;
-    //     } catch (error) {
-    //       console.log(error);
-    //       throw error;
-    //     }
-    //   }
-    //   throw new AuthenticationError("You must be logged in!");
-    // },
 
     createListing: async (parent, { listingData }, context) => {
-      console.log("listingdata", listingData);
       if (context.user) {
         try {
+          // Check if listing_data contains listing_image field
+          if (
+            !listingData.listing_image ||
+            listingData.listing_image.length === 0
+          ) {
+            throw new Error("Listing images are required.");
+          }
+
+          // Upload images to Cloudinary
+          const uploadedImages = await Promise.all(
+            listingData.listing_image.map(async (image) => {
+              try {
+                const uploadedResponse = await cloudinary.uploader.upload(
+                  image,
+                  {
+                    upload_preset: "n5btmxuv",
+                  }
+                );
+                return uploadedResponse.secure_url;
+              } catch (uploadError) {
+                console.error(
+                  "Error uploading image to Cloudinary:",
+                  uploadError
+                );
+                throw new Error("Failed to upload one or more images.");
+              }
+            })
+          );
+
           // convert price to a float
           listingData.price = parseFloat(listingData.price);
-          // Fetch all available amenities
-          const availableAmenities = await Amenity.find({});
-
-          // Initialize listing amenities with all available amenities set to false
-          // const amenities = availableAmenities.map(amenity => ({
-          //   amenity_id: amenity._id,
-          //   available: listingData.amenities.includes(amenity._id.toString())
-          // }));
 
           const newListing = await Listing.create({
             user_id: context.user._id,
             ...listingData,
+            listing_image: uploadedImages,
           });
 
           const userId = new mongoose.Types.ObjectId(context.user._id);
@@ -195,7 +210,8 @@ const resolvers = {
             { new: true }
           ).populate("user_listings");
 
-          return newListing; // Returning the created listing
+          return newListing;
+          console.log(newListing);
         } catch (error) {
           console.log(error);
           throw new Error("Error creating listing");

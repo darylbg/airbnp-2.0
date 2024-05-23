@@ -24,7 +24,7 @@ const typeDefs = gql`
     listing_title: String!
     listing_description: String
     contact_method: String
-    listing_image: String
+    listing_image: [String]
     address: String!
     latitude: Int!
     longitude: Int!
@@ -114,7 +114,7 @@ const typeDefs = gql`
     listing_title: String!
     listing_description: String
     contact_method: String
-    listing_image: String
+    listing_image: [String]
     address: String!
     latitude: Int!
     longitude: Int!
