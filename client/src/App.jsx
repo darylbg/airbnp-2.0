@@ -25,6 +25,11 @@ import PrivacyPolicy from "./components/AccountSubComponents/PrivacyPolicy";
 import TermsAndConditions from "./components/AccountSubComponents/TermsAndConditions";
 import MobileNavbar from "./components/MobileNavbar";
 import "./Global.css";
+import Bookings from "./components/DashboardComponents/Bookings";
+import Listings from "./components/DashboardComponents/Listings/Listings";
+import Notifications from "./components/DashboardComponents/Notifications";
+import Payments from "./components/DashboardComponents/Payments";
+import Reviews from "./components/DashboardComponents/Reviews";
 
 const httpLink = createHttpLink({
   uri: "http://localhost:3001/graphql",
@@ -59,8 +64,16 @@ function App() {
               <Route path="/" element={<Home />}></Route>
               <Route path="about" element={<About />}></Route>
               <Route path="contact" element={<Contact />}></Route>
-              <Route path="dashboard" element={<Dashboard />}></Route>
+              <Route path="dashboard" element={<Dashboard />}>
+                <Route path="bookings" element={<Bookings />} />
+                <Route path="listings" element={<Listings />} />
+                <Route path="notifications" element={<Notifications />} />
+                <Route path="payments" element={<Payments />} />
+                <Route path="reviews" element={<Reviews />} />
+              </Route>
+
               <Route path="profile" element={<Profile />}></Route>
+              
               <Route path="account" element={<Account />}>
                 <Route path="" element={<AccountComponentsMenu />} />
                 <Route path="personal-info" element={<PersonalInfo />} />

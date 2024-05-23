@@ -51,19 +51,39 @@
   line-height: 100%;
 }
 
+/* test */
+.dashboard-menu-item a {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: var(--white);
+  border: none;
+  padding: 10px 10px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  line-height: 100%;
+  text-decoration: none;
+}
+
 .dashboard-menu-item button:hover {
   cursor: pointer;
   background-color: var(--black-10);
 }
 
-.active-dashboard-tab {
+/* test */
+.dashboard-menu-item a:hover {
+  cursor: pointer;
+  background-color: var(--black-10);
+}
+
+.dashboard-menu-item .active {
   background: linear-gradient(var(--black-10), var(--black-10)) padding-box,
     linear-gradient(to right, var(--pink), var(--black-25) 50%) border-box !important;
   border-radius: 10px !important;
   border: 1px solid transparent !important;
 }
 
-.active-dashboard-tab .material-symbols-outlined {
+.dashboard-menu-item .active .material-symbols-outlined {
   color: var(--pink) !important;
 }
 
@@ -73,7 +93,21 @@
   font-weight: 200px;
 }
 
+/* test */
+.dashboard-menu-item a .material-symbols-outlined {
+  margin-right: 20px;
+  color: var(--black-100);
+  font-weight: 200px;
+}
+
 .dashboard-menu-item button .text {
+  color: var(--black-100);
+  font-weight: 400;
+  font-size: 1rem;
+}
+
+/* test */
+.dashboard-menu-item a .text {
   color: var(--black-100);
   font-weight: 400;
   font-size: 1rem;

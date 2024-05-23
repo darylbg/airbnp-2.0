@@ -57,7 +57,6 @@ export default function NewListing() {
 
   const handleNewListing = async (formData, event) => {
     event.preventDefault();
-    
     try {
       const base64URLs = await Promise.all(
         selectedImages.map(async (image) => {
@@ -68,7 +67,7 @@ export default function NewListing() {
           }
         })
       );
-      console.log(base64URLs);
+
       let listingImages = base64URLs.filter(item => item !== null);
       // console.log(listingImages);
       let price = +formData.price;
@@ -104,7 +103,7 @@ export default function NewListing() {
         <Form.Field className="new-listing-form-field" name="listing_title">
           <Form.Label>listing title</Form.Label>
           <Form.Control asChild>
-            <textarea
+            <input
               type="text"
               {...register("listing_title", {
                 required: "This is required",

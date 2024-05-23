@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { Link, Outlet, useLocation, NavLink } from "react-router-dom";
 import LoginRequiredPrompt from "../../components/LoginRequiredPrompt";
 import Bookings from "../../components/DashboardComponents/Bookings";
 import Listings from "../../components/DashboardComponents/Listings/Listings";
@@ -9,18 +10,12 @@ import Reviews from "../../components/DashboardComponents/Reviews";
 import "./Dashboard.css";
 export default function Dashboard() {
   const currentUser = useSelector((state) => state.auth);
-  const [activeDashboardTab, setActiveDashboardTab] = useState(0);
   const [mobileDashboardMenu, setMobileDashboardMenu] = useState(false);
-
-  const handleActiveTab = (e) => {
-    e.preventDefault();
-  };
 
   const toggleMobileDashboardMenu = (e) => {
     e.preventDefault();
     setMobileDashboardMenu(!mobileDashboardMenu);
   };
-
   return (
     <>
       <div className="dashboard">
@@ -38,73 +33,66 @@ export default function Dashboard() {
               </div>
               <div className="dashboard-menu-items">
                 <div className="dashboard-menu-item">
-                  <button
-                    onClick={() => {
-                      setActiveDashboardTab(0);
-                      setMobileDashboardMenu(false);
-                    }}
-                    className={`clickable
-                    ${activeDashboardTab === 0 ? "active-dashboard-tab" : ""}`}
+                  <NavLink
+                    onClick={() => setMobileDashboardMenu(false)}
+                    to="bookings"
+                    className={({ isActive }) =>
+                      `clickable ${isActive ? "active" : ""}`
+                    }
                   >
                     <span className="material-symbols-outlined">today</span>
                     <span className="text">Bookings</span>
-                  </button>
+                  </NavLink>
                 </div>
                 <div className="dashboard-menu-item">
-                  <button
-                    onClick={() => {
-                      setActiveDashboardTab(1);
-                      setMobileDashboardMenu(false);
-                    }}
-                    className={`clickable
-                    ${activeDashboardTab === 1 ? "active-dashboard-tab" : ""}`}
+                  <NavLink
+                    onClick={() => setMobileDashboardMenu(false)}
+                    to="listings"
+                    className={({ isActive }) =>
+                      `clickable ${isActive ? "active" : ""}`
+                    }
                   >
                     <span className="material-symbols-outlined">list</span>
                     <span className="text">Listings</span>
-                  </button>
+                  </NavLink>
                 </div>
                 <div className="dashboard-menu-item">
-                  <button
-                    onClick={() => {
-                      setActiveDashboardTab(2);
-                      setMobileDashboardMenu(false);
-                    }}
-                    className={`clickable
-                    ${activeDashboardTab === 2 ? "active-dashboard-tab" : ""}`}
+                  <NavLink
+                    onClick={() => setMobileDashboardMenu(false)}
+                    to="notifications"
+                    className={({ isActive }) =>
+                      `clickable ${isActive ? "active" : ""}`
+                    }
                   >
                     <span className="material-symbols-outlined">
-                      Notifications
+                      notifications
                     </span>
                     <span className="text">Notifications</span>
-                  </button>
+                  </NavLink>
                 </div>
                 <div className="dashboard-menu-item">
-                  <button
-                    onClick={() => {
-                      setActiveDashboardTab(3);
-                      setMobileDashboardMenu(false);
-                    }}
-                    className={`clickable
-                    ${activeDashboardTab === 3 ? "active-dashboard-tab" : ""}`}
+                  <NavLink
+                    onClick={() => setMobileDashboardMenu(false)}
+                    to="payments"
+                    className={({ isActive }) =>
+                      `clickable ${isActive ? "active" : ""}`
+                    }
                   >
                     <span className="material-symbols-outlined">payments</span>
                     <span className="text">Payments</span>
-                  </button>
+                  </NavLink>
                 </div>
                 <div className="dashboard-menu-item">
-                  <button
-                    onClick={() => {
-                      setActiveDashboardTab(4);
-                      setMobileDashboardMenu(false);
-                    }}
-                    className={`clickable
-                      ${
-                        activeDashboardTab === 4 ? "active-dashboard-tab" : ""
-                      }`}
+                  <NavLink
+                    onClick={() => setMobileDashboardMenu(false)}
+                    to="reviews"
+                    className={({ isActive }) =>
+                      `clickable ${isActive ? "active" : ""}`
+                    }
                   >
                     <span className="material-symbols-outlined">reviews</span>
                     <span className="text">Reviews</span>
-                  </button>
+                  </NavLink>
                 </div>
               </div>
               <div className="dashboard-menu-footer">
@@ -126,14 +114,14 @@ export default function Dashboard() {
               <div className="menu-header">
                 <h3>Dashboard</h3>
               </div>
-              <img src={currentUser.user.user_image} alt="user avatar" className="menu-avatar" />
+              <img
+                src={currentUser.user.user_image}
+                alt="user avatar"
+                className="menu-avatar"
+              />
             </div>
             <div className="dashboard-content">
-              {activeDashboardTab === 0 ? <Bookings /> : null}
-              {activeDashboardTab === 1 ? <Listings /> : null}
-              {activeDashboardTab === 2 ? <Notifications /> : null}
-              {activeDashboardTab === 3 ? <Payments /> : null}
-              {activeDashboardTab === 4 ? <Reviews /> : null}
+              <Outlet />
             </div>
           </>
         ) : (

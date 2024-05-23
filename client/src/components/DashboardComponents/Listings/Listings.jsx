@@ -62,9 +62,9 @@ export default function Listings() {
           </div>
         </div>
       </div>
-      <div className="dashboard-content">
+      <div className="dashboard-body">
         {userListings && userListings.length ? (
-          <div className="">listings</div>
+          <div className="listings-display">listings</div>
         ) : (
           <Link
             className="no-listings-link"

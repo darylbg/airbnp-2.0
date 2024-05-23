@@ -56,6 +56,7 @@ export default function DialogComponent({
           <h4 className="text">{dialogHeader}</h4>
           <WindowControlButton action={closeDialog} icon={icon} />
         </div>
+        
         <div
           ref={dialogBodyRef}
           className="dialog-body"

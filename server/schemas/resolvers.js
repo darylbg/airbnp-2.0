@@ -9,27 +9,7 @@ const {
 } = require("../models");
 const { signToken } = require("../utils/auth");
 const { model, default: mongoose } = require("mongoose");
-const cloudinary = require("cloudinary");
-// const { findByIdAndUpdate } = require("../models/User");
-
-// configure cloudinary
-cloudinary.config({
-  cloud_name: "darylb",
-  api_key: process.env.cloudinary_api_key,
-  api_secret: process.env.cloudinary_api_secret,
-  secure: true,
-});
-
-// upload preset
-// const uploadFile = async (file) => {
-//   try {
-//     const result = await cloudinary.uploader.upload(file.path, { folder: 'your-folder' });
-//     return result.secure_url;
-//   } catch (error) {
-//     console.error('Error uploading file to Cloudinary:', error);
-//     return null;
-//   }
-// };
+const {cloudinary} = require("../config/cloudinary");
 
 const resolvers = {
   Query: {
