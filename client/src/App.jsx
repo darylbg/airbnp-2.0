@@ -27,9 +27,9 @@ import MobileNavbar from "./components/MobileNavbar";
 import "./Global.css";
 import Bookings from "./components/DashboardComponents/Bookings/Bookings";
 import Listings from "./components/DashboardComponents/Listings/Listings";
-import Notifications from "./components/DashboardComponents/Notifications";
-import Payments from "./components/DashboardComponents/Payments";
-import Reviews from "./components/DashboardComponents/Reviews";
+import Notifications from "./components/DashboardComponents/Notifications/Notifications";
+import Payments from "./components/DashboardComponents/Payments/Payments";
+import Reviews from "./components/DashboardComponents/Reviews/Reviews";
 
 const httpLink = createHttpLink({
   uri: "http://localhost:3001/graphql",

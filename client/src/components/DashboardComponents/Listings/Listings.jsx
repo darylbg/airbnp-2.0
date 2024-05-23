@@ -17,7 +17,7 @@ export default function Listings() {
     <>
       <DashboardHeader
         title="Listings"
-        subtitle="Manage your listings here"
+        subtitle="Manage your listings"
         icon="list"
       >
         <div className="header-content">

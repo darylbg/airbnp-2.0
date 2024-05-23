@@ -6,7 +6,7 @@ export default function Bookings() {
     <>
       <DashboardHeader
         title="Bookings"
-        subtitle="Manage your bookings here"
+        subtitle="Manage your bookings"
         icon="today"
       ></DashboardHeader>
     </>
