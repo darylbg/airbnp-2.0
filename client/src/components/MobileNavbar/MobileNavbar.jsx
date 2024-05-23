@@ -7,7 +7,7 @@ import { HomeIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import Auth from "../../utils/auth";
 
 import SignInForm from "../SignInForm/SignInForm";
-import RegisterForm from "../RegisterForm";
+import RegisterForm from "../RegisterForm/RegisterForm";
 import "./MobileNavbar.css";
 
 const MobileNavbar = forwardRef((props, ref) => {

@@ -1,10 +1,9 @@
 import React, { useRef } from "react";
 import * as Form from "@radix-ui/react-form";
-import GetAllListings from "../../components/GetAllListings";
+import GetAllListings from "../../components/GetAllListings/GetAllListings";
 import * as Accordion from "@radix-ui/react-accordion";
 import LargeRoundButton from "../../components/PrimitiveComponents/LargeRoundButton/LargeRoundButton";
 import HeroImage from "../../assets/images/HeroImage.jpg";
-import Phone from "../../assets/images/phone.png";
 import Phone1 from "../../assets/images/phone2.png"
 import "./Home.css";
 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Outlet, NavLink } from "react-router-dom";
-import LoginRequiredPrompt from "../../components/LoginRequiredPrompt";
+import LoginRequiredPrompt from "../../components/LoginRequiredPrompt/LoginRequiredPrompt";
 import "./Dashboard.css";
 export default function Dashboard() {
   const currentUser = useSelector((state) => state.auth);

@@ -7,7 +7,7 @@ import { HamburgerMenuIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import Auth from "../../utils/auth";
 
 import SignInForm from "../SignInForm/SignInForm";
-import RegisterForm from "../RegisterForm";
+import RegisterForm from "../RegisterForm/RegisterForm";
 import DialogComponent from "../PrimitiveComponents/DialogComponent/DialogComponent"
 import Logo from "../../assets/images/logo_colour_50px.png";
 import "./Navbar.css";
