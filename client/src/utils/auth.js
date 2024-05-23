@@ -1,4 +1,4 @@
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 class AuthService {
   constructor() {
@@ -32,7 +32,7 @@ class AuthService {
       }
       return false;
     } catch (error) {
-      console.error('Error decoding token:', error);
+      console.error("Error decoding token:", error);
       return true;
     }
   }
@@ -47,12 +47,14 @@ class AuthService {
     this.startTokenCheck();
     // window.location.assign("/");
   }
-
+  
   logout() {
-    localStorage.removeItem("id_token");
-    localStorage.removeItem("persist:root");
-    this.stopTokenCheck();
-    window.location.reload();
+    return new Promise((resolve) => {
+      localStorage.removeItem("id_token");
+      localStorage.removeItem("persist:root");
+      this.stopTokenCheck();
+      resolve();
+    });
   }
 
   startTokenCheck() {

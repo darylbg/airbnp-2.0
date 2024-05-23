@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import * as Dialog from "@radix-ui/react-dialog";
 import { HamburgerMenuIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import Auth from "../../utils/auth";
+import authService from "../../utils/auth";
 
 import SignInForm from "../SignInForm/SignInForm";
 import RegisterForm from "../RegisterForm/RegisterForm";
@@ -49,8 +49,10 @@ export default function Navbar({}) {
 
   const logout = (e) => {
     e.preventDefault();
-    Auth.logout();
-    navigate("/");
+    authService.logout().then(() => {
+      window.location.assign("/"); // This reloads the page and redirects to the root URL
+    });
+    // navigate("/");
   };
 
   return (
