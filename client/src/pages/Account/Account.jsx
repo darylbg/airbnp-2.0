@@ -13,7 +13,7 @@ import "./Account.css";
 
 export default function Account() {
   const currentUser = useSelector((state) => state.auth.user);
-  console.log("account user", currentUser);
+  // console.log("account user", currentUser);
   // splits url into breadcrumbs and links
   const { pathname } = useLocation();
   const pathSegments = pathname.split("/").filter((segment) => segment);

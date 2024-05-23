@@ -15,7 +15,8 @@ const persistedReducer = persistReducer(
     persistConfig,
     combineReducers({
         auth: authReducer,
-    })
+    }),
+    
 );
 
 const store = configureStore({

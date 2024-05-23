@@ -131,7 +131,7 @@ export default function Home() {
               <Accordion.Header className="AccordionHeader">
                 <Accordion.Trigger className="AccordionTrigger">
                   <span>QUESTION ONE</span>
-                  <span class="material-symbols-outlined accordion-icon">arrow_drop_down</span>
+                  <span className="material-symbols-outlined accordion-icon">arrow_drop_down</span>
                 </Accordion.Trigger>
               </Accordion.Header>
               <Accordion.Content className="AccordionContent">Answer one</Accordion.Content>
@@ -140,7 +140,7 @@ export default function Home() {
               <Accordion.Header>
                 <Accordion.Trigger className="AccordionTrigger">
                   <span>QUESTION TWO</span>
-                  <span class="material-symbols-outlined accordion-icon">
+                  <span className="material-symbols-outlined accordion-icon">
                     arrow_drop_down
                   </span>
                 </Accordion.Trigger>
@@ -151,7 +151,7 @@ export default function Home() {
               <Accordion.Header>
                 <Accordion.Trigger className="AccordionTrigger">
                   <span>QUESTION THREE</span>
-                  <span class="material-symbols-outlined accordion-icon">
+                  <span className="material-symbols-outlined accordion-icon">
                     arrow_drop_down
                   </span>
                 </Accordion.Trigger>
@@ -162,7 +162,7 @@ export default function Home() {
               <Accordion.Header>
                 <Accordion.Trigger className="AccordionTrigger">
                   <span>QUESTION FOUR</span>
-                  <span class="material-symbols-outlined accordion-icon">
+                  <span className="material-symbols-outlined accordion-icon">
                     arrow_drop_down
                   </span>
                 </Accordion.Trigger>
@@ -173,7 +173,7 @@ export default function Home() {
               <Accordion.Header>
                 <Accordion.Trigger className="AccordionTrigger">
                   <span>QUESTION FIVE</span>
-                  <span class="material-symbols-outlined accordion-icon">
+                  <span className="material-symbols-outlined accordion-icon">
                     arrow_drop_down
                   </span>
                 </Accordion.Trigger>

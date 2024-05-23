@@ -65,7 +65,6 @@ function App() {
       window.removeEventListener("resize", handleWindowResize);
     }
   }, []);
-  console.log("window size", windowSize)
 
   return (
     <ApolloProvider client={client}>
