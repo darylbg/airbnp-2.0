@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { UseSelector, useSelector } from "react-redux";
-import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
+import DashboardHeader from "../DashboardHeader/DashboardHeader";
 import NewListing from "../../NewListing/NewListing";
 import DialogComponent from "../../PrimitiveComponents/DialogComponent/DialogComponent";
 import "./Listings.css";
@@ -15,16 +15,11 @@ export default function Listings() {
 
   return (
     <>
-      <div className="dashboard-header">
-        <div className="header-title">
-          <div className="title-icon">
-            <span className="material-symbols-outlined">list</span>
-          </div>
-          <div className="title-text">
-            <h3>Listings</h3>
-            <p>Add, update or delete listings</p>
-          </div>
-        </div>
+      <DashboardHeader
+        title="Listings"
+        subtitle="Manage your listings here"
+        icon="list"
+      >
         <div className="header-content">
           <div className="filter-listings">
             <button onClick={() => setFilterDialog(true)}>
@@ -61,7 +56,8 @@ export default function Listings() {
             <p>listings</p>
           </div>
         </div>
-      </div>
+      </DashboardHeader>
+      {/* </div> */}
       <div className="dashboard-body">
         {userListings && userListings.length ? (
           <div className="listings-display">listings</div>

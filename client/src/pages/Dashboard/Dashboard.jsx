@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, Outlet, useLocation, NavLink } from "react-router-dom";
+import { Outlet, NavLink } from "react-router-dom";
 import LoginRequiredPrompt from "../../components/LoginRequiredPrompt";
-import Bookings from "../../components/DashboardComponents/Bookings";
-import Listings from "../../components/DashboardComponents/Listings/Listings";
-import Notifications from "../../components/DashboardComponents/Notifications";
-import Payments from "../../components/DashboardComponents/Payments";
-import Reviews from "../../components/DashboardComponents/Reviews";
 import "./Dashboard.css";
 export default function Dashboard() {
   const currentUser = useSelector((state) => state.auth);

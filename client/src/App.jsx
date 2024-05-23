@@ -25,7 +25,7 @@ import PrivacyPolicy from "./components/AccountSubComponents/PrivacyPolicy";
 import TermsAndConditions from "./components/AccountSubComponents/TermsAndConditions";
 import MobileNavbar from "./components/MobileNavbar";
 import "./Global.css";
-import Bookings from "./components/DashboardComponents/Bookings";
+import Bookings from "./components/DashboardComponents/Bookings/Bookings";
 import Listings from "./components/DashboardComponents/Listings/Listings";
 import Notifications from "./components/DashboardComponents/Notifications";
 import Payments from "./components/DashboardComponents/Payments";
