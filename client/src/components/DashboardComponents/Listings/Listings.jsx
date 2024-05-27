@@ -5,10 +5,12 @@ import { useSelector } from "react-redux";
 import DashboardHeader from "../DashboardHeader/DashboardHeader";
 import NewListing from "../../NewListing/NewListing";
 import DialogComponent from "../../PrimitiveComponents/DialogComponent/DialogComponent";
+import ListingDisplay from "./ListingDisplay/ListingDisplay";
 import "./Listings.css";
 
 export default function Listings() {
   const userListings = useSelector((state) => state.auth.user.user_listings);
+  console.log("user listings", userListings);
 
   const [newListingDialog, setNewListingDialog] = useState(false);
   const [filterDialog, setFilterDialog] = useState(false);
@@ -60,7 +62,12 @@ export default function Listings() {
       {/* </div> */}
       <div className="dashboard-body">
         {userListings && userListings.length ? (
-          <div className="listings-display">listings</div>
+          <div className="listings-display">
+            {userListings &&
+              userListings.map((listing) => (
+                <ListingDisplay key={listing.id} props={listing} />
+              ))}
+          </div>
         ) : (
           <Link
             className="no-listings-link"

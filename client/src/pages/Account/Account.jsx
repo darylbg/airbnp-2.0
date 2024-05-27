@@ -12,8 +12,9 @@ import {
 import "./Account.css";
 
 export default function Account() {
-  const currentUser = useSelector((state) => state.auth.user);
-  // console.log("account user", currentUser);
+  // querying redux for logged in user
+  const currentUser = useSelector((state) => state.userDetails.byId);
+
   // splits url into breadcrumbs and links
   const { pathname } = useLocation();
   const pathSegments = pathname.split("/").filter((segment) => segment);

@@ -18,10 +18,9 @@ export default function Navbar({}) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  const { isLoggedIn, user } = useSelector((state) => state.auth);
-  // console.log("user image", user.user_image);
-
-  const navigate = useNavigate();
+  // querying redux for logged in user
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const currentUser = useSelector((state) => state.userDetails.byId);
 
   // set sign in form to default display when dialog is opened
   useEffect(() => {
@@ -112,7 +111,7 @@ export default function Navbar({}) {
           {isLoggedIn ? (
             <NavigationMenu.Item className="navigation-menu-item navigation-menu-dropdown">
               <NavigationMenu.Trigger className="navigation-menu-trigger">
-                <img src={user.user_image} alt="Account" />
+                <img src={currentUser.user_image} alt="Account" />
                 {/* <span className="material-symbols-outlined">menu</span> */}
                 <HamburgerMenuIcon
                   className="hamburger-menu-icon"
@@ -146,7 +145,7 @@ export default function Navbar({}) {
                 </NavigationMenu.Item>
                 <NavigationMenu.Item className="navigation-menu-item" asChild>
                   <NavLink
-                    to="/dashboard"
+                    to="/dashboard/bookings"
                     className={({ isActive }) =>
                       `navigation-menu-link dropdown-menu-link ${
                         isActive ? "active" : ""

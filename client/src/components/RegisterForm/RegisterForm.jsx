@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Auth from "../../utils/auth";
 import { login_user } from "../../reducers/authReducer";
+import { loginUser } from "../../reducers/userReducer";
+import { setUserDetails } from "../../reducers/userDetailsReducer";
 import { REGISTER_MUTATION } from "../../utils/mutations";
 
 import "../SignInForm/SignInRegisterForms.css";
@@ -15,10 +17,6 @@ export default function RegisterForm({
   handleSignInRegisterToggle,
 }) {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
-
-  // const { auth } = useSelector((state) => state);
-  // const thisUser = auth.user;
-  // console.log("this user", thisUser);
 
   const {
     register,
@@ -64,6 +62,9 @@ export default function RegisterForm({
         },
       });
       const registeredUserData = registeredUser.data.register;
+      const userId = registeredUserData.user.id;
+
+      // dispatch to old redux store
       dispatch(
         login_user({
           token: registeredUserData.token,
@@ -72,12 +73,13 @@ export default function RegisterForm({
         })
       );
 
-      // console.log("registeredUser", registeredUser);
+      // dispatch to updated redux store
+      dispatch(loginUser({id: userId, token: registeredUserData.token}));
+      dispatch(setUserDetails(registeredUserData.user));
 
+      // set token in local storage
       Auth.login(registeredUser.data.register.token);
     } catch (error) {
-      // console.log(error)
-      // console.log(error.graphQLErrors);
       if (error.graphQLErrors && error.graphQLErrors.length > 0) {
         const firstGraphQLErrorCode = error.graphQLErrors[0].extensions.code;
         setError("graphQLError", {

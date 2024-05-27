@@ -15,8 +15,10 @@ const MobileNavbar = forwardRef((props, ref) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [toggleAccountSubmenu, setToggleAccountSubmenu] = useState(false);
 
-  const { isLoggedIn, user } = useSelector((state) => state.auth);
-  const navigate = useNavigate();
+  // querying redux for logged in user
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const currentUser = useSelector((state) => state.userDetails.byId);
+
   // set sign in form to default display when dialog is opened
   useEffect(() => {
     if (!dialogOpen) {
@@ -108,13 +110,10 @@ const MobileNavbar = forwardRef((props, ref) => {
                   onClick={() => setToggleAccountSubmenu(!toggleAccountSubmenu)}
                 >
                   <img
-                    src={user.user_image}
+                    src={currentUser.user_image}
                     alt="user image"
                     className="mobile-navbar-image-icon"
                   />
-                  {/* <span className="material-symbols-outlined mobile-navbar-icon">
-                    account_circle
-                  </span> */}
                   <span className="mobile-navbar-text">User</span>
                 </Link>
               </NavigationMenu.Link>
@@ -195,7 +194,7 @@ const MobileNavbar = forwardRef((props, ref) => {
               </NavigationMenu.Item>
               <NavigationMenu.Item className="mobile-navbar-item">
               <NavLink
-              to="/dashboard"
+              to="/dashboard/bookings"
               onClick={() => setToggleAccountSubmenu(false)}
               className={({ isActive }) =>
                 `mobile-navbar-link clickable ${isActive ? "active" : ""}`
