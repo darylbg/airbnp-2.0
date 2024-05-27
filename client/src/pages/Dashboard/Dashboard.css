@@ -213,6 +213,12 @@
   border-radius: 10px;
   padding: 1rem;
   gap: 2rem;
+  position: relative;
+}
+
+/* elements are located in listings.jsx */
+.dashboard-content-body {
+  justify-content: center;
 }
 
 @media screen and (min-width: 768px) {

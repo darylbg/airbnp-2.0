@@ -43,7 +43,6 @@ export default function SignInForm({ handleSignInRegisterToggle }) {
       dispatch(setUserDetails(loggedInUserData.user));
       dispatch(setUserListings(userListingsData));
 
-      console.log("loggedin user data", userListingsData);
       Auth.login(loggedInUser.data.login.token);
       
       toast.success(<ToastComponent message="Successfully signed in."/>);

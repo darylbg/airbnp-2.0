@@ -110,25 +110,12 @@ export const NEW_LISTING_MUTATION = gql`
       availability
       price
       created_at
-      # reviews {
-      #   created_at
-      #   id
-      #   listing_id
-      #   rating_text
-      #   rating_value
-      #   user_id
-      # }
-      # payments {
-      #   amount_paid
-      #   created_at
-      #   currency
-      #   guest_quantity
-      #   id
-      #   listing_id
-      #   payment_method
-      #   payment_status
-      #   user_id
-      # }
+      reviews {
+        id
+      }
+      payments {
+        id
+      }
     }
   }
 `;

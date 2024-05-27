@@ -11,16 +11,34 @@ const listingsSlice = createSlice({
   reducers: {
     setUserListings(state, action) {
       const userListings = action.payload;
-      state.byId = userListings;
 
-      userListings.map((listing) => {
-        if(!state.allIds.includes(listing.id)) {
+      // change payments and reviews fields to length of field
+      // will retrieve these field separately as they are laaarge
+      userListings.forEach((listing) => {
+        listing.payments = listing.payments.length;
+        listing.reviews = listing.reviews.length;
+
+        // stores an array of id's for quick iteration if necessary
+        if (!state.allIds.includes(listing.id)) {
           state.allIds.push(listing.id);
-        } 
-      })
+        }
+      });
+      state.byId = userListings;
+    },
+    addListing(state, action) {
+      const listing = action.payload;
+      // adjust subfields to array length
+      listing.payments = listing.payments.length;
+      listing.reviews = listing.reviews.length;
+      // push new listing to front of existing listing array
+      state.byId.unshift(listing);
+      // push id of new listing to front of all id listings array
+      if (!state.allIds.includes(listing.id)) {
+        state.allIds.unshift(listing.id);
+      }
     },
   },
 });
 
-export const { setUserListings } = listingsSlice.actions;
+export const { setUserListings, addListing } = listingsSlice.actions;
 export default listingsSlice.reducer;

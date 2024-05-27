@@ -1,11 +1,4 @@
-.dashboard-header .header-content {
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  gap: 25px;
-  justify-content: center;
-}
-
+/* styling dashboard header components that are in listings dashboard component */
 .filter-listings button,
 .new-listing button {
   border: none;
@@ -17,7 +10,7 @@
   box-shadow: var(--black-25) 0px 0px 5px;
   height: 100%;
   padding: 0 20px;
-      font-size: 1rem;
+  font-size: 1rem;
 }
 
 .filter-listings button:hover,
@@ -50,6 +43,10 @@
   align-self: center;
   color: var(--black-75);
   font-size: 1rem;
+  top: 50%;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* user listings display */

@@ -121,6 +121,8 @@ const typeDefs = gql`
     availability: Boolean
     price: Float!
     amenities: [ID!] # List of amenity IDs to mark as available
+    payments: [ID!]
+    reviews: [ID]
   }
 
   input amenityInput {

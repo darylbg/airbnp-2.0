@@ -1,16 +1,19 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ApolloError, useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
 // import { Cloudinary } from "@cloudinary/url-gen";
 import * as Form from "@radix-ui/react-form";
 import toast from "react-hot-toast";
-import ToastComponent from "../PrimitiveComponents/ToastComponent/ToastComponent";
-import { NEW_LISTING_MUTATION } from "../../utils/mutations";
-import ImageUploadWidget from "../PrimitiveComponents/ImageUploadWidget/ImageUploadWidget";
+import ToastComponent from "../../../PrimitiveComponents/ToastComponent/ToastComponent";
+import { NEW_LISTING_MUTATION } from "../../../../utils/mutations";
+import ImageUploadWidget from "../../../PrimitiveComponents/ImageUploadWidget/ImageUploadWidget";
+import {updateUserDetails} from "../../../../reducers/userDetailsReducer";
+import {addListing} from "../../../../reducers/userListingsReducer"
 import "./NewListing.css";
 
 export default function NewListing() {
+  const currentUser = useSelector((state) => state.userDetails.byId);
   const [selectedImages, setSelectedImages] = useState([
     null,
     null,
@@ -69,7 +72,6 @@ export default function NewListing() {
       );
 
       let listingImages = base64URLs.filter(item => item !== null);
-      // console.log(listingImages);
       let price = +formData.price;
       const newListing = await newListingMutation({
         variables: {
@@ -85,10 +87,19 @@ export default function NewListing() {
             availability: false,
             price: price,
             amenities: [],
+            payments: [],
+            reviews: []
           },
         },
       });
-      console.log("added new listing", newListing);
+
+      // dispatch new listing to redux reducers
+      const addedListing = newListing.data.createListing;
+      const userListingCount = currentUser.user_listings;
+
+      dispatch(addListing(addedListing));
+      dispatch(updateUserDetails({ userId: addedListing.user_id, updates: { user_listings: userListingCount + 1 } }));
+      
     } catch (error) {
       console.log(error);
     }

@@ -1,8 +1,16 @@
-.dashboard-header {
+.dashboard-content-header {
     display: flex;
     justify-content: space-between;
     align-items: stretch;
     border-radius: 10px;
+  }
+
+  .dashboard-content-header .header-content {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 25px;
+    justify-content: center;
   }
   
   .header-title {

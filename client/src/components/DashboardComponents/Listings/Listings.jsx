@@ -3,13 +3,14 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import DashboardHeader from "../DashboardHeader/DashboardHeader";
-import NewListing from "../../NewListing/NewListing";
+import NewListing from "./NewListing/NewListing";
 import DialogComponent from "../../PrimitiveComponents/DialogComponent/DialogComponent";
 import ListingDisplay from "./ListingDisplay/ListingDisplay";
 import "./Listings.css";
 
 export default function Listings() {
-  // const userListings = useSelector((state) => state.auth.user.user_listings);
+  const userListings = useSelector((state) => state.userListings.byId);
+  console.log("user listings", userListings)
 
   const [newListingDialog, setNewListingDialog] = useState(false);
   const [filterDialog, setFilterDialog] = useState(false);
@@ -53,14 +54,13 @@ export default function Listings() {
             <NewListing />
           </DialogComponent>
           <div className="title-text">
-            {/* <h3>{userListings.length}</h3> */}
+            <h3>{userListings.length}</h3>
             <p>listings</p>
           </div>
         </div>
       </DashboardHeader>
-      {/* </div> */}
-      <div className="dashboard-body">
-        {/* {userListings && userListings.length ? (
+      <div className="dashboard-content-body">
+        {userListings && userListings.length ? (
           <div className="listings-display">
             {userListings &&
               userListings.map((listing) => (
@@ -74,7 +74,7 @@ export default function Listings() {
           >
             add your first listing
           </Link>
-        )} */}
+        )}
       </div>
     </>
   );

@@ -3,7 +3,7 @@ import "./DashboardHeader.css";
 
 export default function DashboardHeader({ title, icon, subtitle, children }) {
   return (
-    <div className="dashboard-header">
+    <div className="dashboard-content-header">
       <div className="header-title">
         <div className="title-icon">
           <span className="material-symbols-outlined">{icon}</span>
