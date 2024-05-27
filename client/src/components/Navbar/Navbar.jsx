@@ -19,7 +19,7 @@ export default function Navbar({}) {
   const [scrolled, setScrolled] = useState(false);
 
   // querying redux for logged in user
-  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const currentUser = useSelector((state) => state.userDetails.byId);
 
   // set sign in form to default display when dialog is opened

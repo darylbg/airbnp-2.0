@@ -7,11 +7,11 @@ import toast from "react-hot-toast";
 import ToastComponent from "../PrimitiveComponents/ToastComponent/ToastComponent";
 import { SIGN_IN_MUTATION } from "../../utils/mutations";
 import Auth from "../../utils/auth";
-import { loginUser } from "../../reducers/userReducer";
+import { loginUser } from "../../reducers/authReducer";
 import { setUserDetails } from "../../reducers/userDetailsReducer";
+import { setUserListings } from "../../reducers/userListingsReducer";
 
 import "./SignInRegisterForms.css";
-import { login_user } from "../../reducers/authReducer";
 
 export default function SignInForm({ handleSignInRegisterToggle }) {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
@@ -36,20 +36,14 @@ export default function SignInForm({ handleSignInRegisterToggle }) {
       });
       const loggedInUserData = loggedInUser.data.login;
       const userId = loggedInUserData.user.id;
-      // old redux dispatch
-      dispatch(
-        login_user({
-          token: loggedInUserData.token,
-          id: loggedInUserData.user.id,
-          ...loggedInUserData.user
-        })
-      );
+      const userListingsData = loggedInUserData.user.user_listings;
 
       // updated redux dispatch
       dispatch(loginUser({id: userId, token: loggedInUserData.token}));
       dispatch(setUserDetails(loggedInUserData.user));
+      dispatch(setUserListings(userListingsData));
 
-      console.log("loggedin user data", loggedInUser.data.login.token);
+      console.log("loggedin user data", userListingsData);
       Auth.login(loggedInUser.data.login.token);
       
       toast.success(<ToastComponent message="Successfully signed in."/>);

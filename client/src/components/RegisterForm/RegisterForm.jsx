@@ -6,8 +6,7 @@ import { useMutation } from "@apollo/client";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Auth from "../../utils/auth";
-import { login_user } from "../../reducers/authReducer";
-import { loginUser } from "../../reducers/userReducer";
+import { loginUser } from "../../reducers/authReducer";
 import { setUserDetails } from "../../reducers/userDetailsReducer";
 import { REGISTER_MUTATION } from "../../utils/mutations";
 
@@ -63,15 +62,6 @@ export default function RegisterForm({
       });
       const registeredUserData = registeredUser.data.register;
       const userId = registeredUserData.user.id;
-
-      // dispatch to old redux store
-      dispatch(
-        login_user({
-          token: registeredUserData.token,
-          id: registeredUserData.user.id,
-          ...registeredUserData.user
-        })
-      );
 
       // dispatch to updated redux store
       dispatch(loginUser({id: userId, token: registeredUserData.token}));

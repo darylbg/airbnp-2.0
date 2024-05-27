@@ -4,7 +4,10 @@ import { Outlet, NavLink } from "react-router-dom";
 import LoginRequiredPrompt from "../../components/LoginRequiredPrompt/LoginRequiredPrompt";
 import "./Dashboard.css";
 export default function Dashboard() {
-  const currentUser = useSelector((state) => state.auth);
+  // querying redux for logged in user
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const currentUser = useSelector((state) => state.userDetails.byId);
+
   const [mobileDashboardMenu, setMobileDashboardMenu] = useState(false);
 
   const toggleMobileDashboardMenu = (e) => {
@@ -14,7 +17,7 @@ export default function Dashboard() {
   return (
     <>
       <div className="dashboard">
-        {currentUser.isLoggedIn ? (
+        {isLoggedIn ? (
           <>
             <div
               className={`dashboard-menu ${
@@ -91,13 +94,13 @@ export default function Dashboard() {
                 </div>
               </div>
               <div className="dashboard-menu-footer">
-                <img src={currentUser.user.user_image} alt="user avatar" />
+                <img src={currentUser.user_image} alt="user avatar" />
                 <h3>
-                  {currentUser.user.first_name +
+                  {currentUser.first_name +
                     " " +
-                    currentUser.user.last_name}
+                    currentUser.last_name}
                 </h3>
-                <p>{currentUser.user.email}</p>
+                <p>{currentUser.email}</p>
               </div>
             </div>
             <div className="mobile-dashboard-menu hide-on-md">
@@ -110,7 +113,7 @@ export default function Dashboard() {
                 <h3>Dashboard</h3>
               </div>
               <img
-                src={currentUser.user.user_image}
+                src={currentUser.user_image}
                 alt="user avatar"
                 className="menu-avatar"
               />

@@ -9,8 +9,7 @@ import ListingDisplay from "./ListingDisplay/ListingDisplay";
 import "./Listings.css";
 
 export default function Listings() {
-  const userListings = useSelector((state) => state.auth.user.user_listings);
-  console.log("user listings", userListings);
+  // const userListings = useSelector((state) => state.auth.user.user_listings);
 
   const [newListingDialog, setNewListingDialog] = useState(false);
   const [filterDialog, setFilterDialog] = useState(false);
@@ -54,14 +53,14 @@ export default function Listings() {
             <NewListing />
           </DialogComponent>
           <div className="title-text">
-            <h3>{userListings.length}</h3>
+            {/* <h3>{userListings.length}</h3> */}
             <p>listings</p>
           </div>
         </div>
       </DashboardHeader>
       {/* </div> */}
       <div className="dashboard-body">
-        {userListings && userListings.length ? (
+        {/* {userListings && userListings.length ? (
           <div className="listings-display">
             {userListings &&
               userListings.map((listing) => (
@@ -75,7 +74,7 @@ export default function Listings() {
           >
             add your first listing
           </Link>
-        )}
+        )} */}
       </div>
     </>
   );

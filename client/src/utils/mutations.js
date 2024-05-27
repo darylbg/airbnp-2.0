@@ -49,6 +49,27 @@ export const SIGN_IN_MUTATION = gql`
         user_image
         user_listings {
           id
+          user_id
+          created_at
+          listing_title
+          listing_description
+          listing_image
+          price
+          address
+          latitude
+          longitude
+          availability
+          contact_method
+          amenities {
+            amenity_id
+            available
+          }
+          payments {
+            id
+          }
+          reviews {
+            id
+          }
         }
         saved_listings {
           id

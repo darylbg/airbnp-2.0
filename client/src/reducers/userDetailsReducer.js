@@ -10,13 +10,17 @@ const userDetailsSlice = createSlice({
   initialState: initialUserDetailsState,
   reducers: {
     setUserDetails(state, action) {
-      const newUser = action.payload;
-      // Merge new user details into existing state
-      state.byId = newUser;
-      // Check if the user ID already exists in allIds array
-      if (!state.allIds.includes(newUser.id)) {
-        // Push the new user ID into allIds array
-        state.allIds.push(newUser.id);
+      const user = action.payload;
+      state.byId = { ...user, 
+        user_listings: user.user_listings.length,
+        saved_listings: user.saved_listings.length,
+        notifications: user.notifications.length,
+        reviews: user.reviews.length,
+        payments: user.payments.length,
+        booking_history: user.booking_history.length,
+      };
+      if (!state.allIds.includes(user.id)) {
+        state.allIds.push(user.id);
       }
     },
   },
