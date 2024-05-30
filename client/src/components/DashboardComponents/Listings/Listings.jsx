@@ -16,7 +16,9 @@ export default function Listings() {
   const [newListingDialog, setNewListingDialog] = useState(false);
   const [filterDialog, setFilterDialog] = useState(false);
   const [sortCriteria, setSortCriteria] = useState("dateAdded");
-  const [sortedUserListings, setSortedUserListings] = useState([...userListings]);
+  const [sortedUserListings, setSortedUserListings] = useState([
+    ...userListings,
+  ]);
 
   const {
     register,
@@ -36,7 +38,9 @@ export default function Listings() {
 
   useEffect(() => {
     const sortByDateAdded = () => {
-      const sortedArray = [...userListings].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      const sortedArray = [...userListings].sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      );
       setSortedUserListings(sortedArray);
     };
 
@@ -73,7 +77,13 @@ export default function Listings() {
         <div className="header-content">
           <div className="filter-listings">
             <button onClick={() => setFilterDialog(true)}>
-              <span className="text">Sort</span>
+              <span className="text">
+                {sortCriteria === "dateAdded"
+                  ? "Date"
+                  : sortCriteria === "availability"
+                  ? "Availability"
+                  : "Sort"}
+              </span>
               <span className="material-symbols-outlined">filter_list</span>
             </button>
           </div>
@@ -84,8 +94,11 @@ export default function Listings() {
             icon="close"
             dialogHeader="Sort listings"
           >
-            <Form.Root onSubmit={handleSubmit(handleListingsSort)}>
-              <Form.Field>
+            <Form.Root
+              className="user-listings-sort-form"
+              onSubmit={handleSubmit(handleListingsSort)}
+            >
+              <Form.Field className="user-listings-sort-field">
                 <Form.Control asChild>
                   <input
                     name="sort-radio"
@@ -96,7 +109,7 @@ export default function Listings() {
                 </Form.Control>
                 <Form.Label>Date added</Form.Label>
               </Form.Field>
-              <Form.Field>
+              <Form.Field className="user-listings-sort-field">
                 <Form.Control asChild>
                   <input
                     name="sort-radio"
