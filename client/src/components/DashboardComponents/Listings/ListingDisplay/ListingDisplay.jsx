@@ -2,7 +2,7 @@ import React from "react";
 
 export default function ListingDisplay({ props }) {
   return (
-    <div className="listing">
+    <div className="listing" style={{height: "800px"}}>
       <div className="listing-header">
         <div className="listing-header-text"></div>
         <div className="listing-header-action"></div>

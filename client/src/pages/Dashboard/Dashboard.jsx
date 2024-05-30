@@ -118,7 +118,7 @@ export default function Dashboard() {
                 className="menu-avatar"
               />
             </div>
-            <div className="dashboard-content">
+            <div className="dashboard-content scrollbar-1">
               <Outlet />
             </div>
           </>

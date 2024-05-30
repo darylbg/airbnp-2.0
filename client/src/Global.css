@@ -7,6 +7,8 @@ html {
 }
 
 :root {
+  --transparent: rgb(0,0,0,0);
+
   --navy-blue: #28355e;
   --navy-blue-darker: #253154;
 
