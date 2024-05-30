@@ -59,7 +59,7 @@ export default function DialogComponent({
         
         <div
           ref={dialogBodyRef}
-          className="dialog-body"
+          className="dialog-body scrollbar-1"
         >
           {children}
         </div>

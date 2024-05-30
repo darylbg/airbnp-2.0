@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import * as Form from "@radix-ui/react-form";
+import * as RadioGroup from '@radix-ui/react-radio-group';
 
 import DashboardHeader from "../DashboardHeader/DashboardHeader";
 import NewListing from "./NewListing/NewListing";
 import DialogComponent from "../../PrimitiveComponents/DialogComponent/DialogComponent";
 import ListingDisplay from "./ListingDisplay/ListingDisplay";
 import "./Listings.css";
+import PrimaryButton from "../../PrimitiveComponents/PrimaryButton/PrimaryButton";
 
 export default function Listings() {
   const userListings = useSelector((state) => state.userListings.byId);
-  console.log("user listings", userListings)
+  console.log("user listings", userListings);
 
   const [newListingDialog, setNewListingDialog] = useState(false);
   const [filterDialog, setFilterDialog] = useState(false);
@@ -30,13 +33,24 @@ export default function Listings() {
             </button>
           </div>
           <DialogComponent
-            className="filter-dialog full-width-dialog"
+            className="filter-dialog content-width-dialog"
             openDialog={filterDialog}
             closeDialog={() => setFilterDialog(false)}
             icon="close"
-            dialogHeader="Filter listings"
+            dialogHeader="Sort listings"
           >
-            <p className="">filter dialog 2</p>
+            <Form.Root>
+              <RadioGroup.Root>
+                <RadioGroup.Item value="dateAdded">
+                  <RadioGroup.Indicator />
+                  <label>Date Added</label>
+                </RadioGroup.Item>
+                <RadioGroup.Item value="dateAdded">
+                  <RadioGroup.Indicator />
+                  <label>Date Added</label>
+                </RadioGroup.Item>
+              </RadioGroup.Root>
+            </Form.Root>
           </DialogComponent>
           <div className="new-listing">
             <button onClick={() => setNewListingDialog(true)}>

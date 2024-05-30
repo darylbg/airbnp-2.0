@@ -26,14 +26,25 @@
 .dialog-header {
   display: flex;
   /* flex: 1; */
-  justify-content: flex-end;
+  justify-content: center;
   position: relative;
   align-items: center;
   padding-bottom: 1rem;
   border-bottom: 1px solid var(--black-10);
   background-color: var(--white);
-  /* box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px; */
   z-index: auto;
+}
+
+.dialog-header .text {
+  margin: 0;
+  text-wrap: nowrap;
+}
+
+.dialog-header .window-control-button {
+    position: absolute; 
+  right: -0.5rem;
+  top: -0.5rem;
+
 }
 
 .dialog-scrolled::before {
@@ -50,13 +61,6 @@
   border-bottom-left-radius: 50%;
   box-shadow: 0px 0px 30px rgb(0, 0, 0, 0.9);
   transition: all ease 1s;
-}
-
-.dialog-header .text {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  margin: 0;
 }
 
 .dialog-body {
@@ -96,3 +100,7 @@
 
 /* styles for dialog content width */
 
+.content-width-dialog {
+  border-radius: 10px;
+  max-width: 90vw;
+}
