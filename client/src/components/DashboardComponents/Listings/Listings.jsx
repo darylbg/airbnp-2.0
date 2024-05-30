@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import * as Form from "@radix-ui/react-form";
@@ -13,22 +13,55 @@ import PrimaryButton from "../../PrimitiveComponents/PrimaryButton/PrimaryButton
 
 export default function Listings() {
   const userListings = useSelector((state) => state.userListings.byId);
-  // console.log("user listings", userListings);
-
   const [newListingDialog, setNewListingDialog] = useState(false);
   const [filterDialog, setFilterDialog] = useState(false);
-  const [isChecked, setIsChecked] = useState(true);
+  const [sortCriteria, setSortCriteria] = useState("dateAdded");
+  const [sortedUserListings, setSortedUserListings] = useState([...userListings]);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      sortCriteria: "dateAdded",
+    },
+  });
 
   const handleListingsSort = (formData) => {
     console.log("sort form data", formData);
     setFilterDialog(false);
+    setSortCriteria(formData.sortCriteria);
   };
+
+  useEffect(() => {
+    const sortByDateAdded = () => {
+      const sortedArray = [...userListings].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      setSortedUserListings(sortedArray);
+    };
+
+    const sortByAvailability = () => {
+      const sortedArray = [...userListings].sort((a, b) => {
+        if (a.availability !== b.availability) {
+          return b.availability - a.availability;
+        } else {
+          return new Date(b.created_at) - new Date(a.created_at);
+        }
+      });
+      setSortedUserListings(sortedArray);
+    };
+
+    switch (sortCriteria) {
+      case "dateAdded":
+        sortByDateAdded();
+        break;
+      case "availability":
+        sortByAvailability();
+        break;
+      default:
+        break;
+    }
+  }, [sortCriteria, userListings]);
 
   return (
     <>
@@ -55,10 +88,10 @@ export default function Listings() {
               <Form.Field>
                 <Form.Control asChild>
                   <input
-                    checked={isChecked}
-                    onClick={() => setIsChecked(!isChecked)}
-                    {...register("dateAdded")}
-                    type="checkbox"
+                    name="sort-radio"
+                    value="dateAdded"
+                    {...register("sortCriteria")}
+                    type="radio"
                   />
                 </Form.Control>
                 <Form.Label>Date added</Form.Label>
@@ -66,10 +99,10 @@ export default function Listings() {
               <Form.Field>
                 <Form.Control asChild>
                   <input
-                    checked={!isChecked}
-                    onClick={() => setIsChecked(!isChecked)}
-                    {...register("availability")}
-                    type="checkbox"
+                    name="sort-radio"
+                    value="availability"
+                    {...register("sortCriteria")}
+                    type="radio"
                   />
                 </Form.Control>
                 <Form.Label>Availability</Form.Label>
@@ -101,10 +134,10 @@ export default function Listings() {
         </div>
       </DashboardHeader>
       <div className="dashboard-content-body">
-        {userListings && userListings.length ? (
+        {sortedUserListings && sortedUserListings.length ? (
           <div className="listings-display">
-            {userListings &&
-              userListings.map((listing) => (
+            {sortedUserListings &&
+              sortedUserListings.map((listing) => (
                 <ListingDisplay key={listing.id} props={listing} />
               ))}
           </div>
