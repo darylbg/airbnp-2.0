@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import * as Form from "@radix-ui/react-form";
-import * as RadioGroup from '@radix-ui/react-radio-group';
+import { useForm } from "react-hook-form";
 
 import DashboardHeader from "../DashboardHeader/DashboardHeader";
 import NewListing from "./NewListing/NewListing";
@@ -13,10 +13,22 @@ import PrimaryButton from "../../PrimitiveComponents/PrimaryButton/PrimaryButton
 
 export default function Listings() {
   const userListings = useSelector((state) => state.userListings.byId);
-  console.log("user listings", userListings);
+  // console.log("user listings", userListings);
 
   const [newListingDialog, setNewListingDialog] = useState(false);
   const [filterDialog, setFilterDialog] = useState(false);
+  const [isChecked, setIsChecked] = useState(true);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const handleListingsSort = (formData) => {
+    console.log("sort form data", formData);
+    setFilterDialog(false);
+  };
 
   return (
     <>
@@ -39,17 +51,32 @@ export default function Listings() {
             icon="close"
             dialogHeader="Sort listings"
           >
-            <Form.Root>
-              <RadioGroup.Root>
-                <RadioGroup.Item value="dateAdded">
-                  <RadioGroup.Indicator />
-                  <label>Date Added</label>
-                </RadioGroup.Item>
-                <RadioGroup.Item value="dateAdded">
-                  <RadioGroup.Indicator />
-                  <label>Date Added</label>
-                </RadioGroup.Item>
-              </RadioGroup.Root>
+            <Form.Root onSubmit={handleSubmit(handleListingsSort)}>
+              <Form.Field>
+                <Form.Control asChild>
+                  <input
+                    checked={isChecked}
+                    onClick={() => setIsChecked(!isChecked)}
+                    {...register("dateAdded")}
+                    type="checkbox"
+                  />
+                </Form.Control>
+                <Form.Label>Date added</Form.Label>
+              </Form.Field>
+              <Form.Field>
+                <Form.Control asChild>
+                  <input
+                    checked={!isChecked}
+                    onClick={() => setIsChecked(!isChecked)}
+                    {...register("availability")}
+                    type="checkbox"
+                  />
+                </Form.Control>
+                <Form.Label>Availability</Form.Label>
+              </Form.Field>
+              <Form.Submit asChild>
+                <PrimaryButton>Update listings</PrimaryButton>
+              </Form.Submit>
             </Form.Root>
           </DialogComponent>
           <div className="new-listing">
