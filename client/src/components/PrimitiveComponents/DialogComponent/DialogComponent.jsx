@@ -8,6 +8,7 @@ export default function DialogComponent({
   closeDialog,
   icon,
   dialogHeader,
+  backdropClosable,
   children,
 }) {
   const [dialogScrolled, setDialogScrolled] = useState(false);
@@ -45,11 +46,22 @@ export default function DialogComponent({
     };
   }, []);
 
+  const findDialogOverlay = (e) => {
+    if(e.target === dialogRef.current) {
+      const isBackdropClosable = e.target.getAttribute("backdrop-closable") === "true";
+      if (isBackdropClosable) {
+        closeDialog();
+      }
+    } 
+  }
+
   return (
     <dialog
       ref={dialogRef}
       onCancel={closeDialog}
       className={`dialog ${className} ${openDialog ? "dialog-open" : null}`}
+      onClick={(e) => findDialogOverlay(e)}
+      backdrop-closable={backdropClosable}
     >
       <div className="dialog-content">
         <div className={`dialog-header ${dialogScrolled ? "dialog-scrolled" : null}`}>

@@ -84,7 +84,7 @@ export default function NewListing() {
             // lat and long will be dynamically address when geolocation is added
             latitude: 10,
             longitude: 11,
-            availability: false,
+            availability: true,
             price: price,
             amenities: [],
             payments: [],

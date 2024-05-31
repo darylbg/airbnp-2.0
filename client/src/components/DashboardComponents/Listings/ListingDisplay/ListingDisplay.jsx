@@ -2,6 +2,15 @@ import React from "react";
 import PrimaryButton from "../../../PrimitiveComponents/PrimaryButton/PrimaryButton";
 import "./ListingDisplay.css";
 
+// formate date back to 01/01/2001 formate
+const formateDate = (date) => {
+  date = new Date(+date);
+  const day = String(date.getDay()).padStart(2, 0);
+  const month = String(date.getMonth() + 1).padStart(2, 0)
+  const year = String(date.getFullYear());
+  return `${day}/${month}/${year}`;
+}
+
 export default function ListingDisplay({ props }) {
   return (
     <div className="listing">
@@ -9,7 +18,7 @@ export default function ListingDisplay({ props }) {
         <div className="listing-header-text">
           <span>Set availability of your listing</span>
         </div>
-        <button className="availability-button">available</button>
+        <button className="availability-button">{props.availability ? "available": "unavailable"}</button>
       </div>
       <div className="listing-body">
         <div className="listing-body-images">
@@ -26,6 +35,7 @@ export default function ListingDisplay({ props }) {
         </div>
         <div className="listing-body-content">
           <h2 className="listing-title">{props.listing_title}</h2>
+          <p>{formateDate(props.created_at)}</p>
           <p className="listing-description">{props.listing_description}</p>
           <div className="listing-amenities">
             <p>Amenities</p>

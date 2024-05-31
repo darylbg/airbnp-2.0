@@ -93,6 +93,7 @@ export default function Listings() {
             closeDialog={() => setFilterDialog(false)}
             icon="close"
             dialogHeader="Sort listings"
+            backdropClosable="true"
           >
             <Form.Root
               className="user-listings-sort-form"
@@ -137,6 +138,7 @@ export default function Listings() {
             closeDialog={() => setNewListingDialog(false)}
             icon="close"
             dialogHeader="Add new listing"
+            backdropClosable={false}
           >
             <NewListing />
           </DialogComponent>
