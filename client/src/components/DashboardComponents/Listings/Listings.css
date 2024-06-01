@@ -1,10 +1,16 @@
 /* styling dashboard header components that are in listings dashboard component */
-.filter-listings button,
-.new-listing button {
+.listing-header-button-group {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.filter-listings,
+.new-listing {
   border: none;
   border-radius: 5px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   gap: 10px;
   box-shadow: var(--black-25) 0px 0px 5px;
@@ -13,20 +19,46 @@
   font-size: 1rem;
 }
 
-.new-listing button:hover {
+.new-listing {
+  background-color: var(--pink);
+  color: var(--white);
+}
+
+.header-content .title-text {
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.new-listing:hover {
   cursor: pointer;
   background-color: var(--pink-darker);
 }
 
-.filter-listings button:hover {
+.filter-listings:hover {
   cursor: pointer;
   background-color: var(--white-darker);
 }
 
-.filter-listings button {
+.filter-listings {
   background-color: var(--white);
   color: var(--black-100);
   display: flex;
+}
+
+/* mobile-listing-header-button-group */
+
+.mobile-listing-header-button-group {
+  display: flex;
+  width: 100%;
+  gap: 3%;
+}
+
+.mobile-listing-header-button-group button {
+  display: flex;
+  flex: 1;
+  padding: 8px 12px;
 }
 
 /* listings sort form */
@@ -53,10 +85,9 @@
   padding: 0;
 }
 
-
 /* filter listings dialog, styling radio input to look like checkbox lol */
 
-.user-listings-sort-field input[type=radio] {
+.user-listings-sort-field input[type="radio"] {
   appearance: none;
   background-color: #fff;
   width: 25px;
@@ -64,14 +95,14 @@
   border: 2px solid #ccc;
   border-radius: 2px;
   display: inline-grid;
-  place-content: center; 
+  place-content: center;
 }
 
-.user-listings-sort-field input[type=radio]:hover {
+.user-listings-sort-field input[type="radio"]:hover {
   cursor: pointer;
 }
 
-.user-listings-sort-field input[type=radio]::before {
+.user-listings-sort-field input[type="radio"]::before {
   content: "";
   width: 12px;
   height: 12px;
@@ -81,24 +112,12 @@
   clip-path: polygon(13% 50%, 34% 66%, 81% 2%, 100% 18%, 39% 100%, 0 71%);
 }
 
-.user-listings-sort-field input[type=radio]:checked::before {
+.user-listings-sort-field input[type="radio"]:checked::before {
   transform: scale(1);
 }
-.user-listings-sort-field input[type=radio]:checked{
-  background-color:   #0075FF;
-  border: 2px solid #0075FF;
-}
-
-.header-content .new-listing button {
-  background-color: var(--pink);
-  color: var(--white);
-}
-
-.header-content .title-text {
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.user-listings-sort-field input[type="radio"]:checked {
+  background-color: #0075ff;
+  border: 2px solid #0075ff;
 }
 
 /* style the link displayed when no user listings */
@@ -126,8 +145,20 @@
 
 /* media queries */
 
+@media screen and (max-width: 550px) {
+  .listing-header-button-group {
+    display: none;
+  }
+}
+
 @media screen and (max-width: 1000px) {
   .header-content button .text {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 550px) {
+  .mobile-listing-header-button-group {
     display: none;
   }
 }

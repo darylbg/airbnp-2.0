@@ -224,6 +224,9 @@
 /* elements are located in listings.jsx */
 .dashboard-content-body {
   justify-content: center;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }
 
 @media screen and (min-width: 768px) {
@@ -255,10 +258,9 @@
   }
 
   .dashboard-content {
-    margin: 0px 10px;
-    padding: 5px;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
+    margin: 0;
+    padding: 1rem 5px;
+    border-radius: 0;
   }
 }
 

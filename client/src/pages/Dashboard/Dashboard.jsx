@@ -112,11 +112,11 @@ export default function Dashboard() {
               <div className="menu-header">
                 <h3>Dashboard</h3>
               </div>
-              <img
+              {/* <img
                 src={currentUser.user_image}
                 alt="user avatar"
                 className="menu-avatar"
-              />
+              /> */}
             </div>
             <div className="dashboard-content scrollbar-1">
               <Outlet />

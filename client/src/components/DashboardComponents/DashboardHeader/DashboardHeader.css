@@ -49,3 +49,9 @@
     color: var(--black-50);
     font-size: 0.8rem;
   }
+
+  @media screen and (max-width:768px) {
+    .header-title .title-icon {
+      display: none;
+    }
+  }

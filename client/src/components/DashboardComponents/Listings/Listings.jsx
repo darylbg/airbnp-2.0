@@ -31,7 +31,6 @@ export default function Listings() {
   });
 
   const handleListingsSort = (formData) => {
-    console.log("sort form data", formData);
     setFilterDialog(false);
     setSortCriteria(formData.sortCriteria);
   };
@@ -39,7 +38,7 @@ export default function Listings() {
   useEffect(() => {
     const sortByDateAdded = () => {
       const sortedArray = [...userListings].sort(
-        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+        (a, b) => b.created_at - a.created_at
       );
       setSortedUserListings(sortedArray);
     };
@@ -74,81 +73,108 @@ export default function Listings() {
         subtitle="Manage your listings"
         icon="list"
       >
-        <div className="header-content">
-          <div className="filter-listings">
-            <button onClick={() => setFilterDialog(true)}>
-              <span className="text">
-                {sortCriteria === "dateAdded"
-                  ? "Date"
-                  : sortCriteria === "availability"
-                  ? "Availability"
-                  : "Sort"}
-              </span>
-              <span className="material-symbols-outlined">filter_list</span>
-            </button>
-          </div>
-          <DialogComponent
-            className="filter-dialog content-width-dialog"
-            openDialog={filterDialog}
-            closeDialog={() => setFilterDialog(false)}
-            icon="close"
-            dialogHeader="Sort listings"
-            backdropClosable="true"
+        <div className="listing-header-button-group">
+          <button
+            className="filter-listings"
+            onClick={() => setFilterDialog(true)}
           >
-            <Form.Root
-              className="user-listings-sort-form"
-              onSubmit={handleSubmit(handleListingsSort)}
-            >
-              <Form.Field className="user-listings-sort-field">
-                <Form.Control asChild>
-                  <input
-                    name="sort-radio"
-                    value="dateAdded"
-                    {...register("sortCriteria")}
-                    type="radio"
-                  />
-                </Form.Control>
-                <Form.Label>Date added</Form.Label>
-              </Form.Field>
-              <Form.Field className="user-listings-sort-field">
-                <Form.Control asChild>
-                  <input
-                    name="sort-radio"
-                    value="availability"
-                    {...register("sortCriteria")}
-                    type="radio"
-                  />
-                </Form.Control>
-                <Form.Label>Availability</Form.Label>
-              </Form.Field>
-              <Form.Submit asChild>
-                <PrimaryButton>Update listings</PrimaryButton>
-              </Form.Submit>
-            </Form.Root>
-          </DialogComponent>
-          <div className="new-listing">
-            <button onClick={() => setNewListingDialog(true)}>
-              <span className="text">New Listing</span>
-              <span className="material-symbols-outlined">add</span>
-            </button>
-          </div>
-          <DialogComponent
-            className="new-listing-dialog full-width-dialog"
-            openDialog={newListingDialog}
-            closeDialog={() => setNewListingDialog(false)}
-            icon="close"
-            dialogHeader="Add new listing"
-            backdropClosable={false}
+            <span className="text">
+              {sortCriteria === "dateAdded"
+                ? "Date"
+                : sortCriteria === "availability"
+                ? "Availability"
+                : "Sort"}
+            </span>
+            <span className="material-symbols-outlined">filter_list</span>
+          </button>
+          <button
+            className="new-listing"
+            onClick={() => setNewListingDialog(true)}
           >
-            <NewListing />
-          </DialogComponent>
-          <div className="title-text">
-            <h3>{userListings.length}</h3>
-            <p>listings</p>
-          </div>
+            <span className="text">New Listing</span>
+            <span className="material-symbols-outlined">add</span>
+          </button>
+        </div>
+        <DialogComponent
+          className="filter-dialog content-width-dialog"
+          openDialog={filterDialog}
+          closeDialog={() => setFilterDialog(false)}
+          icon="close"
+          dialogHeader="Sort listings"
+          backdropClosable="true"
+        >
+          <Form.Root
+            className="user-listings-sort-form"
+            onSubmit={handleSubmit(handleListingsSort)}
+          >
+            <Form.Field className="user-listings-sort-field">
+              <Form.Control asChild>
+                <input
+                  name="sort-radio"
+                  value="dateAdded"
+                  {...register("sortCriteria")}
+                  type="radio"
+                />
+              </Form.Control>
+              <Form.Label>Date added</Form.Label>
+            </Form.Field>
+            <Form.Field className="user-listings-sort-field">
+              <Form.Control asChild>
+                <input
+                  name="sort-radio"
+                  value="availability"
+                  {...register("sortCriteria")}
+                  type="radio"
+                />
+              </Form.Control>
+              <Form.Label>Availability</Form.Label>
+            </Form.Field>
+            <Form.Submit asChild>
+              <PrimaryButton>Update listings</PrimaryButton>
+            </Form.Submit>
+          </Form.Root>
+        </DialogComponent>
+        <DialogComponent
+          className="new-listing-dialog full-width-dialog"
+          openDialog={newListingDialog}
+          closeDialog={() => setNewListingDialog(false)}
+          icon="close"
+          dialogHeader="Add new listing"
+          backdropClosable="false"
+        >
+          <NewListing />
+        </DialogComponent>
+        <div className="title-text">
+          <h3>{userListings.length}</h3>
+          <p>listings</p>
         </div>
       </DashboardHeader>
       <div className="dashboard-content-body">
+        {/* filter and new listing buttons for mobile devices */}
+        <div className="mobile-listing-header-button-group">
+          <button
+            className="filter-listings"
+            onClick={() => setFilterDialog(true)}
+          >
+            <span className="text">
+              {sortCriteria === "dateAdded"
+                ? "Date"
+                : sortCriteria === "availability"
+                ? "Availability"
+                : "Sort"}
+            </span>
+            <span className="material-symbols-outlined">filter_list</span>
+          </button>
+          <button
+            className="new-listing"
+            onClick={() => setNewListingDialog(true)}
+          >
+            <span className="text">New Listing</span>
+            <span className="material-symbols-outlined">add</span>
+          </button>
+        </div>
+
+        {/* display user listings */}
         {sortedUserListings && sortedUserListings.length ? (
           <div className="listings-display">
             {sortedUserListings &&
