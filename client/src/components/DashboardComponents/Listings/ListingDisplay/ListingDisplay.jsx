@@ -1,24 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import PrimaryButton from "../../../PrimitiveComponents/PrimaryButton/PrimaryButton";
 import "./ListingDisplay.css";
-
-// formate date back to 01/01/2001 formate
-const formateDate = (date) => {
-  date = new Date(+date);
-  const day = String(date.getDay()).padStart(2, 0);
-  const month = String(date.getMonth() + 1).padStart(2, 0)
-  const year = String(date.getFullYear());
-  return `${day}/${month}/${year}`;
-}
+import DialogComponent from "../../../PrimitiveComponents/DialogComponent/DialogComponent";
 
 export default function ListingDisplay({ props }) {
+  const [editListingDialog, setEditListingDialog] = useState(false);
+
+  // formate date back to 01/01/2001 formate
+  const formateDate = (date) => {
+    date = new Date(+date);
+    const day = String(date.getDay()).padStart(2, 0);
+    const month = String(date.getMonth() + 1).padStart(2, 0);
+    const year = String(date.getFullYear());
+    return `${day}/${month}/${year}`;
+  };
+
   return (
     <div className="listing">
       <div className="listing-header">
         <div className="listing-header-text">
           <span>Set availability of your listing</span>
         </div>
-        <button className="availability-button">{props.availability ? "available": "unavailable"}</button>
+        <button className="availability-button">
+          {props.availability ? "available" : "unavailable"}
+        </button>
       </div>
       <div className="listing-body">
         <div className="listing-body-images">
@@ -45,9 +50,21 @@ export default function ListingDisplay({ props }) {
           </div>
         </div>
         <div className="listing-body-actions">
-          <PrimaryButton className="edit-listing-button">
+          <PrimaryButton
+            className="edit-listing-button"
+            action={() => setEditListingDialog(true)}
+          >
             Edit Listing
           </PrimaryButton>
+          <DialogComponent
+            className="edit-listing-dialog full-width-dialog"
+            openDialog={editListingDialog}
+            closeDialog={() => setEditListingDialog(false)}
+            icon="close"
+            dialogHeader={`Editing: ${props.listing_title}`}
+          >
+            edit listing dialog
+          </DialogComponent>
           <div className="listing-insights">
             <div className="insights-divider"></div>
             <div className="insight">

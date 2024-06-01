@@ -100,6 +100,7 @@ body {
     padding-top: 58px;
     display: flex;
     min-height: calc(100vh - 58px);
+    justify-content: center;
   }
 }
 
