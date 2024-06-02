@@ -189,9 +189,7 @@ const resolvers = {
             { $addToSet: { user_listings: newListing } },
             { new: true }
           ).populate("user_listings");
-
           return newListing;
-          console.log(newListing);
         } catch (error) {
           console.log(error);
           throw new Error("Error creating listing");
@@ -203,6 +201,38 @@ const resolvers = {
     updateListing: async (parent, { listingId, listingData }, context) => {
       if (context.user) {
         try {
+          // Check if listing_data contains listing_image field
+          if (!listingData.listing_image || listingData.listing_image.length === 0) {
+            throw new Error("Listing images are required.");
+          }
+    
+          // Function to check if the image is a Cloudinary URL
+          const isCloudinaryUrl = (url) => {
+            return url.startsWith("http://res.cloudinary.com/") || url.startsWith("https://res.cloudinary.com/");
+          };
+    
+          // Upload images to Cloudinary or keep the existing Cloudinary URLs
+          const processedImages = await Promise.all(
+            listingData.listing_image.map(async (image) => {
+              if (isCloudinaryUrl(image)) {
+                return image; // If it's already a Cloudinary URL, keep it as is
+              } else {
+                try {
+                  const uploadedResponse = await cloudinary.uploader.upload(image, {
+                    upload_preset: "n5btmxuv",
+                  });
+                  return uploadedResponse.secure_url; // Return the new Cloudinary URL
+                } catch (uploadError) {
+                  console.error("Error uploading image to Cloudinary:", uploadError);
+                  throw new Error("Failed to upload one or more images.");
+                }
+              }
+            })
+          );
+    
+          // Convert price to a float
+          listingData.price = parseFloat(listingData.price);
+    
           const updateListing = await Listing.findByIdAndUpdate(
             { _id: listingId },
             {
@@ -211,7 +241,7 @@ const resolvers = {
                 listing_title: listingData.listing_title,
                 listing_description: listingData.listing_description,
                 contact_method: listingData.contact_method,
-                listing_image: listingData.listing_image,
+                listing_image: processedImages,
                 address: listingData.address,
                 latitude: listingData.latitude,
                 longitude: listingData.longitude,
@@ -228,7 +258,7 @@ const resolvers = {
         }
       }
       throw new AuthenticationError("You must be logged in!");
-    },
+    },    
 
     deleteListing: async (parent, { listingId }, context) => {
       if (context.user) {

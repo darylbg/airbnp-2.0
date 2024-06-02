@@ -119,3 +119,32 @@ export const NEW_LISTING_MUTATION = gql`
     }
   }
 `;
+
+export const EDIT_LISTING_MUTATION = gql`
+  mutation EditListing($listingId: ID!, $listingData: listingInput) {
+    updateListing(listingId: $listingId, listingData: $listingData) {
+      address
+      amenities {
+        amenity_id
+        available
+      }
+      availability
+      contact_method
+      created_at
+      id
+      latitude
+      listing_description
+      listing_image
+      listing_title
+      longitude
+      payments {
+        id
+      }
+      price
+      reviews {
+        id
+      }
+      user_id
+    }
+  }
+`;

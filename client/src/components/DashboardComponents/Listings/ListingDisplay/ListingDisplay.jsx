@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PrimaryButton from "../../../PrimitiveComponents/PrimaryButton/PrimaryButton";
+import CrudListing from "../EditListing/EditListing";
 import "./ListingDisplay.css";
 import DialogComponent from "../../../PrimitiveComponents/DialogComponent/DialogComponent";
 
@@ -63,7 +64,7 @@ export default function ListingDisplay({ props }) {
             icon="close"
             dialogHeader={`Editing: ${props.listing_title}`}
           >
-            edit listing dialog
+            <CrudListing listing={props}/>
           </DialogComponent>
           <div className="listing-insights">
             <div className="insights-divider"></div>

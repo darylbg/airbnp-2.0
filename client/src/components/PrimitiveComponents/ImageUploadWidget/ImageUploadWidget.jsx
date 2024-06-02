@@ -11,19 +11,19 @@ export default function ImageUploadWidget({
   const [selectedFile, setSelectedFile] = useState();
   const [preview, setPreview] = useState();
 
-  // create a preview as a side effect, whenever selected file is changed
+  // Set the preview based on the type of image (File or URL)
   useEffect(() => {
-    if (!selectedFile) {
+    if (image instanceof File) {
+      const objectUrl = URL.createObjectURL(image);
+      setPreview(objectUrl);
+
+      return () => URL.revokeObjectURL(objectUrl);
+    } else if (typeof image === 'string') {
+      setPreview(image);
+    } else {
       setPreview(undefined);
-      return;
     }
-
-    const objectUrl = URL.createObjectURL(selectedFile);
-    setPreview(objectUrl);
-
-    // free memory when ever this component is unmounted
-    return () => URL.revokeObjectURL(objectUrl);
-  }, [selectedFile]);
+  }, [image]);
 
   const onSelectFile = (e) => {
     if (!e.target.files || e.target.files.length === 0) {
@@ -45,16 +45,15 @@ export default function ImageUploadWidget({
     <div
       className="image-upload-widget"
       style={{
-        backgroundImage: selectedFile ? `url(${preview})` : "none",
+        backgroundImage: preview ? `url(${preview})` : "none",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
       }}
     >
       <input type="file" onChange={onSelectFile} />
-      {!selectedFile && <span>Upload Image</span>}
-      {selectedFile && (
-        //   <button className="image-remove-button" onClick={handleRemove}>remove</button>
+      {!preview && <span>Upload Image</span>}
+      {preview && (
         <WindowControlButton
           action={handleRemove}
           text="remove"
