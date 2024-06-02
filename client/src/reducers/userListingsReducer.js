@@ -37,8 +37,24 @@ const listingsSlice = createSlice({
         state.allIds.unshift(listing.id);
       }
     },
+    updateListing(state, action) {
+      const listing = action.payload;
+      // adjust subfields to array length
+      // listing.payments = listing.payments.length;
+      // listing.reviews = listing.reviews.length;
+      // find the index of the relevant listing to update
+      const index = state.byId.findIndex((item) => item.id === listing.id);
+
+      if (index !== -1) {
+        state.byId[index] = {...state.byId[index], ...listing}
+      }
+
+      if (!state.allIds.includes(listing.id)) {
+        state.allIds.unshift(listing.id);
+      }
+    }
   },
 });
 
-export const { setUserListings, addListing } = listingsSlice.actions;
+export const { setUserListings, addListing, updateListing } = listingsSlice.actions;
 export default listingsSlice.reducer;

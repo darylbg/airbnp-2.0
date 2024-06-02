@@ -5,8 +5,7 @@ import * as Form from "@radix-ui/react-form";
 import { useMutation } from "@apollo/client";
 import { EDIT_LISTING_MUTATION } from "../../../../utils/mutations";
 import ImageUploadWidget from "../../../PrimitiveComponents/ImageUploadWidget/ImageUploadWidget";
-import { updateUserDetails } from "../../../../reducers/userDetailsReducer";
-import { addListing } from "../../../../reducers/userListingsReducer";
+import { updateListing } from "../../../../reducers/userListingsReducer";
 
 export default function EditListing({ listing }) {
   const currentUser = useSelector((state) => state.userDetails.byId);
@@ -93,17 +92,13 @@ export default function EditListing({ listing }) {
             longitude: formData.longitude,
             availability: formData.availability,
             price: +formData.price,
-            // amenities: listing.amenities,
-            // payments: listing.payments,
-            // reviews: listing.reviews,
           },
         },
       });
       console.log("successfully updated", updatedListing);
-      // const addedListing = updatedListing.data.createListing;
-      // const userListingCount = currentUser.user_listings;
-
-      // dispatch(addListing(addedListing));
+      const editedListing = updatedListing.data.updateListing;
+      console.log(editedListing.id);
+      dispatch(updateListing(editedListing));
       // dispatch(
       //   updateUserDetails({
       //     userId: addedListing.user_id,
