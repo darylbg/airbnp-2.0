@@ -29,7 +29,7 @@
 .listing-body-images {
     width: 200px;
     height: auto;
-    /* aspect-ratio: 1 / 1; */
+    max-height: 200px;
     flex: 0 1 auto;
     display: flex;
     flex-direction: column;
@@ -39,7 +39,6 @@
 .listing-body-images .first-image {
     flex: 1;
     overflow: hidden;
-    aspect-ratio: 16/9;
 }
 
 .listing-body-images * img {
@@ -120,6 +119,60 @@
     padding: 0;
     font-size: 0.8rem;
     color: var(--black-50);
+}
+
+/* availability toggle */
+
+#button-10 .knobs:before,
+#button-10 .knobs:after,
+#button-10 .knobs span {
+  position: absolute;
+  top: 4px;
+  width: 20px;
+  height: 10px;
+  font-size: 10px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 1;
+  padding: 9px 4px;
+  border-radius: 2px;
+  transition: 0.3s ease all;
+}
+
+#button-10 .knobs:before {
+  content: "";
+  left: 4px;
+  background-color: #03a9f4;
+}
+
+#button-10 .knobs:after {
+  content: "NO";
+  right: 4px;
+  color: #4e4e4e;
+}
+
+#button-10 .knobs span {
+  display: inline-block;
+  left: 4px;
+  color: #fff;
+  z-index: 1;
+}
+
+#button-10 .checkbox:checked + .knobs span {
+  color: #4e4e4e;
+}
+
+#button-10 .checkbox:checked + .knobs:before {
+  left: 42px;
+  background-color: #f44336;
+}
+
+#button-10 .checkbox:checked + .knobs:after {
+  color: #fff;
+}
+
+#button-10 .checkbox:checked ~ .layer {
+  background-color: #fcebeb;
 }
 
 @media screen and (max-width: 1000px) {

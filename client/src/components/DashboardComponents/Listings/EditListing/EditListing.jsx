@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import * as Form from "@radix-ui/react-form";
@@ -6,8 +6,10 @@ import { useMutation } from "@apollo/client";
 import { EDIT_LISTING_MUTATION } from "../../../../utils/mutations";
 import ImageUploadWidget from "../../../PrimitiveComponents/ImageUploadWidget/ImageUploadWidget";
 import { updateListing } from "../../../../reducers/userListingsReducer";
+import toast from "react-hot-toast";
+import ToastComponent from "../../../PrimitiveComponents/ToastComponent/ToastComponent";
 
-export default function EditListing({ listing }) {
+export default function EditListing({ listing, closeDialog }) {
   const currentUser = useSelector((state) => state.userDetails.byId);
   // spread in lisitng images or fill array length up to 5 with null
   const initialImages = Array.from(
@@ -44,9 +46,6 @@ export default function EditListing({ listing }) {
   const {
     register,
     handleSubmit,
-    setError,
-    clearErrors,
-    setValue,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -56,14 +55,13 @@ export default function EditListing({ listing }) {
       address: listing.address,
       latitude: listing.latitude,
       longitude: listing.longitude,
-      availability: listing.availability,
       price: listing.price,
     },
   });
 
   const [editListingMutation] = useMutation(EDIT_LISTING_MUTATION);
 
-  const handleNewListing = async (formData, event) => {
+  const handleUpdatingListing = async (formData, event) => {
     event.preventDefault();
     try {
       const formDataImages = selectedImages.filter((img) => img);
@@ -90,21 +88,16 @@ export default function EditListing({ listing }) {
             address: formData.address,
             latitude: formData.latitude,
             longitude: formData.longitude,
-            availability: formData.availability,
             price: +formData.price,
           },
         },
       });
-      console.log("successfully updated", updatedListing);
+
       const editedListing = updatedListing.data.updateListing;
-      console.log(editedListing.id);
+
       dispatch(updateListing(editedListing));
-      // dispatch(
-      //   updateUserDetails({
-      //     userId: addedListing.user_id,
-      //     updates: { user_listings: userListingCount + 1 },
-      //   })
-      // );
+      closeDialog();
+      toast.success(<ToastComponent message="Successfully updated listing."/>);
     } catch (error) {
       console.log(error);
     }
@@ -113,7 +106,7 @@ export default function EditListing({ listing }) {
   return (
     <Form.Root
       className="new-listing-form"
-      onSubmit={handleSubmit(handleNewListing)}
+      onSubmit={handleSubmit(handleUpdatingListing)}
     >
       <p>{listing.listing_title}</p>
       <Form.Field className="new-listing-form-field" name="listing_title">

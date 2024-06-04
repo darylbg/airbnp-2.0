@@ -39,9 +39,6 @@ const listingsSlice = createSlice({
     },
     updateListing(state, action) {
       const listing = action.payload;
-      // adjust subfields to array length
-      // listing.payments = listing.payments.length;
-      // listing.reviews = listing.reviews.length;
       // find the index of the relevant listing to update
       const index = state.byId.findIndex((item) => item.id === listing.id);
 

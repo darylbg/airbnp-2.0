@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
+import Switch from "react-switch";
+import { useMutation } from "@apollo/client";
+import { EDIT_LISTING_MUTATION } from "../../../../utils/mutations";
+import { updateListing } from "../../../../reducers/userListingsReducer";
 import PrimaryButton from "../../../PrimitiveComponents/PrimaryButton/PrimaryButton";
 import CrudListing from "../EditListing/EditListing";
 import "./ListingDisplay.css";
 import DialogComponent from "../../../PrimitiveComponents/DialogComponent/DialogComponent";
+import { useDispatch } from "react-redux";
 
 export default function ListingDisplay({ props }) {
   const [editListingDialog, setEditListingDialog] = useState(false);
@@ -10,7 +15,7 @@ export default function ListingDisplay({ props }) {
   // formate date back to 01/01/2001 formate
   const formateDate = (date) => {
     date = new Date(+date);
-    const day = String(date.getDay()).padStart(2, 0);
+    const day = String(date.getDate()).padStart(2, 0);
     const month = String(date.getMonth() + 1).padStart(2, 0);
     const year = String(date.getFullYear());
     return `${day}/${month}/${year}`;
@@ -22,9 +27,7 @@ export default function ListingDisplay({ props }) {
         <div className="listing-header-text">
           <span>Set availability of your listing</span>
         </div>
-        <button className="availability-button">
-          {props.availability ? "available" : "unavailable"}
-        </button>
+        <SwitchComponent listing={props} />
       </div>
       <div className="listing-body">
         <div className="listing-body-images">
@@ -64,7 +67,10 @@ export default function ListingDisplay({ props }) {
             icon="close"
             dialogHeader={`Editing: ${props.listing_title}`}
           >
-            <CrudListing listing={props}/>
+            <CrudListing
+              listing={props}
+              closeDialog={() => setEditListingDialog(false)}
+            />
           </DialogComponent>
           <div className="listing-insights">
             <div className="insights-divider"></div>
@@ -81,4 +87,40 @@ export default function ListingDisplay({ props }) {
       </div>
     </div>
   );
+}
+
+export function SwitchComponent({ listing }) {
+  // const listing = useState((state) => state.userListings.byId); 
+  const [checked, setChecked] = useState(listing.availability);
+  
+  const dispatch = useDispatch();
+  const [editListingMutation] = useMutation(EDIT_LISTING_MUTATION);
+
+  const handleAvailabilityToggle = useCallback(async (checked) => {
+    try {
+      const updatedListing = await editListingMutation({
+        variables: {
+          listingId: listing.id,
+          listingData: {
+            listing_title: listing.listing_title,
+            listing_description: listing.listing_description,
+            contact_method: listing.contact_method,
+            listing_image: listing.listing_image,
+            address: listing.address,
+            latitude: listing.latitude,
+            longitude: listing.longitude,
+            price: listing.price,
+            availability: checked,
+          },
+        },
+      });
+      const editedListing = updatedListing.data.updateListing;
+
+      dispatch(updateListing(editedListing));
+      setChecked(checked);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+  return <Switch onChange={handleAvailabilityToggle} checked={checked} />;
 }
