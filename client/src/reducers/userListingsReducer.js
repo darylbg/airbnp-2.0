@@ -49,9 +49,23 @@ const listingsSlice = createSlice({
       if (!state.allIds.includes(listing.id)) {
         state.allIds.unshift(listing.id);
       }
+    },
+    deleteListing(state, action) {
+      const listingId = action.payload;
+        // find the index of the relevant listing to update
+        const index = state.byId.findIndex((item) => item.id === listingId);
+  
+        if (index !== -1) {
+          state.byId.splice(index, 1);
+        }
+        
+        const allIdsIndex = state.allIds.indexOf(listingId)
+        if (allIdsIndex !== -1) {
+          state.allIds.splice(allIdsIndex, 1);
+        }
     }
   },
 });
 
-export const { setUserListings, addListing, updateListing } = listingsSlice.actions;
+export const { setUserListings, addListing, updateListing, deleteListing } = listingsSlice.actions;
 export default listingsSlice.reducer;

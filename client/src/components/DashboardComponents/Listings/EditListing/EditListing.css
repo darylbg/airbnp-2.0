@@ -1,0 +1,15 @@
+.edit-listing-button-group {
+    display: flex;
+    flex-direction: row;
+    gap: 3rem;
+    justify-content: space-between;
+}
+
+.edit-listing-button-group > * {
+    flex-grow: 1;
+    max-width: 200px;
+}
+
+.edit-listing-button-group .new-listing-form-field {
+    width: auto;
+}

@@ -148,3 +148,33 @@ export const EDIT_LISTING_MUTATION = gql`
     }
   }
 `;
+
+export const DELETE_LISTING_MUTATION = gql`
+  mutation DeleteListing($listingId: ID!) {
+    deleteListing(listingId: $listingId) {
+      user_listings {
+        listing_title
+        listing_image
+        listing_description
+        latitude
+        id
+        created_at
+        contact_method
+        availability
+        amenities {
+          amenity_id
+        }
+        address
+        longitude
+        payments {
+          id
+        }
+        price
+        reviews {
+          id
+        }
+        user_id
+      }
+    }
+  }
+`;

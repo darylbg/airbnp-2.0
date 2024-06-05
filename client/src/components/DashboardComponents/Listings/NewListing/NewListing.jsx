@@ -12,7 +12,7 @@ import {updateUserDetails} from "../../../../reducers/userDetailsReducer";
 import {addListing} from "../../../../reducers/userListingsReducer"
 import "./NewListing.css";
 
-export default function NewListing() {
+export default function NewListing({closeDialog}) {
   const currentUser = useSelector((state) => state.userDetails.byId);
   const [selectedImages, setSelectedImages] = useState([
     null,
@@ -84,7 +84,7 @@ export default function NewListing() {
             // lat and long will be dynamically address when geolocation is added
             latitude: 10,
             longitude: 11,
-            availability: true,
+            availability: false,
             price: price,
             amenities: [],
             payments: [],
@@ -100,6 +100,7 @@ export default function NewListing() {
       dispatch(addListing(addedListing));
       dispatch(updateUserDetails({ userId: addedListing.user_id, updates: { user_listings: userListingCount + 1 } }));
       
+      closeDialog();
     } catch (error) {
       console.log(error);
     }

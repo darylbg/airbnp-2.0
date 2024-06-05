@@ -11,7 +11,6 @@ export default function DialogComponent({
   backdropClosable,
   children,
 }) {
-  const [dialogScrolled, setDialogScrolled] = useState(false);
 
   const dialogRef = useRef();
   const dialogBodyRef = useRef();
@@ -23,28 +22,6 @@ export default function DialogComponent({
       dialogRef.current?.close();
     }
   }, [openDialog]);
-
-  useEffect(() => {
-    const handleDialogScroll = (e) => {
-      if (dialogBodyRef.current) {
-        const dialogPosition = dialogBodyRef.current.scrollTop;
-        return dialogPosition > 0
-          ? setDialogScrolled(true)
-          : setDialogScrolled(false);
-      }
-    };
-
-    if (dialogBodyRef.current) {
-      const dialogElement = dialogBodyRef.current;
-      dialogElement.addEventListener("scroll", handleDialogScroll);
-    }
-    return () => {
-      if (dialogBodyRef.current) {
-        const dialogElement = dialogBodyRef.current;
-        dialogElement.removeEventListener("scroll", handleDialogScroll);
-      }
-    };
-  }, []);
 
   const findDialogOverlay = (e) => {
     if(e.target === dialogRef.current) {
@@ -64,7 +41,7 @@ export default function DialogComponent({
       backdrop-closable={backdropClosable}
     >
       <div className="dialog-content">
-        <div className={`dialog-header ${dialogScrolled ? "dialog-scrolled" : null}`}>
+        <div className="dialog-header">
           <h4 className="text">{dialogHeader}</h4>
           <WindowControlButton action={closeDialog} icon={icon} />
         </div>

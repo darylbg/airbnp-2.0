@@ -4,13 +4,20 @@ import { useForm } from "react-hook-form";
 import * as Form from "@radix-ui/react-form";
 import { useMutation } from "@apollo/client";
 import { EDIT_LISTING_MUTATION } from "../../../../utils/mutations";
+import { DELETE_LISTING_MUTATION } from "../../../../utils/mutations";
 import ImageUploadWidget from "../../../PrimitiveComponents/ImageUploadWidget/ImageUploadWidget";
-import { updateListing } from "../../../../reducers/userListingsReducer";
+import { updateListing, deleteListing } from "../../../../reducers/userListingsReducer";
+import { updateUserDetails } from "../../../../reducers/userDetailsReducer";
 import toast from "react-hot-toast";
 import ToastComponent from "../../../PrimitiveComponents/ToastComponent/ToastComponent";
+import PrimaryButton from "../../../PrimitiveComponents/PrimaryButton/PrimaryButton";
+import "./EditListing.css";
 
 export default function EditListing({ listing, closeDialog }) {
   const currentUser = useSelector((state) => state.userDetails.byId);
+
+  const [editListingLoading, setEditListingLoading] = useState(false);
+
   // spread in lisitng images or fill array length up to 5 with null
   const initialImages = Array.from(
     { length: 5 },
@@ -60,9 +67,11 @@ export default function EditListing({ listing, closeDialog }) {
   });
 
   const [editListingMutation] = useMutation(EDIT_LISTING_MUTATION);
+  const [deleteListingMutation] = useMutation(DELETE_LISTING_MUTATION);
 
   const handleUpdatingListing = async (formData, event) => {
     event.preventDefault();
+    setEditListingLoading(true);
     try {
       const formDataImages = selectedImages.filter((img) => img);
       const listingImages = await Promise.all(
@@ -97,10 +106,30 @@ export default function EditListing({ listing, closeDialog }) {
 
       dispatch(updateListing(editedListing));
       closeDialog();
-      toast.success(<ToastComponent message="Successfully updated listing."/>);
+      setEditListingLoading(false);
+      toast.success(<ToastComponent message="Successfully updated listing." />);
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleDeleteListing = async (event) => {
+    event.preventDefault();
+    try {
+      const deletedListing = await deleteListingMutation({
+        variables: {listingId: listing.id}
+      });
+
+      const userListingCount = currentUser.user_listings;
+
+      dispatch(updateUserDetails({userId: currentUser.id, update: {user_listings: userListingCount - 1}}))
+      dispatch(deleteListing(listing.id));
+      console.log("deleted listing", deletedListing);
+      closeDialog();
+    } catch (error) {
+      console.log(error)
+    }
+    
   };
 
   return (
@@ -200,11 +229,23 @@ export default function EditListing({ listing, closeDialog }) {
         </Form.Control>
         <div className="field-message">{errors.price?.message}</div>
       </Form.Field>
-      <Form.Field className="new-listing-form-field" name="availability">
-        <Form.Submit asChild>
-          <button>Update Listing</button>
-        </Form.Submit>
-      </Form.Field>
+      <div className="edit-listing-button-group">
+        <PrimaryButton
+          className="delete-listing-button"
+          type="button"
+          action={handleDeleteListing}
+          loading={editListingLoading}
+        >
+          Delete listing
+        </PrimaryButton>
+        <Form.Field className="new-listing-form-field" name="availability">
+          <Form.Submit asChild>
+            <PrimaryButton 
+            loading={editListingLoading}
+            >Save</PrimaryButton>
+          </Form.Submit>
+        </Form.Field>
+      </div>
     </Form.Root>
   );
 }

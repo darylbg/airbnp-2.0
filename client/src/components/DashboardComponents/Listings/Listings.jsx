@@ -142,7 +142,7 @@ export default function Listings() {
           dialogHeader="Add new listing"
           backdropClosable="false"
         >
-          <NewListing />
+          <NewListing closeDialog={() => setNewListingDialog(false)}/>
         </DialogComponent>
         <div className="title-text">
           <h3>{userListings.length}</h3>
