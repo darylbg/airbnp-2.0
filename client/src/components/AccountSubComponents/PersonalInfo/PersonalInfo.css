@@ -1,3 +1,46 @@
 .personal-info {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
 
+.personal-info .edit-enable {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.edit-personal-info-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.edit-personal-info-field input {
+    background-color: white;
+    border: none;
+    border-bottom: 1px solid var(--black-50);
+    color: var(--black-100);
+    box-sizing: border-box;
+    width: 100%;
+    height: 3rem;
+    font-size: 1.1rem;
+    color: var(--black-100);
+    font-weight: 500;
+}
+
+.edit-personal-info-field input:disabled {
+    background-color: white;
+    border: none;
+    border-bottom: 1px solid var(--black-10);
+    color: var(--black-60);
+}
+
+.edit-personal-info-field input:focus-visible {
+    border: none;
+    border-bottom: 1px solid var(--blue);
+    outline: none;
 }

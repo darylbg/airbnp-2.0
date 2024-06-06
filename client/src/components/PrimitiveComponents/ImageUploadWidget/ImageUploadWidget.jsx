@@ -7,6 +7,7 @@ export default function ImageUploadWidget({
   index,
   onImageRemove,
   image,
+  loading
 }) {
   const [selectedFile, setSelectedFile] = useState();
   const [preview, setPreview] = useState();
@@ -51,9 +52,9 @@ export default function ImageUploadWidget({
         backgroundRepeat: "no-repeat",
       }}
     >
-      <input type="file" onChange={onSelectFile} />
+      <input type="file" onChange={onSelectFile} disabled={loading}/>
       {!preview && <span>Upload Image</span>}
-      {preview && (
+      {preview && !loading && (
         <WindowControlButton
           action={handleRemove}
           text="remove"

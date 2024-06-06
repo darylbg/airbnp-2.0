@@ -6,7 +6,10 @@ import { useMutation } from "@apollo/client";
 import { EDIT_LISTING_MUTATION } from "../../../../utils/mutations";
 import { DELETE_LISTING_MUTATION } from "../../../../utils/mutations";
 import ImageUploadWidget from "../../../PrimitiveComponents/ImageUploadWidget/ImageUploadWidget";
-import { updateListing, deleteListing } from "../../../../reducers/userListingsReducer";
+import {
+  updateListing,
+  deleteListing,
+} from "../../../../reducers/userListingsReducer";
 import { updateUserDetails } from "../../../../reducers/userDetailsReducer";
 import toast from "react-hot-toast";
 import ToastComponent from "../../../PrimitiveComponents/ToastComponent/ToastComponent";
@@ -16,7 +19,7 @@ import "./EditListing.css";
 export default function EditListing({ listing, closeDialog }) {
   const currentUser = useSelector((state) => state.userDetails.byId);
 
-  const [editListingLoading, setEditListingLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // spread in lisitng images or fill array length up to 5 with null
   const initialImages = Array.from(
@@ -71,7 +74,7 @@ export default function EditListing({ listing, closeDialog }) {
 
   const handleUpdatingListing = async (formData, event) => {
     event.preventDefault();
-    setEditListingLoading(true);
+    setLoading(true);
     try {
       const formDataImages = selectedImages.filter((img) => img);
       const listingImages = await Promise.all(
@@ -106,7 +109,7 @@ export default function EditListing({ listing, closeDialog }) {
 
       dispatch(updateListing(editedListing));
       closeDialog();
-      setEditListingLoading(false);
+      setLoading(false);
       toast.success(<ToastComponent message="Successfully updated listing." />);
     } catch (error) {
       console.log(error);
@@ -117,19 +120,23 @@ export default function EditListing({ listing, closeDialog }) {
     event.preventDefault();
     try {
       const deletedListing = await deleteListingMutation({
-        variables: {listingId: listing.id}
+        variables: { listingId: listing.id },
       });
 
       const userListingCount = currentUser.user_listings;
 
-      dispatch(updateUserDetails({userId: currentUser.id, update: {user_listings: userListingCount - 1}}))
+      dispatch(
+        updateUserDetails({
+          userId: currentUser.id,
+          update: { user_listings: userListingCount - 1 },
+        })
+      );
       dispatch(deleteListing(listing.id));
       console.log("deleted listing", deletedListing);
       closeDialog();
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-    
   };
 
   return (
@@ -142,6 +149,7 @@ export default function EditListing({ listing, closeDialog }) {
         <Form.Label>Listing Title</Form.Label>
         <Form.Control asChild>
           <input
+            disabled={loading}
             type="text"
             {...register("listing_title", {
               required: "This is required",
@@ -154,6 +162,7 @@ export default function EditListing({ listing, closeDialog }) {
         <Form.Label>Listing Description</Form.Label>
         <Form.Control asChild>
           <textarea
+            disabled={loading}
             type="text"
             {...register("listing_description", {
               required: "This is required",
@@ -168,6 +177,7 @@ export default function EditListing({ listing, closeDialog }) {
         <Form.Label>Contact Method</Form.Label>
         <Form.Control asChild>
           <textarea
+            disabled={loading}
             type="text"
             {...register("contact_method", {
               required: "This is required",
@@ -185,6 +195,7 @@ export default function EditListing({ listing, closeDialog }) {
               image={selectedImages[0]}
               onImageSelect={handleImageSelect}
               onImageRemove={handleImageRemove}
+              loading={loading}
             />
           </div>
           <div className="other-upload-widgets-grid">
@@ -195,6 +206,7 @@ export default function EditListing({ listing, closeDialog }) {
                   image={image}
                   onImageSelect={handleImageSelect}
                   onImageRemove={handleImageRemove}
+                  loading={loading}
                 />
               </div>
             ))}
@@ -206,6 +218,7 @@ export default function EditListing({ listing, closeDialog }) {
         <Form.Label>Listing Address</Form.Label>
         <Form.Control asChild>
           <input
+            disabled={loading}
             type="text"
             {...register("address", {
               required: "This is required",
@@ -221,6 +234,7 @@ export default function EditListing({ listing, closeDialog }) {
         <Form.Label>Listing Price</Form.Label>
         <Form.Control asChild>
           <input
+            disabled={loading}
             type="number"
             {...register("price", {
               required: "This is required",
@@ -234,15 +248,13 @@ export default function EditListing({ listing, closeDialog }) {
           className="delete-listing-button"
           type="button"
           action={handleDeleteListing}
-          loading={editListingLoading}
+          loading={loading}
         >
           Delete listing
         </PrimaryButton>
         <Form.Field className="new-listing-form-field" name="availability">
           <Form.Submit asChild>
-            <PrimaryButton 
-            loading={editListingLoading}
-            >Save</PrimaryButton>
+            <PrimaryButton loading={loading}>Save</PrimaryButton>
           </Form.Submit>
         </Form.Field>
       </div>

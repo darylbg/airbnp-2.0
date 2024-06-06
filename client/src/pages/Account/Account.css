@@ -4,6 +4,7 @@
     flex: 1;
     padding: 5%;
     gap: 30px;
+    max-width: 1200px;
 }
 
 .profile-page-breadcrumbs {
@@ -20,6 +21,14 @@
 
 .breadcrumb-item a {
     padding: 0 5px;
+    text-transform: capitalize;
+    text-decoration: none;
+    color: var(--black-100);
+    font-weight: 600;
+}
+
+.breadcrumb-item a:hover {
+    text-decoration: underline;
 }
 
 .account-header {
