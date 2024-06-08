@@ -45,7 +45,8 @@ export default function SignInForm({ handleSignInRegisterToggle }) {
 
       Auth.login(loggedInUser.data.login.token);
       
-      toast.success(<ToastComponent message="Successfully signed in."/>);
+      const firstName = loggedInUserData.user.first_name;
+      toast.success(<ToastComponent message={`Welcome ${firstName}.`}/>);
     } catch ({error, graphQLErrors, networkError}) {
       console.log("Sign in error:", error);
       if (graphQLErrors && graphQLErrors.length > 0) {

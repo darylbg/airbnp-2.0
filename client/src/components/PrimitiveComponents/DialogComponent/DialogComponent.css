@@ -69,7 +69,6 @@
   display: flex;
   padding-top: 1rem;
   z-index: auto;
-  align-items: center;
 }
 
 /* custom scrollbar styling */

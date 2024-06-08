@@ -61,7 +61,6 @@ export default function PersonalInfo() {
       const updatedUser = await updateUserMutation({
         variables: {
           userData: {
-            // ...currentUser,
             first_name: FormData.firstName,
             last_name: FormData.lastName,
             display_name: FormData.displayName,
@@ -71,28 +70,26 @@ export default function PersonalInfo() {
           },
         },
       });
-
-      dispatch(updateUserDetails({userId: currentUser.id, updates: updatedUser.data.updateUser}));
-      console.log(updatedUser.data.updateUser);
+  
+      // Dispatch the action to update user details in Redux
+      await dispatch(updateUserDetails({ userId: currentUser.id, updates: updatedUser.data.updateUser }));
+  
+      // Set form values after Redux update
+      setValuePersonalInfo("firstName", updatedUser.data.updateUser.first_name);
+      setValuePersonalInfo("lastName", updatedUser.data.updateUser.last_name);
+      setValuePersonalInfo("displayName", updatedUser.data.updateUser.display_name);
+      setValuePersonalInfo("email", updatedUser.data.updateUser.email);
+  
       toast.success(
-        <ToastComponent message="Successfully updated personal info." />
+        <ToastComponent message="Successfully updated." />
       );
-
-      setValuePersonalInfo("firstName", currentUser.first_name);
-      setValuePersonalInfo("lastName", currentUser.last_name);
-      setValuePersonalInfo("displayName", currentUser.display_name);
-      setValuePersonalInfo("email", currentUser.email);
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
-
-      setValuePersonalInfo("firstName", currentUser.first_name);
-      setValuePersonalInfo("lastName", currentUser.last_name);
-      setValuePersonalInfo("displayName", currentUser.display_name);
-      setValuePersonalInfo("email", currentUser.email);
     }
   };
+  
 
   // change password logic
   const hiddenPasswordPlaceholder = "******";
@@ -272,7 +269,7 @@ export default function PersonalInfo() {
           onSubmit={passwordHandleSubmit(handlePasswordChange)}
         >
           <Form.Field className="edit-personal-info-field">
-            <Form.Label className="field-label">Current password</Form.Label>
+            <Form.Label className="field-label">{passwordEditable ? "Enter your current password" : "Current password"}</Form.Label>
             <Form.Control className="change-password-field" asChild>
               <input
                 placeholder={hiddenPasswordPlaceholder}

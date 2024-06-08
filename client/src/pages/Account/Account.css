@@ -1,4 +1,4 @@
-.profile-page {
+.account-page {
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -7,7 +7,7 @@
     max-width: 1200px;
 }
 
-.profile-page-breadcrumbs {
+.account-page-breadcrumbs {
     display: flex;
     flex-direction: column;
     border-bottom: 1px solid var(--black-10);
