@@ -3,10 +3,26 @@
     max-width: 600px;
     display: flex;
     flex-direction: column;
+    gap: 8rem;
+}
+
+.edit-personal-info,
+.change-password {
+    display: flex;
+    flex-direction: column;
     gap: 3rem;
 }
 
-.personal-info .edit-enable {
+
+.edit-personal-info-form,
+.change-password-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.personal-info .edit-enable,
+.personal-info .change-password-enable {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -18,10 +34,31 @@
     margin: 0;
 }
 
-.edit-personal-info-form {
+.edit-personal-info-field {
+    /* background-color: red; */
+}
+
+/* password visibility toggle */
+
+.password-visibility-wrapper {
+    position: relative;
+}
+
+.password-visibility-toggle {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: transparent;
     display: flex;
-    flex-direction: column;
-    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+    border: none;
+}
+
+.password-visibility-toggle:hover {
+    cursor: pointer;
 }
 
 .edit-personal-info-field input {
