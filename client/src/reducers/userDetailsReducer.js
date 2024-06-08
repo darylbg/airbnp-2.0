@@ -25,13 +25,18 @@ const userDetailsSlice = createSlice({
       }
     },
     updateUserDetails(state, action) {
-      const { userId, updates } = action.payload;
+      try {
+        const { userId, updates } = action.payload;
       if (state.byId.id === userId) {
         state.byId = {
           ...state.byId,
           ...updates,
         };
       }
+      } catch (error) {
+        console.log(error)
+      }
+      
     },
   },
 });

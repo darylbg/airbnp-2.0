@@ -83,19 +83,20 @@ const typeDefs = gql`
   # inputs
 
   input userInput {
+    # id: [ID!]
     first_name: String!
     last_name: String!
     display_name: String!
     gender: String
     email: String!
     user_image: String
-    user_listings: [userListingInput]
-    saved_listings: [savedListingInput]
-    notifications: [notificationInput]
-    reviews: [reviewInput]
-    payments: [paymentInput]
-    booking_history: [bookingHistoryInput]
-    password: String!
+    # user_listings: [ID!]
+    # saved_listings: [ID!]
+    # notifications: [ID!]
+    # reviews: [ID!]
+    # payments: [ID!]
+    # booking_history: [ID!]
+    # password: String!
   }
 
   input userListingInput {
@@ -122,7 +123,7 @@ const typeDefs = gql`
     price: Float!
     amenities: [ID!] # List of amenity IDs to mark as available
     payments: [ID!]
-    reviews: [ID]
+    reviews: [ID!]
   }
 
   input amenityInput {

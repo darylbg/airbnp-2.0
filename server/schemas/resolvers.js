@@ -9,7 +9,7 @@ const {
 } = require("../models");
 const { signToken } = require("../utils/auth");
 const { model, default: mongoose } = require("mongoose");
-const {cloudinary} = require("../config/cloudinary");
+const { cloudinary } = require("../config/cloudinary");
 
 const resolvers = {
   Query: {
@@ -116,6 +116,7 @@ const resolvers = {
     },
     updateUser: async (parent, { userData }, context) => {
       if (context.user) {
+        console.log("this is the user", context.user._id);
         try {
           const updateUser = await User.findByIdAndUpdate(
             { _id: context.user._id },
@@ -127,16 +128,19 @@ const resolvers = {
                 gender: userData.gender,
                 email: userData.email,
                 user_image: userData.user_image,
-                saved_listings: userData.saved_listings,
-                password: userData.password,
+                // saved_listings: userData.saved_listings,
+                // password: userData.password,
               },
             },
             { new: true }
           );
           return updateUser;
         } catch (error) {
-          console.log(error);
-          throw error;
+          console.error("Update user error:", error);
+          throw new ApolloError(
+            "Failed to update user details",
+            "USER_UPDATE_ERROR"
+          );
         }
       }
       throw new AuthenticationError("You must be logged in!");
@@ -202,15 +206,21 @@ const resolvers = {
       if (context.user) {
         try {
           // Check if listing_data contains listing_image field
-          if (!listingData.listing_image || listingData.listing_image.length === 0) {
+          if (
+            !listingData.listing_image ||
+            listingData.listing_image.length === 0
+          ) {
             throw new Error("Listing images are required.");
           }
-    
+
           // Function to check if the image is a Cloudinary URL
           const isCloudinaryUrl = (url) => {
-            return url.startsWith("http://res.cloudinary.com/") || url.startsWith("https://res.cloudinary.com/");
+            return (
+              url.startsWith("http://res.cloudinary.com/") ||
+              url.startsWith("https://res.cloudinary.com/")
+            );
           };
-    
+
           // Upload images to Cloudinary or keep the existing Cloudinary URLs
           const processedImages = await Promise.all(
             listingData.listing_image.map(async (image) => {
@@ -218,21 +228,27 @@ const resolvers = {
                 return image; // If it's already a Cloudinary URL, keep it as is
               } else {
                 try {
-                  const uploadedResponse = await cloudinary.uploader.upload(image, {
-                    upload_preset: "n5btmxuv",
-                  });
+                  const uploadedResponse = await cloudinary.uploader.upload(
+                    image,
+                    {
+                      upload_preset: "n5btmxuv",
+                    }
+                  );
                   return uploadedResponse.secure_url; // Return the new Cloudinary URL
                 } catch (uploadError) {
-                  console.error("Error uploading image to Cloudinary:", uploadError);
+                  console.error(
+                    "Error uploading image to Cloudinary:",
+                    uploadError
+                  );
                   throw new Error("Failed to upload one or more images.");
                 }
               }
             })
           );
-    
+
           // Convert price to a float
           listingData.price = parseFloat(listingData.price);
-    
+
           const updateListing = await Listing.findByIdAndUpdate(
             { _id: listingId },
             {
@@ -258,7 +274,7 @@ const resolvers = {
         }
       }
       throw new AuthenticationError("You must be logged in!");
-    },    
+    },
 
     deleteListing: async (parent, { listingId }, context) => {
       if (context.user) {

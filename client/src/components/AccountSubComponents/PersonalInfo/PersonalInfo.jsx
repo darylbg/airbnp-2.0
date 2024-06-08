@@ -3,15 +3,18 @@ import { useForm } from "react-hook-form";
 import * as Form from "@radix-ui/react-form";
 import ToastComponent from "../../PrimitiveComponents/ToastComponent/ToastComponent";
 import toast from "react-hot-toast";
-
-import "./PersonalInfo.css";
-import { useSelector } from "react-redux";
+import { ApolloError, useMutation } from "@apollo/client";
+import { UPDATE_USER_MUTATION } from "../../../utils/mutations/userMutations";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUserDetails } from "../../../reducers/userDetailsReducer";
 import PrimaryButton from "../../PrimitiveComponents/PrimaryButton/PrimaryButton";
 import PasswordVisibilityToggle from "../../PrimitiveComponents/PasswordVisibilityToggle/PasswordVisibilityToggle";
+import "./PersonalInfo.css";
 
 export default function PersonalInfo() {
   const currentUser = useSelector((state) => state.userDetails.byId);
-
+  const dispatch = useDispatch();
+  // console.log(currentUser.user_image)
   const [loading, setLoading] = useState(false);
   const [editable, setEditable] = useState(false);
   const [passwordEditable, setPasswordEditable] = useState(false);
@@ -48,19 +51,46 @@ export default function PersonalInfo() {
     clearErrorsPersonalInfo("email");
   };
 
+  const [updateUserMutation] = useMutation(UPDATE_USER_MUTATION);
+
   const handlePersonalInfoEdit = async (FormData) => {
     setLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 3000));
       setEditable(false);
       console.log(FormData);
+      const updatedUser = await updateUserMutation({
+        variables: {
+          userData: {
+            // ...currentUser,
+            first_name: FormData.firstName,
+            last_name: FormData.lastName,
+            display_name: FormData.displayName,
+            email: FormData.email,
+            gender: currentUser.gender,
+            user_image: currentUser.image,           
+          },
+        },
+      });
+
+      dispatch(updateUserDetails({userId: currentUser.id, updates: updatedUser.data.updateUser}));
+      console.log(updatedUser.data.updateUser);
       toast.success(
         <ToastComponent message="Successfully updated personal info." />
       );
+
+      setValuePersonalInfo("firstName", currentUser.first_name);
+      setValuePersonalInfo("lastName", currentUser.last_name);
+      setValuePersonalInfo("displayName", currentUser.display_name);
+      setValuePersonalInfo("email", currentUser.email);
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
+
+      setValuePersonalInfo("firstName", currentUser.first_name);
+      setValuePersonalInfo("lastName", currentUser.last_name);
+      setValuePersonalInfo("displayName", currentUser.display_name);
+      setValuePersonalInfo("email", currentUser.email);
     }
   };
 
