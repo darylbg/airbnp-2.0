@@ -93,6 +93,50 @@ body {
   overflow-x: hidden;
 }
 
+/* button types */
+
+/* edit buttons */
+.edit-button {
+  background-color: var(--white);
+  color: var(--black-100);
+  border: 1px solid var(--black-100);
+}
+
+.edit-button:hover {
+  background-color: var(--black-100);
+  color: var(--white);
+  border: 1px solid var(--black-100);
+}
+
+.edit-button:disabled {
+  background-color: var(--black-10);
+  color: var(--black-50);
+  border: 1px solid var(--black-10);
+}
+
+/* save buttons */
+.save-button {
+  background-color: var(--black-100);
+  color: var(--white-darker);
+  border: 1px solid var(--black-100);
+}
+
+.save-button:hover {
+  background-color: var(--black-100-darker);
+  color: var(--white);
+  border: 1px solid var(--black-100-darker);
+}
+
+.save-button:disabled {
+  background-color: var(--black-10);
+  color: var(--black-50);
+  border: 1px solid var(--black-10);
+}
+
+.delete-button {
+
+}
+
 /* media queries */
 
 @media screen and (min-width: 768px) {

@@ -15,16 +15,17 @@ export default function PersonalInfo() {
   const [editable, setEditable] = useState(false);
 
   const {
-    register,
-    handleSubmit,
-    formState: { errors },
+    register: registerPersonalInfo,
+    handleSubmit: handleSubmitPersonalInfo,
+    setValue: setValuePersonalInfo,
+    clearErrors: clearErrorsPersonalInfo,
+    formState: { errors: errorsPersonalInfo },
   } = useForm({
     defaultValues: {
       firstName: currentUser.first_name,
       lastName: currentUser.last_name,
       displayName: currentUser.display_name,
       email: currentUser.email,
-      password: currentUser.password
     },
   });
 
@@ -34,6 +35,15 @@ export default function PersonalInfo() {
 
   const cancelPersonalInfoEdit = () => {
     setEditable(false);
+    setValuePersonalInfo("firstName", currentUser.first_name);
+    setValuePersonalInfo("lastName", currentUser.last_name);
+    setValuePersonalInfo("displayName", currentUser.display_name);
+    setValuePersonalInfo("email", currentUser.email);
+
+    clearErrorsPersonalInfo("firstName");
+    clearErrorsPersonalInfo("lastName");
+    clearErrorsPersonalInfo("displayName");
+    clearErrorsPersonalInfo("email");
   };
 
   const handlePersonalInfoEdit = async (FormData) => {
@@ -47,15 +57,22 @@ export default function PersonalInfo() {
       console.log(error);
     } finally {
       setLoading(false);
-      toast.success(<ToastComponent message="Successfully updated personal info."/>);
+      toast.success(
+        <ToastComponent message="Successfully updated personal info." />
+      );
     }
   };
 
   return (
     <section className="personal-info">
       <div className="edit-enable">
+        <h3>Update personal info</h3>
         {!editable ? (
-          <PrimaryButton action={handleEditEnable} loading={loading}>
+          <PrimaryButton
+            action={handleEditEnable}
+            loading={loading}
+            className="edit-button"
+          >
             Edit
           </PrimaryButton>
         ) : (
@@ -65,7 +82,7 @@ export default function PersonalInfo() {
         )}
       </div>
       <Form.Root
-        onSubmit={handleSubmit(handlePersonalInfoEdit)}
+        onSubmit={handleSubmitPersonalInfo(handlePersonalInfoEdit)}
         className="edit-personal-info-form"
       >
         <Form.Field className="edit-personal-info-field">
@@ -74,12 +91,14 @@ export default function PersonalInfo() {
             <input
               disabled={!editable}
               type="text"
-              {...register("firstName", {
+              {...registerPersonalInfo("firstName", {
                 required: "This is required",
               })}
             />
           </Form.Control>
-          <div className="field-message">{errors.firstName?.message}</div>
+          <div className="field-message">
+            {errorsPersonalInfo.firstName?.message}
+          </div>
         </Form.Field>
         <Form.Field className="edit-personal-info-field">
           <Form.Label className="field-label">Last Name</Form.Label>
@@ -87,12 +106,14 @@ export default function PersonalInfo() {
             <input
               disabled={!editable}
               type="text"
-              {...register("lastName", {
+              {...registerPersonalInfo("lastName", {
                 required: "This is required",
               })}
             />
           </Form.Control>
-          <div className="field-message">{errors.lastName?.message}</div>
+          <div className="field-message">
+            {errorsPersonalInfo.lastName?.message}
+          </div>
         </Form.Field>
         <Form.Field className="edit-personal-info-field">
           <Form.Label className="field-label">Display Name</Form.Label>
@@ -100,12 +121,14 @@ export default function PersonalInfo() {
             <input
               disabled={!editable}
               type="text"
-              {...register("displayName", {
+              {...registerPersonalInfo("displayName", {
                 required: "This is required",
               })}
             />
           </Form.Control>
-          <div className="field-message">{errors.displayName?.message}</div>
+          <div className="field-message">
+            {errorsPersonalInfo.displayName?.message}
+          </div>
         </Form.Field>
         <Form.Field className="edit-personal-info-field">
           <Form.Label className="field-label">Email</Form.Label>
@@ -113,32 +136,21 @@ export default function PersonalInfo() {
             <input
               disabled={!editable}
               type="text"
-              {...register("email", {
+              {...registerPersonalInfo("email", {
                 required: "This is required",
               })}
             />
           </Form.Control>
-          <div className="field-message">{errors.email?.message}</div>
-        </Form.Field>
-        <Form.Field className="edit-personal-info-field">
-          <Form.Label className="field-label">Password</Form.Label>
-          <Form.Control asChild>
-            <input
-              disabled={!editable}
-              type="text"
-              {...register("password", {
-                required: "This is required",
-              })}
-            />
-          </Form.Control>
-          <div className="field-message">{errors.password?.message}</div>
+          <div className="field-message">
+            {errorsPersonalInfo.email?.message}
+          </div>
         </Form.Field>
         <Form.Field className="edit-personal-info-field">
           <Form.Submit asChild>
             {editable && (
-              <PrimaryButton loading={loading}>
+              <PrimaryButton loading={loading} className="save-button">
                 {" "}
-                update user details
+                Save
               </PrimaryButton>
             )}
           </Form.Submit>
