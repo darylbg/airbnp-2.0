@@ -108,7 +108,6 @@ function App() {
           <Toaster
             position={windowSize > 768 ? "bottom-right" : "top-right"}
             toastOptions={{
-              duration: 5000,
               className: "toast",
             }}
           />

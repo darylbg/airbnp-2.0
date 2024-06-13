@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ApolloError, useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
-// import { Cloudinary } from "@cloudinary/url-gen";
+import AddressSearch from "../../../AddressSearch/AddressSearch";
 import * as Form from "@radix-ui/react-form";
 import toast from "react-hot-toast";
 import ToastComponent from "../../../PrimitiveComponents/ToastComponent/ToastComponent";
@@ -189,6 +189,7 @@ export default function NewListing({closeDialog}) {
               })}
             />
           </Form.Control>
+          <AddressSearch />
           <div className="field-message">{errors.address?.message}</div>
         </Form.Field>
         <Form.Field

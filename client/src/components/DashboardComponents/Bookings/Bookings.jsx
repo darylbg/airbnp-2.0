@@ -1,5 +1,6 @@
 import React from "react";
 import DashboardHeader from "../DashboardHeader/DashboardHeader";
+import AddressSearch from "../../AddressSearch/AddressSearch";
 
 export default function Bookings() {
   return (
@@ -9,6 +10,7 @@ export default function Bookings() {
         subtitle="Manage your bookings"
         icon="today"
       ></DashboardHeader>
+    <AddressSearch />
     </>
   );
 }
