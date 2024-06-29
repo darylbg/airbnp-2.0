@@ -17,7 +17,7 @@ export default function AddressSearch() {
 
   useEffect(() => {
     const accessToken =
-      "pk.eyJ1IjoiZGF6emExMjMiLCJhIjoiY2x4cWZ0NmR0MHcwbTJpc2h0NGtlaDljZiJ9.Ci-aOXRO2xgWgSwfLY2Gtw";
+    process.env.REACT_APP_MAPBOX_TOKEN;
     setToken(accessToken);
     config.accessToken = accessToken;
   }, []);
