@@ -1,0 +1,26 @@
+.loader-container {
+  position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 60%;
+    aspect-ratio: 1 / 1;
+}
+
+.loader {
+  padding: 5px;
+  border-radius: 50%;
+  background: var(--black-100);
+  --_m: conic-gradient(#0000 10%, #000), linear-gradient(#000 0 0) content-box;
+  mask: var(--_m);
+  mask-composite: subtract;
+  aspect-ratio: 1 / 1;
+  width: auto;
+  animation: l3 1s infinite linear;
+}
+
+@keyframes l3 {
+  to {
+    transform: rotate(1turn);
+  }
+}

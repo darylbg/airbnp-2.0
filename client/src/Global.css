@@ -93,7 +93,19 @@ body {
   overflow-x: hidden;
 }
 
-/* button types */
+/* general button styles */
+
+button {
+  position: relative;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: auto !important;
+}
 
 /* edit buttons */
 .edit-button {
@@ -118,6 +130,7 @@ body {
 .save-button {
   background-color: var(--black-100);
   color: var(--white-darker);
+  /* color: transparent; */
   border: 1px solid var(--black-100);
 }
 
@@ -129,7 +142,7 @@ body {
 
 .save-button:disabled {
   background-color: var(--black-10);
-  color: var(--black-50);
+  color: transparent;
   border: 1px solid var(--black-10);
 }
 

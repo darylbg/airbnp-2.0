@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateUserDetails } from "../../../reducers/userDetailsReducer";
 import PrimaryButton from "../../PrimitiveComponents/PrimaryButton/PrimaryButton";
 import PasswordVisibilityToggle from "../../PrimitiveComponents/PasswordVisibilityToggle/PasswordVisibilityToggle";
+import Spinner from "../../PrimitiveComponents/Spinner/Spinner";
 import "./PersonalInfo.css";
 
 export default function PersonalInfo() {
@@ -16,6 +17,8 @@ export default function PersonalInfo() {
   const dispatch = useDispatch();
   // console.log(currentUser.user_image)
   const [loading, setLoading] = useState(false);
+  const [personalInfoEditSaving, setPersonalInfoEditSaving] = useState(false);
+  const [passwordChangeSaving, setPasswordChangeSaving] = useState(false);
   const [editable, setEditable] = useState(false);
   const [passwordEditable, setPasswordEditable] = useState(false);
 
@@ -55,39 +58,45 @@ export default function PersonalInfo() {
 
   const handlePersonalInfoEdit = async (FormData) => {
     setLoading(true);
-    try {
-      setEditable(false);
-      console.log(FormData);
-      const updatedUser = await updateUserMutation({
-        variables: {
-          userData: {
-            first_name: FormData.firstName,
-            last_name: FormData.lastName,
-            display_name: FormData.displayName,
-            email: FormData.email,
-            gender: currentUser.gender,
-            user_image: currentUser.image,           
+    setPersonalInfoEditSaving(true);
+
+    setTimeout( async() => {
+      try {
+        setEditable(false);
+        console.log(FormData);
+        const updatedUser = await updateUserMutation({
+          variables: {
+            userData: {
+              first_name: FormData.firstName,
+              last_name: FormData.lastName,
+              display_name: FormData.displayName,
+              email: FormData.email,
+              gender: currentUser.gender,
+              user_image: currentUser.image,           
+            },
           },
-        },
-      });
-  
-      // Dispatch the action to update user details in Redux
-      await dispatch(updateUserDetails({ userId: currentUser.id, updates: updatedUser.data.updateUser }));
-  
-      // Set form values after Redux update
-      setValuePersonalInfo("firstName", updatedUser.data.updateUser.first_name);
-      setValuePersonalInfo("lastName", updatedUser.data.updateUser.last_name);
-      setValuePersonalInfo("displayName", updatedUser.data.updateUser.display_name);
-      setValuePersonalInfo("email", updatedUser.data.updateUser.email);
-  
-      toast.success(
-        <ToastComponent message="Successfully updated." />
-      );
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
+        });
+    
+        // Dispatch the action to update user details in Redux
+        await dispatch(updateUserDetails({ userId: currentUser.id, updates: updatedUser.data.updateUser }));
+    
+        // Set form values after Redux update
+        setValuePersonalInfo("firstName", updatedUser.data.updateUser.first_name);
+        setValuePersonalInfo("lastName", updatedUser.data.updateUser.last_name);
+        setValuePersonalInfo("displayName", updatedUser.data.updateUser.display_name);
+        setValuePersonalInfo("email", updatedUser.data.updateUser.email);
+    
+        toast.success(
+          <ToastComponent message="Successfully updated." />
+        );
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+        setPersonalInfoEditSaving(false);
+      }
+    }, 10000);
+    
   };
   
 
@@ -126,6 +135,7 @@ export default function PersonalInfo() {
 
   const handlePasswordChange = async (FormData) => {
     setLoading(true);
+    setPasswordChangeSaving(true);
     try {
       await new Promise((resolve) => setTimeout(resolve, 3000));
 
@@ -146,6 +156,7 @@ export default function PersonalInfo() {
       console.log(error);
     } finally {
       setLoading(false);
+      setPasswordChangeSaving(false);
     }
     console.log("successfully changed password", FormData);
   };
@@ -237,8 +248,8 @@ export default function PersonalInfo() {
             <Form.Submit asChild>
               {editable && (
                 <PrimaryButton loading={loading} className="save-button">
-                  {" "}
                   Save
+                  {personalInfoEditSaving? <Spinner /> : null}
                 </PrimaryButton>
               )}
             </Form.Submit>
@@ -326,6 +337,7 @@ export default function PersonalInfo() {
                 <Form.Submit asChild>
                   <PrimaryButton className="save-button" loading={loading}>
                     Save
+                    {passwordChangeSaving? <Spinner /> : null}
                   </PrimaryButton>
                 </Form.Submit>
               </Form.Field>
