@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
+import { Link, } from "react-router-dom";
 import {
   AddressAutofill,
   AddressMinimap,
@@ -16,17 +17,15 @@ export default function AddressSearch() {
   const [token, setToken] = useState("");
 
   useEffect(() => {
-    const accessToken =
-    process.env.REACT_APP_MAPBOX_TOKEN;
+    const accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
     setToken(accessToken);
     config.accessToken = accessToken;
   }, []);
 
   const { formRef, showConfirm } = useConfirmAddress({
     minimap: true,
-    skipConfirmModal: (feature) => {
-      ["exact", "high"].includes(feature.properties.match_code.confidence);
-    },
+    skipConfirmModal: (feature) =>
+      ["exact", "high"].includes(feature.properties.match_code.confidence),
   });
 
   const handleRetrieve = useCallback(
@@ -69,68 +68,59 @@ export default function AddressSearch() {
 
   return (
     <>
-      <form ref={formRef} className="">
-        <div className="">
-          <div className="">
-            {/* Input form */}
-            
+      <form ref={formRef} className="address-search-container">
+        <div className="address-input-section">
+          <div className="address-inputs">
             <AddressAutofill accessToken={token} onRetrieve={handleRetrieve}>
-            <label className="">Address</label>
+              <label className="address-label">Address</label>
               <input
-                className=""
+                className="address-input autofill-address-input"
                 placeholder="Start typing your address, e.g. 123 Main..."
                 autoComplete="address-line1"
                 id="mapbox-autofill"
               />
             </AddressAutofill>
             {!showFormExpanded && (
-              <div
+              <Link
                 id="manual-entry"
-                className=""
+                className="manual-address-entry"
                 onClick={() => setShowFormExpanded(true)}
               >
                 Enter an address manually
-              </div>
+              </Link>
             )}
             <div
-              className=""
-              style={{ display: showFormExpanded ? "block" : "none" }}
+              className="address-input-group"
+              style={{ display: showFormExpanded ? "flex" : "none" }}
             >
-              <label className="">
-                Address Line 2
-              </label>
+              <label className="address-label">Address Line 2</label>
               <input
-                className=""
+                className="address-input"
                 placeholder="Apartment, suite, unit, building, floor, etc."
                 autoComplete="address-line2"
               />
-              <label className="txt-s txt-bold color-gray mb3">City</label>
+              <label className="address-label">City</label>
               <input
-                className=""
+                className="address-input"
                 placeholder="City"
                 autoComplete="address-level2"
               />
-              <label className="txt-s txt-bold color-gray mb3">
-                State / Region
-              </label>
+              <label className="address-label">State / Region</label>
               <input
-                className=""
+                className="address-input"
                 placeholder="State / Region"
                 autoComplete="address-level1"
               />
-              <label className="txt-s txt-bold color-gray mb3">
-                ZIP / Postcode
-              </label>
+              <label className="address-label">ZIP / Postcode</label>
               <input
-                className=""
+                className="address-input"
                 placeholder="ZIP / Postcode"
                 autoComplete="postal-code"
               />
             </div>
           </div>
           <div className="address-search-minimap">
-            {/* Visual confirmation map */}
-            <div id="minimap-container" className="h240 w360 relative mt18">
+            <div id="minimap-container" className="address-minimap-container">
               <AddressMinimap
                 canAdjustMarker={true}
                 satelliteToggle={true}
@@ -141,16 +131,11 @@ export default function AddressSearch() {
             </div>
           </div>
         </div>
-
-        {/* Form buttons */}
         {showFormExpanded && (
-          <div className="">
-            {/* <button type="submit" className="btn round" id="btn-confirm">
-              Confirm
-            </button> */}
+          <div className="form-buttons-section">
             <button
               type="button"
-              className=""
+              className="clear-button"
               id="btn-reset"
               onClick={resetForm}
             >
@@ -159,13 +144,6 @@ export default function AddressSearch() {
           </div>
         )}
       </form>
-
-      {/* Validation text
-      {showValidationText && (
-        <div id="validation-msg" className="">
-          Order successfully submitted.
-        </div>
-      )} */}
     </>
   );
 }

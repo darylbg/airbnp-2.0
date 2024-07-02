@@ -108,10 +108,12 @@ export default function NewListing({closeDialog}) {
 
   return (
     <div className="new-listing-container">
+      <AddressSearch />
       <Form.Root
         className="new-listing-form"
         onSubmit={handleSubmit(handleNewListing)}
       >
+        
         <Form.Field className="new-listing-form-field" name="listing_title">
           <Form.Label>listing title</Form.Label>
           <Form.Control asChild>
@@ -189,7 +191,7 @@ export default function NewListing({closeDialog}) {
               })}
             />
           </Form.Control>
-          <AddressSearch />
+          {/* <AddressSearch /> */}
           <div className="field-message">{errors.address?.message}</div>
         </Form.Field>
         <Form.Field

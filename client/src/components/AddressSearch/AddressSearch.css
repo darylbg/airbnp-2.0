@@ -1,14 +1,35 @@
+.address-input-section {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+}
+
 .address-inputs {
     display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.address-input-group {
+    flex: 1;
     flex-direction: column;
 }
 
 .address-search-minimap {
-    height: 400px;
-    width: 400px;
+    flex: 1;
 }
 
 #minimap-container {
     height: 100%;
     width: 100%;
 }
+
+.mbx0cf91cd6--Results {
+    z-index: 1000000 !important;
+}
+
+.mapboxgl-ctrl-geocoder {
+    z-index: 1000000 !important;
+  }
+
+  
