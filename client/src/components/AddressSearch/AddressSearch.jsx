@@ -69,7 +69,10 @@ export default function AddressSearch() {
 
   return (
     <>
-      <form ref={formRef} className="address-search-container">
+      <div 
+      // ref={formRef} 
+      className="address-search-container"
+      >
         <div className="address-input-section">
           <div className="address-inputs">
             <AddressAutofill accessToken={token} onRetrieve={handleRetrieve}>
@@ -144,7 +147,7 @@ export default function AddressSearch() {
             </button>
           </div>
         )}
-      </form>
+      </div>
     </>
   );
 }

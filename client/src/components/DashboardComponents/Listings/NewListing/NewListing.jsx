@@ -12,6 +12,13 @@ import {updateUserDetails} from "../../../../reducers/userDetailsReducer";
 import {addListing} from "../../../../reducers/userListingsReducer"
 import "./NewListing.css";
 
+import {
+  AddressAutofill,
+  AddressMinimap,
+  useConfirmAddress,
+  config,
+} from "@mapbox/search-js-react";
+
 export default function NewListing({closeDialog}) {
   const currentUser = useSelector((state) => state.userDetails.byId);
   const [selectedImages, setSelectedImages] = useState([
@@ -107,13 +114,22 @@ export default function NewListing({closeDialog}) {
     }
   };
 
+  // mapbox
+
+  const { formRef, showConfirm } = useConfirmAddress({
+    minimap: true,
+    skipConfirmModal: (feature) =>
+      ["exact", "high"].includes(feature.properties.match_code.confidence),
+  });
+
   return (
     <div className="new-listing-container">
-      <button>test</button>
       <Form.Root
+      ref={formRef} 
         className="new-listing-form"
         onSubmit={handleSubmit(handleNewListing)}
       >
+        <AddressSearch />
         
         <Form.Field className="new-listing-form-field" name="listing_title">
           <Form.Label>listing title</Form.Label>
