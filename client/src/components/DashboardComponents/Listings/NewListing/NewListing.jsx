@@ -41,6 +41,7 @@ export default function NewListing({closeDialog}) {
   const {
     register,
     handleSubmit,
+    control,
     setError,
     clearErrors,
     formState: { errors },
@@ -108,7 +109,7 @@ export default function NewListing({closeDialog}) {
 
   return (
     <div className="new-listing-container">
-      <AddressSearch />
+      <button>test</button>
       <Form.Root
         className="new-listing-form"
         onSubmit={handleSubmit(handleNewListing)}

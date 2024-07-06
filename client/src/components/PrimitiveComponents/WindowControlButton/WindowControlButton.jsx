@@ -3,6 +3,7 @@ import "./WindowControlButton.css";
 
 export default function WindowControlButton({ action, icon, className }) {
   const handleClick = (e) => {
+    // console.log(e)
     e.preventDefault();
     if(action) {
       action(e);

@@ -36,6 +36,7 @@ export default function Listings() {
   };
 
   useEffect(() => {
+    // e.preventDefault();
     const sortByDateAdded = () => {
       const sortedArray = [...userListings].sort(
         (a, b) => b.created_at - a.created_at
@@ -44,6 +45,7 @@ export default function Listings() {
     };
 
     const sortByAvailability = () => {
+      // e.preventDefault();
       const sortedArray = [...userListings].sort((a, b) => {
         if (a.availability !== b.availability) {
           return b.availability - a.availability;
@@ -98,7 +100,7 @@ export default function Listings() {
         <DialogComponent
           className="filter-dialog content-width-dialog"
           dialogState={filterDialog}
-          closeDialog={() => setFilterDialog(false)}
+          closeDialog={(e) => setFilterDialog(false)}
           icon="close"
           dialogHeader="Sort listings"
           backdropClosable={true}
