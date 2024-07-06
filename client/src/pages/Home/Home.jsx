@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import * as Form from "@radix-ui/react-form";
 import GetAllListings from "../../components/GetAllListings/GetAllListings";
+import Bookings from "../../components/DashboardComponents/Bookings/Bookings";
 import * as Accordion from "@radix-ui/react-accordion";
 import LargeRoundButton from "../../components/PrimitiveComponents/LargeRoundButton/LargeRoundButton";
 import HeroImage from "../../assets/images/HeroImage.jpg";
@@ -70,6 +71,7 @@ export default function Home() {
       </section>
       <section className="home-steps-section home-section">
         <div className="home-section-wrapper">
+          <Bookings />
           <div className="section-heading">
             <p>How it works</p>
           </div>

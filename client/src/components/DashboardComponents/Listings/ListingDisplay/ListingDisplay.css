@@ -123,6 +123,10 @@
 
 /* edit listing dialog */
 
+.edit-listing-dialog {
+    align-self: flex-end;
+}
+
 .edit-listing-dialog .dialog-content .dialog-body {
     flex-direction: column;
 }

@@ -97,11 +97,11 @@ export default function Listings() {
         </div>
         <DialogComponent
           className="filter-dialog content-width-dialog"
-          openDialog={filterDialog}
+          dialogState={filterDialog}
           closeDialog={() => setFilterDialog(false)}
           icon="close"
           dialogHeader="Sort listings"
-          backdropClosable="true"
+          backdropClosable={true}
         >
           <Form.Root
             className="user-listings-sort-form"
@@ -136,11 +136,11 @@ export default function Listings() {
         </DialogComponent>
         <DialogComponent
           className="new-listing-dialog full-width-dialog"
-          openDialog={newListingDialog}
+          dialogState={newListingDialog}
           closeDialog={() => setNewListingDialog(false)}
           icon="close"
           dialogHeader="Add new listing"
-          backdropClosable="false"
+          backdropClosable={false}
         >
           <NewListing closeDialog={() => setNewListingDialog(false)}/>
         </DialogComponent>

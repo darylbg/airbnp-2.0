@@ -1,3 +1,7 @@
+.new-listing-dialog {
+  align-self: flex-end;
+}
+
 .new-listing-container {
   display: flex;
   flex: 1;

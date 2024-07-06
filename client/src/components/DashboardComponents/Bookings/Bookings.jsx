@@ -5,15 +5,16 @@ import "./Bookings.css";
 import DialogComponent from "../../PrimitiveComponents/DialogComponent/DialogComponent";
 
 export default function Bookings() {
-  const [dialog, setDialog] = useState(true);
-  const dialogRef = useRef(null);
+  const [modal, setModal] = useState(false);
 
-  const openDialog = () => {
-    dialogRef.current?.showModal();
-  }
+  const openModal = () => {
+    setModal(true);
+    document.body.classList.add("modal-open");
+  };
 
-  const closeDialog = () => {
-    dialogRef.current?.close();
+  const closeModal = () => {
+    setModal(false);
+    document.body.classList.remove("modal-open");
   };
 
   return (
@@ -23,14 +24,6 @@ export default function Bookings() {
         subtitle="Manage your bookings"
         icon="today"
       ></DashboardHeader>
-
-      <button onClick={openDialog}>open</button>
-      <dialog ref={dialogRef} className="test-dialog">
-        <button onClick={closeDialog}>close</button>
-        hello world
-        <AddressSearch />
-      </dialog>
-      <div className="ontop">on top</div>
     </>
   );
 }

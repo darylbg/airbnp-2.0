@@ -62,7 +62,7 @@ export default function ListingDisplay({ props }) {
           </PrimaryButton>
           <DialogComponent
             className="edit-listing-dialog full-width-dialog"
-            openDialog={editListingDialog}
+            dialogState={editListingDialog}
             closeDialog={() => setEditListingDialog(false)}
             icon="close"
             dialogHeader={`Editing: ${props.listing_title}`}

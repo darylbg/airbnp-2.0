@@ -66,6 +66,8 @@
 .filter-dialog {
   width: 300px;
   max-width: 90vw;
+  align-self: center;
+  height: fit-content;
 }
 
 .user-listings-sort-form {

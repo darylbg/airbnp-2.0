@@ -4,7 +4,7 @@ import WindowControlButton from "../WindowControlButton/WindowControlButton";
 import "./DialogComponent.css";
 export default function DialogComponent({
   className,
-  openDialog,
+  dialogState,
   closeDialog,
   icon,
   dialogHeader,
@@ -12,47 +12,31 @@ export default function DialogComponent({
   children,
 }) {
 
-  const dialogRef = useRef();
-  const dialogBodyRef = useRef();
-
   useEffect(() => {
-    if (openDialog) {
-      dialogRef.current?.showModal();
+    if (dialogState) {
+      document.body.classList.add("overflow-hidden");
     } else {
-      dialogRef.current?.close();
+      document.body.classList.remove("overflow-hidden");
     }
-  }, [openDialog]);
-
-  const findDialogOverlay = (e) => {
-    if(e.target === dialogRef.current) {
-      const isBackdropClosable = e.target.getAttribute("backdrop-closable") === "true";
-      if (isBackdropClosable) {
-        closeDialog();
-      }
-    } 
-  }
+  }, [dialogState])
 
   return (
-    <dialog
-      ref={dialogRef}
-      onCancel={closeDialog}
-      className={`dialog ${className} ${openDialog ? "dialog-open" : null}`}
-      onClick={(e) => findDialogOverlay(e)}
-      backdrop-closable={backdropClosable}
+    <div
+      className={`dialog-backdrop ${
+        dialogState ? "dialog-open" : "dialog-closed"
+      }`}
+      onClick={backdropClosable ? closeDialog : null}
     >
-      <div className="dialog-content">
+      <div className={`dialog-content ${className}`}>
         <div className="dialog-header">
           <h4 className="text">{dialogHeader}</h4>
           <WindowControlButton action={closeDialog} icon={icon} />
         </div>
-        
-        <div
-          ref={dialogBodyRef}
-          className="dialog-body scrollbar-1"
-        >
+
+        <div className="dialog-body scrollbar-1">
           {children}
         </div>
       </div>
-    </dialog>
+    </div>
   );
 }
