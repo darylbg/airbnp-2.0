@@ -26,8 +26,8 @@ const typeDefs = gql`
     contact_method: String
     listing_image: [String]
     address: String!
-    latitude: Int!
-    longitude: Int!
+    latitude: Float!
+    longitude: Float!
     availability: Boolean!
     price: Float!
     created_at: String
@@ -117,8 +117,8 @@ const typeDefs = gql`
     contact_method: String
     listing_image: [String]
     address: String!
-    latitude: Int!
-    longitude: Int!
+    latitude: Float!
+    longitude: Float!
     availability: Boolean
     price: Float!
     amenities: [ID!] # List of amenity IDs to mark as available

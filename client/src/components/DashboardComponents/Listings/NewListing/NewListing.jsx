@@ -8,8 +8,8 @@ import toast from "react-hot-toast";
 import ToastComponent from "../../../PrimitiveComponents/ToastComponent/ToastComponent";
 import { NEW_LISTING_MUTATION } from "../../../../utils/mutations";
 import ImageUploadWidget from "../../../PrimitiveComponents/ImageUploadWidget/ImageUploadWidget";
-import {updateUserDetails} from "../../../../reducers/userDetailsReducer";
-import {addListing} from "../../../../reducers/userListingsReducer"
+import { updateUserDetails } from "../../../../reducers/userDetailsReducer";
+import { addListing } from "../../../../reducers/userListingsReducer";
 import "./NewListing.css";
 
 import {
@@ -19,7 +19,7 @@ import {
   config,
 } from "@mapbox/search-js-react";
 
-export default function NewListing({closeDialog}) {
+export default function NewListing({ closeDialog }) {
   const currentUser = useSelector((state) => state.userDetails.byId);
   const [selectedImages, setSelectedImages] = useState([
     null,
@@ -28,7 +28,9 @@ export default function NewListing({closeDialog}) {
     null,
     null,
   ]);
-  // console.log(selectedImages);
+  const [showFormExpanded, setShowFormExpanded] = useState(false);
+  const [showMinimap, setShowMinimap] = useState(false);
+
   const dispatch = useDispatch();
 
   const handleImageSelect = (image, index) => {
@@ -49,8 +51,8 @@ export default function NewListing({closeDialog}) {
     register,
     handleSubmit,
     control,
-    setError,
-    clearErrors,
+    setValue,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -79,8 +81,20 @@ export default function NewListing({closeDialog}) {
         })
       );
 
-      let listingImages = base64URLs.filter(item => item !== null);
+      let listingImages = base64URLs.filter((item) => item !== null);
       let price = +formData.price;
+      let addressComponents = [
+        formData.addressAutofillInput,
+        formData.addressLine2,
+        formData.addressCity,
+        formData.addressRegion,
+        formData.addressPostCode,
+      ];
+
+      let address = addressComponents
+        .filter((component) => component && component.trim() !== "")
+        .join(", ");
+
       const newListing = await newListingMutation({
         variables: {
           listingData: {
@@ -88,15 +102,15 @@ export default function NewListing({closeDialog}) {
             listing_description: formData.listing_description,
             contact_method: formData.contact_method,
             listing_image: listingImages,
-            address: formData.address,
+            address: address,
             // lat and long will be dynamically address when geolocation is added
-            latitude: 10,
-            longitude: 11,
+            latitude: formData.addressLatitude,
+            longitude: formData.addressLongitude,
             availability: false,
             price: price,
             amenities: [],
             payments: [],
-            reviews: []
+            reviews: [],
           },
         },
       });
@@ -106,9 +120,19 @@ export default function NewListing({closeDialog}) {
       const userListingCount = currentUser.user_listings;
 
       dispatch(addListing(addedListing));
-      dispatch(updateUserDetails({ userId: addedListing.user_id, updates: { user_listings: userListingCount + 1 } }));
-      
+      dispatch(
+        updateUserDetails({
+          userId: addedListing.user_id,
+          updates: { user_listings: userListingCount + 1 },
+        })
+      );
+
       closeDialog();
+      setSelectedImages([null, null, null, null, null]);
+      setShowFormExpanded(false);
+      setShowMinimap(false);
+      reset();
+      console.log(newListing);
     } catch (error) {
       console.log(error);
     }
@@ -125,12 +149,10 @@ export default function NewListing({closeDialog}) {
   return (
     <div className="new-listing-container">
       <Form.Root
-      ref={formRef} 
+        ref={formRef}
         className="new-listing-form"
         onSubmit={handleSubmit(handleNewListing)}
       >
-        <AddressSearch />
-        
         <Form.Field className="new-listing-form-field" name="listing_title">
           <Form.Label>listing title</Form.Label>
           <Form.Control asChild>
@@ -198,19 +220,15 @@ export default function NewListing({closeDialog}) {
           </div>
           <div className="field-message">{errors.listing_image?.message}</div>
         </Form.Field>
-        <Form.Field className="new-listing-form-field" name="address">
-          <Form.Label>listing address</Form.Label>
-          <Form.Control asChild>
-            <input
-              type="text"
-              {...register("address", {
-                required: "This is required",
-              })}
-            />
-          </Form.Control>
-          {/* <AddressSearch /> */}
-          <div className="field-message">{errors.address?.message}</div>
-        </Form.Field>
+        <AddressSearch
+          control={control}
+          errors={errors}
+          setValue={setValue}
+          showFormExpanded={showFormExpanded}
+          setShowFormExpanded={setShowFormExpanded}
+          showMinimap={showMinimap}
+          setShowMinimap={setShowMinimap}
+        />
         <Form.Field
           className="new-listing-form-field price-form-field"
           name="price"

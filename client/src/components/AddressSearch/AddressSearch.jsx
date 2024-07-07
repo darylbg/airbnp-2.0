@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { Link, } from "react-router-dom";
-import * as From from "@radix-ui/react-form";
+import { Link } from "react-router-dom";
+import * as Form from "@radix-ui/react-form";
 import {
   AddressAutofill,
   AddressMinimap,
@@ -9,14 +9,72 @@ import {
 } from "@mapbox/search-js-react";
 
 import "./AddressSearch.css";
+import { useController } from "react-hook-form";
 
-export default function AddressSearch() {
-  const [showFormExpanded, setShowFormExpanded] = useState(false);
-  const [showMinimap, setShowMinimap] = useState(false);
+export default function AddressSearch({
+  control,
+  errors,
+  setValue,
+  showFormExpanded,
+  setShowFormExpanded,
+  showMinimap,
+  setShowMinimap
+}) {
+  // const [showFormExpanded, setShowFormExpanded] = useState(false);
+  // const [showMinimap, setShowMinimap] = useState(false);
   const [feature, setFeature] = useState();
   const [showValidationText, setShowValidationText] = useState(false);
   const [token, setToken] = useState("");
 
+  // useForm control to manage form fields
+  const { field: addressAutofillInput } = useController({
+    name: "addressAutofillInput",
+    control,
+    rules: { required: "Address is required" },
+    defaultValue: "",
+  });
+
+  const { field: addressLine2 } = useController({
+    name: "addressLine2",
+    control,
+    // rules: { required: "Address is required" },
+    defaultValue: "",
+  });
+
+  const { field: addressCity } = useController({
+    name: "addressCity",
+    control,
+    // rules: { required: "Address is required" },
+    defaultValue: "",
+  });
+
+  const { field: addressRegion } = useController({
+    name: "addressRegion",
+    control,
+    // rules: { required: "Address is required" },
+    defaultValue: "",
+  });
+
+  const { field: addressPostCode } = useController({
+    name: "addressPostCode",
+    control,
+    // rules: { required: "Address is required" },
+    defaultValue: "",
+  });
+
+  const { field: addressLongitude } = useController({
+    name: "addressLongitude",
+    control,
+    defaultValue: "",
+  });
+
+  const { field: addressLatitude } = useController({
+    name: "addressLatitude",
+    control,
+    defaultValue: "",
+  });
+
+  // mapbox template code
   useEffect(() => {
     const accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
     setToken(accessToken);
@@ -35,8 +93,15 @@ export default function AddressSearch() {
       setFeature(feature);
       setShowMinimap(true);
       setShowFormExpanded(true);
+
+      // Extract coordinates
+      const [longitude, latitude] = feature.geometry.coordinates;
+
+      // Update form fields with coordinates
+      setValue("addressLatitude", latitude);
+      setValue("addressLongitude", longitude);
     },
-    [setFeature, setShowMinimap]
+    [setFeature, setShowMinimap, setValue]
   );
 
   function handleSaveMarkerLocation(coordinate) {
@@ -69,21 +134,27 @@ export default function AddressSearch() {
 
   return (
     <>
-      <div 
-      // ref={formRef} 
-      className="address-search-container"
+      <div
+        // ref={formRef}
+        className="address-search-container"
       >
         <div className="address-input-section">
           <div className="address-inputs">
-            <AddressAutofill accessToken={token} onRetrieve={handleRetrieve}>
-              <label className="address-label">Address</label>
-              <input
-                className="address-input autofill-address-input"
-                placeholder="Start typing your address, e.g. 123 Main..."
-                autoComplete="address-line1"
-                id="mapbox-autofill"
-              />
-            </AddressAutofill>
+            <Form.Field>
+              <AddressAutofill accessToken={token} onRetrieve={handleRetrieve}>
+                <Form.Label className="address-label">Address</Form.Label>
+                <Form.Control
+                  className="address-input autofill-address-input"
+                  placeholder="Start typing your address, e.g. 123 Main..."
+                  autoComplete="address-line1"
+                  id="mapbox-autofill"
+                  {...addressAutofillInput}
+                />
+              </AddressAutofill>
+              <div className="field-message">
+                {errors.addressAutofillInput?.message}
+              </div>
+            </Form.Field>
             {!showFormExpanded && (
               <Link
                 id="manual-entry"
@@ -97,30 +168,57 @@ export default function AddressSearch() {
               className="address-input-group"
               style={{ display: showFormExpanded ? "flex" : "none" }}
             >
-              <label className="address-label">Address Line 2</label>
-              <input
-                className="address-input"
-                placeholder="Apartment, suite, unit, building, floor, etc."
-                autoComplete="address-line2"
-              />
-              <label className="address-label">City</label>
-              <input
-                className="address-input"
-                placeholder="City"
-                autoComplete="address-level2"
-              />
-              <label className="address-label">State / Region</label>
-              <input
-                className="address-input"
-                placeholder="State / Region"
-                autoComplete="address-level1"
-              />
-              <label className="address-label">ZIP / Postcode</label>
-              <input
-                className="address-input"
-                placeholder="ZIP / Postcode"
-                autoComplete="postal-code"
-              />
+              <Form.Field>
+                <Form.Label className="address-label">
+                  Address Line 2
+                </Form.Label>
+                <Form.Control
+                  className="address-input"
+                  placeholder="Apartment, suite, unit, building, floor, etc."
+                  autoComplete="address-line2"
+                  {...addressLine2}
+                />
+                <div className="field-message">
+                  {errors.addressLine2?.message}
+                </div>
+              </Form.Field>
+              <Form.Field>
+                <Form.Label className="address-label">City</Form.Label>
+                <Form.Control
+                  className="address-input"
+                  placeholder="City"
+                  autoComplete="address-level2"
+                  {...addressCity}
+                />
+                <div className="field-message">
+                  {errors.addressCity?.message}
+                </div>
+              </Form.Field>
+              <Form.Field>
+                <Form.Label className="address-label">
+                  State / Region
+                </Form.Label>
+                <Form.Control
+                  className="address-input"
+                  placeholder="State / Region"
+                  autoComplete="address-level1"
+                  {...addressRegion}
+                />
+                <div className="field-message">
+                  {errors.addressRegion?.message}
+                </div>
+              </Form.Field>
+              <Form.Field>
+                <Form.Label className="address-label">
+                  ZIP / Postcode
+                </Form.Label>
+                <Form.Control
+                  className="address-input"
+                  placeholder="ZIP / Postcode"
+                  autoComplete="postal-code"
+                  {...addressPostCode}
+                />
+              </Form.Field>
             </div>
           </div>
           <div className="address-search-minimap">
