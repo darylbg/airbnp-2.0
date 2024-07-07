@@ -39,7 +39,7 @@ export default function DialogComponent({
       <div className={`dialog-content ${className}`} onClick={handleContentClick}>
         <div className="dialog-header">
           <h4 className="text">{dialogHeader}</h4>
-          <WindowControlButton action={handleCloseDialog} icon={icon} />
+          {icon && <WindowControlButton action={handleCloseDialog} icon={icon} />}
         </div>
         <div className="dialog-body scrollbar-1">
           {children}

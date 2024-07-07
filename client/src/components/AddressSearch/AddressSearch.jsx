@@ -18,7 +18,8 @@ export default function AddressSearch({
   showFormExpanded,
   setShowFormExpanded,
   showMinimap,
-  setShowMinimap
+  setShowMinimap,
+  loading
 }) {
   // const [showFormExpanded, setShowFormExpanded] = useState(false);
   // const [showMinimap, setShowMinimap] = useState(false);
@@ -177,6 +178,7 @@ export default function AddressSearch({
                   placeholder="Apartment, suite, unit, building, floor, etc."
                   autoComplete="address-line2"
                   {...addressLine2}
+                  disabled={loading}
                 />
                 <div className="field-message">
                   {errors.addressLine2?.message}
@@ -189,6 +191,7 @@ export default function AddressSearch({
                   placeholder="City"
                   autoComplete="address-level2"
                   {...addressCity}
+                  disabled={loading}
                 />
                 <div className="field-message">
                   {errors.addressCity?.message}
@@ -203,6 +206,7 @@ export default function AddressSearch({
                   placeholder="State / Region"
                   autoComplete="address-level1"
                   {...addressRegion}
+                  disabled={loading}
                 />
                 <div className="field-message">
                   {errors.addressRegion?.message}
@@ -217,6 +221,7 @@ export default function AddressSearch({
                   placeholder="ZIP / Postcode"
                   autoComplete="postal-code"
                   {...addressPostCode}
+                  disabled={loading}
                 />
               </Form.Field>
             </div>

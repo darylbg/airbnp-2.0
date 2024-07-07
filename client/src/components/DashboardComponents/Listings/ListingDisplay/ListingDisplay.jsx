@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 
 export default function ListingDisplay({ props }) {
   const [editListingDialog, setEditListingDialog] = useState(false);
+  const [cancelEditDialog, setCancelEditDialog] = useState(false);
 
   // formate date back to 01/01/2001 formate
   const formateDate = (date) => {
@@ -63,13 +64,17 @@ export default function ListingDisplay({ props }) {
           <DialogComponent
             className="edit-listing-dialog full-width-dialog"
             dialogState={editListingDialog}
-            closeDialog={() => setEditListingDialog(false)}
+            closeDialog={() => setCancelEditDialog(true)}
             icon="close"
             dialogHeader={`Editing: ${props.listing_title}`}
+            cancelEditDialog={cancelEditDialog}
+            setCancelEditDialog={setCancelEditDialog}
           >
             <CrudListing
               listing={props}
               closeDialog={() => setEditListingDialog(false)}
+              cancelEditDialog={cancelEditDialog}
+              setCancelEditDialog={setCancelEditDialog}
             />
           </DialogComponent>
           <div className="listing-insights">

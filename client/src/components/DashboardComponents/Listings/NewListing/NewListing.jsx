@@ -12,15 +12,13 @@ import { updateUserDetails } from "../../../../reducers/userDetailsReducer";
 import { addListing } from "../../../../reducers/userListingsReducer";
 import "./NewListing.css";
 
-import {
-  AddressAutofill,
-  AddressMinimap,
-  useConfirmAddress,
-  config,
-} from "@mapbox/search-js-react";
+import { useConfirmAddress } from "@mapbox/search-js-react";
+import PrimaryButton from "../../../PrimitiveComponents/PrimaryButton/PrimaryButton";
+import Spinner from "../../../PrimitiveComponents/Spinner/Spinner";
 
 export default function NewListing({ closeDialog }) {
   const currentUser = useSelector((state) => state.userDetails.byId);
+  const [loading, setLoading] = useState(false);
   const [selectedImages, setSelectedImages] = useState([
     null,
     null,
@@ -70,6 +68,7 @@ export default function NewListing({ closeDialog }) {
 
   const handleNewListing = async (formData, event) => {
     event.preventDefault();
+    setLoading(true);
     try {
       const base64URLs = await Promise.all(
         selectedImages.map(async (image) => {
@@ -103,7 +102,6 @@ export default function NewListing({ closeDialog }) {
             contact_method: formData.contact_method,
             listing_image: listingImages,
             address: address,
-            // lat and long will be dynamically address when geolocation is added
             latitude: formData.addressLatitude,
             longitude: formData.addressLongitude,
             availability: false,
@@ -135,11 +133,12 @@ export default function NewListing({ closeDialog }) {
       console.log(newListing);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   // mapbox
-
   const { formRef, showConfirm } = useConfirmAddress({
     minimap: true,
     skipConfirmModal: (feature) =>
@@ -161,6 +160,7 @@ export default function NewListing({ closeDialog }) {
               {...register("listing_title", {
                 required: "This is required",
               })}
+              disabled={loading}
             />
           </Form.Control>
           <div className="field-message">{errors.listing_title?.message}</div>
@@ -176,6 +176,7 @@ export default function NewListing({ closeDialog }) {
               {...register("listing_description", {
                 required: "This is required",
               })}
+              disabled={loading}
             />
           </Form.Control>
           <div className="field-message">
@@ -190,6 +191,7 @@ export default function NewListing({ closeDialog }) {
               {...register("contact_method", {
                 required: "This is required",
               })}
+              disabled={loading}
             />
           </Form.Control>
           <div className="field-message">{errors.contact_method?.message}</div>
@@ -203,6 +205,7 @@ export default function NewListing({ closeDialog }) {
                 image={selectedImages[0]}
                 onImageSelect={handleImageSelect}
                 onImageRemove={handleImageRemove}
+                loading={loading}
               />
             </div>
             <div className="other-upload-widgets-grid">
@@ -213,6 +216,7 @@ export default function NewListing({ closeDialog }) {
                     image={image}
                     onImageSelect={handleImageSelect}
                     onImageRemove={handleImageRemove}
+                    loading={loading}
                   />
                 </div>
               ))}
@@ -228,6 +232,7 @@ export default function NewListing({ closeDialog }) {
           setShowFormExpanded={setShowFormExpanded}
           showMinimap={showMinimap}
           setShowMinimap={setShowMinimap}
+          loading={loading}
         />
         <Form.Field
           className="new-listing-form-field price-form-field"
@@ -240,13 +245,21 @@ export default function NewListing({ closeDialog }) {
               {...register("price", {
                 required: "This is required",
               })}
+              disabled={loading}
             />
           </Form.Control>
           <div className="field-message">{errors.price?.message}</div>
         </Form.Field>
         <Form.Field className="new-listing-form-field" name="availability">
           <Form.Submit asChild>
-            <button>add new listing</button>
+            <PrimaryButton
+              className="save-button"
+              type="submit"
+              loading={loading}
+            >
+              Save
+              {loading ? <Spinner /> : null}
+            </PrimaryButton>
           </Form.Submit>
         </Form.Field>
       </Form.Root>

@@ -7,7 +7,7 @@
 }
 
 .dialog-backdrop {
-  background-color: rgb(0, 0, 0, 0.7);
+  background-color: rgb(0, 0, 0, 0.6);
   position: fixed;
   top: 0;
   left: 0;
@@ -15,6 +15,7 @@
   bottom: 0;
   justify-content: center;
   z-index: 1000;
+  animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .dialog-content {
@@ -24,18 +25,8 @@
   flex-direction: column;
   width: 100%;
   background-color: white;
+  animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }
-
-
-
-
-
-
-
-
-
-
-
 
 /* global dialog styles apply to all dialogs */
 .dialog {
@@ -80,10 +71,9 @@
 }
 
 .dialog-header .window-control-button {
-    position: absolute; 
+  position: absolute;
   right: -0.5rem;
   top: -0.5rem;
-
 }
 
 .dialog-scrolled::before {
@@ -142,4 +132,29 @@
 .content-width-dialog {
   border-radius: 10px;
   max-width: 90vw;
+  width: fit-content;
+  min-width: 400px;
+  height: fit-content;
+  align-self: center;
+}
+
+
+@keyframes overlayShow {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

@@ -10,16 +10,29 @@ import {
   updateListing,
   deleteListing,
 } from "../../../../reducers/userListingsReducer";
+import DialogComponent from "../../../PrimitiveComponents/DialogComponent/DialogComponent";
+import { useConfirmAddress } from "@mapbox/search-js-react";
 import { updateUserDetails } from "../../../../reducers/userDetailsReducer";
+import AddressSearch from "../../../AddressSearch/AddressSearch";
 import toast from "react-hot-toast";
 import ToastComponent from "../../../PrimitiveComponents/ToastComponent/ToastComponent";
 import PrimaryButton from "../../../PrimitiveComponents/PrimaryButton/PrimaryButton";
 import "./EditListing.css";
+import Spinner from "../../../PrimitiveComponents/Spinner/Spinner";
+import WindowControlButton from "../../../PrimitiveComponents/WindowControlButton/WindowControlButton";
 
-export default function EditListing({ listing, closeDialog }) {
+export default function EditListing({
+  listing,
+  closeDialog,
+  cancelEditDialog,
+  setCancelEditDialog,
+}) {
   const currentUser = useSelector((state) => state.userDetails.byId);
 
   const [loading, setLoading] = useState(false);
+  const [showFormExpanded, setShowFormExpanded] = useState(false);
+  const [showMinimap, setShowMinimap] = useState(false);
+  const [deleteListingDialog, setDeleteListingDialog] = useState(false);
 
   // spread in lisitng images or fill array length up to 5 with null
   const initialImages = Array.from(
@@ -56,6 +69,9 @@ export default function EditListing({ listing, closeDialog }) {
   const {
     register,
     handleSubmit,
+    control,
+    setValue,
+    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -89,6 +105,18 @@ export default function EditListing({ listing, closeDialog }) {
         })
       );
 
+      let addressComponents = [
+        formData.addressAutofillInput,
+        formData.addressLine2,
+        formData.addressCity,
+        formData.addressRegion,
+        formData.addressPostCode,
+      ];
+
+      let address = addressComponents
+        .filter((component) => component && component.trim() !== "")
+        .join(", ");
+
       const updatedListing = await editListingMutation({
         variables: {
           listingId: listing.id,
@@ -97,7 +125,7 @@ export default function EditListing({ listing, closeDialog }) {
             listing_description: formData.listing_description,
             contact_method: formData.contact_method,
             listing_image: listingImages,
-            address: formData.address,
+            address: address,
             latitude: formData.latitude,
             longitude: formData.longitude,
             price: +formData.price,
@@ -108,11 +136,14 @@ export default function EditListing({ listing, closeDialog }) {
       const editedListing = updatedListing.data.updateListing;
 
       dispatch(updateListing(editedListing));
+      setShowFormExpanded(false);
+      setShowMinimap(false);
       closeDialog();
-      setLoading(false);
       toast.success(<ToastComponent message="Successfully updated listing." />);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -139,125 +170,207 @@ export default function EditListing({ listing, closeDialog }) {
     }
   };
 
+  // mapbox
+  const { formRef, showConfirm } = useConfirmAddress({
+    minimap: true,
+    skipConfirmModal: (feature) =>
+      ["exact", "high"].includes(feature.properties.match_code.confidence),
+  });
+
+  // cancel post editing and close the editing check pop up
+  const handleCancelEdit = (e) => {
+    e.preventDefault();
+    closeDialog();
+    setCancelEditDialog(false);
+  };
+
   return (
-    <Form.Root
-      className="new-listing-form"
-      onSubmit={handleSubmit(handleUpdatingListing)}
-    >
-      <p>{listing.listing_title}</p>
-      <Form.Field className="new-listing-form-field" name="listing_title">
-        <Form.Label>Listing Title</Form.Label>
-        <Form.Control asChild>
-          <input
-            disabled={loading}
-            type="text"
-            {...register("listing_title", {
-              required: "This is required",
-            })}
-          />
-        </Form.Control>
-        <div className="field-message">{errors.listing_title?.message}</div>
-      </Form.Field>
-      <Form.Field className="new-listing-form-field" name="listing_description">
-        <Form.Label>Listing Description</Form.Label>
-        <Form.Control asChild>
-          <textarea
-            disabled={loading}
-            type="text"
-            {...register("listing_description", {
-              required: "This is required",
-            })}
-          />
-        </Form.Control>
-        <div className="field-message">
-          {errors.listing_description?.message}
-        </div>
-      </Form.Field>
-      <Form.Field className="new-listing-form-field" name="contact_method">
-        <Form.Label>Contact Method</Form.Label>
-        <Form.Control asChild>
-          <textarea
-            disabled={loading}
-            type="text"
-            {...register("contact_method", {
-              required: "This is required",
-            })}
-          />
-        </Form.Control>
-        <div className="field-message">{errors.contact_method?.message}</div>
-      </Form.Field>
-      <Form.Field className="new-listing-form-field" name="listing_image">
-        <Form.Label>Listing Images</Form.Label>
-        <div className="image-upload-widgets">
-          <div className="first-image-widget">
-            <ImageUploadWidget
-              index={0}
-              image={selectedImages[0]}
-              onImageSelect={handleImageSelect}
-              onImageRemove={handleImageRemove}
-              loading={loading}
-            />
-          </div>
-          <div className="other-upload-widgets-grid">
-            {selectedImages.slice(1).map((image, index) => (
-              <div key={index + 1} className="image-upload-widget-container">
-                <ImageUploadWidget
-                  index={index + 1}
-                  image={image}
-                  onImageSelect={handleImageSelect}
-                  onImageRemove={handleImageRemove}
-                  loading={loading}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="field-message">{errors.listing_image?.message}</div>
-      </Form.Field>
-      <Form.Field className="new-listing-form-field" name="address">
-        <Form.Label>Listing Address</Form.Label>
-        <Form.Control asChild>
-          <input
-            disabled={loading}
-            type="text"
-            {...register("address", {
-              required: "This is required",
-            })}
-          />
-        </Form.Control>
-        <div className="field-message">{errors.address?.message}</div>
-      </Form.Field>
-      <Form.Field
-        className="new-listing-form-field price-form-field"
-        name="price"
+    <>
+      <Form.Root
+        className="new-listing-form"
+        onSubmit={handleSubmit(handleUpdatingListing)}
+        ref={formRef}
       >
-        <Form.Label>Listing Price</Form.Label>
-        <Form.Control asChild>
-          <input
-            disabled={loading}
-            type="number"
-            {...register("price", {
-              required: "This is required",
-            })}
-          />
-        </Form.Control>
-        <div className="field-message">{errors.price?.message}</div>
-      </Form.Field>
-      <div className="edit-listing-button-group">
-        <PrimaryButton
-          className="delete-listing-button"
-          type="button"
-          action={handleDeleteListing}
-          loading={loading}
-        >
-          Delete listing
-        </PrimaryButton>
-        <Form.Field className="new-listing-form-field" name="availability">
-          <Form.Submit asChild>
-            <PrimaryButton loading={loading}>Save</PrimaryButton>
-          </Form.Submit>
+        <p>{listing.listing_title}</p>
+        <Form.Field className="new-listing-form-field" name="listing_title">
+          <Form.Label>Listing Title</Form.Label>
+          <Form.Control asChild>
+            <input
+              disabled={loading}
+              type="text"
+              {...register("listing_title", {
+                required: "This is required",
+              })}
+            />
+          </Form.Control>
+          <div className="field-message">{errors.listing_title?.message}</div>
         </Form.Field>
-      </div>
-    </Form.Root>
+        <Form.Field
+          className="new-listing-form-field"
+          name="listing_description"
+        >
+          <Form.Label>Listing Description</Form.Label>
+          <Form.Control asChild>
+            <textarea
+              disabled={loading}
+              type="text"
+              {...register("listing_description", {
+                required: "This is required",
+              })}
+            />
+          </Form.Control>
+          <div className="field-message">
+            {errors.listing_description?.message}
+          </div>
+        </Form.Field>
+        <Form.Field className="new-listing-form-field" name="contact_method">
+          <Form.Label>Contact Method</Form.Label>
+          <Form.Control asChild>
+            <textarea
+              disabled={loading}
+              type="text"
+              {...register("contact_method", {
+                required: "This is required",
+              })}
+            />
+          </Form.Control>
+          <div className="field-message">{errors.contact_method?.message}</div>
+        </Form.Field>
+        <Form.Field className="new-listing-form-field" name="listing_image">
+          <Form.Label>Listing Images</Form.Label>
+          <div className="image-upload-widgets">
+            <div className="first-image-widget">
+              <ImageUploadWidget
+                index={0}
+                image={selectedImages[0]}
+                onImageSelect={handleImageSelect}
+                onImageRemove={handleImageRemove}
+                loading={loading}
+              />
+            </div>
+            <div className="other-upload-widgets-grid">
+              {selectedImages.slice(1).map((image, index) => (
+                <div key={index + 1} className="image-upload-widget-container">
+                  <ImageUploadWidget
+                    index={index + 1}
+                    image={image}
+                    onImageSelect={handleImageSelect}
+                    onImageRemove={handleImageRemove}
+                    loading={loading}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="field-message">{errors.listing_image?.message}</div>
+        </Form.Field>
+        <div className="address-display">{listing.address}</div>
+        <Form.Field className="new-listing-form-field" name="address">
+          <Form.Label>Enter new address</Form.Label>
+          <AddressSearch
+            control={control}
+            errors={errors}
+            setValue={setValue}
+            showFormExpanded={showFormExpanded}
+            setShowFormExpanded={setShowFormExpanded}
+            showMinimap={showMinimap}
+            setShowMinimap={setShowMinimap}
+          />
+          <div className="field-message">{errors.address?.message}</div>
+        </Form.Field>
+        <Form.Field
+          className="new-listing-form-field price-form-field"
+          name="price"
+        >
+          <Form.Label>Listing Price</Form.Label>
+          <Form.Control asChild>
+            <input
+              disabled={loading}
+              type="number"
+              {...register("price", {
+                required: "This is required",
+              })}
+            />
+          </Form.Control>
+          <div className="field-message">{errors.price?.message}</div>
+        </Form.Field>
+        <div className="edit-listing-button-group">
+          <PrimaryButton
+            className="delete-button"
+            type="button"
+            action={() => {
+              setDeleteListingDialog(true);
+            }}
+            loading={loading}
+          >
+            Delete listing
+          </PrimaryButton>
+          <Form.Field className="new-listing-form-field" name="availability">
+            <Form.Submit asChild>
+              <PrimaryButton
+                className="save-button"
+                type="submit"
+                loading={loading}
+              >
+                Update listing
+                {loading ? <Spinner /> : null}
+              </PrimaryButton>
+            </Form.Submit>
+          </Form.Field>
+        </div>
+      </Form.Root>
+
+      {/* cancel listing confirmation dialog */}
+      <DialogComponent
+        dialogState={cancelEditDialog}
+        dialogHeader="Cancel edits"
+        backdropClosable={false}
+        className="content-width-dialog cancel-edit-dialog"
+      >
+        <div className="text">If you close this you will lose edites.</div>
+        <div className="button-group">
+          <PrimaryButton
+            type="button"
+            action={() => setCancelEditDialog(false)}
+            className="cancel-button"
+          >
+            Continue editing
+          </PrimaryButton>
+          <PrimaryButton
+            className="delete-button"
+            type="button"
+            action={handleCancelEdit}
+          >
+            Yes cancel edits
+          </PrimaryButton>
+        </div>
+      </DialogComponent>
+
+      {/* delete listing confirmation dialog */}
+      <DialogComponent
+        dialogState={deleteListingDialog}
+        dialogHeader="Delete listing"
+        backdropClosable={false}
+        className="content-width-dialog delete-listing-dialog"
+      >
+        <div className="text">are you sure you want to delete listing</div>
+        <div className="button-group">
+          <PrimaryButton
+            type="button"
+            action={() => setDeleteListingDialog(false)}
+            className="cancel-button"
+          >
+            Cancel
+          </PrimaryButton>
+          <PrimaryButton
+            className="delete-button"
+            type="button"
+            action={handleDeleteListing}
+          >
+            Yes delete listing
+          </PrimaryButton>
+        </div>
+      </DialogComponent>
+    </>
   );
 }

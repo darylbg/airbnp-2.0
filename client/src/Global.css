@@ -1,7 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
 
-/* base font size */
 
+@import '@radix-ui/colors/gray.css';
+@import '@radix-ui/colors/blue.css';
+@import '@radix-ui/colors/green.css';
+@import '@radix-ui/colors/red.css';
+@import '@radix-ui/colors/gray-dark.css';
+@import '@radix-ui/colors/blue-dark.css';
+@import '@radix-ui/colors/green-dark.css';
+@import '@radix-ui/colors/red-dark.css';
+@import '@radix-ui/colors/mauve.css';
+
+/* base font size */
 html {
   font-size: 16px;
 }
@@ -18,10 +28,10 @@ html {
   --navy-blue: #28355e;
   --navy-blue-darker: #253154;
 
-  --blue-10: #D9E2FF;
+  /* --blue-10: #D9E2FF; */
 
-  --blue: #4070ff;
-  --blue-darker: #3965f0;
+  /* --blue: #4070ff;
+  --blue-darker: #3965f0; */
 
   --cyan: #3cbbb9;
   --cyan-darker: #38b1ab;
@@ -116,6 +126,7 @@ button:disabled {
   background-color: var(--white);
   color: var(--black-100);
   border: 1px solid var(--black-100);
+  font-weight: 500;
 }
 
 .edit-button:hover {
@@ -132,26 +143,50 @@ button:disabled {
 
 /* save buttons */
 .save-button {
-  background-color: var(--black-100);
-  color: var(--white-darker);
-  /* color: transparent; */
-  border: 1px solid var(--black-100);
+  background-color: var(--blue-4);
+  color: var(--blue-11);
+  font-weight: 500;
 }
 
 .save-button:hover {
-  background-color: var(--black-100-darker);
-  color: var(--white);
-  border: 1px solid var(--black-100-darker);
+  background-color: var(--blue-5);
+}
+
+.save-button:focus {
+  box-shadow: 0 0 0 2px var(--blue-7);
 }
 
 .save-button:disabled {
-  background-color: var(--black-10);
+  background-color: var(--blue-3);
   color: transparent;
-  border: 1px solid var(--black-10);
 }
 
 .delete-button {
+  background-color: var(--red-4);
+  color: var(--red-11);
+  font-weight: 500;
+}
 
+.delete-button:hover {
+  background-color: var(--red-5);
+}
+.delete-button:focus {
+  box-shadow: 0 0 0 2px var(--red-7);
+}
+
+/* cancel button */
+.cancel-button {
+  background-color: var(--mauve-4);
+  color: var(--mauve-11);
+  font-weight: 500;
+}
+
+.cancel-button:hover {
+  background-color: var(--mauve-5);
+}
+
+.cancel-button:focus {
+  box-shadow: 0 0 0 2px var(--mauve-7);
 }
 
 /* media queries */
