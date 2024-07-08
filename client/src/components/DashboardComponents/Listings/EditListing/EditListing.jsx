@@ -78,7 +78,12 @@ export default function EditListing({
       listing_title: listing.listing_title,
       listing_description: listing.listing_description,
       contact_method: listing.contact_method,
-      address: listing.address,
+      fullAddress: listing.fullAddress,
+      addressLine1: listing.addressAutofillInput,
+      addressLine2: listing.addressLine2,
+      addressCity: listing.addressCity,
+      addressRegion: listing.addressRegion,
+      addressPostCode: listing.addressPostCode,
       latitude: listing.latitude,
       longitude: listing.longitude,
       price: listing.price,
@@ -113,7 +118,7 @@ export default function EditListing({
         formData.addressPostCode,
       ];
 
-      let address = addressComponents
+      let fullAddress = addressComponents
         .filter((component) => component && component.trim() !== "")
         .join(", ");
 
@@ -125,7 +130,12 @@ export default function EditListing({
             listing_description: formData.listing_description,
             contact_method: formData.contact_method,
             listing_image: listingImages,
-            address: address,
+            fullAddress: fullAddress,
+            addressLine1: formData.addressAutofillInput,
+            addressLine2: formData.addressLine2,
+            addressCity: formData.addressCity,
+            addressRegion: formData.addressRegion,
+            addressPostCode: formData.addressPostCode,
             latitude: formData.latitude,
             longitude: formData.longitude,
             price: +formData.price,
@@ -264,7 +274,7 @@ export default function EditListing({
           </div>
           <div className="field-message">{errors.listing_image?.message}</div>
         </Form.Field>
-        <div className="address-display">{listing.address}</div>
+        <div className="address-display">{listing.fullAddress}</div>
         <Form.Field className="new-listing-form-field" name="address">
           <Form.Label>Enter new address</Form.Label>
           <AddressSearch
@@ -275,6 +285,7 @@ export default function EditListing({
             setShowFormExpanded={setShowFormExpanded}
             showMinimap={showMinimap}
             setShowMinimap={setShowMinimap}
+            listing={listing}
           />
           <div className="field-message">{errors.address?.message}</div>
         </Form.Field>

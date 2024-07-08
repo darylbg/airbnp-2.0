@@ -25,7 +25,12 @@ const typeDefs = gql`
     listing_description: String
     contact_method: String
     listing_image: [String]
-    address: String!
+    fullAddress: String!
+    addressLine1: String!
+    addressLine2: String
+    addressCity: String
+    addressRegion: String
+    addressPostCode: String
     latitude: Float!
     longitude: Float!
     availability: Boolean!
@@ -116,7 +121,12 @@ const typeDefs = gql`
     listing_description: String
     contact_method: String
     listing_image: [String]
-    address: String!
+    fullAddress: String!
+    addressLine1: String!
+    addressLine2: String
+    addressCity: String
+    addressRegion: String
+    addressPostCode: String
     latitude: Float!
     longitude: Float!
     availability: Boolean

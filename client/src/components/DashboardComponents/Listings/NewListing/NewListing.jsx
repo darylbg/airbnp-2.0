@@ -90,7 +90,7 @@ export default function NewListing({ closeDialog }) {
         formData.addressPostCode,
       ];
 
-      let address = addressComponents
+      let fullAddress = addressComponents
         .filter((component) => component && component.trim() !== "")
         .join(", ");
 
@@ -101,7 +101,12 @@ export default function NewListing({ closeDialog }) {
             listing_description: formData.listing_description,
             contact_method: formData.contact_method,
             listing_image: listingImages,
-            address: address,
+            fullAddress: fullAddress,
+            addressLine1: formData.addressAutofillInput,
+            addressLine2: formData.addressLine2,
+            addressCity: formData.addressCity,
+            addressRegion: formData.addressRegion,
+            addressPostCode: formData.addressPostCode,
             latitude: formData.addressLatitude,
             longitude: formData.addressLongitude,
             availability: false,

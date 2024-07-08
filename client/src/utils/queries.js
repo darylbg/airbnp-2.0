@@ -3,7 +3,12 @@ import { gql } from "@apollo/client";
 export const GET_ALL_LISTINGS = gql`
   query Query {
     getAllListings {
-      address
+      fullAddress
+      addressLine1
+      addressLine2
+      addressCity
+      addressRegion
+      addressPostCode
       availability
       contact_method
       created_at

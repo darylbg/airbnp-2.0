@@ -16,9 +16,25 @@ const listingSchema = new Schema(
       type: [String],
       required: true
     },
-    address: {
+    fullAddress: {
       type: String,
       required: true,
+    },
+    addressLine1: {
+      type: String,
+      required: true
+    },
+    addressLine2: {
+      type: String,
+    },
+    addressCity: {
+      type: String,
+    },
+    addressRegion: {
+      type: String,
+    },
+    addressPostCode: {
+      type: String,
     },
     latitude: {
       type: Number,

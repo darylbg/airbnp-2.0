@@ -102,6 +102,7 @@ export function SwitchComponent({ listing }) {
   const [editListingMutation] = useMutation(EDIT_LISTING_MUTATION);
 
   const handleAvailabilityToggle = useCallback(async (checked) => {
+    console.log("checked", listing)
     try {
       const updatedListing = await editListingMutation({
         variables: {
@@ -111,7 +112,12 @@ export function SwitchComponent({ listing }) {
             listing_description: listing.listing_description,
             contact_method: listing.contact_method,
             listing_image: listing.listing_image,
-            address: listing.address,
+            fullAddress: listing.fullAddress,
+            addressLine1: listing.addressLine1,
+            addressLine2: listing.addressLine2,
+            addressCity: listing.addressCity,
+            addressRegion: listing.addressRegion,
+            addressPostCode: listing.addressPostCode,
             latitude: listing.latitude,
             longitude: listing.longitude,
             price: listing.price,

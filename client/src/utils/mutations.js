@@ -55,7 +55,12 @@ export const SIGN_IN_MUTATION = gql`
           listing_description
           listing_image
           price
-          address
+          fullAddress
+          addressLine1
+          addressLine2
+          addressCity
+          addressRegion
+          addressPostCode
           latitude
           longitude
           availability
@@ -99,7 +104,12 @@ export const NEW_LISTING_MUTATION = gql`
       listing_title
       listing_description
       listing_image
-      address
+      fullAddress
+      addressLine1
+      addressLine2
+      addressCity
+      addressRegion
+      addressPostCode
       longitude
       latitude
       contact_method
@@ -123,7 +133,12 @@ export const NEW_LISTING_MUTATION = gql`
 export const EDIT_LISTING_MUTATION = gql`
   mutation EditListing($listingId: ID!, $listingData: listingInput) {
     updateListing(listingId: $listingId, listingData: $listingData) {
-      address
+      fullAddress
+      addressLine1
+      addressLine2
+      addressCity
+      addressRegion
+      addressPostCode
       amenities {
         amenity_id
         available
@@ -164,7 +179,12 @@ export const DELETE_LISTING_MUTATION = gql`
         amenities {
           amenity_id
         }
-        address
+        fullAddress
+        addressLine1
+        addressLine2
+        addressCity
+        addressRegion
+        addressPostCode
         longitude
         payments {
           id

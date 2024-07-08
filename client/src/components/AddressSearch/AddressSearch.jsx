@@ -19,60 +19,62 @@ export default function AddressSearch({
   setShowFormExpanded,
   showMinimap,
   setShowMinimap,
-  loading
+  loading,
+  listing
 }) {
-  // const [showFormExpanded, setShowFormExpanded] = useState(false);
-  // const [showMinimap, setShowMinimap] = useState(false);
+  console.log("listing", listing && listing.addressLine1);
   const [feature, setFeature] = useState();
   const [showValidationText, setShowValidationText] = useState(false);
   const [token, setToken] = useState("");
 
   // useForm control to manage form fields
+  // const addressSplit = listingAddress.split(",");
+
   const { field: addressAutofillInput } = useController({
     name: "addressAutofillInput",
     control,
     rules: { required: "Address is required" },
-    defaultValue: "",
+    defaultValue: (listing && listing.addressLine1) || "",
   });
 
   const { field: addressLine2 } = useController({
     name: "addressLine2",
     control,
     // rules: { required: "Address is required" },
-    defaultValue: "",
+    defaultValue: (listing && listing.addressLine2) || "",
   });
 
   const { field: addressCity } = useController({
     name: "addressCity",
     control,
     // rules: { required: "Address is required" },
-    defaultValue: "",
+    defaultValue: (listing && listing.addressCity) || "",
   });
 
   const { field: addressRegion } = useController({
     name: "addressRegion",
     control,
     // rules: { required: "Address is required" },
-    defaultValue: "",
+    defaultValue: (listing && listing.addressRegion) || "",
   });
 
   const { field: addressPostCode } = useController({
     name: "addressPostCode",
     control,
     // rules: { required: "Address is required" },
-    defaultValue: "",
+    defaultValue: (listing && listing.addressPostCode) || "",
   });
 
   const { field: addressLongitude } = useController({
     name: "addressLongitude",
     control,
-    defaultValue: "",
+    defaultValue: (listing && listing.longitude) || "",
   });
 
   const { field: addressLatitude } = useController({
     name: "addressLatitude",
     control,
-    defaultValue: "",
+    defaultValue: (listing && listing.latitude) || "",
   });
 
   // mapbox template code
