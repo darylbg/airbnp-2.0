@@ -1,0 +1,74 @@
+.search-page {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  width: 100%;
+  height: calc(100vh - 58px);
+  overflow: hidden;
+}
+
+.search-listings {
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 30%;
+  min-width: 300px;
+  max-width: 500px;
+  background-color: white;
+  padding: 1rem;
+  gap: 1rem;
+  height: 100%;
+  overflow-y: scroll;
+  box-sizing: border-box;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.search-listings::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.search-listings {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.search-listings-input input {
+  /* width: 100%; */
+}
+
+.search-listings-filter {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.search-listings-filter .text {
+  margin: 0;
+}
+
+.search-listings-display {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.search-map {
+  display: flex;
+  flex: 1;
+  height: 100%;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.search-map img {
+  object-fit: cover;
+  object-position: center;
+}
+
+@media screen and (max-width: 768px) {
+  .search-listings {
+    display: none;
+  }
+}

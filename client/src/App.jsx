@@ -10,6 +10,7 @@ import { setContext } from "@apollo/client/link/context";
 import { Toaster } from "react-hot-toast";
 
 import Home from "./pages/Home/Home";
+import Search from "./pages/Search/Search";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Navbar from "./components/Navbar/Navbar";
@@ -74,6 +75,7 @@ function App() {
           <div className="app-pages">
             <Routes>
               <Route path="/" element={<Home />}></Route>
+              <Route path="search" element={<Search />}></Route>
               <Route path="about" element={<About />}></Route>
               <Route path="contact" element={<Contact />}></Route>
               <Route path="dashboard" element={<Dashboard />}>

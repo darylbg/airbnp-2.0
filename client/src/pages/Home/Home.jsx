@@ -1,6 +1,5 @@
 import React, { useRef } from "react";
 import * as Form from "@radix-ui/react-form";
-import GetAllListings from "../../components/GetAllListings/GetAllListings";
 import Bookings from "../../components/DashboardComponents/Bookings/Bookings";
 import * as Accordion from "@radix-ui/react-accordion";
 import LargeRoundButton from "../../components/PrimitiveComponents/LargeRoundButton/LargeRoundButton";
@@ -185,8 +184,6 @@ export default function Home() {
           </Accordion.Root>
         </div>
       </section>
-      <GetAllListings />
-      hoem
     </div>
   );
 }

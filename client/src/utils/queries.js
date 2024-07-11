@@ -3,6 +3,7 @@ import { gql } from "@apollo/client";
 export const GET_ALL_LISTINGS = gql`
   query Query {
     getAllListings {
+      id
       fullAddress
       addressLine1
       addressLine2
