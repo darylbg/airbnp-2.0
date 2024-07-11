@@ -3,7 +3,7 @@ import { useQuery } from "@apollo/client";
 import { GET_ALL_LISTINGS } from "../../utils/queries";
 import * as Form from "@radix-ui/react-form";
 import SearchListing from "../../components/SearchListing/SearchListing";
-import Map from "../../assets/images/home-banner-map.png";
+import Map from "../../assets/images/map-image.jpeg";
 import "./Search.css";
 
 export default function Search() {
