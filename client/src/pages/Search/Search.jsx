@@ -5,6 +5,7 @@ import * as Form from "@radix-ui/react-form";
 import SearchListing from "../../components/SearchListing/SearchListing";
 import Map from "../../assets/images/map-image.jpeg";
 import "./Search.css";
+import SearchMap from "../../components/SearchMap/SearchMap";
 
 export default function Search() {
   const [listings, setListings] = useState(null);
@@ -43,7 +44,7 @@ export default function Search() {
         </div>
       </div>
       <div className="search-map">
-        <img src={Map} alt="" />
+        <SearchMap listings={listings} />
       </div>
     </div>
   );
