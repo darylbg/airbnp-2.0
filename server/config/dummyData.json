@@ -1,0 +1,231 @@
+{
+    "users": [
+      {
+        "_id": "user1",
+        "first_name": "John",
+        "last_name": "Doe",
+        "display_name": "JohnD",
+        "gender": "Male",
+        "email": "john.doe@example.com",
+        "password": "hashedpassword1",
+        "created_at": "2024-07-13T10:00:00Z",
+        "user_image": "https://example.com/user1.jpg",
+        "user_listings": ["listing1", "listing2"],
+        "saved_listings": ["listing3", "listing4"],
+        "notifications": ["notification1"],
+        "reviews": ["review1"],
+        "payments": ["payment1"],
+        "booking_history": ["listing5"]
+      },
+      {
+        "_id": "user2",
+        "first_name": "Jane",
+        "last_name": "Smith",
+        "display_name": "JaneS",
+        "gender": "Female",
+        "email": "jane.smith@example.com",
+        "password": "hashedpassword2",
+        "created_at": "2024-07-13T11:00:00Z",
+        "user_image": "https://example.com/user2.jpg",
+        "user_listings": ["listing3"],
+        "saved_listings": ["listing1"],
+        "notifications": ["notification2"],
+        "reviews": ["review2"],
+        "payments": ["payment2"],
+        "booking_history": ["listing2"]
+      },
+      {
+        "_id": "user3",
+        "first_name": "Michael",
+        "last_name": "Johnson",
+        "display_name": "MikeJ",
+        "gender": "Male",
+        "email": "michael.johnson@example.com",
+        "password": "hashedpassword3",
+        "created_at": "2024-07-13T12:00:00Z",
+        "user_image": "https://example.com/user3.jpg",
+        "user_listings": ["listing4", "listing5", "listing6"],
+        "saved_listings": ["listing2", "listing7"],
+        "notifications": ["notification3"],
+        "reviews": ["review3"],
+        "payments": ["payment3"],
+        "booking_history": ["listing1", "listing8"]
+      },
+      {
+        "_id": "user49",
+        "first_name": "Olivia",
+        "last_name": "Brown",
+        "display_name": "OliviaB",
+        "gender": "Female",
+        "email": "olivia.brown@example.com",
+        "password": "hashedpassword49",
+        "created_at": "2024-07-15T08:00:00Z",
+        "user_image": "https://example.com/user49.jpg",
+        "user_listings": ["listing145", "listing146"],
+        "saved_listings": ["listing147"],
+        "notifications": ["notification49"],
+        "reviews": ["review49"],
+        "payments": ["payment49"],
+        "booking_history": ["listing148"]
+      },
+      {
+        "_id": "user50",
+        "first_name": "Emma",
+        "last_name": "Wilson",
+        "display_name": "EmmaW",
+        "gender": "Female",
+        "email": "emma.wilson@example.com",
+        "password": "hashedpassword50",
+        "created_at": "2024-07-15T09:00:00Z",
+        "user_image": "https://example.com/user50.jpg",
+        "user_listings": ["listing147", "listing148"],
+        "saved_listings": ["listing149"],
+        "notifications": ["notification50"],
+        "reviews": ["review50"],
+        "payments": ["payment50"],
+        "booking_history": ["listing150"]
+      }
+    ],
+    "listings": [
+      {
+        "_id": "listing1",
+        "listing_title": "Cozy Apartment in Downtown",
+        "listing_description": "A beautiful apartment in the heart of the city",
+        "contact_method": "email",
+        "listing_image": ["https://example.com/apartment1.jpg"],
+        "fullAddress": "123 Main St, Cityville, State 12345",
+        "addressLine1": "123 Main St",
+        "addressCity": "Cityville",
+        "addressRegion": "State",
+        "addressPostCode": "12345",
+        "latitude": 40.7128,
+        "longitude": -74.0060,
+        "availability": true,
+        "price": 100,
+        "created_at": "2024-07-13T12:00:00Z",
+        "user_id": "user1",
+        "amenities": [
+          {
+            "amenity_id": "amenity1",
+            "available": true
+          },
+          {
+            "amenity_id": "amenity2",
+            "available": false
+          }
+        ],
+        "notifications": ["notification1"],
+        "reviews": ["review1"],
+        "payments": ["payment1"]
+      },
+      {
+        "_id": "listing150",
+        "listing_title": "Luxury Penthouse with Skyline View",
+        "listing_description": "Experience the epitome of luxury living with panoramic city views",
+        "contact_method": "phone",
+        "listing_image": ["https://example.com/penthouse150.jpg"],
+        "fullAddress": "789 Sky Rd, Metropolis, State 54321",
+        "addressLine1": "789 Sky Rd",
+        "addressCity": "Metropolis",
+        "addressRegion": "State",
+        "addressPostCode": "54321",
+        "latitude": 40.7589,
+        "longitude": -73.9851,
+        "availability": true,
+        "price": 500,
+        "created_at": "2024-07-15T10:00:00Z",
+        "user_id": "user50",
+        "amenities": [
+          {
+            "amenity_id": "amenity1",
+            "available": true
+          },
+          {
+            "amenity_id": "amenity3",
+            "available": true
+          },
+          {
+            "amenity_id": "amenity5",
+            "available": true
+          }
+        ],
+        "notifications": ["notification150"],
+        "reviews": ["review150"],
+        "payments": ["payment150"]
+      }
+    ],
+    "reviews": [
+      {
+        "_id": "review1",
+        "rating_value": 4,
+        "rating_text": "Great place, highly recommended!",
+        "created_at": "2024-07-14T09:00:00Z",
+        "user_id": "user2",
+        "listing_id": "listing1"
+      },
+      {
+        "_id": "review150",
+        "rating_value": 5,
+        "rating_text": "Absolutely stunning penthouse, unforgettable experience!",
+        "created_at": "2024-07-16T11:00:00Z",
+        "user_id": "user49",
+        "listing_id": "listing150"
+      }
+    ],
+    "payments": [
+      {
+        "_id": "payment1",
+        "amount_paid": 200,
+        "guest_quantity": 2,
+        "currency": "USD",
+        "payment_method": "credit_card",
+        "payment_status": "completed",
+        "created_at": "2024-07-14T11:00:00Z",
+        "user_id": "user2",
+        "listing_id": "listing1"
+      },
+      {
+        "_id": "payment150",
+        "amount_paid": 1000,
+        "guest_quantity": 4,
+        "currency": "USD",
+        "payment_method": "bank_transfer",
+        "payment_status": "completed",
+        "created_at": "2024-07-16T12:00:00Z",
+        "user_id": "user49",
+        "listing_id": "listing150"
+      }
+    ],
+    "amenities": [
+      {
+        "_id": "amenity1",
+        "amenity_text": "WiFi",
+        "amenity_icon": "wifi_icon.png"
+      },
+      {
+        "_id": "amenity2",
+        "amenity_text": "Swimming Pool",
+        "amenity_icon": "pool_icon.png"
+      },
+      {
+        "_id": "amenity3",
+        "amenity_text": "Gym",
+        "amenity_icon": "gym_icon.png"
+      },
+      {
+        "_id": "amenity4",
+        "amenity_text": "Parking",
+        "amenity_icon": "parking_icon.png"
+      },
+      {
+        "_id": "amenity5",
+        "amenity_text": "Air Conditioning",
+        "amenity_icon": "ac_icon.png"
+      },
+      {
+        "_id": "amenity6",
+        "amenity_text": "Kitchen",
+        "amenity_icon": "kitchen_icon.png"
+      }
+    ]
+  }

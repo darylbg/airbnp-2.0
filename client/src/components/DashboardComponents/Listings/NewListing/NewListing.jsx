@@ -121,7 +121,7 @@ export default function NewListing({ closeDialog }) {
       // dispatch new listing to redux reducers
       const addedListing = newListing.data.createListing;
       const userListingCount = currentUser.user_listings;
-
+      console.log(addedListing);
       dispatch(addListing(addedListing));
       dispatch(
         updateUserDetails({

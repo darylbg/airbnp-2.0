@@ -95,13 +95,13 @@ const typeDefs = gql`
     gender: String
     email: String!
     user_image: String
-    # user_listings: [ID!]
-    # saved_listings: [ID!]
-    # notifications: [ID!]
-    # reviews: [ID!]
-    # payments: [ID!]
-    # booking_history: [ID!]
-    # password: String!
+    user_listings: [ID!]
+    saved_listings: [ID!]
+    notifications: [ID!]
+    reviews: [ID!]
+    payments: [ID!]
+    booking_history: [ID!]
+    password: String!
   }
 
   input userListingInput {

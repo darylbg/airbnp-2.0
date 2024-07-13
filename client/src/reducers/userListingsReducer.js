@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialListingsState = {
-  byId: {},
+  byId: [],
   allIds: [],
 };
 

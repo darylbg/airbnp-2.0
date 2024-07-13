@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import * as Form from "@radix-ui/react-form";
@@ -12,13 +12,11 @@ import "./Listings.css";
 import PrimaryButton from "../../PrimitiveComponents/PrimaryButton/PrimaryButton";
 
 export default function Listings() {
-  const userListings = useSelector((state) => state.userListings.byId);
+  const userListings = useSelector((state) => state.userListings.byId) || {};
   const [newListingDialog, setNewListingDialog] = useState(false);
   const [filterDialog, setFilterDialog] = useState(false);
   const [sortCriteria, setSortCriteria] = useState("dateAdded");
-  const [sortedUserListings, setSortedUserListings] = useState([
-    ...userListings,
-  ]);
+  const [sortedUserListings, setSortedUserListings] = useState([]);
 
   const {
     register,
@@ -36,17 +34,15 @@ export default function Listings() {
   };
 
   useEffect(() => {
-    // e.preventDefault();
+    const listingsArray = Object.values(userListings);
+
     const sortByDateAdded = () => {
-      const sortedArray = [...userListings].sort(
-        (a, b) => b.created_at - a.created_at
-      );
+      const sortedArray = [...listingsArray].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
       setSortedUserListings(sortedArray);
     };
 
     const sortByAvailability = () => {
-      // e.preventDefault();
-      const sortedArray = [...userListings].sort((a, b) => {
+      const sortedArray = [...listingsArray].sort((a, b) => {
         if (a.availability !== b.availability) {
           return b.availability - a.availability;
         } else {
@@ -100,7 +96,7 @@ export default function Listings() {
         <DialogComponent
           className="filter-dialog content-width-dialog"
           dialogState={filterDialog}
-          closeDialog={(e) => setFilterDialog(false)}
+          closeDialog={() => setFilterDialog(false)}
           icon="close"
           dialogHeader="Sort listings"
           backdropClosable={true}
@@ -147,7 +143,7 @@ export default function Listings() {
           <NewListing closeDialog={() => setNewListingDialog(false)}/>
         </DialogComponent>
         <div className="title-text">
-          <h3>{userListings.length}</h3>
+          <h3>{Object.keys(userListings).length}</h3>
           <p>listings</p>
         </div>
       </DashboardHeader>
@@ -177,19 +173,18 @@ export default function Listings() {
         </div>
 
         {/* display user listings */}
-        {sortedUserListings && sortedUserListings.length ? (
+        {sortedUserListings.length ? (
           <div className="listings-display">
-            {sortedUserListings &&
-              sortedUserListings.map((listing) => (
-                <ListingDisplay key={listing.id} props={listing} />
-              ))}
+            {sortedUserListings.map((listing) => (
+              <ListingDisplay key={listing.id} props={listing} />
+            ))}
           </div>
         ) : (
           <Link
             className="no-listings-link"
             onClick={() => setNewListingDialog(true)}
           >
-            add your first listing
+            Add your first listing
           </Link>
         )}
       </div>

@@ -1,38 +1,18 @@
 import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
-import MapStyleStreet from "../../assets/images/map-styles/street.png";
-import MapStyleLight from "../../assets/images/map-styles/light.png";
-import MapStyleDark from "../../assets/images/map-styles/dark.png";
+import { mapStyleOptions } from "./mapStyleOptions"; // Adjust the path as necessary
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./SearchMap.css";
 
 export default function SearchMap({ listings }) {
-  const mapStyleOptions = [
-    {
-      option: "mapbox://styles/mapbox/streets-v12",
-      img: MapStyleStreet,
-      title: "Default",
-    },
-    {
-      option: "mapbox://styles/mapbox/light-v11",
-      img: MapStyleLight,
-      title: "Light",
-    },
-    {
-      option: "mapbox://styles/mapbox/dark-v11",
-      img: MapStyleDark,
-      title: "Dark",
-    },
-  ];
-
   mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 
   const [mapStyle, setMapStyle] = useState(mapStyleOptions[0]);
 
   const mapContainer = useRef(null);
   const map = useRef(null);
-  const [lng, setLng] = useState(-70.9);
-  const [lat, setLat] = useState(42.35);
+  const [lng, setLng] = useState(0.1276);
+  const [lat, setLat] = useState(51.5072);
   const [zoom, setZoom] = useState(9);
 
   useEffect(() => {
@@ -43,13 +23,38 @@ export default function SearchMap({ listings }) {
       center: [lng, lat],
       zoom: zoom,
     });
+
+    if (listings) {
+      listings.forEach((listing) => {
+        new mapboxgl.Marker()
+          .setLngLat([listing.longitude, listing.latitude])
+          .addTo(map.current);
+      });
+    }
   }, []);
 
   useEffect(() => {
     if (map.current) {
-      map.current.setStyle(mapStyle.option); // Update map style
+      map.current.setStyle(mapStyle.option);
     }
   }, [mapStyle]);
+
+  useEffect(() => {
+    if (map.current && listings) {
+      // Clear existing markers
+      const markers = document.getElementsByClassName('mapboxgl-marker');
+      while (markers[0]) {
+        markers[0].parentNode.removeChild(markers[0]);
+      }
+
+      // Add new markers
+      listings.forEach((listing) => {
+        new mapboxgl.Marker()
+          .setLngLat([listing.longitude, listing.latitude])
+          .addTo(map.current);
+      });
+    }
+  }, [listings]);
 
   const handleMapStyles = (style) => {
     setMapStyle(style);
@@ -69,15 +74,14 @@ export default function SearchMap({ listings }) {
 
         <div className="map-styles-dropdown">
           {mapStyleOptions.map((style) => (
-            <div className="map-style">
+            <div className="map-style" key={style.option}>
               <button
                 onClick={() => handleMapStyles(style)}
-                key={style.option}
                 style={{
                   border:
                     mapStyle.option === style.option
                       ? "2px solid #0090FF"
-                      : "2px solid #E3DFE6",
+                      : "2px solid #DBD8E0",
                 }}
               >
                 <img src={style.img} alt={style.option} />

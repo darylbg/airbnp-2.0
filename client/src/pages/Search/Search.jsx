@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_ALL_LISTINGS } from "../../utils/queries";
+import {useDispatch, useSelector} from "react-redux";
 import * as Form from "@radix-ui/react-form";
 import SearchListing from "../../components/SearchListing/SearchListing";
-import Map from "../../assets/images/map-image.jpeg";
 import "./Search.css";
 import SearchMap from "../../components/SearchMap/SearchMap";
 
 export default function Search() {
+    const dispatch = useDispatch();
+    const listingsRedux = useSelector((state) => state)
   const [listings, setListings] = useState(null);
   console.log("listings", listings);
   const { error, loading, data } = useQuery(GET_ALL_LISTINGS);
