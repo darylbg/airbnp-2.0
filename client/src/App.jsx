@@ -8,7 +8,6 @@ import {
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { setContext } from "@apollo/client/link/context";
 import { Toaster } from "react-hot-toast";
-
 import Home from "./pages/Home/Home";
 import Search from "./pages/Search/Search";
 import About from "./pages/About";
@@ -59,12 +58,12 @@ function App() {
   useEffect(() => {
     const handleWindowResize = () => {
       setWindowSize(window.innerWidth);
-    }
+    };
     window.addEventListener("resize", handleWindowResize);
 
     return () => {
       window.removeEventListener("resize", handleWindowResize);
-    }
+    };
   }, []);
 
   return (
