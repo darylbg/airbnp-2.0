@@ -36,17 +36,23 @@ export default function SearchMap({ listings }) {
   const [zoom, setZoom] = useState(9);
 
   useEffect(() => {
-    if (map.current) return; // initialize map only once
+    if (map.current) return;
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: mapStyle.option,
       center: [lng, lat],
       zoom: zoom,
     });
-  }, [listings, mapStyle]);
+  }, []);
 
-  const handleMapStyle = (option) => {
-    console.log(option);
+  useEffect(() => {
+    if (map.current) {
+      map.current.setStyle(mapStyle.option); // Update map style
+    }
+  }, [mapStyle]);
+
+  const handleMapStyles = (style) => {
+    setMapStyle(style);
   };
 
   return (
@@ -54,8 +60,9 @@ export default function SearchMap({ listings }) {
       <div className="map-styles">
         <div className="map-styles-trigger">
           <div className="map-style">
-            <button className="map-style">
+            <button className="selected-map-style">
               <img src={mapStyle.img} alt={mapStyle.option} />
+              <span className="text">{mapStyle.title}</span>
             </button>
           </div>
         </div>
@@ -64,8 +71,14 @@ export default function SearchMap({ listings }) {
           {mapStyleOptions.map((style) => (
             <div className="map-style">
               <button
-                onClick={() => handleMapStyle(style.option)}
+                onClick={() => handleMapStyles(style)}
                 key={style.option}
+                style={{
+                  border:
+                    mapStyle.option === style.option
+                      ? "2px solid #0090FF"
+                      : "2px solid #E3DFE6",
+                }}
               >
                 <img src={style.img} alt={style.option} />
               </button>
