@@ -10,11 +10,13 @@ import { NEW_LISTING_MUTATION } from "../../../../utils/mutations";
 import ImageUploadWidget from "../../../PrimitiveComponents/ImageUploadWidget/ImageUploadWidget";
 import { updateUserDetails } from "../../../../reducers/userDetailsReducer";
 import { addListing } from "../../../../reducers/userListingsReducer";
+import { addToAllListings } from "../../../../reducers/allListingsReducer";
 import "./NewListing.css";
 
 import { useConfirmAddress } from "@mapbox/search-js-react";
 import PrimaryButton from "../../../PrimitiveComponents/PrimaryButton/PrimaryButton";
 import Spinner from "../../../PrimitiveComponents/Spinner/Spinner";
+import { setAllListings } from "../../../../reducers/allListingsReducer";
 
 export default function NewListing({ closeDialog }) {
   const currentUser = useSelector((state) => state.userDetails.byId);
@@ -121,7 +123,7 @@ export default function NewListing({ closeDialog }) {
       // dispatch new listing to redux reducers
       const addedListing = newListing.data.createListing;
       const userListingCount = currentUser.user_listings;
-      console.log(addedListing);
+      console.log("addedlisting", addedListing);
       dispatch(addListing(addedListing));
       dispatch(
         updateUserDetails({
@@ -129,6 +131,7 @@ export default function NewListing({ closeDialog }) {
           updates: { user_listings: userListingCount + 1 },
         })
       );
+      dispatch(addToAllListings(addListing));
 
       closeDialog();
       setSelectedImages([null, null, null, null, null]);

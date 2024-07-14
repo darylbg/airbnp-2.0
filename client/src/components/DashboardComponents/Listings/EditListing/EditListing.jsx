@@ -10,6 +10,7 @@ import {
   updateListing,
   deleteListing,
 } from "../../../../reducers/userListingsReducer";
+import { removeFromAllListings } from "../../../../reducers/allListingsReducer";
 import DialogComponent from "../../../PrimitiveComponents/DialogComponent/DialogComponent";
 import { useConfirmAddress } from "@mapbox/search-js-react";
 import { updateUserDetails } from "../../../../reducers/userDetailsReducer";
@@ -173,6 +174,7 @@ export default function EditListing({
         })
       );
       dispatch(deleteListing(listing.id));
+      dispatch(removeFromAllListings(listing.id));
       console.log("deleted listing", deletedListing);
       closeDialog();
     } catch (error) {

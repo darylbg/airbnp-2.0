@@ -22,7 +22,6 @@ export default function AddressSearch({
   loading,
   listing
 }) {
-  console.log("listing", listing && listing.addressLine1);
   const [feature, setFeature] = useState();
   const [showValidationText, setShowValidationText] = useState(false);
   const [token, setToken] = useState("");
