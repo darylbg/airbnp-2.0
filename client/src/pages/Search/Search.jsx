@@ -6,15 +6,23 @@ import * as Form from "@radix-ui/react-form";
 import SearchListing from "../../components/SearchListing/SearchListing";
 import "./Search.css";
 import SearchMap from "../../components/SearchMap/SearchMap";
-import { setAllListings, clearRefetchFlag } from "../../reducers/allListingsReducer";
+import {
+  setAllListings,
+  clearRefetchFlag,
+} from "../../reducers/allListingsReducer";
 
 export default function Search() {
   const dispatch = useDispatch();
   const [listings, setListings] = useState(null);
-
+  const [hoveredListing, setHoveredListing] = useState(null);
+  console.log(hoveredListing);
   const { error, loading, data, refetch } = useQuery(GET_ALL_LISTINGS);
-  const allListingEntities = useSelector((state) => state.allListings.defaultListings.entities);
-  const refetchListings = useSelector((state) => state.allListings.refetchListings);
+  const allListingEntities = useSelector(
+    (state) => state.allListings.defaultListings.entities
+  );
+  const refetchListings = useSelector(
+    (state) => state.allListings.refetchListings
+  );
 
   // refetch data when listing added or removed
   useEffect(() => {
@@ -41,7 +49,7 @@ export default function Search() {
   }, [allListingEntities]);
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
+  if (error) return <p>Error :</p>;
 
   return (
     <div className="search-page">
@@ -60,12 +68,21 @@ export default function Search() {
         <div className="search-listings-display">
           {listings &&
             listings.map((listing) => (
-              <SearchListing key={listing._id} listing={listing} />
+              <SearchListing
+                key={listing._id}
+                listing={listing}
+                setHoveredListing={setHoveredListing}
+                hoveredListing={hoveredListing}
+              />
             ))}
         </div>
       </div>
       <div className="search-map">
-        <SearchMap listings={listings} />
+        <SearchMap
+          listings={listings}
+          setHoveredListing={setHoveredListing}
+          hoveredListing={hoveredListing}
+        />
       </div>
     </div>
   );

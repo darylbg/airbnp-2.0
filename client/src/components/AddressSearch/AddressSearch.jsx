@@ -26,9 +26,6 @@ export default function AddressSearch({
   const [showValidationText, setShowValidationText] = useState(false);
   const [token, setToken] = useState("");
 
-  // useForm control to manage form fields
-  // const addressSplit = listingAddress.split(",");
-
   const { field: addressAutofillInput } = useController({
     name: "addressAutofillInput",
     control,

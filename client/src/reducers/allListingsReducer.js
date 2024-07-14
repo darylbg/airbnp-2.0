@@ -32,6 +32,16 @@ const allListingsSlice = createSlice({
         state.refetchListings = true;
       }
     },
+    updateToAllListings(state, action) {
+      const updatedListing = action.payload;
+      const index = state.defaultListings.ids.indexOf(updatedListing.id);
+
+      if (index !== -1) {
+        // Update the listing in the entities array
+        state.defaultListings.entities[index] = updatedListing;
+        state.refetchListings = true; // Set refetch flag if needed
+      }
+    },
     removeFromAllListings(state, action) {
       try {
         const listingId = action.payload;
@@ -52,5 +62,5 @@ const allListingsSlice = createSlice({
   }
 });
 
-export const { setAllListings, addToAllListings, removeFromAllListings, clearRefetchFlag } = allListingsSlice.actions;
+export const { setAllListings, addToAllListings, updateToAllListings, removeFromAllListings, clearRefetchFlag } = allListingsSlice.actions;
 export default allListingsSlice.reducer;

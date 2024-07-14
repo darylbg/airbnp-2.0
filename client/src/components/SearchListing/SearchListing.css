@@ -6,7 +6,6 @@
     border: 1px solid var(--gray-5);
     border-radius: 10px;
     background-color: var(--gray-1);
-    height: 500px;
 }
 
 .search-listing:hover {

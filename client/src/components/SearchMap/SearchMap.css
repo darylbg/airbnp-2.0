@@ -117,3 +117,17 @@
 .map-styles-dropdown .map-style:hover > span {
   color: var(--blue-9);
 }
+
+.map-marker {
+  background-color: white;
+  border: 3px solid red;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.map-marker:hover {
+  background-color: red;
+}

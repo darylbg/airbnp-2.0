@@ -1,10 +1,12 @@
 import React, { useRef, useEffect, useState } from "react";
+import { renderToString } from "react-dom/server";
 import mapboxgl from "mapbox-gl";
+import MapMarkerPopup from "../MapMarkerPopup/MapMarkerPopup";
 import { mapStyleOptions } from "./mapStyleOptions"; // Adjust the path as necessary
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./SearchMap.css";
 
-export default function SearchMap({ listings }) {
+export default function SearchMap({ listings, hoveredListing, setHoveredListing }) {
   mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 
   const [mapStyle, setMapStyle] = useState(mapStyleOptions[0]);
@@ -39,22 +41,50 @@ export default function SearchMap({ listings }) {
     }
   }, [mapStyle]);
 
+  // Update markers based on listings
   useEffect(() => {
     if (map.current && listings) {
       // Clear existing markers
-      const markers = document.getElementsByClassName('mapboxgl-marker');
+      const markers = document.getElementsByClassName("mapboxgl-marker");
       while (markers[0]) {
         markers[0].parentNode.removeChild(markers[0]);
       }
 
       // Add new markers
       listings.forEach((listing) => {
-        new mapboxgl.Marker()
+        // Create a custom marker element
+        const markerEl = document.createElement("div");
+        markerEl.className = "map-marker"; // Ensure this class is styled in CSS
+
+        // Render the custom popup component to an HTML string
+        const popupHTML = renderToString(<MapMarkerPopup listing={listing} />);
+
+        // Create the popup
+        const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(popupHTML);
+
+        // Create and add the marker MapMarkerPopup
+        new mapboxgl.Marker(markerEl)
           .setLngLat([listing.longitude, listing.latitude])
+          .setPopup(popup)
           .addTo(map.current);
+
+        markerEl.addEventListener("mouseenter", () =>
+          setHoveredListing(listing)
+        );
+        markerEl.addEventListener("mouseleave", () =>
+          setHoveredListing(null)
+        );
+
+        if (hoveredListing && hoveredListing.id === listing.id) {
+          markerEl.style.backgroundColor = 'red'; // Example hover style
+          markerEl.classList.add("hovered");
+        } else {
+          markerEl.style.backgroundColor = ''; // Reset style
+        }
+
       });
     }
-  }, [listings]);
+  }, [listings, hoveredListing]);
 
   const handleMapStyles = (style) => {
     setMapStyle(style);
