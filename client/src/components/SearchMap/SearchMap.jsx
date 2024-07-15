@@ -15,7 +15,7 @@ export default function SearchMap({
 
   const [mapStyle, setMapStyle] = useState(mapStyleOptions[0]);
   const [popupOpen, setPopupOpen] = useState(null);
-  console.log("popup", popupOpen);
+
   const mapContainer = useRef(null);
   const map = useRef(null);
   const [lng, setLng] = useState(0.1276);
