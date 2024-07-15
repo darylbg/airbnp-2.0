@@ -10,7 +10,7 @@ export default function SearchListing({listing, hoveredListing, setHoveredListin
     className='search-listing'
     onMouseEnter={() => setHoveredListing(listing)}
     onMouseLeave={() => setHoveredListing(null)}
-    style={{border: isHovered? "5px solid blue" : "1px solid black"}}
+    style={{border: isHovered? "2px solid blue" : "2px solid black"}}
     >
         <div className="search-listing-image">
             <img src={listing && listing.listing_image[0]} alt="" />

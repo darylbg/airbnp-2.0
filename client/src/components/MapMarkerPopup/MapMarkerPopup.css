@@ -1,3 +1,5 @@
-.map-marker-popup {
-    background-color: red;
+.map-popup {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }

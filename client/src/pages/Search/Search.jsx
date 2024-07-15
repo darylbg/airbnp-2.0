@@ -15,7 +15,6 @@ export default function Search() {
   const dispatch = useDispatch();
   const [listings, setListings] = useState(null);
   const [hoveredListing, setHoveredListing] = useState(null);
-  console.log(hoveredListing);
   const { error, loading, data, refetch } = useQuery(GET_ALL_LISTINGS);
   const allListingEntities = useSelector(
     (state) => state.allListings.defaultListings.entities

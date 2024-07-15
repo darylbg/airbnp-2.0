@@ -6,11 +6,16 @@ import { mapStyleOptions } from "./mapStyleOptions"; // Adjust the path as neces
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./SearchMap.css";
 
-export default function SearchMap({ listings, hoveredListing, setHoveredListing }) {
+export default function SearchMap({
+  listings,
+  hoveredListing,
+  setHoveredListing,
+}) {
   mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 
   const [mapStyle, setMapStyle] = useState(mapStyleOptions[0]);
-
+  const [popupOpen, setPopupOpen] = useState(null);
+  console.log("popup", popupOpen);
   const mapContainer = useRef(null);
   const map = useRef(null);
   const [lng, setLng] = useState(0.1276);
@@ -62,6 +67,14 @@ export default function SearchMap({ listings, hoveredListing, setHoveredListing 
         // Create the popup
         const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(popupHTML);
 
+        popup.on("open", () => {
+          setPopupOpen(listing);
+        });
+
+        popup.on("close", () => {
+          setPopupOpen(null);
+        });
+
         // Create and add the marker MapMarkerPopup
         new mapboxgl.Marker(markerEl)
           .setLngLat([listing.longitude, listing.latitude])
@@ -71,20 +84,21 @@ export default function SearchMap({ listings, hoveredListing, setHoveredListing 
         markerEl.addEventListener("mouseenter", () =>
           setHoveredListing(listing)
         );
-        markerEl.addEventListener("mouseleave", () =>
-          setHoveredListing(null)
-        );
+        markerEl.addEventListener("mouseleave", () => {
+            setHoveredListing(null);
+        });
 
-        if (hoveredListing && hoveredListing.id === listing.id) {
-          markerEl.style.backgroundColor = 'red'; // Example hover style
-          markerEl.classList.add("hovered");
+        if (
+          (hoveredListing && hoveredListing.id === listing.id) ||
+          (popupOpen && popupOpen.id === listing.id)
+        ) {
+          markerEl.style.backgroundColor = "red"; // Example hover style
         } else {
-          markerEl.style.backgroundColor = ''; // Reset style
+          markerEl.style.backgroundColor = ""; // Reset style
         }
-
       });
     }
-  }, [listings, hoveredListing]);
+  }, [listings, hoveredListing, popupOpen]);
 
   const handleMapStyles = (style) => {
     setMapStyle(style);
