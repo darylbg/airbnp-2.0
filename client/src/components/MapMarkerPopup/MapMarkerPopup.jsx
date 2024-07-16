@@ -1,17 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PrimaryButton from "../PrimitiveComponents/PrimaryButton/PrimaryButton";
 import DialogComponent from "../PrimitiveComponents/DialogComponent/DialogComponent";
 import "./MapMarkerPopup.css";
 
-export default function MapMarkerPopup({ listing }) {
-  const [detailDialog, setDetailDialog] = useState(false);
-  console.log("detail dialog", detailDialog);
+export default function MapMarkerPopup({ listing, closeDetailDialog, openDetailDialog }) {
+  // const [detailDialog, setDetailDialog] = useState(false);
+
   const [loading, setLoading] = useState(false);
 
-  const openDetailDialog = () => {
-    console.log("clicked");
-    setDetailDialog(true);
-  }
+  // const openDetailDialog = (e) => {
+  //   e.preventDefault();
+  //   console.log("clicked", e);
+  //   setDetailDialog(true);
+  // }
+
+  // useEffect(() => {
+  //   const popupButton = document.getElementById("popupBtn");
+  //   popupButton.addEventListener("click", () => {
+  //     console.log("clicked");
+  //     setDetailDialog(true);
+  //   })
+  // }, [])
   return (
     <div className="map-popup">
       <div className="map-popup-heading">
@@ -49,7 +58,7 @@ export default function MapMarkerPopup({ listing }) {
           See Detail
         </PrimaryButton>
       </div>
-      <DialogComponent
+      {/* <DialogComponent
         className="full-width-dialog"
         dialogState={detailDialog}
         closeDialog={() => setDetailDialog(false)}
@@ -58,7 +67,7 @@ export default function MapMarkerPopup({ listing }) {
         backdropClosable={false}
       >
         <div>detail dialog</div>
-      </DialogComponent>
+      </DialogComponent> */}
     </div>
   );
 }

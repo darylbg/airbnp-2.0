@@ -1,5 +1,8 @@
 import React, { useRef, useEffect, useState } from "react";
 import { renderToString } from "react-dom/server";
+import ReactDOM from "react-dom";
+import DialogComponent from "../PrimitiveComponents/DialogComponent/DialogComponent";
+import { createRoot } from "react-dom/client";
 import mapboxgl from "mapbox-gl";
 import MapMarkerPopup from "../MapMarkerPopup/MapMarkerPopup";
 import { mapStyleOptions } from "./mapStyleOptions"; // Adjust the path as necessary
@@ -15,6 +18,7 @@ export default function SearchMap({
 
   const [mapStyle, setMapStyle] = useState(mapStyleOptions[0]);
   const [popupOpen, setPopupOpen] = useState(null);
+  const [detailDialog, setDetailDialog] = useState(false);
 
   const mapContainer = useRef(null);
   const map = useRef(null);
@@ -60,15 +64,27 @@ export default function SearchMap({
         // Create a custom marker element
         const markerEl = document.createElement("div");
         markerEl.className = "map-marker"; // Ensure this class is styled in CSS
+        markerEl.id = "mapMarker";
 
-        // Render the custom popup component to an HTML string
-        const popupHTML = renderToString(<MapMarkerPopup listing={listing} />);
+        // Create a container for the React component
+        const popupContainer = document.createElement("div");
 
         // Create the popup
-        const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(popupHTML);
+        const popup = new mapboxgl.Popup({ offset: 25 }).setDOMContent(
+          popupContainer
+        );
 
         popup.on("open", () => {
           setPopupOpen(listing);
+          // Render the React component into the container using createRoot
+          createRoot(popupContainer).render(
+            <MapMarkerPopup
+              listing={listing}
+              openDetailDialog={openDetailDialog}
+              closeDetailDialog={closeDetailDialog}
+            />
+          );
+
         });
 
         popup.on("close", () => {
@@ -85,7 +101,7 @@ export default function SearchMap({
           setHoveredListing(listing)
         );
         markerEl.addEventListener("mouseleave", () => {
-            setHoveredListing(null);
+          setHoveredListing(null);
         });
 
         if (
@@ -102,6 +118,18 @@ export default function SearchMap({
 
   const handleMapStyles = (style) => {
     setMapStyle(style);
+  };
+
+  const openDetailDialog = (e) => {
+    e.preventDefault();
+    console.log("clicked", e);
+    setDetailDialog(true);
+  };
+
+  const closeDetailDialog = (e) => {
+    e.preventDefault();
+    console.log("clicked", e);
+    setDetailDialog(false);
   };
 
   return (
@@ -136,6 +164,16 @@ export default function SearchMap({
         </div>
       </div>
       <div ref={mapContainer} className="search-map-container" />
+      <DialogComponent
+        className="full-width-dialog"
+        dialogState={detailDialog}
+        closeDialog={closeDetailDialog}
+        icon="close"
+        // dialogHeader={listing.listing_title}
+        backdropClosable={false}
+      >
+        <div>detail dialog</div>
+      </DialogComponent>
     </div>
   );
 }
