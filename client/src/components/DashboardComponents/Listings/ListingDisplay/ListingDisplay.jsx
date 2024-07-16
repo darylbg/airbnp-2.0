@@ -56,7 +56,7 @@ export default function ListingDisplay({ props }) {
         </div>
         <div className="listing-body-actions">
           <PrimaryButton
-            className="edit-listing-button"
+            className="secondary-button"
             action={() => setEditListingDialog(true)}
           >
             Edit Listing

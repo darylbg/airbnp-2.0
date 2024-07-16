@@ -24,16 +24,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--black-100);
+    background-color: var(--black-12);
     border-radius: 10px;
-    border: 2px solid var(--black-25);
     height: 100%;
     box-sizing: border-box;
     aspect-ratio: 1.2/1;
   }
   
   .header-title .title-icon .material-symbols-outlined {
-    color: var(--white);
+    color: var(--white-12);
     padding: 5px 10px;
   }
   
@@ -46,7 +45,7 @@
   .header-title .title-text p,
   .header-content .title-text p {
     margin: 0;
-    color: var(--black-50);
+    color: var(--black-8);
     font-size: 0.8rem;
   }
 

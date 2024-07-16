@@ -27,7 +27,7 @@ export default function Bookings() {
       ></DashboardHeader>
       <div
         style={{
-          backgroundColor: "white",
+          // backgroundColor: "white",
           display: "flex",
           gap: "25px",
           padding: "25px",
@@ -41,7 +41,7 @@ export default function Bookings() {
 
       <div
         style={{
-          backgroundColor: "#e5e5e5",
+          // backgroundColor: "#e5e5e5",
           display: "flex",
           gap: "25px",
           padding: "25px",

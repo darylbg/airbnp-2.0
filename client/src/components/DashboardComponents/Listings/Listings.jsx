@@ -3,14 +3,12 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import * as Form from "@radix-ui/react-form";
 import { useForm } from "react-hook-form";
-
+import PrimaryButton from "../../PrimitiveComponents/PrimaryButton/PrimaryButton";
 import DashboardHeader from "../DashboardHeader/DashboardHeader";
 import NewListing from "./NewListing/NewListing";
 import DialogComponent from "../../PrimitiveComponents/DialogComponent/DialogComponent";
 import ListingDisplay from "./ListingDisplay/ListingDisplay";
 import "./Listings.css";
-import PrimaryButton from "../../PrimitiveComponents/PrimaryButton/PrimaryButton";
-
 export default function Listings() {
   const userListings = useSelector((state) => state.userListings.byId) || {};
   const [newListingDialog, setNewListingDialog] = useState(false);
@@ -37,7 +35,9 @@ export default function Listings() {
     const listingsArray = Object.values(userListings);
 
     const sortByDateAdded = () => {
-      const sortedArray = [...listingsArray].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      const sortedArray = [...listingsArray].sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      );
       setSortedUserListings(sortedArray);
     };
 
@@ -72,9 +72,9 @@ export default function Listings() {
         icon="list"
       >
         <div className="listing-header-button-group">
-          <button
-            className="filter-listings"
-            onClick={() => setFilterDialog(true)}
+          <PrimaryButton
+          className="control-button filter-listings-button"
+          action={() => setFilterDialog(true)}
           >
             <span className="text">
               {sortCriteria === "dateAdded"
@@ -84,14 +84,14 @@ export default function Listings() {
                 : "Sort"}
             </span>
             <span className="material-symbols-outlined">filter_list</span>
-          </button>
-          <button
-            className="new-listing"
-            onClick={() => setNewListingDialog(true)}
+          </PrimaryButton>
+          <PrimaryButton
+          className="action-button new-listing-button"
+          action={() => setNewListingDialog(true)}
           >
             <span className="text">New Listing</span>
             <span className="material-symbols-outlined">add</span>
-          </button>
+          </PrimaryButton>
         </div>
         <DialogComponent
           className="filter-dialog content-width-dialog"
@@ -140,7 +140,7 @@ export default function Listings() {
           dialogHeader="Add new listing"
           backdropClosable={false}
         >
-          <NewListing closeDialog={() => setNewListingDialog(false)}/>
+          <NewListing closeDialog={() => setNewListingDialog(false)} />
         </DialogComponent>
         <div className="title-text">
           <h3>{Object.keys(userListings).length}</h3>

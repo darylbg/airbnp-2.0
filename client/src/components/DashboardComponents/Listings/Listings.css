@@ -5,18 +5,10 @@
   gap: 1rem;
 }
 
-.filter-listings,
-.new-listing {
-  border: none;
-  border-radius: 5px;
-  display: flex;
+.filter-listings-button,
+.new-listing-button {
   justify-content: space-between;
-  align-items: center;
   gap: 10px;
-  box-shadow: var(--black-25) 0px 0px 5px;
-  height: 100%;
-  padding: 0 20px;
-  font-size: 1rem;
 }
 
 .new-listing {
@@ -29,22 +21,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.new-listing:hover {
-  cursor: pointer;
-  background-color: var(--pink-darker);
-}
-
-.filter-listings:hover {
-  cursor: pointer;
-  background-color: var(--white-darker);
-}
-
-.filter-listings {
-  background-color: var(--white);
-  color: var(--black-100);
-  display: flex;
 }
 
 /* mobile-listing-header-button-group */
@@ -91,10 +67,10 @@
 
 .user-listings-sort-field input[type="radio"] {
   appearance: none;
-  background-color: #fff;
+  background-color: var(--white-13);
   width: 25px;
   height: 25px;
-  border: 2px solid #ccc;
+  border: 2px solid var(--black-3);
   border-radius: 2px;
   display: inline-grid;
   place-content: center;
@@ -110,7 +86,7 @@
   height: 12px;
   transform: scale(0);
   transform-origin: bottom left;
-  background-color: #fff;
+  background-color: var(--white-13);
   clip-path: polygon(13% 50%, 34% 66%, 81% 2%, 100% 18%, 39% 100%, 0 71%);
 }
 
@@ -118,15 +94,15 @@
   transform: scale(1);
 }
 .user-listings-sort-field input[type="radio"]:checked {
-  background-color: #0075ff;
-  border: 2px solid #0075ff;
+  background-color: var(--blue-10);
+  border: 2px solid var(--blue-10);
 }
 
 /* style the link displayed when no user listings */
 .no-listings-link {
   width: fit-content;
   align-self: center;
-  color: var(--black-75);
+  color: var(--black-10);
   font-size: 1rem;
   top: 50%;
   position: absolute;
@@ -137,7 +113,7 @@
 /* user listings display */
 
 .listings-display {
-  background-color: var(--white);
+  background-color: var(--white-12);
   border-radius: 10px;
   padding: 1rem;
   display: flex;

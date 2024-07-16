@@ -1,7 +1,7 @@
 .dashboard {
   display: flex;
   flex-direction: row;
-  background-color: var(--white);
+  background-color: var(--white-13);
   flex: 1;
   height: calc(100vh - 58px);
   overflow: hidden;
@@ -14,7 +14,7 @@
   flex-direction: column;
   flex: 0.2;
   justify-content: space-between;
-  background-color: var(--white);
+  background-color: var(--white-13);
   padding: 50px 10px 50px 10px;
 }
 
@@ -26,7 +26,7 @@
 .dashboard-menu-title h2 {
   text-align: center;
   margin: 0;
-  color: var(--black-50);
+  color: var(--black-10);
 }
 
 .dashboard-menu-items {
@@ -44,7 +44,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: var(--white);
+  background-color: var(--white-13);
   border: none;
   width: 100%;
   padding: 8px 10px;
@@ -58,59 +58,58 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: var(--white);
+  background-color: var(--white-13);
   border: none;
-  padding: 10px 10px;
+  padding: 0.7rem;
   border-radius: 10px;
   border: 1px solid transparent;
   line-height: 100%;
   text-decoration: none;
 }
 
-.dashboard-menu-item button:hover {
-  cursor: pointer;
-  background-color: var(--black-10);
-}
-
 /* test */
 .dashboard-menu-item a:hover {
   cursor: pointer;
-  background-color: var(--black-10);
+  background-color: var(--black-2);
 }
 
 .dashboard-menu-item .active {
-  background: linear-gradient(var(--black-10), var(--black-10)) padding-box,
-    linear-gradient(to right, var(--pink), var(--black-25) 50%) border-box !important;
+  background: linear-gradient(var(--black-3), var(--black-3)) padding-box,
+    linear-gradient(to right, var(--ruby-10), var(--black-5) 50%) border-box !important;
   border-radius: 10px !important;
   border: 1px solid transparent !important;
 }
 
 .dashboard-menu-item .active .material-symbols-outlined {
-  color: var(--pink) !important;
+  color: var(--ruby-10) !important;
+}
+
+.dashboard-menu-item .active .text {
+  color: var(--black-12) !important;
 }
 
 .dashboard-menu-item button .material-symbols-outlined {
   margin-right: 20px;
-  color: var(--black-100);
+  color: var(--black-12);
   font-weight: 200px;
 }
 
 /* test */
 .dashboard-menu-item a .material-symbols-outlined {
   margin-right: 20px;
-  color: var(--black-100);
+  color: var(--black-12);
   font-weight: 200px;
 }
 
 .dashboard-menu-item button .text {
-  color: var(--black-100);
+  color: var(--black-12);
   font-weight: 400;
   font-size: 1rem;
 }
 
 /* test */
 .dashboard-menu-item a .text {
-  color: var(--black-100);
+  color: var(--black-12);
   font-weight: 400;
   font-size: 1rem;
 }
@@ -132,20 +131,20 @@
   object-position: center center;
   border-radius: 50%;
   margin: 10px;
-  outline: 1px solid blue;
+  outline: 1px solid var(--ruby-10);
   outline-offset: 2px;
 }
 
 .dashboard-menu-footer h3 {
   margin: 0;
-  color: var(--black-90);
+  color: var(--black-11);
   font-weight: 600;
 }
 
 .dashboard-menu-footer p {
   padding: 0;
   margin: 0;
-  color: var(--black-75);
+  color: var(--black-10);
   font-weight: 300;
 }
 
@@ -155,7 +154,7 @@
   display: flex;
   justify-content: space-between;
   padding: 10px;
-  background-color: var(--white);
+  background-color: var(--white-13);
   z-index: 99;
   align-items: center;
 }
@@ -188,20 +187,20 @@
 }
 
 .mobile-dashboard-menu button .material-symbols-outlined {
-  color: var(--black-100);
+  color: var(--black-12);
 }
 
 .mobile-dashboard-menu .menu-header h3 {
-  color: var(--black-50);
+  color: var(--black-8);
   margin: 0;
 }
 
 .mobile-dashboard-menu .menu-avatar {
   height: 30px;
   width: 30px;
-    border-radius: 10px;
-    outline: 1px solid blue;
-    outline-offset: 2px;
+  border-radius: 10px;
+  outline: 1px solid var(--ruby-10);
+  outline-offset: 2px;
 }
 
 /* dashboard content */
@@ -210,8 +209,8 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  background-color: var(--black-10);
-  border: 2px solid var(--black-10);
+  background-color: var(--black-2);
+  border: 2px solid var(--black-2);
   box-sizing: border-box;
   margin: 10px;
   border-radius: 10px;
@@ -224,9 +223,9 @@
 /* elements are located in listings.jsx */
 .dashboard-content-body {
   justify-content: center;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 @media screen and (min-width: 768px) {
