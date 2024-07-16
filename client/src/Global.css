@@ -1,16 +1,43 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
 
+/* radix ui colors */
+@import "@radix-ui/colors/gray.css";
+@import "@radix-ui/colors/ruby.css";
+@import "@radix-ui/colors/blue.css";
+@import "@radix-ui/colors/green.css";
+@import "@radix-ui/colors/red.css";
+@import "@radix-ui/colors/yellow.css";
 
-@import '@radix-ui/colors/gray.css';
-@import '@radix-ui/colors/blue.css';
-@import '@radix-ui/colors/green.css';
-@import '@radix-ui/colors/red.css';
-@import '@radix-ui/colors/gray-dark.css';
-@import '@radix-ui/colors/blue-dark.css';
-@import '@radix-ui/colors/green-dark.css';
-@import '@radix-ui/colors/red-dark.css';
-@import '@radix-ui/colors/mauve.css';
+/* custom black and white because radix ui is retarded and has every other color */
+:root {
+  /* black */
+  --black-12: #202020;
+  --black-11: #343434;
+  --black-10: #484848;
+  --black-9: #5c5c5c;
+  --black-8: #707070;
+  --black-7: #848484;
+  --black-6: #989898;
+  --black-5: #acacac;
+  --black-4: #c0c0c0;
+  --black-3: #d4d4d4;
+  --black-2: #e8e8e8;
+  --black-1: #fcfcfc;
 
+  /* white */
+  --white-12: #fcfcfc;
+  --white-11: #F0F0F0;
+  --white-10: #d4d4d4;
+  --white-9: #c0c0c0;
+  --white-8: #acacac;
+  --white-7: #989898;
+  --white-6: #848484;
+  --white-5: #707070;
+  --white-4: #5c5c5c;
+  --white-3: #484848;
+  --white-2: #343434;
+  --white-1: #202020;
+}
 /* base font size */
 html {
   font-size: 16px;
@@ -20,71 +47,6 @@ html {
   html {
     font-size: 14px;
   }
-}
-
-:root {
-  --transparent: rgb(0,0,0,0);
-
-  --navy-blue: #28355e;
-  --navy-blue-darker: #253154;
-
-  /* --blue-10: #D9E2FF; */
-
-  /* --blue: #4070ff;
-  --blue-darker: #3965f0; */
-
-  --cyan: #3cbbb9;
-  --cyan-darker: #38b1ab;
-
-  --olive: #d0e0ae;
-  --olive-darker: #c5d59c;
-
-  --yellow: #EFD476;
-
-  --gold: #ecc84b;
-  --gold-darker: #e3bc45;
-
-  --pink: #ff385c;
-  --pink-darker: #CC2D4A;
-
-  --black-100: #131313;
-  --black-100-darker: #101010;
-
-  --black-90: #2b2b2b;
-  --black-90-darker: #242424;
-
-  --black-75: #404040;
-  --black-75-darker: #3b3b3b;
-
-  --black-60: #7C7C7C;
-
-  --black-50: #7e7e7e;
-  --black-50-darker: #757575;
-
-  --black-25: #bbbbbb;
-  --black-25-darker: #b3b3b3;
-
-  --black-10: #e5e5e5;
-  --black-10-darker: #dddcdc;
-
-  --black-5: #f2f2f2;
-  --black-5-darker: #ededed;
-
-  --black-2: #fafafa;
-  --black-2-darker: #f5f5f5;
-
-  --black-1: rgb(0,0,0,0.1);
-
-  --white: #fff;
-  --white-darker: #f8f8f8;
-
-  --red: #ff0000;
-  --red-darker: #cc0000;
-
-  /* fonts */
-  --open-sans: "Open Sans", sans-serif;
-
-  --inter: "Inter", sans-serif;
 }
 
 * {
@@ -108,7 +70,6 @@ body {
 }
 
 /* general button styles */
-
 button {
   position: relative;
 }
@@ -121,76 +82,111 @@ button:disabled {
   cursor: auto !important;
 }
 
-/* edit buttons */
-.edit-button {
-  background-color: var(--white);
-  color: var(--black-100);
-  border: 1px solid var(--black-100);
+/* general primary button styles */
+.primary-button {
+  border: none;
+  padding: 0.7rem 1.4rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  font-weight: 400;
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 1000px) {
+  .primary-button {
+    padding: 0.5rem 1rem;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .primary-button {
+    padding: 0.4rem 0.8rem;
+    /* font-weight: 300; */
+  }
+}
+
+/* action button for MAIN ACTIONS/RESERVE/BOOKINGS */
+.action-button {
+  background-color: var(--ruby-10);
+  color: var(--white-12);
+}
+
+.action-button:hover {
+  background-color: var(--ruby-11);
+}
+
+.action-button:focus {
+  box-shadow: 0 0 0 2px #ffffff, 0 0 2px 5px var(--ruby-8);
+}
+
+.action-button:disabled {
+  background-color: var(--ruby-8);
+}
+
+/* primary button for MAIN CRUD OPERATIONS */
+ .main-button {
+  background-color: var(--black-11);
+  color: var(--white-12);
+}
+
+.main-button:hover {
+  background-color: var(--black-12);
+}
+
+.main-button:focus {
+  box-shadow: 0 0 0 2px #ffffff, 0 0 2px 5px var(--black-7);
+}
+
+.main-button:disabled {
+  background-color: var(--black-7);
+}
+
+/* control button TRIGGER/EXPAND/FILTERS */
+.control-button {
+  background-color: var(--white-12);
+  color: var(--black-12);
+  border: 1px solid var(--black-12);
   font-weight: 500;
 }
 
-.edit-button:hover {
-  background-color: var(--black-100);
-  color: var(--white);
-  border: 1px solid var(--black-100);
+.control-button:hover {
+  background-color: var(--black-2);
 }
 
-.edit-button:disabled {
-  background-color: var(--black-10);
-  color: var(--black-50);
-  border: 1px solid var(--black-10);
+.control-button:focus {
+  box-shadow: 0 0 0 2px #ffffff, 0 0 2px 5px var(--black-3);
 }
 
-/* save buttons */
-.save-button {
-  background-color: var(--blue-4);
-  color: var(--blue-11);
-  font-weight: 500;
+.control-button:disabled {
+  background-color: var(--white-11);
+  color: var(--black-9);
+  border: 1px solid var(--black-7);
 }
 
-.save-button:hover {
-  background-color: var(--blue-5);
+/* secondary-button EDIT/CANCEL/FILTERS */
+.secondary-button {
+  background-color: transparent;
+  color: var(--black-12);
+  font-weight: 550;
+  text-decoration: underline;
 }
 
-.save-button:focus {
-  box-shadow: 0 0 0 2px var(--blue-7);
+.secondary-button:hover {
+  background-color: var(--black-2);
 }
 
-.save-button:disabled {
-  background-color: var(--blue-3);
-  color: transparent;
+.secondary-button:focus {
+  background-color: var(--black-2);
+  box-shadow: 0 0 0 2px #ffffff, 0 0 2px 5px var(--black-2);
 }
 
-.delete-button {
-  background-color: var(--red-4);
-  color: var(--red-11);
-  font-weight: 500;
-}
-
-.delete-button:hover {
-  background-color: var(--red-5);
-}
-.delete-button:focus {
-  box-shadow: 0 0 0 2px var(--red-7);
-}
-
-/* cancel button */
-.cancel-button {
-  background-color: var(--mauve-4);
-  color: var(--mauve-11);
-  font-weight: 500;
-}
-
-.cancel-button:hover {
-  background-color: var(--mauve-5);
-}
-
-.cancel-button:focus {
-  box-shadow: 0 0 0 2px var(--mauve-7);
+.secondary-button:disabled {
+  background-color: transparent;
+  color: var(--black-10);
+  text-decoration: none;
 }
 
 /* media queries */
-
 @media screen and (min-width: 768px) {
   .app-pages {
     padding-top: 58px;
