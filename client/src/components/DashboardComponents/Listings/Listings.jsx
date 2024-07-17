@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import * as Form from "@radix-ui/react-form";
 import { useForm } from "react-hook-form";
-import PrimaryButton from "../../PrimitiveComponents/PrimaryButton/PrimaryButton";
+import PrimaryButton from "../../PrimitiveComponents/ButtonComponent/ButtonComponent";
 import DashboardHeader from "../DashboardHeader/DashboardHeader";
 import NewListing from "./NewListing/NewListing";
 import DialogComponent from "../../PrimitiveComponents/DialogComponent/DialogComponent";
@@ -73,7 +73,7 @@ export default function Listings() {
       >
         <div className="listing-header-button-group">
           <PrimaryButton
-          className="control-button filter-listings-button"
+          className="default-button filter-listings-button"
           action={() => setFilterDialog(true)}
           >
             <span className="text">
@@ -86,7 +86,7 @@ export default function Listings() {
             <span className="material-symbols-outlined">filter_list</span>
           </PrimaryButton>
           <PrimaryButton
-          className="action-button new-listing-button"
+          className="default-button action-button new-listing-button"
           action={() => setNewListingDialog(true)}
           >
             <span className="text">New Listing</span>
@@ -128,7 +128,8 @@ export default function Listings() {
               <Form.Label>Availability</Form.Label>
             </Form.Field>
             <Form.Submit asChild>
-              <PrimaryButton>Update listings</PrimaryButton>
+              <PrimaryButton
+              className="default-button ">Update listings</PrimaryButton>
             </Form.Submit>
           </Form.Root>
         </DialogComponent>

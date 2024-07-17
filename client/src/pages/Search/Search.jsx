@@ -47,7 +47,7 @@ export default function Search() {
     }
   }, [allListingEntities]);
 
-  if (loading) return <p>Loading...</p>;
+  // if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :</p>;
 
   return (
@@ -77,11 +77,16 @@ export default function Search() {
         </div>
       </div>
       <div className="search-map">
-        <SearchMap
-          listings={listings}
-          setHoveredListing={setHoveredListing}
-          hoveredListing={hoveredListing}
-        />
+        {loading ? (
+          <p>Loading locations...</p>
+        ) : (
+          <SearchMap
+            listings={listings}
+            setHoveredListing={setHoveredListing}
+            hoveredListing={hoveredListing}
+            mapLoading={loading}
+          />
+        )}
       </div>
     </div>
   );

@@ -15,7 +15,7 @@
 .section-heading {
   font-size: 5cqw;
   font-weight: 750;
-  color: var(--black-90);
+  color: var(--black-10);
   margin: 0 0 5% 0;
 }
 
@@ -55,20 +55,20 @@
 .hero-content .hero-content-text .title p {
   font-size: 10cqw;
   font-weight: 750;
-  color: var(--black-90);
+  color: var(--black-11);
   margin: 0;
 }
 
 .hero-content-text .text .subtitle-1 {
   font-size: 1rem;
   font-weight: bold;
-  color: var(--black-50);
+  color: var(--black-8);
   margin: 0;
 }
 .hero-content-text .text .subtitle-2 {
   font-size: 1.2rem;
   font-weight: 600;
-  color: var(--black-100);
+  color: var(--black-12);
   margin: 0;
 }
 
@@ -88,20 +88,11 @@
   width: 100%;
   border-radius: 50px;
   padding: 18px 30px;
-  border: 1px solid var(--black-25);
+  border: 1px solid var(--black-6);
   flex: 1;
   font-size: 1.4rem;
   font-weight: 700;
-  color: var(--black-75);
-}
-
-.hero-search-form-button {
-  background-color: var(--pink);
-  color: var(--white);
-}
-
-.hero-search-form-button:hover {
-  background-color: var(--pink-darker);
+  color: var(--black-11);
 }
 
 .hero-content .hero-content-img {
@@ -137,9 +128,9 @@
 }
 
 .hero-ticker .tick {
-  border-top: 1px solid var(--black-25);
-  border-right: 1px solid var(--black-25);
-  border-bottom: 1px solid var(--black-25);
+  border-top: 1px solid var(--black-2);
+  border-right: 1px solid var(--black-2);
+  border-bottom: 1px solid var(--black-2);
   width: 12.5%;
   display: flex;
   justify-content: center;
@@ -154,7 +145,7 @@
 /* how it works steps */
 
 .home-steps-section {
-  background-color: var(--black-5);
+  background-color: var(--black-2);
   flex-direction: column;
   padding: 5% 2%;
 }
@@ -180,7 +171,7 @@
 .step-img {
   height: 200px;
   width: 200px;
-  background-color: var(--yellow);
+  background-color: rgb(245, 245, 178);
   border-radius: 50%;
   position: relative;
   align-self: flex-start;
@@ -190,8 +181,8 @@
   position: absolute;
   bottom: 0;
   left: 0;
-  background-color: var(--black-100);
-  color: var(--white);
+  background-color: var(--black-12);
+  color: var(--white-11);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -205,7 +196,7 @@
 /* book now section */
 
 .home-book-now-section {
-  background-color: var(--blue);
+  background-color: var(--blue-9);
   position: relative;
   overflow: hidden;
   padding: 5% 2%;
@@ -216,11 +207,11 @@
 }
 
 .home-book-now-section .section-heading {
-  color: var(--white);
+  color: var(--white-12);
 }
 
 .home-book-now-section .background-pattern {
-  background-color: var(--cyan);
+  background-color: cyan;
   position: absolute;
   top: 0;
   right: 0;
@@ -245,7 +236,7 @@
 }
 
 .home-book-now-section .section-subheading {
-  color: var(--white);
+  color: var(--white-11);
   font-size: 1.2rem;
 }
 
@@ -268,8 +259,8 @@
   display: flex;
   align-items: center;
   width: 100%;
-  background-color: var(--white);
-  border-top: 1px solid var(--black-50);
+  background-color: var(--white-12);
+  border-top: 1px solid var(--black-5);
   border-bottom: none;
   border-left: none;
   border-right: none;
@@ -281,7 +272,7 @@
 .AccordionTrigger span {
   font-size: 2rem;
   font-weight: 600;
-  color: var(--black-75);
+  color: var(--black-10);
 }
 
 .AccordionTrigger[data-state='open'] > .accordion-icon {

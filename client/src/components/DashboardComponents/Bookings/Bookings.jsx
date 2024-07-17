@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import DashboardHeader from "../DashboardHeader/DashboardHeader";
 import AddressSearch from "../../AddressSearch/AddressSearch";
-import PrimaryButton from "../../PrimitiveComponents/PrimaryButton/PrimaryButton";
+import PrimaryButton from "../../PrimitiveComponents/ButtonComponent/ButtonComponent";
 import "./Bookings.css";
 import DialogComponent from "../../PrimitiveComponents/DialogComponent/DialogComponent";
 
@@ -27,21 +27,22 @@ export default function Bookings() {
       ></DashboardHeader>
       <div
         style={{
-          // backgroundColor: "white",
+          backgroundColor: "white",
           display: "flex",
           gap: "25px",
           padding: "25px",
         }}
       >
-        <PrimaryButton loading={false} className="action-button">action</PrimaryButton>
-        <PrimaryButton loading={false} className="main-button">main</PrimaryButton>
-        <PrimaryButton loading={false} className="control-button">control</PrimaryButton>
-        <PrimaryButton loading={false} className="secondary-button">secondary</PrimaryButton>
+        <PrimaryButton loading={false} className="default-button action-button">action</PrimaryButton>
+        <PrimaryButton loading={false} className="default-button main-button">main</PrimaryButton>
+        <PrimaryButton loading={false} className="default-button secondary-button">secondary</PrimaryButton>
+        <PrimaryButton loading={false} className="default-button control-button">control</PrimaryButton>
+        <PrimaryButton loading={false} className="default-button delete-button">delete</PrimaryButton>
       </div>
 
       <div
         style={{
-          // backgroundColor: "#e5e5e5",
+          backgroundColor: "white",
           display: "flex",
           gap: "25px",
           padding: "25px",
@@ -49,8 +50,9 @@ export default function Bookings() {
       >
         <PrimaryButton loading={true} className="action-button">action</PrimaryButton>
         <PrimaryButton loading={true} className="main-button">main</PrimaryButton>
-        <PrimaryButton loading={true} className="control-button">control</PrimaryButton>
         <PrimaryButton loading={true} className="secondary-button">secondary</PrimaryButton>
+        <PrimaryButton loading={true} className="control-button">control</PrimaryButton>
+        <PrimaryButton loading={false} className="delete-button">delete</PrimaryButton>
       </div>
     </>
   );

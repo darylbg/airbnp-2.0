@@ -9,7 +9,7 @@
 
 .dashboard-menu {
   display: flex;
-  min-width: 150px;
+  min-width: 180px;
   max-width: 250px;
   flex-direction: column;
   flex: 0.2;
@@ -110,7 +110,7 @@
 /* test */
 .dashboard-menu-item a .text {
   color: var(--black-12);
-  font-weight: 400;
+  font-weight: 500;
   font-size: 1rem;
 }
 
@@ -218,6 +218,7 @@
   gap: 2rem;
   position: relative;
   overflow-y: auto;
+  box-shadow: inset rgba(100, 100, 111, 0.1) 0px 1px 20px 0px;
 }
 
 /* elements are located in listings.jsx */

@@ -3,7 +3,7 @@ import Switch from "react-switch";
 import { useMutation } from "@apollo/client";
 import { EDIT_LISTING_MUTATION } from "../../../../utils/mutations";
 import { updateListing } from "../../../../reducers/userListingsReducer";
-import PrimaryButton from "../../../PrimitiveComponents/PrimaryButton/PrimaryButton";
+import PrimaryButton from "../../../PrimitiveComponents/ButtonComponent/ButtonComponent";
 import CrudListing from "../EditListing/EditListing";
 import "./ListingDisplay.css";
 import DialogComponent from "../../../PrimitiveComponents/DialogComponent/DialogComponent";
@@ -56,8 +56,9 @@ export default function ListingDisplay({ props }) {
         </div>
         <div className="listing-body-actions">
           <PrimaryButton
-            className="secondary-button"
+            className="default-button secondary-button listing-edit-button"
             action={() => setEditListingDialog(true)}
+            type="button"
           >
             Edit Listing
           </PrimaryButton>

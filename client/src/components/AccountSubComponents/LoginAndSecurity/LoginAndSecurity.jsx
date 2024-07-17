@@ -4,7 +4,7 @@ import * as Form from "@radix-ui/react-form";
 import ToastComponent from "../../PrimitiveComponents/ToastComponent/ToastComponent";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import PrimaryButton from "../../PrimitiveComponents/PrimaryButton/PrimaryButton";
+import PrimaryButton from "../../PrimitiveComponents/ButtonComponent/ButtonComponent";
 import PasswordVisibilityToggle from "../../PrimitiveComponents/PasswordVisibilityToggle/PasswordVisibilityToggle";
 import Spinner from "../../PrimitiveComponents/Spinner/Spinner";
 import "../PersonalInfo/PersonalInfo.css";
@@ -88,12 +88,12 @@ export default function LoginAndSecurity() {
             <PrimaryButton
               action={handlePasswordEditEnable}
               loading={loading}
-              className="edit-button"
+              className="default-button edit-button"
             >
               Change
             </PrimaryButton>
           ) : (
-            <PrimaryButton action={cancelPasswordEdit} loading={loading}>
+            <PrimaryButton className="default-button " action={cancelPasswordEdit} loading={loading}>
               Cancel
             </PrimaryButton>
           )}
@@ -158,7 +158,7 @@ export default function LoginAndSecurity() {
               </Form.Field>
               <Form.Field className="edit-personal-info-field">
                 <Form.Submit asChild>
-                  <PrimaryButton className="save-button" loading={loading}>
+                  <PrimaryButton className="default-button save-button" loading={loading}>
                     Save
                     {saving? <Spinner /> : null}
                   </PrimaryButton>

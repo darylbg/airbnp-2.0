@@ -5,7 +5,6 @@ import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import * as Dialog from "@radix-ui/react-dialog";
 import { HamburgerMenuIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import authService from "../../utils/auth";
-
 import SignInForm from "../SignInForm/SignInForm";
 import RegisterForm from "../RegisterForm/RegisterForm";
 import DialogComponent from "../PrimitiveComponents/DialogComponent/DialogComponent";

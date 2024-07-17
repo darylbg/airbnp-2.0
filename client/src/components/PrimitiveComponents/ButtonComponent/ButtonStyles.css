@@ -1,0 +1,146 @@
+/* general button styles */
+button {
+  position: relative;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: auto !important;
+}
+
+/* general primary button styles */
+.default-button {
+  border: none;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  font-weight: 400;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.large-rounded-button {
+  padding: 18px 30px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 50px;
+  width: -moz-fit-content;
+  width: fit-content;
+  font-family: var(--inter);
+}
+
+@media screen and (max-width: 1000px) {
+  .default-button {
+    /* padding: 0.5rem 1rem; */
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .default-button {
+    padding: 0.4rem 0.8rem;
+    /* font-weight: 300; */
+  }
+}
+
+/* action button for MAIN ACTIONS/RESERVE/BOOKINGS */
+.action-button {
+  background-color: var(--ruby-10);
+  color: var(--white-12);
+}
+
+.action-button:hover {
+  background-color: var(--ruby-11);
+}
+
+.action-button:focus {
+  box-shadow: 0 0 0 2px #ffffff, 0 0 2px 5px var(--ruby-8);
+}
+
+.action-button:disabled {
+  background-color: var(--ruby-8);
+}
+
+/* primary button for MAIN CRUD OPERATIONS */
+.main-button {
+  background-color: var(--black-11);
+  color: var(--white-12);
+}
+
+.main-button:hover {
+  background-color: var(--black-12);
+}
+
+.main-button:focus {
+  box-shadow: 0 0 0 2px #ffffff, 0 0 2px 5px var(--black-7);
+}
+
+.main-button:disabled {
+  background-color: var(--black-7);
+}
+
+/* secondary-button EDIT/CANCEL/FILTERS */
+.secondary-button {
+  background-color: var(--black-2);
+  color: var(--black-12);
+  font-weight: 500;
+}
+
+.secondary-button:hover {
+  background-color: var(--black-3);
+}
+
+.secondary-button:focus {
+  box-shadow: 0 0 0 2px #ffffff, 0 0 2px 5px var(--black-2);
+}
+
+.secondary-button:disabled {
+  background-color: var(--black-2);
+  color: var(--black-8);
+}
+
+/* control button TRIGGER/EXPAND/FILTERS */
+.control-button {
+  background-color: transparent;
+  color: var(--black-12);
+  font-weight: 550;
+  text-decoration: underline;
+}
+
+.control-button:hover {
+  background-color: var(--black-2);
+}
+
+.control-button:focus {
+  background-color: var(--black-2);
+  box-shadow: 0 0 0 2px #ffffff, 0 0 2px 5px var(--black-2);
+}
+
+.control-button:disabled {
+  background-color: transparent;
+  color: var(--black-8);
+  text-decoration: none;
+}
+
+/* delete button DELETIONS */
+.delete-button {
+  background-color: var(--red-10);
+  color: var(--white-12);
+}
+
+.delete-button:hover {
+  background-color: var(--red-11);
+}
+
+.delete-button:focus {
+  box-shadow: 0 0 0 2px #ffffff, 0 0 2px 5px var(--black-7);
+}
+
+.delete-button:disabled {
+  background-color: var(--black-7);
+}

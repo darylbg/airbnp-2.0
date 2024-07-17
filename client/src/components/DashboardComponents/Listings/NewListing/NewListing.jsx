@@ -14,7 +14,7 @@ import { addToAllListings } from "../../../../reducers/allListingsReducer";
 import "./NewListing.css";
 
 import { useConfirmAddress } from "@mapbox/search-js-react";
-import PrimaryButton from "../../../PrimitiveComponents/PrimaryButton/PrimaryButton";
+import PrimaryButton from "../../../PrimitiveComponents/ButtonComponent/ButtonComponent";
 import Spinner from "../../../PrimitiveComponents/Spinner/Spinner";
 import { setAllListings } from "../../../../reducers/allListingsReducer";
 
@@ -261,7 +261,7 @@ export default function NewListing({ closeDialog }) {
         <Form.Field className="new-listing-form-field" name="availability">
           <Form.Submit asChild>
             <PrimaryButton
-              className="save-button"
+              className="default-button save-button"
               type="submit"
               loading={loading}
             >

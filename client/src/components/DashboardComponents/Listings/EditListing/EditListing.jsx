@@ -17,7 +17,7 @@ import { updateUserDetails } from "../../../../reducers/userDetailsReducer";
 import AddressSearch from "../../../AddressSearch/AddressSearch";
 import toast from "react-hot-toast";
 import ToastComponent from "../../../PrimitiveComponents/ToastComponent/ToastComponent";
-import PrimaryButton from "../../../PrimitiveComponents/PrimaryButton/PrimaryButton";
+import PrimaryButton from "../../../PrimitiveComponents/ButtonComponent/ButtonComponent";
 import "./EditListing.css";
 import Spinner from "../../../PrimitiveComponents/Spinner/Spinner";
 import WindowControlButton from "../../../PrimitiveComponents/WindowControlButton/WindowControlButton";
@@ -310,7 +310,7 @@ export default function EditListing({
         </Form.Field>
         <div className="edit-listing-button-group">
           <PrimaryButton
-            className="delete-button"
+            className="default-button delete-button"
             type="button"
             action={() => {
               setDeleteListingDialog(true);
@@ -322,7 +322,7 @@ export default function EditListing({
           <Form.Field className="new-listing-form-field" name="availability">
             <Form.Submit asChild>
               <PrimaryButton
-                className="save-button"
+                className="default-button save-button"
                 type="submit"
                 loading={loading}
               >
@@ -346,12 +346,12 @@ export default function EditListing({
           <PrimaryButton
             type="button"
             action={() => setCancelEditDialog(false)}
-            className="cancel-button"
+            className="default-button cancel-button"
           >
             Continue editing
           </PrimaryButton>
           <PrimaryButton
-            className="delete-button"
+            className="default-button delete-button"
             type="button"
             action={handleCancelEdit}
           >
@@ -372,12 +372,12 @@ export default function EditListing({
           <PrimaryButton
             type="button"
             action={() => setDeleteListingDialog(false)}
-            className="cancel-button"
+            className="default-button cancel-button"
           >
             Cancel
           </PrimaryButton>
           <PrimaryButton
-            className="delete-button"
+            className="default-button delete-button"
             type="button"
             action={handleDeleteListing}
           >

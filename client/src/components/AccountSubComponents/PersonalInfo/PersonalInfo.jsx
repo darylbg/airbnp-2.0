@@ -7,7 +7,7 @@ import { ApolloError, useMutation } from "@apollo/client";
 import { UPDATE_USER_MUTATION } from "../../../utils/mutations/userMutations";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserDetails } from "../../../reducers/userDetailsReducer";
-import PrimaryButton from "../../PrimitiveComponents/PrimaryButton/PrimaryButton";
+import PrimaryButton from "../../PrimitiveComponents/ButtonComponent/ButtonComponent";
 import Spinner from "../../PrimitiveComponents/Spinner/Spinner";
 import "./PersonalInfo.css";
 
@@ -113,12 +113,12 @@ export default function PersonalInfo() {
             <PrimaryButton
               action={handleEditEnable}
               loading={loading}
-              className="edit-button"
+              className="default-button edit-button"
             >
               Edit
             </PrimaryButton>
           ) : (
-            <PrimaryButton action={cancelPersonalInfoEdit} loading={loading}>
+            <PrimaryButton className="default-button " action={cancelPersonalInfoEdit} loading={loading}>
               Cancel
             </PrimaryButton>
           )}
@@ -190,7 +190,7 @@ export default function PersonalInfo() {
           <Form.Field className="edit-personal-info-field">
             <Form.Submit asChild>
               {editable && (
-                <PrimaryButton loading={loading} className="save-button">
+                <PrimaryButton loading={loading} className="default-button save-button">
                   Save
                   {personalInfoEditSaving ? <Spinner /> : null}
                 </PrimaryButton>

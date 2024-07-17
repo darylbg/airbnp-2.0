@@ -1,7 +1,7 @@
 import React from "react";
-import "./PrimaryButton.css";
+import "./ButtonStyles.css";
 
-export default function PrimaryButton({
+export default function ButtonComponent({
   className,
   children,
   action,
@@ -11,7 +11,7 @@ export default function PrimaryButton({
   return (
     <button
       type={`${type}`}
-      className={`primary-button ${className}`}
+      className={` ${className}`}
       onClick={action}
       disabled={loading}
     >
