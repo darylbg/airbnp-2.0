@@ -10,6 +10,7 @@ import {
   setAllListings,
   clearRefetchFlag,
 } from "../../reducers/allListingsReducer";
+import ButtonComponent from "../../components/PrimitiveComponents/ButtonComponent/ButtonComponent";
 
 export default function Search() {
   const dispatch = useDispatch();
@@ -53,16 +54,18 @@ export default function Search() {
   return (
     <div className="search-page">
       <div className="search-listings">
-        <div className="search-listings-input">
-          <Form.Root>
-            <Form.Field>
-              <Form.Control placeholder="search address or city"></Form.Control>
-            </Form.Field>
-          </Form.Root>
-        </div>
-        <div className="search-listings-filter">
-          <p className="text">10,000+ locations near you</p>
-          <button>Filter</button>
+        <div className="search-listing-header">
+          <div className="search-listings-input">
+            <Form.Root>
+              <Form.Field>
+                <Form.Control placeholder="search address or city"></Form.Control>
+              </Form.Field>
+            </Form.Root>
+          </div>
+          <div className="search-listings-filter">
+            <p className="text">10,000+ locations near you</p>
+            <ButtonComponent className="default-button control-button">Filter</ButtonComponent>
+          </div>
         </div>
         <div className="search-listings-display">
           {listings &&

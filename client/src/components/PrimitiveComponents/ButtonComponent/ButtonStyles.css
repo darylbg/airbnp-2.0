@@ -67,20 +67,20 @@ button:disabled {
 }
 
 /* primary button for MAIN CRUD OPERATIONS */
-.main-button {
+.primary-button {
   background-color: var(--black-11);
   color: var(--white-12);
 }
 
-.main-button:hover {
+.primary-button:hover {
   background-color: var(--black-12);
 }
 
-.main-button:focus {
+.primary-button:focus {
   box-shadow: 0 0 0 2px #ffffff, 0 0 2px 5px var(--black-7);
 }
 
-.main-button:disabled {
+.primary-button:disabled {
   background-color: var(--black-7);
 }
 
@@ -142,5 +142,5 @@ button:disabled {
 }
 
 .delete-button:disabled {
-  background-color: var(--black-7);
+  background-color: var(--red-7);
 }

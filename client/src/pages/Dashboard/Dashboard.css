@@ -9,7 +9,7 @@
 
 .dashboard-menu {
   display: flex;
-  min-width: 180px;
+  min-width: 200px;
   max-width: 250px;
   flex-direction: column;
   flex: 0.2;

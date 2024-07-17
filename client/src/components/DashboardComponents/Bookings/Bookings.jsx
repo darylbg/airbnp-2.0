@@ -48,11 +48,11 @@ export default function Bookings() {
           padding: "25px",
         }}
       >
-        <PrimaryButton loading={true} className="action-button">action</PrimaryButton>
-        <PrimaryButton loading={true} className="main-button">main</PrimaryButton>
-        <PrimaryButton loading={true} className="secondary-button">secondary</PrimaryButton>
-        <PrimaryButton loading={true} className="control-button">control</PrimaryButton>
-        <PrimaryButton loading={false} className="delete-button">delete</PrimaryButton>
+        <PrimaryButton loading={true} className="default-button action-button">action</PrimaryButton>
+        <PrimaryButton loading={true} className="default-button main-button">main</PrimaryButton>
+        <PrimaryButton loading={true} className="default-button secondary-button">secondary</PrimaryButton>
+        <PrimaryButton loading={true} className="default-button control-button">control</PrimaryButton>
+        <PrimaryButton loading={true} className="default-button delete-button">delete</PrimaryButton>
       </div>
     </>
   );

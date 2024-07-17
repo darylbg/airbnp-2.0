@@ -70,6 +70,23 @@ body {
   overflow-x: hidden;
 }
 
+/* custom scrollbar styling */
+.scrollbar-1::-webkit-scrollbar {
+  width: 5px;
+}
+
+.scrollbar-1::-webkit-scrollbar-track {
+  border-radius: 10px;
+  margin: 10px 0 0 0;
+  background-color: var(--transparent);
+}
+
+.scrollbar-1::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: var(--black-50);
+}
+
+
 /* media queries */
 @media screen and (min-width: 768px) {
   .app-pages {
