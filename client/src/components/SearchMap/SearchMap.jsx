@@ -1,18 +1,20 @@
 import React, { useRef, useEffect, useState } from "react";
-import { renderToString } from "react-dom/server";
-import ReactDOM from "react-dom";
 import DialogComponent from "../PrimitiveComponents/DialogComponent/DialogComponent";
 import { createRoot } from "react-dom/client";
 import mapboxgl from "mapbox-gl";
+import ButtonComponent from "../PrimitiveComponents/ButtonComponent/ButtonComponent";
+import { selectedListing, resetBooking } from "../../reducers/bookingReducer";
 import MapMarkerPopup from "../MapMarkerPopup/MapMarkerPopup";
 import { mapStyleOptions } from "./mapStyleOptions"; // Adjust the path as necessary
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./SearchMap.css";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function SearchMap({
   listings,
   hoveredListing,
   setHoveredListing,
+  mapCenterCoordinates,
 }) {
   mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 
@@ -22,16 +24,24 @@ export default function SearchMap({
 
   const mapContainer = useRef(null);
   const map = useRef(null);
-  const [lng, setLng] = useState(0.1276);
-  const [lat, setLat] = useState(51.5072);
+  const markerPopups = useRef({});
+  const dispatch = useDispatch();
+
   const [zoom, setZoom] = useState(9);
+
+  const selectedListingId = useSelector(
+    (state) => state.bookingCycle.booking.selectedListing?.id
+  );
+  const selectedListingU = useSelector(
+    (state) => state.bookingCycle.booking.selectedListing
+  );
 
   useEffect(() => {
     if (map.current) return;
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: mapStyle.option,
-      center: [lng, lat],
+      center: [mapCenterCoordinates.lng, mapCenterCoordinates.lat],
       zoom: zoom,
     });
 
@@ -42,7 +52,17 @@ export default function SearchMap({
           .addTo(map.current);
       });
     }
-  }, []);
+  }, [listings, mapCenterCoordinates]);
+
+  useEffect(() => {
+    if (map.current) {
+      map.current.easeTo({
+        center: [mapCenterCoordinates.lng, mapCenterCoordinates.lat],
+        zoom: 10,
+        essential: true, // this animation is considered essential with respect to prefers-reduced-motion
+      });
+    }
+  }, [mapCenterCoordinates]);
 
   useEffect(() => {
     if (map.current) {
@@ -50,7 +70,6 @@ export default function SearchMap({
     }
   }, [mapStyle]);
 
-  // Update markers based on listings
   useEffect(() => {
     if (map.current && listings) {
       // Clear existing markers
@@ -63,8 +82,8 @@ export default function SearchMap({
       listings.forEach((listing) => {
         // Create a custom marker element
         const markerEl = document.createElement("div");
-        markerEl.className = "map-marker"; // Ensure this class is styled in CSS
-        markerEl.id = "mapMarker";
+        markerEl.className = "map-marker";
+        markerEl.id = `marker-${listing.id}`;
 
         // Create a container for the React component
         const popupContainer = document.createElement("div");
@@ -76,6 +95,7 @@ export default function SearchMap({
 
         popup.on("open", () => {
           setPopupOpen(listing);
+          dispatch(selectedListing(listing));
           // Render the React component into the container using createRoot
           createRoot(popupContainer).render(
             <MapMarkerPopup
@@ -84,37 +104,62 @@ export default function SearchMap({
               closeDetailDialog={closeDetailDialog}
             />
           );
-
         });
 
         popup.on("close", () => {
           setPopupOpen(null);
+          dispatch(resetBooking());
         });
 
         // Create and add the marker MapMarkerPopup
-        new mapboxgl.Marker(markerEl)
+        const marker = new mapboxgl.Marker(markerEl)
           .setLngLat([listing.longitude, listing.latitude])
           .setPopup(popup)
           .addTo(map.current);
 
+        // Store popup reference for programmatic control
+        markerPopups.current[listing.id] = popup;
+
         markerEl.addEventListener("mouseenter", () =>
           setHoveredListing(listing)
         );
-        markerEl.addEventListener("mouseleave", () => {
-          setHoveredListing(null);
-        });
-
-        if (
-          (hoveredListing && hoveredListing.id === listing.id) ||
-          (popupOpen && popupOpen.id === listing.id)
-        ) {
-          markerEl.style.backgroundColor = "red"; // Example hover style
-        } else {
-          markerEl.style.backgroundColor = ""; // Reset style
-        }
+        markerEl.addEventListener("mouseleave", () => setHoveredListing(null));
       });
     }
-  }, [listings, hoveredListing, popupOpen]);
+  }, [listings]);
+
+  // sync hover with map makers and side listings
+  useEffect(() => {
+    listings &&
+      listings.forEach((listing) => {
+        const markerEl = document.getElementById(`marker-${listing.id}`);
+        if (markerEl) {
+          if (
+            (hoveredListing && hoveredListing.id === listing.id) ||
+            (popupOpen && popupOpen.id === listing.id)
+          ) {
+            markerEl.style.backgroundColor = "red"; // Example hover style
+          } else {
+            markerEl.style.backgroundColor = ""; // Reset style
+          }
+        }
+      });
+  }, [hoveredListing]);
+
+  useEffect(() => {
+    // remove all existing popups so only one appears at a time
+    const popups = document.getElementsByClassName("mapboxgl-popup");
+    if (popups.length) {
+      dispatch(resetBooking());
+      popups[0].remove();
+    }
+
+    const popup = markerPopups.current[selectedListingId];
+    if (popup) {
+      popup.addTo(map.current);
+      setPopupOpen({ id: selectedListingId });
+    }
+  }, [selectedListingId]);
 
   const handleMapStyles = (style) => {
     setMapStyle(style);
@@ -122,18 +167,19 @@ export default function SearchMap({
 
   const openDetailDialog = (e) => {
     e.preventDefault();
-    console.log("clicked", e);
     setDetailDialog(true);
   };
 
   const closeDetailDialog = (e) => {
     e.preventDefault();
-    console.log("clicked", e);
     setDetailDialog(false);
   };
 
   return (
     <div className="search-map-wrapper">
+      <ButtonComponent type="button" className="search-this-area-button">
+        Search this area
+      </ButtonComponent>
       <div className="map-styles">
         <div className="map-styles-trigger">
           <div className="map-style">
@@ -163,14 +209,17 @@ export default function SearchMap({
           ))}
         </div>
       </div>
+      <ButtonComponent className="locate-me-button">
+        <span class="material-symbols-outlined">location_searching</span>
+      </ButtonComponent>
       <div ref={mapContainer} className="search-map-container" />
       <DialogComponent
         className="full-width-dialog"
         dialogState={detailDialog}
         closeDialog={closeDetailDialog}
         icon="close"
-        // dialogHeader={listing.listing_title}
         backdropClosable={false}
+        dialogHeader={`Details: ${selectedListingU?.listing_title}`}
       >
         <div>detail dialog</div>
       </DialogComponent>

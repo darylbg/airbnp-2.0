@@ -9,6 +9,25 @@
   width: 100%;
 }
 
+.search-this-area-button {
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 1;
+  background-color: var(--white-13);
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 3px 20px 0px;
+}
+
+.search-this-area-button:hover {
+  box-shadow: rgba(100, 100, 111, 0.3) 0px 3px 20px 0px;
+}
+
 .map-styles {
   display: flex;
   flex-direction: column;
@@ -130,4 +149,29 @@
 
 .map-marker:hover {
   background-color: red;
+}
+
+/* locate me button */
+.locate-me-button {
+  background-color: var(--white-13);
+  padding: 0.75rem;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 1rem;
+  right: 1rem;
+  position: absolute;
+  z-index: 1;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 3px 20px 0px;
+}
+
+.locate-me-button:hover {
+  box-shadow: rgba(100, 100, 111, 0.3) 0px 3px 20px 0px;
+}
+
+.locate-me-button .material-symbols-outlined {
+  font-size:1.2rem;
+  font-weight: 500;
 }

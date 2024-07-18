@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_ALL_LISTINGS } from "../../utils/queries";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +16,11 @@ export default function Search() {
   const dispatch = useDispatch();
   const [listings, setListings] = useState(null);
   const [hoveredListing, setHoveredListing] = useState(null);
+  const [mapCenterCoordinates, setMapCenterCoordinates] = useState({
+    lat: 52.54851,
+    lng: -1.9801
+  });
+
   const { error, loading, data, refetch } = useQuery(GET_ALL_LISTINGS);
   const allListingEntities = useSelector(
     (state) => state.allListings.defaultListings.entities
@@ -48,6 +53,10 @@ export default function Search() {
     }
   }, [allListingEntities]);
 
+  const centerMapOnListing = (listing) => {
+    setMapCenterCoordinates({lat: listing.latitude, lng: listing.longitude});
+  }
+
   // if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :</p>;
 
@@ -75,6 +84,7 @@ export default function Search() {
                 listing={listing}
                 setHoveredListing={setHoveredListing}
                 hoveredListing={hoveredListing}
+                centerMapOnListing={centerMapOnListing}
               />
             ))}
         </div>
@@ -88,6 +98,7 @@ export default function Search() {
             setHoveredListing={setHoveredListing}
             hoveredListing={hoveredListing}
             mapLoading={loading}
+            mapCenterCoordinates={mapCenterCoordinates}
           />
         )}
       </div>

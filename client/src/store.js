@@ -8,6 +8,7 @@ import authReducer from "./reducers/authReducer";
 import userDetailsReducer from "./reducers/userDetailsReducer";
 import userListingsReducer from "./reducers/userListingsReducer";
 import allListingsReducer from "./reducers/allListingsReducer";
+import bookingReducer from "./reducers/bookingReducer";
 
 const persistConfig = {
     key: "root",
@@ -20,7 +21,8 @@ const persistedReducer = persistReducer(
         auth: authReducer,
         userDetails: userDetailsReducer,
         userListings: userListingsReducer,
-        allListings: allListingsReducer
+        allListings: allListingsReducer,
+        bookingCycle: bookingReducer
     }),
     
 );

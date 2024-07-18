@@ -43,16 +43,6 @@ export default function MapMarkerPopup({ listing, closeDetailDialog, openDetailD
           See Detail
         </PrimaryButton>
       </div>
-      {/* <DialogComponent
-        className="full-width-dialog"
-        dialogState={detailDialog}
-        closeDialog={() => setDetailDialog(false)}
-        icon="close"
-        dialogHeader={listing.listing_title}
-        backdropClosable={false}
-      >
-        <div>detail dialog</div>
-      </DialogComponent> */}
     </div>
   );
 }

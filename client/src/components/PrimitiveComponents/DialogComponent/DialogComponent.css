@@ -46,7 +46,7 @@
   position: relative;
   align-items: center;
   padding-bottom: 1rem;
-  border-bottom: 1px solid var(--black-10);
+  border-bottom: 1px solid var(--black-2);
   background-color: var(--white);
   z-index: auto;
 }
@@ -86,6 +86,22 @@
   z-index: auto;
 }
 
+/* custom scrollbar styling */
+.scrollbar-1::-webkit-scrollbar {
+  width: 5px;
+}
+
+.scrollbar-1::-webkit-scrollbar-track {
+  border-radius: 10px;
+  margin: 10px 0 0 0;
+  background-color: var(--transparent);
+}
+
+.scrollbar-1::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: var(--black-50);
+}
+
 /* styles for dialogs full screen width */
 
 .full-width-dialog {
@@ -96,6 +112,7 @@
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   animation: contentShow2 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  align-self: flex-end;
 }
 
 /* styles for dialog content width */
