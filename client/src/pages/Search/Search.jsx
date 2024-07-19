@@ -23,7 +23,6 @@ export default function Search() {
     lat: 52.54851,
     lng: -1.9801,
   });
-  console.log(mapCenterCoordinates);
   const { error, loading, data, refetch } = useQuery(GET_ALL_LISTINGS);
   const allListingEntities = useSelector(
     (state) => state.allListings.defaultListings.entities
@@ -57,15 +56,6 @@ export default function Search() {
     setMapCenterCoordinates({ lat: listing.latitude, lng: listing.longitude });
   };
 
-  const {
-    register,
-    handleSubmit,
-    control,
-    setValue,
-    reset,
-    formState: { errors },
-  } = useForm();
-
   const handleAddressSearch = (result) => {
     const features = result.features[0];
     const userLocation = {
@@ -76,11 +66,11 @@ export default function Search() {
       fullAddress: features.properties.full_address,
     };
     dispatch(setUserLocation(userLocation));
+    console.log(userLocation)
     setMapCenterCoordinates({
       lng: userLocation.coordinates.lng,
       lat: userLocation.coordinates.lat,
     });
-    // console.log(userLocation.coordinates.lng, userLocation.coordinates.lat);
   };
 
   if (error) return <p>Error :</p>;
@@ -96,8 +86,9 @@ export default function Search() {
                   accessToken="pk.eyJ1IjoiZGF6emExMjMiLCJhIjoiY2x5MDM4c29yMGh1eTJqcjZzZTRzNzEzaiJ9.dkx0lvLDJy35oWNvOW5mFg"
                   options={{
                     language: "en",
-                    // country: "GB",
+                    country: "GB",
                   }}
+                  placeholder="Search address or city"
                   onRetrieve={handleAddressSearch}
                 />
               </Form.Field>

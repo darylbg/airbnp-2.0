@@ -3,12 +3,13 @@ import DialogComponent from "../PrimitiveComponents/DialogComponent/DialogCompon
 import { createRoot } from "react-dom/client";
 import mapboxgl from "mapbox-gl";
 import ButtonComponent from "../PrimitiveComponents/ButtonComponent/ButtonComponent";
-import { selectedListing, resetBooking, setUserLocation } from "../../reducers/bookingReducer";
+import { selectedListing, resetBooking } from "../../reducers/bookingReducer";
 import MapMarkerPopup from "../MapMarkerPopup/MapMarkerPopup";
 import { mapStyleOptions } from "./mapStyleOptions"; // Adjust the path as necessary
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./SearchMap.css";
 import { useDispatch, useSelector } from "react-redux";
+import PinIcon from "../../assets/images/icons/pin_icon3.png";
 
 export default function SearchMap({
   listings,
@@ -25,7 +26,6 @@ export default function SearchMap({
   const mapContainer = useRef(null);
   const map = useRef(null);
   const markerPopups = useRef({});
-  const mapCenterMarker = useRef(null); // Reference for the map center marker
   const dispatch = useDispatch();
 
   const [zoom, setZoom] = useState(9);
@@ -36,6 +36,7 @@ export default function SearchMap({
   const selectedListingU = useSelector(
     (state) => state.bookingCycle.booking.selectedListing
   );
+  const userLocation = useSelector((state) => state.bookingCycle.userLocation);
 
   useEffect(() => {
     if (map.current) return;
@@ -45,33 +46,15 @@ export default function SearchMap({
       center: [mapCenterCoordinates.lng, mapCenterCoordinates.lat],
       zoom: zoom,
     });
-
-    // Add marker at map center coordinates
-    mapCenterMarker.current = new mapboxgl.Marker({ color: "blue" })
-      .setLngLat([mapCenterCoordinates.lng, mapCenterCoordinates.lat])
-      .addTo(map.current);
-
-    if (listings) {
-      listings.forEach((listing) => {
-        new mapboxgl.Marker()
-          .setLngLat([listing.longitude, listing.latitude])
-          .addTo(map.current);
-      });
-    }
-  }, [listings, mapCenterCoordinates]);
+  }, [mapStyle.option, mapCenterCoordinates, zoom]);
 
   useEffect(() => {
     if (map.current) {
       map.current.easeTo({
         center: [mapCenterCoordinates.lng, mapCenterCoordinates.lat],
         zoom: 10,
-        essential: true, // this animation is considered essential with respect to prefers-reduced-motion
+        essential: true,
       });
-
-      // Update marker position at map center coordinates
-      if (mapCenterMarker.current) {
-        mapCenterMarker.current.setLngLat([mapCenterCoordinates.lng, mapCenterCoordinates.lat]);
-      }
     }
   }, [mapCenterCoordinates]);
 
@@ -82,24 +65,21 @@ export default function SearchMap({
   }, [mapStyle]);
 
   useEffect(() => {
-    if (map.current && listings) {
+    if (map.current) {
       // Clear existing markers
       const markers = document.getElementsByClassName("mapboxgl-marker");
       while (markers[0]) {
         markers[0].parentNode.removeChild(markers[0]);
       }
 
-      // Add new markers
+      // Add listing markers
       listings.forEach((listing) => {
-        // Create a custom marker element
         const markerEl = document.createElement("div");
         markerEl.className = "map-marker";
         markerEl.id = `marker-${listing.id}`;
 
-        // Create a container for the React component
         const popupContainer = document.createElement("div");
 
-        // Create the popup
         const popup = new mapboxgl.Popup({ offset: 25 }).setDOMContent(
           popupContainer
         );
@@ -107,7 +87,6 @@ export default function SearchMap({
         popup.on("open", () => {
           setPopupOpen(listing);
           dispatch(selectedListing(listing));
-          // Render the React component into the container using createRoot
           createRoot(popupContainer).render(
             <MapMarkerPopup
               listing={listing}
@@ -122,13 +101,11 @@ export default function SearchMap({
           dispatch(resetBooking());
         });
 
-        // Create and add the marker MapMarkerPopup
-        const marker = new mapboxgl.Marker(markerEl)
+        new mapboxgl.Marker(markerEl)
           .setLngLat([listing.longitude, listing.latitude])
           .setPopup(popup)
           .addTo(map.current);
 
-        // Store popup reference for programmatic control
         markerPopups.current[listing.id] = popup;
 
         markerEl.addEventListener("mouseenter", () =>
@@ -136,10 +113,25 @@ export default function SearchMap({
         );
         markerEl.addEventListener("mouseleave", () => setHoveredListing(null));
       });
-    }
-  }, [listings]);
 
-  // sync hover with map makers and side listings
+      // Add user location marker
+      if (userLocation && userLocation.coordinates.lat && userLocation.coordinates.lng) {
+        const userLocationsMarkerEl = document.createElement("div");
+        userLocationsMarkerEl.className = "user-location-marker";
+
+        // Add custom styles for the user marker
+        userLocationsMarkerEl.style.backgroundImage = `url(${PinIcon})`;
+        userLocationsMarkerEl.style.width = "40px"; // Adjust as needed
+        userLocationsMarkerEl.style.height = "40px"; // Adjust as needed
+        userLocationsMarkerEl.style.backgroundSize = "100%";
+
+        new mapboxgl.Marker(userLocationsMarkerEl, { offset: [0, -15] })
+          .setLngLat([userLocation.coordinates.lng, userLocation.coordinates.lat])
+          .addTo(map.current);
+      }
+    }
+  }, [listings, userLocation, dispatch]);
+
   useEffect(() => {
     listings &&
       listings.forEach((listing) => {
@@ -155,10 +147,9 @@ export default function SearchMap({
           }
         }
       });
-  }, [hoveredListing]);
+  }, [hoveredListing, listings, popupOpen]);
 
   useEffect(() => {
-    // remove all existing popups so only one appears at a time
     const popups = document.getElementsByClassName("mapboxgl-popup");
     if (popups.length) {
       dispatch(resetBooking());
@@ -170,7 +161,7 @@ export default function SearchMap({
       popup.addTo(map.current);
       setPopupOpen({ id: selectedListingId });
     }
-  }, [selectedListingId]);
+  }, [selectedListingId, dispatch]);
 
   const handleMapStyles = (style) => {
     setMapStyle(style);

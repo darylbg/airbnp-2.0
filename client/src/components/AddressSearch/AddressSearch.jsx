@@ -103,7 +103,6 @@ export default function AddressSearch({
   }
 
   const handleSubmit = useCallback(
-    
     async (e) => {
       console.log("running");
       e.preventDefault();
