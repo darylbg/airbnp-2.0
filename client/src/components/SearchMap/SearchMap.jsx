@@ -3,7 +3,7 @@ import DialogComponent from "../PrimitiveComponents/DialogComponent/DialogCompon
 import { createRoot } from "react-dom/client";
 import mapboxgl from "mapbox-gl";
 import ButtonComponent from "../PrimitiveComponents/ButtonComponent/ButtonComponent";
-import { selectedListing, resetBooking } from "../../reducers/bookingReducer";
+import { selectedListing, resetBooking, setUserLocation } from "../../reducers/bookingReducer";
 import MapMarkerPopup from "../MapMarkerPopup/MapMarkerPopup";
 import { mapStyleOptions } from "./mapStyleOptions"; // Adjust the path as necessary
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -25,6 +25,7 @@ export default function SearchMap({
   const mapContainer = useRef(null);
   const map = useRef(null);
   const markerPopups = useRef({});
+  const mapCenterMarker = useRef(null); // Reference for the map center marker
   const dispatch = useDispatch();
 
   const [zoom, setZoom] = useState(9);
@@ -45,6 +46,11 @@ export default function SearchMap({
       zoom: zoom,
     });
 
+    // Add marker at map center coordinates
+    mapCenterMarker.current = new mapboxgl.Marker({ color: "blue" })
+      .setLngLat([mapCenterCoordinates.lng, mapCenterCoordinates.lat])
+      .addTo(map.current);
+
     if (listings) {
       listings.forEach((listing) => {
         new mapboxgl.Marker()
@@ -61,6 +67,11 @@ export default function SearchMap({
         zoom: 10,
         essential: true, // this animation is considered essential with respect to prefers-reduced-motion
       });
+
+      // Update marker position at map center coordinates
+      if (mapCenterMarker.current) {
+        mapCenterMarker.current.setLngLat([mapCenterCoordinates.lng, mapCenterCoordinates.lat]);
+      }
     }
   }, [mapCenterCoordinates]);
 
@@ -210,7 +221,7 @@ export default function SearchMap({
         </div>
       </div>
       <ButtonComponent className="locate-me-button">
-        <span class="material-symbols-outlined">location_searching</span>
+        <span className="material-symbols-outlined">location_searching</span>
       </ButtonComponent>
       <div ref={mapContainer} className="search-map-container" />
       <DialogComponent

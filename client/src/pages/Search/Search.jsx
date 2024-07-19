@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_ALL_LISTINGS } from "../../utils/queries";
 import { useDispatch, useSelector } from "react-redux";
+import { SearchBox } from "@mapbox/search-js-react";
 import * as Form from "@radix-ui/react-form";
 import { useForm } from "react-hook-form";
 import SearchListing from "../../components/SearchListing/SearchListing";
-import AddressSearch from "../../components/AddressSearch/AddressSearch";
 import "./Search.css";
 import SearchMap from "../../components/SearchMap/SearchMap";
 import {
@@ -13,6 +13,7 @@ import {
   clearRefetchFlag,
 } from "../../reducers/allListingsReducer";
 import ButtonComponent from "../../components/PrimitiveComponents/ButtonComponent/ButtonComponent";
+import { resetBooking, setUserLocation } from "../../reducers/bookingReducer";
 
 export default function Search() {
   const dispatch = useDispatch();
@@ -20,9 +21,9 @@ export default function Search() {
   const [hoveredListing, setHoveredListing] = useState(null);
   const [mapCenterCoordinates, setMapCenterCoordinates] = useState({
     lat: 52.54851,
-    lng: -1.9801
+    lng: -1.9801,
   });
-
+  console.log(mapCenterCoordinates);
   const { error, loading, data, refetch } = useQuery(GET_ALL_LISTINGS);
   const allListingEntities = useSelector(
     (state) => state.allListings.defaultListings.entities
@@ -53,8 +54,8 @@ export default function Search() {
   }, [allListingEntities]);
 
   const centerMapOnListing = (listing) => {
-    setMapCenterCoordinates({lat: listing.latitude, lng: listing.longitude});
-  }
+    setMapCenterCoordinates({ lat: listing.latitude, lng: listing.longitude });
+  };
 
   const {
     register,
@@ -65,9 +66,22 @@ export default function Search() {
     formState: { errors },
   } = useForm();
 
-  const handleAddressSearch = (formData) => {
-    console.log(formData); // <-- Log form data here
-  }
+  const handleAddressSearch = (result) => {
+    const features = result.features[0];
+    const userLocation = {
+      coordinates: {
+        lng: features.geometry.coordinates[0],
+        lat: features.geometry.coordinates[1],
+      },
+      fullAddress: features.properties.full_address,
+    };
+    dispatch(setUserLocation(userLocation));
+    setMapCenterCoordinates({
+      lng: userLocation.coordinates.lng,
+      lat: userLocation.coordinates.lat,
+    });
+    // console.log(userLocation.coordinates.lng, userLocation.coordinates.lat);
+  };
 
   if (error) return <p>Error :</p>;
 
@@ -76,19 +90,24 @@ export default function Search() {
       <div className="search-listings">
         <div className="search-listing-header">
           <div className="search-listings-input">
-            <Form.Root onSubmit={handleSubmit(handleAddressSearch)}>
-              <AddressSearch
-                setValue={setValue}
-                control={control}
-                errors={errors}
-                showExpandedAddressSearch={false}
-                onSubmit={handleSubmit(handleAddressSearch)}
-              />
+            <Form.Root>
+              <Form.Field>
+                <SearchBox
+                  accessToken="pk.eyJ1IjoiZGF6emExMjMiLCJhIjoiY2x5MDM4c29yMGh1eTJqcjZzZTRzNzEzaiJ9.dkx0lvLDJy35oWNvOW5mFg"
+                  options={{
+                    language: "en",
+                    // country: "GB",
+                  }}
+                  onRetrieve={handleAddressSearch}
+                />
+              </Form.Field>
             </Form.Root>
           </div>
           <div className="search-listings-filter">
             <p className="text">10,000+ locations near you</p>
-            <ButtonComponent className="default-button control-button">Filter</ButtonComponent>
+            <ButtonComponent className="default-button control-button">
+              Filter
+            </ButtonComponent>
           </div>
         </div>
         <div className="search-listings-display">

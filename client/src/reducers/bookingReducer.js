@@ -3,6 +3,13 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     loading: false,
     error: null,
+    userLocation: {
+        coordinates: {
+            lng: null,
+            lat: null
+        },
+        fullAddress: ""
+    },
     booking: {
         currentStep: "", // Start with no specific step
         selectedListing: null,
@@ -28,6 +35,13 @@ const bookingSlice = createSlice({
         },
         setError(state, action) {
             state.error = action.payload;
+        },
+        setUserLocation(state, action) {
+            state.userLocation = {
+                ...state.userLocation,
+                coordinates: action.payload.coordinates,
+                fullAddress: action.payload.fullAddress,
+              };
         },
         setCurrentStep(state, action) {
             state.booking.currentStep = action.payload;
@@ -65,6 +79,7 @@ const bookingSlice = createSlice({
 export const {
     setLoading,
     setError,
+    setUserLocation,
     setCurrentStep,
     selectedListing,
     setListingDetails,
