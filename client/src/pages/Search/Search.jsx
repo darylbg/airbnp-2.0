@@ -3,7 +3,9 @@ import { useQuery } from "@apollo/client";
 import { GET_ALL_LISTINGS } from "../../utils/queries";
 import { useDispatch, useSelector } from "react-redux";
 import * as Form from "@radix-ui/react-form";
+import { useForm } from "react-hook-form";
 import SearchListing from "../../components/SearchListing/SearchListing";
+import AddressSearch from "../../components/AddressSearch/AddressSearch";
 import "./Search.css";
 import SearchMap from "../../components/SearchMap/SearchMap";
 import {
@@ -29,7 +31,6 @@ export default function Search() {
     (state) => state.allListings.refetchListings
   );
 
-  // refetch data when listing added or removed
   useEffect(() => {
     if (refetchListings) {
       refetch().then(() => {
@@ -38,7 +39,6 @@ export default function Search() {
     }
   }, [refetchListings, refetch, dispatch]);
 
-  // Get listing data and set to redux
   useEffect(() => {
     if (data) {
       const listings = data.getAllListings;
@@ -46,7 +46,6 @@ export default function Search() {
     }
   }, [data, dispatch]);
 
-  // get listing data from redux
   useEffect(() => {
     if (allListingEntities) {
       setListings(Object.values(allListingEntities));
@@ -57,7 +56,19 @@ export default function Search() {
     setMapCenterCoordinates({lat: listing.latitude, lng: listing.longitude});
   }
 
-  // if (loading) return <p>Loading...</p>;
+  const {
+    register,
+    handleSubmit,
+    control,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm();
+
+  const handleAddressSearch = (formData) => {
+    console.log(formData); // <-- Log form data here
+  }
+
   if (error) return <p>Error :</p>;
 
   return (
@@ -65,10 +76,14 @@ export default function Search() {
       <div className="search-listings">
         <div className="search-listing-header">
           <div className="search-listings-input">
-            <Form.Root>
-              <Form.Field>
-                <Form.Control placeholder="search address or city"></Form.Control>
-              </Form.Field>
+            <Form.Root onSubmit={handleSubmit(handleAddressSearch)}>
+              <AddressSearch
+                setValue={setValue}
+                control={control}
+                errors={errors}
+                showExpandedAddressSearch={false}
+                onSubmit={handleSubmit(handleAddressSearch)}
+              />
             </Form.Root>
           </div>
           <div className="search-listings-filter">

@@ -20,7 +20,9 @@ export default function AddressSearch({
   showMinimap,
   setShowMinimap,
   loading,
-  listing
+  listing,
+  showExpandedAddressSearch,
+  onSubmit, // <-- Add this prop
 }) {
   const [feature, setFeature] = useState();
   const [showValidationText, setShowValidationText] = useState(false);
@@ -36,28 +38,24 @@ export default function AddressSearch({
   const { field: addressLine2 } = useController({
     name: "addressLine2",
     control,
-    // rules: { required: "Address is required" },
     defaultValue: (listing && listing.addressLine2) || "",
   });
 
   const { field: addressCity } = useController({
     name: "addressCity",
     control,
-    // rules: { required: "Address is required" },
     defaultValue: (listing && listing.addressCity) || "",
   });
 
   const { field: addressRegion } = useController({
     name: "addressRegion",
     control,
-    // rules: { required: "Address is required" },
     defaultValue: (listing && listing.addressRegion) || "",
   });
 
   const { field: addressPostCode } = useController({
     name: "addressPostCode",
     control,
-    // rules: { required: "Address is required" },
     defaultValue: (listing && listing.addressPostCode) || "",
   });
 
@@ -73,7 +71,6 @@ export default function AddressSearch({
     defaultValue: (listing && listing.latitude) || "",
   });
 
-  // mapbox template code
   useEffect(() => {
     const accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
     setToken(accessToken);
@@ -90,13 +87,11 @@ export default function AddressSearch({
     (res) => {
       const feature = res.features[0];
       setFeature(feature);
-      setShowMinimap(true);
-      setShowFormExpanded(true);
-
-      // Extract coordinates
+      if (showExpandedAddressSearch) {
+        setShowMinimap(true);
+        setShowFormExpanded(true);
+      }
       const [longitude, latitude] = feature.geometry.coordinates;
-
-      // Update form fields with coordinates
       setValue("addressLatitude", latitude);
       setValue("addressLongitude", longitude);
     },
@@ -108,20 +103,15 @@ export default function AddressSearch({
   }
 
   const handleSubmit = useCallback(
+    
     async (e) => {
+      console.log("running");
       e.preventDefault();
       const result = await showConfirm();
-      if (result.type === "nochange") submitForm();
+      if (result.type === "nochange") onSubmit(); // <-- Call onSubmit here
     },
-    [showConfirm]
+    [showConfirm, onSubmit]
   );
-
-  const submitForm = () => {
-    setShowValidationText(true);
-    setTimeout(() => {
-      resetForm();
-    }, 2500);
-  };
 
   const resetForm = () => {
     const inputs = document.querySelectorAll("input");
@@ -133,10 +123,7 @@ export default function AddressSearch({
 
   return (
     <>
-      <div
-        // ref={formRef}
-        className="address-search-container"
-      >
+      <div className="address-search-container">
         <div className="address-input-section">
           <div className="address-inputs">
             <Form.Field>

@@ -289,6 +289,7 @@ export default function EditListing({
             showMinimap={showMinimap}
             setShowMinimap={setShowMinimap}
             listing={listing}
+            showExpandedAddressSearch={true}
           />
           <div className="field-message">{errors.address?.message}</div>
         </Form.Field>

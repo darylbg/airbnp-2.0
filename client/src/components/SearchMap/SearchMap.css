@@ -160,8 +160,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  bottom: 1rem;
-  right: 1rem;
+  top: 1rem;
+  left: 1rem;
   position: absolute;
   z-index: 1;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 3px 20px 0px;

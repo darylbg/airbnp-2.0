@@ -241,6 +241,7 @@ export default function NewListing({ closeDialog }) {
           showMinimap={showMinimap}
           setShowMinimap={setShowMinimap}
           loading={loading}
+          showExpandedAddressSearch={true}
         />
         <Form.Field
           className="new-listing-form-field price-form-field"
