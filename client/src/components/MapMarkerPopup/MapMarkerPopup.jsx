@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import PrimaryButton from "../PrimitiveComponents/ButtonComponent/ButtonComponent";
 import "./MapMarkerPopup.css";
 
-export default function MapMarkerPopup({ listing, closeDetailDialog, openDetailDialog }) {
+export default function MapMarkerPopup({ listing, setRouteType, openDetailDialog }) {
 
   const [loading, setLoading] = useState(false);
 
@@ -32,6 +32,7 @@ export default function MapMarkerPopup({ listing, closeDetailDialog, openDetailD
           <span class="material-symbols-outlined">directions_walk</span>
           <span className="text">1 mile</span>
         </div>
+        <button onClick={() => setRouteType("mapbox/walking")}>walk</button>
       </div>
       <div className="map-popup-action">
         <PrimaryButton

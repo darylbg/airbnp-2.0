@@ -109,7 +109,7 @@ export default function Search() {
                 listing={listing}
                 setHoveredListing={setHoveredListing}
                 hoveredListing={hoveredListing}
-                centerMapOnListing={centerMapOnListing}
+                // centerMapOnListing={centerMapOnListing}
               />
             ))}
         </div>

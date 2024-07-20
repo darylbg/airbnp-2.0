@@ -23,7 +23,7 @@ export default function SearchListing({
       onMouseEnter={() => setHoveredListing(listing)}
       onMouseLeave={() => setHoveredListing(null)}
       style={{ border: isHovered ? "2px solid blue" : "2px solid black" }}
-      onClick={() => centerMapOnListing(listing)}
+      // onClick={() => centerMapOnListing(listing)}
     >
       <div className="search-listing-image">
         <img src={listing && listing.listing_image[0]} alt="" />

@@ -10,6 +10,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import "./SearchMap.css";
 import { useDispatch, useSelector } from "react-redux";
 import PinIcon from "../../assets/images/icons/pin_icon3.png";
+import MapboxDirections from "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions";
 
 export default function SearchMap({
   listings,
@@ -25,11 +26,13 @@ export default function SearchMap({
 
   const mapContainer = useRef(null);
   const map = useRef(null);
+  const directions = useRef(null);
   const markerPopups = useRef({});
   const dispatch = useDispatch();
 
   const [zoom, setZoom] = useState(9);
-
+  const [routeType, setRouteType] = useState("mapbox/driving");
+console.log(routeType);
   const selectedListingId = useSelector(
     (state) => state.bookingCycle.booking.selectedListing?.id
   );
@@ -39,14 +42,34 @@ export default function SearchMap({
   const userLocation = useSelector((state) => state.bookingCycle.userLocation);
 
   useEffect(() => {
-    if (map.current) return;
+    console.log("running")
+    if (map.current) return; // Initialize map only once
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: mapStyle.option,
       center: [mapCenterCoordinates.lng, mapCenterCoordinates.lat],
       zoom: zoom,
     });
-  }, [mapStyle.option, mapCenterCoordinates, zoom]);
+
+    // Initialize directions
+    directions.current = new MapboxDirections({
+      accessToken: mapboxgl.accessToken,
+      unit: "metric",
+      profile: routeType,
+      interactive: false,
+      controls: {
+        inputs: false, // Hide inputs
+        instructions: false, // Hide instructions
+        profileSwitcher: false, // Hide profile switcher
+      },
+    });
+
+    map.current.addControl(directions.current, "top-left");
+    directions.current.on("route", (e) => {
+      const route = e.route[0];
+      console.log("Route data:", route);
+    });
+  }, [mapStyle.option, mapCenterCoordinates, routeType]);
 
   useEffect(() => {
     if (map.current) {
@@ -92,6 +115,7 @@ export default function SearchMap({
               listing={listing}
               openDetailDialog={openDetailDialog}
               closeDetailDialog={closeDetailDialog}
+              setRouteType={setRouteType}
             />
           );
         });
@@ -101,7 +125,7 @@ export default function SearchMap({
           dispatch(resetBooking());
         });
 
-        new mapboxgl.Marker(markerEl)
+        const marker = new mapboxgl.Marker(markerEl)
           .setLngLat([listing.longitude, listing.latitude])
           .setPopup(popup)
           .addTo(map.current);
@@ -115,18 +139,31 @@ export default function SearchMap({
       });
 
       // Add user location marker
-      if (userLocation && userLocation.coordinates.lat && userLocation.coordinates.lng) {
-        const userLocationsMarkerEl = document.createElement("div");
-        userLocationsMarkerEl.className = "user-location-marker";
+      if (
+        userLocation &&
+        userLocation.coordinates.lat &&
+        userLocation.coordinates.lng
+      ) {
+        const userMarkerEl = document.createElement("div");
+        userMarkerEl.className = "custom-user-marker";
 
-        // Add custom styles for the user marker
-        userLocationsMarkerEl.style.backgroundImage = `url(${PinIcon})`;
-        userLocationsMarkerEl.style.width = "40px"; // Adjust as needed
-        userLocationsMarkerEl.style.height = "40px"; // Adjust as needed
-        userLocationsMarkerEl.style.backgroundSize = "100%";
+        userMarkerEl.style.backgroundImage = `url(${PinIcon})`;
+        userMarkerEl.style.width = "40px";
+        userMarkerEl.style.height = "40px";
+        userMarkerEl.style.backgroundSize = "100%";
 
-        new mapboxgl.Marker(userLocationsMarkerEl, { offset: [0, -15] })
-          .setLngLat([userLocation.coordinates.lng, userLocation.coordinates.lat])
+        const offset = [0, -15]; // Adjust this as needed to align correctly
+
+        new mapboxgl.Marker(userMarkerEl, { offset })
+          .setLngLat([
+            userLocation.coordinates.lng,
+            userLocation.coordinates.lat,
+          ])
+          .setPopup(
+            new mapboxgl.Popup({ offset: 25 }).setHTML(
+              `<h3>User Location</h3><p>${userLocation.fullAddress}</p>`
+            )
+          )
           .addTo(map.current);
       }
     }
@@ -176,6 +213,21 @@ export default function SearchMap({
     e.preventDefault();
     setDetailDialog(false);
   };
+
+  const setRoute = (userLocation, listing) => {
+    if (!directions.current || !userLocation || !listing) return;
+    directions.current.setOrigin([
+      userLocation.coordinates.lng,
+      userLocation.coordinates.lat,
+    ]);
+    directions.current.setDestination([listing.longitude, listing.latitude]);
+  };
+
+  useEffect(() => {
+    if (selectedListingU && userLocation) {
+      setRoute(userLocation, selectedListingU);
+    }
+  }, [selectedListingU, userLocation]);
 
   return (
     <div className="search-map-wrapper">
