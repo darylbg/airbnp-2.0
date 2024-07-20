@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PrimaryButton from "../PrimitiveComponents/ButtonComponent/ButtonComponent";
 import "./MapMarkerPopup.css";
+import { useSelector } from "react-redux";
 
 export default function MapMarkerPopup({ listing, handleRouteTypes, openDetailDialog, routeData }) {
 
@@ -30,7 +31,7 @@ export default function MapMarkerPopup({ listing, handleRouteTypes, openDetailDi
         </div>
         <div className="distance">
           <span class="material-symbols-outlined">directions_walk</span>
-          <span className="text">{routeData && routeData.distance}</span>
+          <span className="text">{routeData?.distance}</span>
         </div>
         <button onClick={() => handleRouteTypes("walking")}>walk</button>
         <button onClick={() => handleRouteTypes("cycling")}>cycle</button>

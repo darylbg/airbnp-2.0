@@ -34,17 +34,15 @@ export default function SearchMap({
   const [zoom, setZoom] = useState(9);
   const [routeType, setRouteType] = useState("walking");
   const selectedListingId = useSelector(
-    (state) => state.bookingCycle.booking.selectedListing?.id
+    (state) => state.bookingCycle.booking.selectedListing.listing?.id
   );
   const selectedListingU = useSelector(
-    (state) => state.bookingCycle.booking.selectedListing
+    (state) => state.bookingCycle.booking.selectedListing?.listing
   );
 
   const userLocation = useSelector((state) => state.bookingCycle.userLocation);
 
-  useEffect(() => {
-    console.log("Selected listing updated:", selectedListingU);
-    
+  useEffect(() => {    
     if (selectedListingU && userLocation) {
       const startLngLat = [userLocation.coordinates.lng, userLocation.coordinates.lat];
       const endLngLat = [selectedListingU.longitude, selectedListingU.latitude];
@@ -166,7 +164,7 @@ export default function SearchMap({
 
         popup.on("open", () => {
           setPopupOpen(listing);
-          dispatch(selectedListing(listing));
+          dispatch(selectedListing({listing: listing, route: routeData}));
           createRoot(popupContainer).render(
             <MapMarkerPopup
               listing={listing}

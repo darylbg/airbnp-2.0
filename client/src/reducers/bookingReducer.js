@@ -12,7 +12,10 @@ const initialState = {
     },
     booking: {
         currentStep: "", // Start with no specific step
-        selectedListing: null,
+        selectedListing: {
+            listing: null,
+            route: null
+        },
         listingDetail: null,
         bookingDetails: {
             numberOfPeople: 1,
