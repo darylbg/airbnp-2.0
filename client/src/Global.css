@@ -39,6 +39,10 @@
   --white-2: #343434;
   --white-1: #202020;
 }
+
+.mapbox-directions-instructions {
+  display: none !important;
+}
 /* base font size */
 html {
   font-size: 16px;

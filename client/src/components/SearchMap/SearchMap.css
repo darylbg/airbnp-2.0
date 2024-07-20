@@ -1,3 +1,8 @@
+.mapboxgl-ctrl-bottom-left,
+.mapboxgl-ctrl-bottom-right {
+  display: none;
+}
+
 .search-map-wrapper {
   height: 100%;
   width: 100%;

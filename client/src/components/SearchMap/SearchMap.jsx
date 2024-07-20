@@ -23,26 +23,37 @@ export default function SearchMap({
   const [mapStyle, setMapStyle] = useState(mapStyleOptions[0]);
   const [popupOpen, setPopupOpen] = useState(null);
   const [detailDialog, setDetailDialog] = useState(false);
+  const [routeData, setRouteData] = useState(null);
 
   const mapContainer = useRef(null);
   const map = useRef(null);
-  const directions = useRef(null);
   const markerPopups = useRef({});
+
   const dispatch = useDispatch();
 
   const [zoom, setZoom] = useState(9);
-  const [routeType, setRouteType] = useState("mapbox/driving");
-console.log(routeType);
+  const [routeType, setRouteType] = useState("walking");
   const selectedListingId = useSelector(
     (state) => state.bookingCycle.booking.selectedListing?.id
   );
   const selectedListingU = useSelector(
     (state) => state.bookingCycle.booking.selectedListing
   );
+
   const userLocation = useSelector((state) => state.bookingCycle.userLocation);
 
   useEffect(() => {
-    console.log("running")
+    console.log("Selected listing updated:", selectedListingU);
+    
+    if (selectedListingU && userLocation) {
+      const startLngLat = [userLocation.coordinates.lng, userLocation.coordinates.lat];
+      const endLngLat = [selectedListingU.longitude, selectedListingU.latitude];
+      defineRoute(startLngLat, endLngLat);
+    }
+  }, [selectedListingU, userLocation, routeType]);
+
+  useEffect(() => {
+    // console.log("Initializing map");
     if (map.current) return; // Initialize map only once
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
@@ -50,27 +61,73 @@ console.log(routeType);
       center: [mapCenterCoordinates.lng, mapCenterCoordinates.lat],
       zoom: zoom,
     });
+  }, [mapCenterCoordinates, mapStyle.option,]);
 
-    // Initialize directions
-    directions.current = new MapboxDirections({
-      accessToken: mapboxgl.accessToken,
-      unit: "metric",
-      profile: routeType,
-      interactive: false,
-      controls: {
-        inputs: false, // Hide inputs
-        instructions: false, // Hide instructions
-        profileSwitcher: false, // Hide profile switcher
-      },
-    });
+  const handleRouteTypes = (data) => {
+    console.log("new route", data);
+    setRouteType(data);
+  };
 
-    map.current.addControl(directions.current, "top-left");
-    directions.current.on("route", (e) => {
-      const route = e.route[0];
-      console.log("Route data:", route);
-    });
-  }, [mapStyle.option, mapCenterCoordinates, routeType]);
+  const defineRoute = async (startLngLat, endLngLat) => {
+    const url = `https://api.mapbox.com/directions/v5/mapbox/${routeType}/${startLngLat.join(',')};${endLngLat.join(',')}?alternatives=true&continue_straight=true&geometries=geojson&language=en&overview=full&steps=true&access_token=${mapboxgl.accessToken}`;
+  
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      
+      console.log("Route data:", data.routes[0]);
+      setRouteData(data.routes[0]);
+  
+      if (data.routes && data.routes.length > 0) {
+        const routeGeoJson = data.routes[0].geometry;
+  
+        if (map.current) {
+          // Check if the route source already exists
+          if (map.current.getSource('route')) {
+            map.current.getSource('route').setData(routeGeoJson);
+          } else {
+            map.current.addSource('route', {
+              type: 'geojson',
+              data: routeGeoJson,
+            });
+  
+            map.current.addLayer({
+              id: 'route',
+              type: 'line',
+              source: 'route',
+              layout: {
+                'line-cap': 'round',
+                'line-join': 'round',
+              },
+              paint: {
+                'line-color': '#000',
+                'line-width': 5,
+              },
+            });
+          }
+        }
+      } else {
+        console.warn("No routes found");
+      }
+    } catch (error) {
+      console.error("Error fetching route:", error);
+    }
+  };
 
+  const clearRoute = () => {
+    if (map.current) {
+      // Check if route layer exists
+      if (map.current.getLayer('route')) {
+        map.current.removeLayer('route');
+      }
+  
+      // Check if route source exists
+      if (map.current.getSource('route')) {
+        map.current.removeSource('route');
+      }
+    }
+  };
+  
   useEffect(() => {
     if (map.current) {
       map.current.easeTo({
@@ -115,7 +172,8 @@ console.log(routeType);
               listing={listing}
               openDetailDialog={openDetailDialog}
               closeDetailDialog={closeDetailDialog}
-              setRouteType={setRouteType}
+              handleRouteTypes={handleRouteTypes}
+              routeData={routeData}
             />
           );
         });
@@ -123,6 +181,7 @@ console.log(routeType);
         popup.on("close", () => {
           setPopupOpen(null);
           dispatch(resetBooking());
+          clearRoute();
         });
 
         const marker = new mapboxgl.Marker(markerEl)
@@ -159,11 +218,6 @@ console.log(routeType);
             userLocation.coordinates.lng,
             userLocation.coordinates.lat,
           ])
-          .setPopup(
-            new mapboxgl.Popup({ offset: 25 }).setHTML(
-              `<h3>User Location</h3><p>${userLocation.fullAddress}</p>`
-            )
-          )
           .addTo(map.current);
       }
     }
@@ -213,21 +267,6 @@ console.log(routeType);
     e.preventDefault();
     setDetailDialog(false);
   };
-
-  const setRoute = (userLocation, listing) => {
-    if (!directions.current || !userLocation || !listing) return;
-    directions.current.setOrigin([
-      userLocation.coordinates.lng,
-      userLocation.coordinates.lat,
-    ]);
-    directions.current.setDestination([listing.longitude, listing.latitude]);
-  };
-
-  useEffect(() => {
-    if (selectedListingU && userLocation) {
-      setRoute(userLocation, selectedListingU);
-    }
-  }, [selectedListingU, userLocation]);
 
   return (
     <div className="search-map-wrapper">
