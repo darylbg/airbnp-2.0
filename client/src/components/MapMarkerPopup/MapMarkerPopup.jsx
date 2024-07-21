@@ -1,11 +1,39 @@
 import React, { useEffect, useState } from "react";
 import PrimaryButton from "../PrimitiveComponents/ButtonComponent/ButtonComponent";
 import "./MapMarkerPopup.css";
-import { useSelector } from "react-redux";
 
-export default function MapMarkerPopup({ listing, handleRouteTypes, openDetailDialog, routeData }) {
-
+export default function MapMarkerPopup({
+  listing,
+  openDetailDialog,
+  startLngLat,
+  accessToken
+}) {
   const [loading, setLoading] = useState(false);
+  const [route, setRoute] = useState(null);
+  useEffect(() => {
+    const endLngLat = [listing.longitude, listing.latitude];
+    const defineRoute = async (startLngLat, endLngLat) => {
+      const url = `https://api.mapbox.com/directions/v5/mapbox/walking/${startLngLat.join(',')};${endLngLat.join(',')}?alternatives=true&continue_straight=true&geometries=geojson&language=en&overview=full&steps=true&access_token=${accessToken}`;
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+    
+        if (data.routes && data.routes.length > 0) {
+          setRoute(data.routes[0]);
+        } else {
+          console.warn("No routes found");
+        }
+      } catch (error) {
+        console.error("Error fetching route:", error);
+      }
+    };
+
+    if (startLngLat && endLngLat) {
+      defineRoute(startLngLat,endLngLat);
+    }
+
+    
+  }, []);
 
   return (
     <div className="map-popup">
@@ -31,11 +59,9 @@ export default function MapMarkerPopup({ listing, handleRouteTypes, openDetailDi
         </div>
         <div className="distance">
           <span class="material-symbols-outlined">directions_walk</span>
-          <span className="text">{routeData?.distance}</span>
+          <span className="text">{route?.distance} miles</span>
+          <span className="text">{route?.duration} minutes</span>
         </div>
-        <button onClick={() => handleRouteTypes("walking")}>walk</button>
-        <button onClick={() => handleRouteTypes("cycling")}>cycle</button>
-        <button onClick={() => handleRouteTypes("driving")}>drive</button>
       </div>
       <div className="map-popup-action">
         <PrimaryButton

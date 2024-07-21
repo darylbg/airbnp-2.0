@@ -75,6 +75,9 @@ const bookingSlice = createSlice({
         },
         resetBooking(state) {
             state.booking = initialState.booking;
+        },
+        resetUserLocation(state) {
+            state.userLocation = initialState.userLocation;
         }
     }
 });
@@ -89,7 +92,8 @@ export const {
     updateBookingDetails,
     proceedToCheckout,
     updateCheckoutInfo,
-    resetBooking
+    resetBooking,
+    resetUserLocation
 } = bookingSlice.actions;
 
 export default bookingSlice.reducer;

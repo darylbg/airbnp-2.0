@@ -3,27 +3,27 @@ import DialogComponent from "../PrimitiveComponents/DialogComponent/DialogCompon
 import { createRoot } from "react-dom/client";
 import mapboxgl from "mapbox-gl";
 import ButtonComponent from "../PrimitiveComponents/ButtonComponent/ButtonComponent";
-import { selectedListing, resetBooking } from "../../reducers/bookingReducer";
+import { selectedListing, resetBooking, resetUserLocation } from "../../reducers/bookingReducer";
 import MapMarkerPopup from "../MapMarkerPopup/MapMarkerPopup";
 import { mapStyleOptions } from "./mapStyleOptions"; // Adjust the path as necessary
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./SearchMap.css";
 import { useDispatch, useSelector } from "react-redux";
 import PinIcon from "../../assets/images/icons/pin_icon3.png";
-import MapboxDirections from "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions";
 
 export default function SearchMap({
   listings,
   hoveredListing,
   setHoveredListing,
   mapCenterCoordinates,
+  routeType,
+  setRouteData
 }) {
   mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 
   const [mapStyle, setMapStyle] = useState(mapStyleOptions[0]);
   const [popupOpen, setPopupOpen] = useState(null);
   const [detailDialog, setDetailDialog] = useState(false);
-  const [routeData, setRouteData] = useState(null);
 
   const mapContainer = useRef(null);
   const map = useRef(null);
@@ -32,7 +32,6 @@ export default function SearchMap({
   const dispatch = useDispatch();
 
   const [zoom, setZoom] = useState(9);
-  const [routeType, setRouteType] = useState("walking");
   const selectedListingId = useSelector(
     (state) => state.bookingCycle.booking.selectedListing.listing?.id
   );
@@ -42,16 +41,20 @@ export default function SearchMap({
 
   const userLocation = useSelector((state) => state.bookingCycle.userLocation);
 
+  // clear user location on page refresh
+  useEffect(() => {
+    dispatch(resetUserLocation());
+  }, [])
+
   useEffect(() => {    
     if (selectedListingU && userLocation) {
       const startLngLat = [userLocation.coordinates.lng, userLocation.coordinates.lat];
       const endLngLat = [selectedListingU.longitude, selectedListingU.latitude];
-      defineRoute(startLngLat, endLngLat);
+      defineRoute(startLngLat, endLngLat, routeType);
     }
   }, [selectedListingU, userLocation, routeType]);
 
   useEffect(() => {
-    // console.log("Initializing map");
     if (map.current) return; // Initialize map only once
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
@@ -61,22 +64,14 @@ export default function SearchMap({
     });
   }, [mapCenterCoordinates, mapStyle.option,]);
 
-  const handleRouteTypes = (data) => {
-    console.log("new route", data);
-    setRouteType(data);
-  };
-
-  const defineRoute = async (startLngLat, endLngLat) => {
+  const defineRoute = async (startLngLat, endLngLat, routeType) => {
     const url = `https://api.mapbox.com/directions/v5/mapbox/${routeType}/${startLngLat.join(',')};${endLngLat.join(',')}?alternatives=true&continue_straight=true&geometries=geojson&language=en&overview=full&steps=true&access_token=${mapboxgl.accessToken}`;
-  
     try {
       const response = await fetch(url);
       const data = await response.json();
-      
-      console.log("Route data:", data.routes[0]);
-      setRouteData(data.routes[0]);
   
       if (data.routes && data.routes.length > 0) {
+        setRouteData(data.routes[0]);
         const routeGeoJson = data.routes[0].geometry;
   
         if (map.current) {
@@ -125,6 +120,12 @@ export default function SearchMap({
       }
     }
   };
+
+  // clear route when user location changes
+  useEffect(() => {
+    console.log("user location",userLocation);
+    clearRoute();
+  }, [userLocation]);
   
   useEffect(() => {
     if (map.current) {
@@ -164,14 +165,14 @@ export default function SearchMap({
 
         popup.on("open", () => {
           setPopupOpen(listing);
-          dispatch(selectedListing({listing: listing, route: routeData}));
+          dispatch(selectedListing({listing: listing}));
           createRoot(popupContainer).render(
             <MapMarkerPopup
               listing={listing}
               openDetailDialog={openDetailDialog}
               closeDetailDialog={closeDetailDialog}
-              handleRouteTypes={handleRouteTypes}
-              routeData={routeData}
+              startLngLat={[userLocation.coordinates.lng, userLocation.coordinates.lat]}
+              accessToken={mapboxgl.accessToken}
             />
           );
         });

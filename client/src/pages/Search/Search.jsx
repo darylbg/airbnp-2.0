@@ -19,6 +19,8 @@ export default function Search() {
   const dispatch = useDispatch();
   const [listings, setListings] = useState(null);
   const [hoveredListing, setHoveredListing] = useState(null);
+  const [routeType, setRouteType] = useState("walking");
+  const [routeData, setRouteData] = useState(null);
   const [mapCenterCoordinates, setMapCenterCoordinates] = useState({
     lat: 52.54851,
     lng: -1.9801,
@@ -29,6 +31,10 @@ export default function Search() {
   );
   const refetchListings = useSelector(
     (state) => state.allListings.refetchListings
+  );
+
+  const selectedListing = useSelector(
+    (state) => state.bookingCycle.booking.selectedListing.listing
   );
 
   useEffect(() => {
@@ -66,13 +72,29 @@ export default function Search() {
       fullAddress: features.properties.full_address,
     };
     dispatch(setUserLocation(userLocation));
-    console.log(userLocation)
     setMapCenterCoordinates({
       lng: userLocation.coordinates.lng,
       lat: userLocation.coordinates.lat,
     });
   };
 
+  // change directions icon
+  const getIconName = (weightName) => {
+    switch (weightName) {
+      case "pedestrian":
+        return "directions_walk";
+      case "auto":
+        return "directions_car";
+      case "cyclability":
+        return "directions_bike";
+      default:
+        return "directions_walk";
+    }
+  };
+
+  if (error) {
+    console.log(error);
+  }
   if (error) return <p>Error :</p>;
 
   return (
@@ -93,6 +115,19 @@ export default function Search() {
                 />
               </Form.Field>
             </Form.Root>
+            {selectedListing && (
+              <div className="search-routes">
+                <button onClick={() => setRouteType("walking")}>walk</button>
+                <button onClick={() => setRouteType("cycling")}>cycle</button>
+                <button onClick={() => setRouteType("driving")}>drive</button>
+                <div className="route-type">
+                  <span class="material-symbols-outlined">
+                    {getIconName(routeData?.weight_name)}
+                  </span>
+                  <span>{routeData?.distance}</span>
+                </div>
+              </div>
+            )}
           </div>
           <div className="search-listings-filter">
             <p className="text">10,000+ locations near you</p>
@@ -124,6 +159,8 @@ export default function Search() {
             hoveredListing={hoveredListing}
             mapLoading={loading}
             mapCenterCoordinates={mapCenterCoordinates}
+            routeType={routeType}
+            setRouteData={setRouteData}
           />
         )}
       </div>

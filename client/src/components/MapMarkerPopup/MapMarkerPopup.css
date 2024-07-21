@@ -33,3 +33,8 @@
 .map-popup-button {
     width: 100%;
 }
+
+.map-popup-content .distance {
+    display: flex;
+    flex-direction: column;
+}

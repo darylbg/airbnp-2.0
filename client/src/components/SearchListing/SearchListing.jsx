@@ -14,7 +14,7 @@ export default function SearchListing({
   const isHovered = hoveredListing && hoveredListing.id === listing.id;
 
   const searchListingSelected = (listing) => {
-    dispatch(selectedListing(listing));
+    dispatch(selectedListing({listing: listing}));
   };
 
   return (
