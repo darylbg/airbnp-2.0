@@ -14,7 +14,6 @@ const initialState = {
         currentStep: "", // Start with no specific step
         selectedListing: {
             listing: null,
-            route: null
         },
         listingDetail: null,
         bookingDetails: {
@@ -49,8 +48,8 @@ const bookingSlice = createSlice({
         setCurrentStep(state, action) {
             state.booking.currentStep = action.payload;
         },
-        selectedListing(state, action) {
-            state.booking.selectedListing = action.payload;
+        setSelectedListing(state, action) {
+            state.booking.selectedListing.listing = action.payload;
             state.booking.currentStep = "selectedListing";
         },
         setListingDetails(state, action) {
@@ -87,7 +86,7 @@ export const {
     setError,
     setUserLocation,
     setCurrentStep,
-    selectedListing,
+    setSelectedListing,
     setListingDetails,
     updateBookingDetails,
     proceedToCheckout,

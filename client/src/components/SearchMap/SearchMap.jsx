@@ -3,7 +3,12 @@ import DialogComponent from "../PrimitiveComponents/DialogComponent/DialogCompon
 import { createRoot } from "react-dom/client";
 import mapboxgl from "mapbox-gl";
 import ButtonComponent from "../PrimitiveComponents/ButtonComponent/ButtonComponent";
-import { selectedListing, resetBooking, resetUserLocation } from "../../reducers/bookingReducer";
+import {
+  setSelectedListing,
+  resetBooking,
+  resetUserLocation,
+  setUserLocation,
+} from "../../reducers/bookingReducer";
 import MapMarkerPopup from "../MapMarkerPopup/MapMarkerPopup";
 import { mapStyleOptions } from "./mapStyleOptions"; // Adjust the path as necessary
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -17,7 +22,8 @@ export default function SearchMap({
   setHoveredListing,
   mapCenterCoordinates,
   routeType,
-  setRouteData
+  setRouteData,
+  setMapCenterCoordinates
 }) {
   mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 
@@ -31,7 +37,7 @@ export default function SearchMap({
 
   const dispatch = useDispatch();
 
-  const [zoom, setZoom] = useState(9);
+  const [zoom, setZoom] = useState(10);
   const selectedListingId = useSelector(
     (state) => state.bookingCycle.booking.selectedListing.listing?.id
   );
@@ -44,11 +50,14 @@ export default function SearchMap({
   // clear user location on page refresh
   useEffect(() => {
     dispatch(resetUserLocation());
-  }, [])
+  }, []);
 
-  useEffect(() => {    
+  useEffect(() => {
     if (selectedListingU && userLocation) {
-      const startLngLat = [userLocation.coordinates.lng, userLocation.coordinates.lat];
+      const startLngLat = [
+        userLocation.coordinates.lng,
+        userLocation.coordinates.lat,
+      ];
       const endLngLat = [selectedListingU.longitude, selectedListingU.latitude];
       defineRoute(startLngLat, endLngLat, routeType);
     }
@@ -62,39 +71,45 @@ export default function SearchMap({
       center: [mapCenterCoordinates.lng, mapCenterCoordinates.lat],
       zoom: zoom,
     });
-  }, [mapCenterCoordinates, mapStyle.option,]);
+  }, [mapCenterCoordinates, mapStyle.option]);
 
   const defineRoute = async (startLngLat, endLngLat, routeType) => {
-    const url = `https://api.mapbox.com/directions/v5/mapbox/${routeType}/${startLngLat.join(',')};${endLngLat.join(',')}?alternatives=true&continue_straight=true&geometries=geojson&language=en&overview=full&steps=true&access_token=${mapboxgl.accessToken}`;
+    const url = `https://api.mapbox.com/directions/v5/mapbox/${routeType}/${startLngLat.join(
+      ","
+    )};${endLngLat.join(
+      ","
+    )}?alternatives=true&continue_straight=true&geometries=geojson&language=en&overview=full&steps=true&access_token=${
+      mapboxgl.accessToken
+    }`;
     try {
       const response = await fetch(url);
       const data = await response.json();
-  
+
       if (data.routes && data.routes.length > 0) {
         setRouteData(data.routes[0]);
         const routeGeoJson = data.routes[0].geometry;
-  
+
         if (map.current) {
           // Check if the route source already exists
-          if (map.current.getSource('route')) {
-            map.current.getSource('route').setData(routeGeoJson);
+          if (map.current.getSource("route")) {
+            map.current.getSource("route").setData(routeGeoJson);
           } else {
-            map.current.addSource('route', {
-              type: 'geojson',
+            map.current.addSource("route", {
+              type: "geojson",
               data: routeGeoJson,
             });
-  
+
             map.current.addLayer({
-              id: 'route',
-              type: 'line',
-              source: 'route',
+              id: "route",
+              type: "line",
+              source: "route",
               layout: {
-                'line-cap': 'round',
-                'line-join': 'round',
+                "line-cap": "round",
+                "line-join": "round",
               },
               paint: {
-                'line-color': '#000',
-                'line-width': 5,
+                "line-color": "#000",
+                "line-width": 5,
               },
             });
           }
@@ -110,23 +125,23 @@ export default function SearchMap({
   const clearRoute = () => {
     if (map.current) {
       // Check if route layer exists
-      if (map.current.getLayer('route')) {
-        map.current.removeLayer('route');
+      if (map.current.getLayer("route")) {
+        map.current.removeLayer("route");
       }
-  
+
       // Check if route source exists
-      if (map.current.getSource('route')) {
-        map.current.removeSource('route');
+      if (map.current.getSource("route")) {
+        map.current.removeSource("route");
       }
     }
   };
 
   // clear route when user location changes
   useEffect(() => {
-    console.log("user location",userLocation);
+    console.log("user location", userLocation);
     clearRoute();
   }, [userLocation]);
-  
+
   useEffect(() => {
     if (map.current) {
       map.current.easeTo({
@@ -143,6 +158,8 @@ export default function SearchMap({
     }
   }, [mapStyle]);
 
+  const mapRef = useRef();
+
   useEffect(() => {
     if (map.current) {
       // Clear existing markers
@@ -152,7 +169,7 @@ export default function SearchMap({
       }
 
       // Add listing markers
-      listings.forEach((listing) => {
+      listings && listings.forEach((listing) => {
         const markerEl = document.createElement("div");
         markerEl.className = "map-marker";
         markerEl.id = `marker-${listing.id}`;
@@ -165,13 +182,16 @@ export default function SearchMap({
 
         popup.on("open", () => {
           setPopupOpen(listing);
-          dispatch(selectedListing({listing: listing}));
+          dispatch(setSelectedListing(listing));
           createRoot(popupContainer).render(
             <MapMarkerPopup
               listing={listing}
               openDetailDialog={openDetailDialog}
               closeDetailDialog={closeDetailDialog}
-              startLngLat={[userLocation.coordinates.lng, userLocation.coordinates.lat]}
+              startLngLat={[
+                userLocation.coordinates.lng,
+                userLocation.coordinates.lat,
+              ]}
               accessToken={mapboxgl.accessToken}
             />
           );
@@ -212,12 +232,32 @@ export default function SearchMap({
 
         const offset = [0, -15]; // Adjust this as needed to align correctly
 
-        new mapboxgl.Marker(userMarkerEl, { offset })
+        const userMarker = new mapboxgl.Marker({
+          element: userMarkerEl,
+          offset,
+          draggable: true,
+        })
           .setLngLat([
             userLocation.coordinates.lng,
             userLocation.coordinates.lat,
           ])
           .addTo(map.current);
+
+        // Handle drag events
+        userMarker.on("dragend", (e) => {
+          const lngLat = e.target.getLngLat();
+          console.log(`Longitude: ${lngLat.lng}, Latitude: ${lngLat.lat}`);
+          // Update userLocation in state or Redux if needed
+          dispatch(
+            setUserLocation({
+              coordinates: {
+                lng: lngLat.lng,
+                lat: lngLat.lat,
+              },
+              fullAddress: userLocation.fullAddress, // Update if address changes
+            })
+          );
+        });
       }
     }
   }, [listings, userLocation, dispatch]);
@@ -267,6 +307,29 @@ export default function SearchMap({
     setDetailDialog(false);
   };
 
+  const handleLocateUser = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const { latitude, longitude } = position.coords;
+        const userLocation = {
+          coordinates: {
+            lng: longitude,
+            lat: latitude,
+          },
+          fullAddress: "",
+        };
+        dispatch(setUserLocation(userLocation));
+        setMapCenterCoordinates({
+          lng: userLocation.coordinates.lng,
+          lat: userLocation.coordinates.lat,
+        });
+      });
+    } else {
+      console.log("error");
+      alert("geolocation not supported on this browser");
+    }
+  };
+
   return (
     <div className="search-map-wrapper">
       <ButtonComponent type="button" className="search-this-area-button">
@@ -301,7 +364,7 @@ export default function SearchMap({
           ))}
         </div>
       </div>
-      <ButtonComponent className="locate-me-button">
+      <ButtonComponent className="locate-user-button" action={handleLocateUser}>
         <span className="material-symbols-outlined">location_searching</span>
       </ButtonComponent>
       <div ref={mapContainer} className="search-map-container" />

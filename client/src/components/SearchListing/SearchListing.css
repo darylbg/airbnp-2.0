@@ -21,3 +21,35 @@
     height: 100%;
     width: 100%;
 }
+
+/* custom carousel arrows */
+.custom-arrow {
+    background-color: var(--white-13);
+    color: var(--black-12);
+    display: none;
+    position: absolute;
+    border: none;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+    transform: translateY(-50%);
+    top: 50%;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+}
+
+.search-listing:hover .search-listing-image .custom-arrow {
+    display: flex !important;
+}
+
+.custom-arrow .material-symbols-outlined {
+    font-size: 0.9rem;
+}
+
+.custom-arrow-right {
+    right: 3px;
+}
+
+.custom-arrow-left {
+    left: 3px;
+}

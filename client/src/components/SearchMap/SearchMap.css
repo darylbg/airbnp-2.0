@@ -157,7 +157,7 @@
 }
 
 /* locate me button */
-.locate-me-button {
+.locate-user-button {
   background-color: var(--white-13);
   padding: 0.75rem;
   border: none;
@@ -172,11 +172,11 @@
   box-shadow: rgba(100, 100, 111, 0.2) 0px 3px 20px 0px;
 }
 
-.locate-me-button:hover {
+.locate-user-button:hover {
   box-shadow: rgba(100, 100, 111, 0.3) 0px 3px 20px 0px;
 }
 
-.locate-me-button .material-symbols-outlined {
+.locate-user-button .material-symbols-outlined {
   font-size:1.2rem;
   font-weight: 500;
 }
