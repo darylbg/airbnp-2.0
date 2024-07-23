@@ -8,6 +8,8 @@ import {
   resetBooking,
   resetUserLocation,
   setUserLocation,
+  setListingDetails,
+  setCurrentStep
 } from "../../reducers/bookingReducer";
 import MapMarkerPopup from "../MapMarkerPopup/MapMarkerPopup";
 import { mapStyleOptions } from "./mapStyleOptions"; // Adjust the path as necessary
@@ -39,10 +41,13 @@ export default function SearchMap({
 
   const [zoom, setZoom] = useState(10);
   const selectedListingId = useSelector(
-    (state) => state.bookingCycle.booking.selectedListing.listing?.id
+    (state) => state.bookingCycle.booking.selectedListing?.id
   );
-  const selectedListingU = useSelector(
-    (state) => state.bookingCycle.booking.selectedListing?.listing
+  const selectedListing = useSelector(
+    (state) => state.bookingCycle.booking.selectedListing
+  );
+  const listingDetail = useSelector(
+    (state) => state.bookingCycle.booking.listingDetail
   );
 
   const userLocation = useSelector((state) => state.bookingCycle.userLocation);
@@ -53,15 +58,15 @@ export default function SearchMap({
   }, []);
 
   useEffect(() => {
-    if (selectedListingU && userLocation) {
+    if (selectedListing && userLocation) {
       const startLngLat = [
         userLocation.coordinates.lng,
         userLocation.coordinates.lat,
       ];
-      const endLngLat = [selectedListingU.longitude, selectedListingU.latitude];
+      const endLngLat = [selectedListing.longitude, selectedListing.latitude];
       defineRoute(startLngLat, endLngLat, routeType);
     }
-  }, [selectedListingU, userLocation, routeType]);
+  }, [selectedListing, userLocation, routeType]);
 
   useEffect(() => {
     if (map.current) return; // Initialize map only once
@@ -199,7 +204,7 @@ export default function SearchMap({
 
         popup.on("close", () => {
           setPopupOpen(null);
-          dispatch(resetBooking());
+          dispatch(setSelectedListing(null));
           clearRoute();
         });
 
@@ -282,7 +287,7 @@ export default function SearchMap({
   useEffect(() => {
     const popups = document.getElementsByClassName("mapboxgl-popup");
     if (popups.length) {
-      dispatch(resetBooking());
+      // dispatch(resetBooking());
       popups[0].remove();
     }
 
@@ -297,13 +302,16 @@ export default function SearchMap({
     setMapStyle(style);
   };
 
-  const openDetailDialog = (e) => {
+  const openDetailDialog = (e, listing) => {
     e.preventDefault();
+    dispatch(setListingDetails(listing));
     setDetailDialog(true);
   };
 
   const closeDetailDialog = (e) => {
     e.preventDefault();
+    dispatch(setListingDetails(null));
+    dispatch(setCurrentStep("selectedListing"));
     setDetailDialog(false);
   };
 
@@ -374,7 +382,8 @@ export default function SearchMap({
         closeDialog={closeDetailDialog}
         icon="close"
         backdropClosable={false}
-        dialogHeader={`Details: ${selectedListingU?.listing_title}`}
+        dialogHeader={listingDetail?.listing_title}
+        minimize={true}
       >
         <div>detail dialog</div>
       </DialogComponent>

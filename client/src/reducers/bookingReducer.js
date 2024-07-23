@@ -12,9 +12,7 @@ const initialState = {
     },
     booking: {
         currentStep: "", // Start with no specific step
-        selectedListing: {
-            listing: null,
-        },
+        selectedListing: null,
         listingDetail: null,
         bookingDetails: {
             numberOfPeople: 1,
@@ -49,7 +47,7 @@ const bookingSlice = createSlice({
             state.booking.currentStep = action.payload;
         },
         setSelectedListing(state, action) {
-            state.booking.selectedListing.listing = action.payload;
+            state.booking.selectedListing = action.payload;
             state.booking.currentStep = "selectedListing";
         },
         setListingDetails(state, action) {

@@ -34,7 +34,7 @@ export default function Search() {
   );
 
   const selectedListing = useSelector(
-    (state) => state.bookingCycle.booking.selectedListing?.listing
+    (state) => state.bookingCycle.booking.selectedListing
   );
 
   const userLocation = useSelector(
@@ -61,10 +61,6 @@ export default function Search() {
       setListings(Object.values(allListingEntities));
     }
   }, [allListingEntities]);
-
-  const centerMapOnListing = (listing) => {
-    setMapCenterCoordinates({ lat: listing.latitude, lng: listing.longitude });
-  };
 
   const handleAddressSearch = (result) => {
     const features = result.features[0];
@@ -135,7 +131,7 @@ export default function Search() {
               )}
           </div>
           <div className="search-listings-filter">
-            <p className="text">10,000+ locations near you</p>
+            <p className="text">{listings?.length}+ locations near you</p>
             <ButtonComponent className="default-button control-button">
               Filter
             </ButtonComponent>

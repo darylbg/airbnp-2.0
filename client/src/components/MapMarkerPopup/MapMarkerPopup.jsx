@@ -68,7 +68,7 @@ export default function MapMarkerPopup({
           type="button"
           className="default-button map-popup-button"
           loading={loading}
-          action={openDetailDialog}
+          action={(e) => openDetailDialog(e, listing)}
         >
           See Detail
         </PrimaryButton>
