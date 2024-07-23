@@ -180,7 +180,7 @@
 
 .minimized-dialog-content {
   width: fit-content;
-  max-width: 300px;
+  max-width: 800px;
   border-radius: 10px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 3px 20px 0px;
 }

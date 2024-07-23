@@ -17,6 +17,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import "./SearchMap.css";
 import { useDispatch, useSelector } from "react-redux";
 import PinIcon from "../../assets/images/icons/pin_icon3.png";
+import ListingDetail from "../BookingCycleComponents/ListingDetail/ListingDetail";
 
 export default function SearchMap({
   listings,
@@ -385,7 +386,7 @@ export default function SearchMap({
         dialogHeader={listingDetail?.listing_title}
         minimize={true}
       >
-        <div>detail dialog</div>
+        <ListingDetail />
       </DialogComponent>
     </div>
   );

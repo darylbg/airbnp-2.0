@@ -1,7 +1,7 @@
-import React from "react";
+import React, {forwardRef} from "react";
 import "./WindowControlButton.css";
 
-export default function WindowControlButton({ action, icon, className }) {
+export default function WindowControlButton({ action, icon, className,} ) {
   const handleClick = (e) => {
     // console.log(e)
     e.preventDefault();

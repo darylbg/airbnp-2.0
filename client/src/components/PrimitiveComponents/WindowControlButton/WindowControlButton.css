@@ -18,3 +18,7 @@
     background-color: var(--black-2);
     cursor: pointer;
 }
+
+.window-control-button:active {
+    transform: scale(0.9);
+}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import WindowControlButton from "../WindowControlButton/WindowControlButton";
 
 import "./DialogComponent.css";
@@ -14,6 +14,7 @@ export default function DialogComponent({
   minimize,
 }) {
   const [minimized, setMinimized] = useState(false);
+
   useEffect(() => {
     if (dialogState) {
       document.body.classList.add("overflow-hidden");
@@ -32,19 +33,22 @@ export default function DialogComponent({
   };
 
   const handleMinimizeDialog = (e) => {
-    // e.stopPropagation();
     if (minimize) {
       setMinimized(true);
-      console.log("minimized");
     }
+
+    // if (windowControlBtnRef.current) {
+    //   windowControlBtnRef.current.blur();
+    // }
   };
 
   const handleMaximizeDialog = (e) => {
-    // e.stopPropagation();
     if (minimize) {
       setMinimized(false);
-      console.log("maximized");
     }
+    // if (windowControlBtnRef.current) {
+    //   windowControlBtnRef.current.blur();
+    // }
   };
 
   const handleContentClick = (e) => {
