@@ -70,7 +70,7 @@ export default function MapMarkerPopup({
           loading={loading}
           action={(e) => openDetailDialog(e, listing)}
         >
-          See Detail
+          Book this bathroom
         </PrimaryButton>
       </div>
     </div>

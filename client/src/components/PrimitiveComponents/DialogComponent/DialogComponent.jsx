@@ -69,7 +69,7 @@ export default function DialogComponent({
       >
         <div className={`dialog-header ${minimized? "dialog-header-minimized" : ""}`}>
           <div className="dialog-header-spacer"></div>
-          <h4 className="text">{dialogHeader}</h4>
+          <h4 className="text">{dialogHeader}{minimized && "..."}</h4>
           <div className="dialog-header-btn-group">
             {minimize && (
               <WindowControlButton
