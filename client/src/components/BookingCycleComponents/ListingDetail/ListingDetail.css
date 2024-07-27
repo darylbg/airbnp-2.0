@@ -16,7 +16,7 @@
 }
 
 .listing-marker {
-    background-color: red;
+    background-color: var(--pink-10);
     /* background-image: url("../../../assets//images/icons/toilet-paper.png");
     background-position: center;
     background-repeat: no-repeat;
@@ -24,6 +24,7 @@
     width: 1.2rem;
     height: 1.2rem;
     border-radius: 50%;
+    /* border: 3px solid var(--white-13); */
 }
 
 .listing-booking-info {

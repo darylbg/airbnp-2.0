@@ -2,7 +2,6 @@
 
 /* radix ui colors */
 @import "@radix-ui/colors/gray.css";
-@import "@radix-ui/colors/ruby.css";
 @import "@radix-ui/colors/blue.css";
 @import "@radix-ui/colors/green.css";
 @import "@radix-ui/colors/red.css";
@@ -10,6 +9,20 @@
 
 /* custom black and white because radix ui is retarded and has every other color */
 :root {
+  /* brand colors */
+  --pink-12: #cc324c;
+  --pink-11: #e63554;
+  --pink-10: #FF385C; /* Reference color */
+  --pink-9: #ff1a53;
+  --pink-8: #ff3366;
+  --pink-7: #ff4d7a;
+  --pink-6: #ff668d;
+  --pink-5: #ff80a0;
+  --pink-4: #ff99b3;
+  --pink-3: #ffb3c6;
+  --pink-2: #ffccd9;
+  --pink-1: #ffe6ec;
+
   /* black */
   --black-12: #202020;
   --black-11: #343434;

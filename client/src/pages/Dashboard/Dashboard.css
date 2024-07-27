@@ -75,13 +75,13 @@
 
 .dashboard-menu-item .active {
   background: linear-gradient(var(--black-3), var(--black-3)) padding-box,
-    linear-gradient(to right, var(--ruby-10), var(--black-5) 50%) border-box !important;
+    linear-gradient(to right, var(--pink-10), var(--black-5) 50%) border-box !important;
   border-radius: 10px !important;
   border: 1px solid transparent !important;
 }
 
 .dashboard-menu-item .active .material-symbols-outlined {
-  color: var(--ruby-10) !important;
+  color: var(--pink-10) !important;
 }
 
 .dashboard-menu-item .active .text {
@@ -131,7 +131,7 @@
   object-position: center center;
   border-radius: 50%;
   margin: 10px;
-  outline: 1px solid var(--ruby-10);
+  outline: 1px solid var(--pink-10);
   outline-offset: 2px;
 }
 
@@ -199,7 +199,7 @@
   height: 30px;
   width: 30px;
   border-radius: 10px;
-  outline: 1px solid var(--ruby-10);
+  outline: 1px solid var(--pink-10);
   outline-offset: 2px;
 }
 

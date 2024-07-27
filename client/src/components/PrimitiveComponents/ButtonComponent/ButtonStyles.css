@@ -50,20 +50,20 @@ button:disabled {
 
 /* action button for MAIN ACTIONS/RESERVE/BOOKINGS */
 .action-button {
-  background-color: var(--ruby-10);
+  background-color: var(--pink-10);
   color: var(--white-12);
 }
 
 .action-button:hover {
-  background-color: var(--ruby-11);
+  background-color: var(--pink-11);
 }
 
 .action-button:focus {
-  box-shadow: 0 0 0 2px #ffffff, 0 0 2px 5px var(--ruby-8);
+  box-shadow: 0 0 0 2px #ffffff, 0 0 2px 5px var(--pink-8);
 }
 
 .action-button:disabled {
-  background-color: var(--ruby-8);
+  background-color: var(--pink-8);
 }
 
 /* primary button for MAIN CRUD OPERATIONS */

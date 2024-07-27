@@ -9,10 +9,11 @@ import PinIcon from "../../../assets/images/icons/pin_icon3.png";
 import { setBookingDetails } from "../../../reducers/bookingReducer";
 import ToiletPaperIcon from "../../../assets/images/icons/toilet-paper.png";
 
-
 export default function ListingDetail() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  const listing = useSelector((state) => state.bookingCycle.booking.listingDetail);
+  const listing = useSelector(
+    (state) => state.bookingCycle.booking.listingDetail
+  );
   const userLocation = useSelector((state) => state.bookingCycle.userLocation);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -68,7 +69,11 @@ export default function ListingDetail() {
     });
 
     mapRef.current.on("load", () => {
-      if (listing && userLocation) {
+      console.log("user location", userLocation);
+      if (
+        userLocation.coordinates.lng !== null &&
+        userLocation.coordinates.lat !== null
+      ) {
         // Add markers for listing and user location
         const userMarkerEl = document.createElement("div");
         userMarkerEl.className = "custom-user-marker";
@@ -88,33 +93,29 @@ export default function ListingDetail() {
           ])
           .addTo(mapRef.current);
 
+          // Define bounds to include both markers if there are
+          const bounds = new mapboxgl.LngLatBounds(
+            [userLocation.coordinates.lng, userLocation.coordinates.lat],
+            [listing?.longitude || 0, listing?.latitude || 0]
+          );
+  
+          mapRef.current.fitBounds(bounds, { padding: 40 });
+      }
+
+      if (listing) {
         const listingMarker = document.createElement("div");
         listingMarker.className = "listing-marker";
-        // listingMarker.style.backgroundImage = `url(${ToiletPaperIcon})`;
-        // listingMarker.style.width = "10px";
-        // listingMarker.style.height = "10px";
-        // listingMarker.style.backgroundSize = "100%";
         new mapboxgl.Marker({ element: listingMarker })
           .setLngLat([listing.longitude || 0, listing.latitude || 0])
           .addTo(mapRef.current);
-
-        // Define bounds to include both markers
-        const bounds = new mapboxgl.LngLatBounds([
-          userLocation.coordinates.lng,
-          userLocation.coordinates.lat,
-        ], [
-          listing.longitude || 0,
-          listing.latitude || 0
-        ]);
-
-        mapRef.current.fitBounds(bounds, { padding: 40 });
+        }
 
         defineRoute(
           [userLocation.coordinates.lng, userLocation.coordinates.lat],
-          [listing.longitude, listing.latitude],
+          [listing?.longitude, listing?.latitude],
           routeType
         );
-      }
+      
     });
 
     return () => {

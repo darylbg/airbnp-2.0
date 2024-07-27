@@ -21,6 +21,11 @@ export default function Search() {
   const [hoveredListing, setHoveredListing] = useState(null);
   const [routeType, setRouteType] = useState("walking");
   const [routeData, setRouteData] = useState(null);
+  const [formattedRouteData, setFormattedRouteData] = useState({
+    distance: null,
+    duration: null,
+  });
+  console.log(formattedRouteData);
   const [mapCenterCoordinates, setMapCenterCoordinates] = useState({
     lat: 52.54851,
     lng: -1.9801,
@@ -78,19 +83,44 @@ export default function Search() {
     });
   };
 
-  // change directions icon
-  const getIconName = (weightName) => {
-    switch (weightName) {
-      case "pedestrian":
-        return "directions_walk";
-      case "auto":
-        return "directions_car";
-      case "cyclability":
-        return "directions_bike";
-      default:
-        return "directions_walk";
+  const handleRouteTypeSwitch = (method) => {
+    setRouteType(method);
+  };
+
+  const handleDurationFormat = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) {
+      return `${minutes} min`;
+    } else if (minutes < 1440) { // less than a day
+      const hours = Math.floor(minutes / 60);
+      const remainingMinutes = minutes % 60;
+      return `${hours} hr${hours > 1 ? 's' : ''} ${remainingMinutes > 0 ? remainingMinutes + " min" : ""}`;
+    } else { // one day or more
+      const days = Math.floor(minutes / 1440);
+      const remainingMinutes = minutes % 1440;
+      const hours = Math.floor(remainingMinutes / 60);
+      const finalMinutes = remainingMinutes % 60;
+      return `${days} day${days > 1 ? 's' : ''} ${hours > 0 ? hours + " hr" + (hours > 1 ? 's' : '') : ""} ${finalMinutes > 0 ? finalMinutes + " min" : ""}`;
     }
   };
+  
+
+  const handleDistanceFormat = (meters) => {
+    // console.log(routeData?.distance)
+    const kilometers = (meters * 0.00062137).toFixed(2);
+    return `${kilometers} miles`;
+  };
+
+  useEffect(() => {
+    if (routeData) {
+      const formattedDistance = handleDistanceFormat(routeData.distance);
+      const formattedDuration = handleDurationFormat(routeData.duration);
+      setFormattedRouteData({
+        duration: formattedDuration,
+        distance: formattedDistance,
+      });
+    }
+  }, [routeData]);
 
   if (error) {
     console.log(error);
@@ -117,15 +147,52 @@ export default function Search() {
             </Form.Root>
             {selectedListing &&
               (userLocation.lat !== null || userLocation.lng !== null) && (
-                <div className="search-routes">
-                  <button onClick={() => setRouteType("walking")}>walk</button>
-                  <button onClick={() => setRouteType("cycling")}>cycle</button>
-                  <button onClick={() => setRouteType("driving")}>drive</button>
-                  <div className="route-type">
-                    <span class="material-symbols-outlined">
-                      {getIconName(routeData?.weight_name)}
-                    </span>
-                    <span>{routeData?.distance}</span>
+                <div className="search-route-types">
+                  <div className="button-group">
+                    <ButtonComponent
+                      type="button"
+                      className={`route-type-btn ${
+                        routeType === "walking" ? "active" : ""
+                      }`}
+                      action={() => handleRouteTypeSwitch("walking")}
+                    >
+                      <span class="material-symbols-outlined">
+                        directions_walk
+                      </span>
+                      <span> Walk</span>
+                    </ButtonComponent>
+                    <ButtonComponent
+                      type="button"
+                      className={`route-type-btn ${
+                        routeType === "cycling" ? "active" : ""
+                      }`}
+                      action={() => handleRouteTypeSwitch("cycling")}
+                    >
+                      <span class="material-symbols-outlined">
+                        directions_bike
+                      </span>
+                      <span> Cycle</span>
+                    </ButtonComponent>
+                    <ButtonComponent
+                      type="button"
+                      className={`route-type-btn ${
+                        routeType === "driving" ? "active" : ""
+                      }`}
+                      action={() => handleRouteTypeSwitch("driving")}
+                    >
+                      <span class="material-symbols-outlined">
+                        directions_car
+                      </span>
+                      <span> Drive</span>
+                    </ButtonComponent>
+                  </div>
+                  <div className="route-type-result">
+                    <strong className="distance">
+                      {formattedRouteData.distance}
+                    </strong>
+                    <strong className="duration">
+                      {formattedRouteData.duration}
+                    </strong>
                   </div>
                 </div>
               )}

@@ -25,6 +25,63 @@
   padding-right: 0.4rem;
 }
 
+/* styling search route types  */
+.search-route-types {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  padding: 0.8rem 0;
+  gap: 0.5rem;
+}
+
+.search-route-types .button-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  /* max-width: 250px; */
+}
+
+.search-route-types .button-group .active {
+  color: var(--blue-10);
+  background-color: var(--blue-2);
+}
+
+.route-type-btn {
+  display: flex;
+  flex-direction: row;
+  justify-items: center;
+  align-items: center;
+  gap: 5px;
+  background-color: transparent;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+}
+
+.route-type-btn:hover {
+  color: var(--blue-10);
+}
+
+.route-type-btn .material-symbols-outlined {
+  font-size: 1.3rem;
+}
+
+.search-route-types .route-type-result {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.route-type-result .distance {
+  color: var(--black-8);
+}
+
+.route-type-result .duration {
+  color: var(--black-12);
+}
+
 .search-listings-input input {
   /* width: 100%; */
 }
@@ -34,6 +91,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  /* background-color: var(--black-1); */
 }
 
 .search-listings-filter .text {
@@ -46,6 +104,7 @@
   gap: 0.5rem;
   overflow-y: auto;
   padding-right: 0.4rem;
+  background-color: var(--black-1);
 }
 
 .search-map {
