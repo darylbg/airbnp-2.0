@@ -9,7 +9,7 @@ import {
   resetUserLocation,
   setUserLocation,
   setListingDetails,
-  setCurrentStep
+  setCurrentStep,
 } from "../../reducers/bookingReducer";
 import MapMarkerPopup from "../MapMarkerPopup/MapMarkerPopup";
 import { mapStyleOptions } from "./mapStyleOptions"; // Adjust the path as necessary
@@ -26,7 +26,7 @@ export default function SearchMap({
   mapCenterCoordinates,
   routeType,
   setRouteData,
-  setMapCenterCoordinates
+  setMapCenterCoordinates,
 }) {
   mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 
@@ -175,52 +175,55 @@ export default function SearchMap({
       }
 
       // Add listing markers
-      listings && listings.forEach((listing) => {
-        const markerEl = document.createElement("div");
-        markerEl.className = "map-marker";
-        markerEl.id = `marker-${listing.id}`;
+      listings &&
+        listings.forEach((listing) => {
+          const markerEl = document.createElement("div");
+          markerEl.className = "map-marker";
+          markerEl.id = `marker-${listing.id}`;
 
-        const popupContainer = document.createElement("div");
+          const popupContainer = document.createElement("div");
 
-        const popup = new mapboxgl.Popup({ offset: 25 }).setDOMContent(
-          popupContainer
-        );
+          const popup = new mapboxgl.Popup({ offset: 25 }).setDOMContent(
+            popupContainer
+          );
 
-        popup.on("open", () => {
-          setPopupOpen(listing);
-          dispatch(setSelectedListing(listing));
-          createRoot(popupContainer).render(
-            <MapMarkerPopup
-              listing={listing}
-              openDetailDialog={openDetailDialog}
-              closeDetailDialog={closeDetailDialog}
-              startLngLat={[
-                userLocation.coordinates.lng,
-                userLocation.coordinates.lat,
-              ]}
-              accessToken={mapboxgl.accessToken}
-            />
+          popup.on("open", () => {
+            setPopupOpen(listing);
+            dispatch(setSelectedListing(listing));
+            createRoot(popupContainer).render(
+              <MapMarkerPopup
+                listing={listing}
+                openDetailDialog={openDetailDialog}
+                closeDetailDialog={closeDetailDialog}
+                startLngLat={[
+                  userLocation.coordinates.lng,
+                  userLocation.coordinates.lat,
+                ]}
+                accessToken={mapboxgl.accessToken}
+              />
+            );
+          });
+
+          popup.on("close", () => {
+            setPopupOpen(null);
+            dispatch(setSelectedListing(null));
+            clearRoute();
+          });
+
+          const marker = new mapboxgl.Marker(markerEl)
+            .setLngLat([listing.longitude, listing.latitude])
+            .setPopup(popup)
+            .addTo(map.current);
+
+          markerPopups.current[listing.id] = popup;
+
+          markerEl.addEventListener("mouseenter", () =>
+            setHoveredListing(listing)
+          );
+          markerEl.addEventListener("mouseleave", () =>
+            setHoveredListing(null)
           );
         });
-
-        popup.on("close", () => {
-          setPopupOpen(null);
-          dispatch(setSelectedListing(null));
-          clearRoute();
-        });
-
-        const marker = new mapboxgl.Marker(markerEl)
-          .setLngLat([listing.longitude, listing.latitude])
-          .setPopup(popup)
-          .addTo(map.current);
-
-        markerPopups.current[listing.id] = popup;
-
-        markerEl.addEventListener("mouseenter", () =>
-          setHoveredListing(listing)
-        );
-        markerEl.addEventListener("mouseleave", () => setHoveredListing(null));
-      });
 
       // Add user location marker
       if (
@@ -307,13 +310,27 @@ export default function SearchMap({
     e.preventDefault();
     dispatch(setListingDetails(listing));
     setDetailDialog(true);
+
+    // update url
+    const url = new URL(window.location);
+    url.searchParams.set("dialog", listing.id);
+    window.history.pushState(
+      { detailDialog: true, listingId: listing.id },
+      "",
+      url
+    );
   };
 
-  const closeDetailDialog = (e) => {
+  const closeDetailDialog = (e, listing) => {
     e.preventDefault();
     dispatch(setListingDetails(null));
     dispatch(setCurrentStep("selectedListing"));
     setDetailDialog(false);
+
+    // Remove the dialog query parameter
+    const url = new URL(window.location);
+    url.searchParams.delete("dialog");
+    window.history.pushState({ dialogOpen: false }, "", url);
   };
 
   const handleLocateUser = () => {

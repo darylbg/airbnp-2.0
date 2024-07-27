@@ -1,0 +1,15 @@
+.listing-booking-content {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+}
+
+.listing-details {
+    display: flex;
+    flex: 1;
+}
+
+.booking-info {
+    display: flex;
+    flex: 1;
+}

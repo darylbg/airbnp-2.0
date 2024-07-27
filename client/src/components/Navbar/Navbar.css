@@ -181,22 +181,6 @@
   width: 100vw;
 }
 
-.signIn-dialog-content {
-  background-color: white;
-  border-radius: 6px;
-  box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
-    hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90vw;
-  max-width: 400px;
-  max-height: 85vh;
-  padding: 35px;
-  overflow-y: auto;
-}
-
 .signIn-dialog-close {
   position: absolute;
   top: 10px;
@@ -216,27 +200,5 @@
 @media screen and (max-width: 768px) {
   .navigation-menu-root {
     display: none;
-  }
-
-  .signIn-dialog-content {
-    background-color: white;
-    border-bottom-right-radius: 0px;
-    border-bottom-left-radius: 0px;
-    box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
-      hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
-    position: fixed;
-    top: 10%;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: auto;
-    max-height: 95vh;
-    padding: 35px;
-    transform: none;
-    max-width: none;
-    justify-content: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
   }
 }

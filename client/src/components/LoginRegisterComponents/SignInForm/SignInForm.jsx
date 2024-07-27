@@ -4,13 +4,12 @@ import { ApolloError, useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import * as Form from "@radix-ui/react-form";
 import toast from "react-hot-toast";
-import ToastComponent from "../PrimitiveComponents/ToastComponent/ToastComponent";
-import { SIGN_IN_MUTATION } from "../../utils/mutations";
-import Auth from "../../utils/auth";
-import { loginUser } from "../../reducers/authReducer";
-import { setUserDetails } from "../../reducers/userDetailsReducer";
-import { setUserListings } from "../../reducers/userListingsReducer";
-
+import ToastComponent from "../../PrimitiveComponents/ToastComponent/ToastComponent";
+import { SIGN_IN_MUTATION } from "../../../utils/mutations";
+import Auth from "../../../utils/auth";
+import { loginUser } from "../../../reducers/authReducer";
+import { setUserDetails } from "../../../reducers/userDetailsReducer";
+import { setUserListings } from "../../../reducers/userListingsReducer";
 import "./SignInRegisterForms.css";
 
 export default function SignInForm({ handleSignInRegisterToggle }) {

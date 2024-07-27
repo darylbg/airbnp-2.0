@@ -30,6 +30,7 @@ import Listings from "./components/DashboardComponents/Listings/Listings";
 import Notifications from "./components/DashboardComponents/Notifications/Notifications";
 import Payments from "./components/DashboardComponents/Payments/Payments";
 import Reviews from "./components/DashboardComponents/Reviews/Reviews";
+import Checkout from "./components/BookingCycleComponents/Checkout/Checkout";
 
 const httpLink = createHttpLink({
   uri: "http://localhost:3001/graphql",
@@ -103,6 +104,7 @@ function App() {
                   element={<TermsAndConditions />}
                 />
               </Route>
+              <Route path="checkout" element={<Checkout />}/>
             </Routes>
             <MobileNavbar />
           </div>

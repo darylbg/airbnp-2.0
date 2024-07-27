@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-import SignInForm from "../SignInForm/SignInForm";
-import RegisterForm from "../RegisterForm/RegisterForm";
+import SignInForm from "../LoginRegisterComponents/SignInForm/SignInForm";
+import RegisterForm from "../LoginRegisterComponents/RegisterForm/RegisterForm";
 
 export default function LoginRequiredPrompt() {
   const [toggleSignInRegister, setToggleSignInRegister] = useState(true);

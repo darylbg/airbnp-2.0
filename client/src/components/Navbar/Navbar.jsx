@@ -2,31 +2,21 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
-import * as Dialog from "@radix-ui/react-dialog";
 import { HamburgerMenuIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import authService from "../../utils/auth";
-import SignInForm from "../SignInForm/SignInForm";
-import RegisterForm from "../RegisterForm/RegisterForm";
+import ButtonComponent from "../PrimitiveComponents/ButtonComponent/ButtonComponent";
 import DialogComponent from "../PrimitiveComponents/DialogComponent/DialogComponent";
 import Logo from "../../assets/images/logo_colour_50px.png";
 import "./Navbar.css";
-import toast from "react-hot-toast";
-
+import LoginRegisterComponent from "../LoginRegisterComponents/LoginRegisterComponent";
 export default function Navbar({}) {
-  const [toggleSignInRegister, setToggleSignInRegister] = useState(true);
-  const [dialogOpen, setDialogOpen] = useState(false);
+
   const [scrolled, setScrolled] = useState(false);
+  const [loginRegisterDialog, setLoginRegisterDialog] = useState(false);
 
   // querying redux for logged in user
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const currentUser = useSelector((state) => state.userDetails.byId);
-
-  // set sign in form to default display when dialog is opened
-  useEffect(() => {
-    if (!dialogOpen) {
-      setToggleSignInRegister(true);
-    }
-  }, [dialogOpen]);
 
   // set shadow on navbar when page scrolled
   useEffect(() => {
@@ -39,17 +29,21 @@ export default function Navbar({}) {
     };
   }, []);
 
-  // toggle between sign in and register forms
-  const handleSignInRegisterToggle = (e) => {
-    e.preventDefault();
-    setToggleSignInRegister(!toggleSignInRegister);
-  };
-
   const logout = (e) => {
     e.preventDefault();
     authService.logout().then(() => {
       window.location.assign("/"); // This reloads the page and redirects to the root URL
     });
+  };
+
+  const openLoginRegisterDialog = (e) => {
+    e.preventDefault();
+    setLoginRegisterDialog(true);
+  };
+
+  const closeLoginRegisterDialog = (e) => {
+    e.preventDefault();
+    setLoginRegisterDialog(false);
   };
 
   return (
@@ -155,49 +149,32 @@ export default function Navbar({}) {
                   </NavLink>
                 </NavigationMenu.Item>
                 <NavigationMenu.Item className="navigation-menu-item" asChild>
-                    <Link
-                      className="navigation-menu-link dropdown-menu-link"
-                      onClick={logout}
-                    >
-                      Logout
-                    </Link>
+                  <Link
+                    className="navigation-menu-link dropdown-menu-link"
+                    onClick={logout}
+                  >
+                    Logout
+                  </Link>
                 </NavigationMenu.Item>
               </NavigationMenu.Content>
             </NavigationMenu.Item>
           ) : (
-            <NavigationMenu.Item className="navigation-menu-item">
-              <Dialog.Root
-                open={dialogOpen}
-                onOpenChange={() => setDialogOpen(!dialogOpen)}
-              >
-                <Dialog.Trigger className="sign-in-button">
-                  <span>Sign in</span>
-                  <span>Register</span>
-                </Dialog.Trigger>
-                <Dialog.Portal>
-                  <Dialog.Overlay className="signIn-dialog-overlay" />
-                  <Dialog.Content className="signIn-dialog-content">
-                    {toggleSignInRegister ? (
-                      <SignInForm
-                        handleSignInRegisterToggle={handleSignInRegisterToggle}
-                      />
-                    ) : (
-                      <RegisterForm
-                        handleSignInRegisterToggle={handleSignInRegisterToggle}
-                      />
-                    )}
-                    <Dialog.Close asChild>
-                      <span className="material-symbols-outlined signIn-dialog-close">
-                        close
-                      </span>
-                    </Dialog.Close>
-                  </Dialog.Content>
-                </Dialog.Portal>
-              </Dialog.Root>
-            </NavigationMenu.Item>
+            <ButtonComponent type="button" action={openLoginRegisterDialog} className="default-button">Login</ButtonComponent>
           )}
         </NavigationMenu.List>
       </NavigationMenu.Root>
+      <DialogComponent
+        className="content-width-dialog login-register-dialog"
+        backdropClosable={true}
+        dialogState={loginRegisterDialog}
+        closeDialog={closeLoginRegisterDialog}
+        icon="close"
+        dialogHeader="Login/Register"
+      >
+        <LoginRegisterComponent
+          closeLoginRegisterDialog={closeLoginRegisterDialog}
+        />
+      </DialogComponent>
     </>
   );
 }

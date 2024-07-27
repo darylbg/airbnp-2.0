@@ -6,8 +6,8 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { HomeIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import authService from "../../utils/auth";
 
-import SignInForm from "../SignInForm/SignInForm";
-import RegisterForm from "../RegisterForm/RegisterForm";
+import SignInForm from "../LoginRegisterComponents/SignInForm/SignInForm";
+import RegisterForm from "../LoginRegisterComponents/RegisterForm/RegisterForm";
 import "./MobileNavbar.css";
 
 const MobileNavbar = forwardRef((props, ref) => {
@@ -134,7 +134,7 @@ const MobileNavbar = forwardRef((props, ref) => {
                   </Dialog.Trigger>
                   <Dialog.Portal>
                     <Dialog.Overlay className="signIn-dialog-overlay" />
-                    <Dialog.Content className="signIn-dialog-content">
+                    <Dialog.Content className="default-button">
                       {toggleSignInRegister ? (
                         <SignInForm
                           handleSignInRegisterToggle={

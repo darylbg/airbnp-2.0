@@ -5,15 +5,17 @@ import * as Form from "@radix-ui/react-form";
 import { useMutation } from "@apollo/client";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Auth from "../../utils/auth";
-import { loginUser } from "../../reducers/authReducer";
-import { setUserDetails } from "../../reducers/userDetailsReducer";
-import { REGISTER_MUTATION } from "../../utils/mutations";
-
+import Auth from "../../../utils/auth";
+import { loginUser } from "../../../reducers/authReducer";
+import { setUserDetails } from "../../../reducers/userDetailsReducer";
+import { REGISTER_MUTATION } from "../../../utils/mutations";
+import toast from "react-hot-toast";
+import ToastComponent from "../../PrimitiveComponents/ToastComponent/ToastComponent";
 import "../SignInForm/SignInRegisterForms.css";
 
 export default function RegisterForm({
   handleSignInRegisterToggle,
+  closeLoginRegisterDialog
 }) {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
@@ -66,9 +68,11 @@ export default function RegisterForm({
       // dispatch to updated redux store
       dispatch(loginUser({id: userId, token: registeredUserData.token}));
       dispatch(setUserDetails(registeredUserData.user));
+      closeLoginRegisterDialog();
 
       // set token in local storage
       Auth.login(registeredUser.data.register.token);
+      toast.success(<ToastComponent message={`Welcome ${registeredUserData.firstName}.`}/>);
     } catch (error) {
       if (error.graphQLErrors && error.graphQLErrors.length > 0) {
         const firstGraphQLErrorCode = error.graphQLErrors[0].extensions.code;
