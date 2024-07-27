@@ -4,12 +4,29 @@
     flex-direction: row;
 }
 
-.listing-details {
+.listing-booking-details {
     display: flex;
+    flex-direction: column;
     flex: 1;
 }
 
-.booking-info {
+.listing-booking-details .map-container {
+    max-height: 300px;
+    border-radius: 10px;
+}
+
+.listing-marker {
+    background-color: red;
+    /* background-image: url("../../../assets//images/icons/toilet-paper.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain; */
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 50%;
+}
+
+.listing-booking-info {
     display: flex;
     flex-direction: column;
     flex: 1;
