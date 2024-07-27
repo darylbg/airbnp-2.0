@@ -12,7 +12,7 @@ import { setUserDetails } from "../../../reducers/userDetailsReducer";
 import { setUserListings } from "../../../reducers/userListingsReducer";
 import "./SignInRegisterForms.css";
 
-export default function SignInForm({ handleSignInRegisterToggle }) {
+export default function SignInForm({ handleSignInRegisterToggle, handleLoginToCheckout }) {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
   const dispatch = useDispatch();
@@ -41,6 +41,9 @@ export default function SignInForm({ handleSignInRegisterToggle }) {
       dispatch(loginUser({id: userId, token: loggedInUserData.token}));
       dispatch(setUserDetails(loggedInUserData.user));
       dispatch(setUserListings(userListingsData));
+
+      // if loggin in to checkout, redirect to checkout page
+      handleLoginToCheckout();
 
       Auth.login(loggedInUser.data.login.token);
       

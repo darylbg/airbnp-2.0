@@ -15,7 +15,8 @@ import "../SignInForm/SignInRegisterForms.css";
 
 export default function RegisterForm({
   handleSignInRegisterToggle,
-  closeLoginRegisterDialog
+  closeLoginRegisterDialog,
+  handleLoginToCheckout
 }) {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
@@ -69,6 +70,9 @@ export default function RegisterForm({
       dispatch(loginUser({id: userId, token: registeredUserData.token}));
       dispatch(setUserDetails(registeredUserData.user));
       closeLoginRegisterDialog();
+
+      // if loggin in to checkout, redirect to checkout page
+      handleLoginToCheckout();
 
       // set token in local storage
       Auth.login(registeredUser.data.register.token);

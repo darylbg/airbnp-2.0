@@ -15,6 +15,7 @@ const initialState = {
         selectedListing: null,
         listingDetail: null,
         bookingDetails: {
+            listing: null,
             numberOfPeople: 1,
             arrivalTime: null,
             specialRequests: ""
@@ -54,7 +55,7 @@ const bookingSlice = createSlice({
             state.booking.listingDetail = action.payload;
             state.booking.currentStep = "listingDetails";
         },
-        updateBookingDetails(state, action) {
+        setBookingDetails(state, action) {
             state.booking.currentStep = "bookingDetails"
             state.booking.bookingDetails = {
                 ...state.booking.bookingDetails,
@@ -86,7 +87,7 @@ export const {
     setCurrentStep,
     setSelectedListing,
     setListingDetails,
-    updateBookingDetails,
+    setBookingDetails,
     proceedToCheckout,
     updateCheckoutInfo,
     resetBooking,
