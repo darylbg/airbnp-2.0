@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import mapboxgl from "mapbox-gl";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LoginRegisterComponent from "../../LoginRegisterComponents/LoginRegisterComponent";
 import "./ListingDetail.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 import PinIcon from "../../../assets/images/icons/pin_icon3.png";
 import { setBookingDetails } from "../../../reducers/bookingReducer";
-import ToiletPaperIcon from "../../../assets/images/icons/toilet-paper.png";
+import ButtonComponent from "../../PrimitiveComponents/ButtonComponent/ButtonComponent";
 
 export default function ListingDetail() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -21,6 +21,11 @@ export default function ListingDetail() {
   const [showLoginRequiredPrompt, setShowLoginRequiredPrompt] = useState(false);
   const [routeType, setRouteType] = useState("walking");
   const [routeData, setRouteData] = useState(null);
+  const [formattedRouteData, setFormattedRouteData] = useState({
+    distance: null,
+    duration: null,
+    googleMapsLink: "",
+  });
 
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
@@ -93,13 +98,13 @@ export default function ListingDetail() {
           ])
           .addTo(mapRef.current);
 
-          // Define bounds to include both markers if there are
-          const bounds = new mapboxgl.LngLatBounds(
-            [userLocation.coordinates.lng, userLocation.coordinates.lat],
-            [listing?.longitude || 0, listing?.latitude || 0]
-          );
-  
-          mapRef.current.fitBounds(bounds, { padding: 40 });
+        // Define bounds to include both markers if there are
+        const bounds = new mapboxgl.LngLatBounds(
+          [userLocation.coordinates.lng, userLocation.coordinates.lat],
+          [listing?.longitude || 0, listing?.latitude || 0]
+        );
+
+        mapRef.current.fitBounds(bounds, { padding: 40 });
       }
 
       if (listing) {
@@ -108,14 +113,13 @@ export default function ListingDetail() {
         new mapboxgl.Marker({ element: listingMarker })
           .setLngLat([listing.longitude || 0, listing.latitude || 0])
           .addTo(mapRef.current);
-        }
+      }
 
-        defineRoute(
-          [userLocation.coordinates.lng, userLocation.coordinates.lat],
-          [listing?.longitude, listing?.latitude],
-          routeType
-        );
-      
+      defineRoute(
+        [userLocation.coordinates.lng, userLocation.coordinates.lat],
+        [listing?.longitude, listing?.latitude],
+        routeType
+      );
     });
 
     return () => {
@@ -186,6 +190,57 @@ export default function ListingDetail() {
     }
   };
 
+  const handleRouteTypeSwitch = (method) => {
+    setRouteType(method);
+  };
+
+  const handleDurationFormat = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) {
+      return `${minutes} min`;
+    } else if (minutes < 1440) {
+      // less than a day
+      const hours = Math.floor(minutes / 60);
+      const remainingMinutes = minutes % 60;
+      return `${hours} hr${hours > 1 ? "s" : ""} ${
+        remainingMinutes > 0 ? remainingMinutes + " min" : ""
+      }`;
+    } else {
+      // one day or more
+      const days = Math.floor(minutes / 1440);
+      const remainingMinutes = minutes % 1440;
+      const hours = Math.floor(remainingMinutes / 60);
+      const finalMinutes = remainingMinutes % 60;
+      return `${days} day${days > 1 ? "s" : ""} ${
+        hours > 0 ? hours + " hr" + (hours > 1 ? "s" : "") : ""
+      } ${finalMinutes > 0 ? finalMinutes + " min" : ""}`;
+    }
+  };
+
+  const handleDistanceFormat = (meters) => {
+    // console.log(routeData?.distance)
+    const kilometers = (meters * 0.00062137).toFixed(2);
+    return `${kilometers} miles`;
+  };
+
+  useEffect(() => {
+    if (routeData && userLocation.coordinates.lat !== null) {
+      const formattedDistance = handleDistanceFormat(routeData.distance);
+      const formattedDuration = handleDurationFormat(routeData.duration);
+      const originLat = userLocation.coordinates.lat;
+      const originLng = userLocation.coordinates.lng;
+      const destinationLat = listing.latitude;
+      const destinationLng = listing.longitude;
+      const travelMode = routeType;
+      const directionsUrl = `https://www.google.com/maps/dir/?api=1&origin=${originLat},${originLng}&destination=${destinationLat},${destinationLng}&travelmode=${travelMode}`;
+      setFormattedRouteData({
+        duration: formattedDuration,
+        distance: formattedDistance,
+        googleMapsLink: directionsUrl,
+      });
+    }
+  }, [routeData]);
+
   return (
     <div className="listing-booking-content">
       <div className="listing-booking-details">
@@ -194,9 +249,58 @@ export default function ListingDetail() {
           ref={mapContainerRef}
           className="map-container"
         />
-        <button onClick={() => setRouteType("walking")}>Walking</button>
-        <button onClick={() => setRouteType("cycling")}>Cycling</button>
-        <button onClick={() => setRouteType("driving")}>Driving</button>
+        {(userLocation.coordinates.lat !== null ||
+          userLocation.coordinates.lng !== null) && (
+          <div className="search-route-types">
+            <div className="button-group">
+              <ButtonComponent
+                type="button"
+                className={`route-type-btn ${
+                  routeType === "walking" ? "active" : ""
+                }`}
+                action={() => handleRouteTypeSwitch("walking")}
+              >
+                <span class="material-symbols-outlined">directions_walk</span>
+                <span> Walk</span>
+              </ButtonComponent>
+              <ButtonComponent
+                type="button"
+                className={`route-type-btn ${
+                  routeType === "cycling" ? "active" : ""
+                }`}
+                action={() => handleRouteTypeSwitch("cycling")}
+              >
+                <span class="material-symbols-outlined">directions_bike</span>
+                <span> Cycle</span>
+              </ButtonComponent>
+              <ButtonComponent
+                type="button"
+                className={`route-type-btn ${
+                  routeType === "driving" ? "active" : ""
+                }`}
+                action={() => handleRouteTypeSwitch("driving")}
+              >
+                <span class="material-symbols-outlined">directions_car</span>
+                <span> Drive</span>
+              </ButtonComponent>
+            </div>
+            <div className="route-type-result">
+              <strong className="distance">
+                {formattedRouteData.distance}
+              </strong>
+              <strong className="duration">
+                {formattedRouteData.duration}
+              </strong>
+              <Link
+                to={formattedRouteData.googleMapsLink}
+                className="get-directions"
+                target="_blank"
+              >
+                Get directions
+              </Link>
+            </div>
+          </div>
+        )}
       </div>
       <div className="listing-booking-info">
         Booking info

@@ -14,6 +14,7 @@ import {
 } from "../../reducers/allListingsReducer";
 import ButtonComponent from "../../components/PrimitiveComponents/ButtonComponent/ButtonComponent";
 import { resetBooking, setUserLocation } from "../../reducers/bookingReducer";
+import { Link } from "react-router-dom";
 
 export default function Search() {
   const dispatch = useDispatch();
@@ -24,8 +25,8 @@ export default function Search() {
   const [formattedRouteData, setFormattedRouteData] = useState({
     distance: null,
     duration: null,
+    googleMapsLink: "",
   });
-  console.log(formattedRouteData);
   const [mapCenterCoordinates, setMapCenterCoordinates] = useState({
     lat: 52.54851,
     lng: -1.9801,
@@ -45,6 +46,7 @@ export default function Search() {
   const userLocation = useSelector(
     (state) => state.bookingCycle.userLocation.coordinates
   );
+  console.log(userLocation);
 
   useEffect(() => {
     if (refetchListings) {
@@ -91,19 +93,24 @@ export default function Search() {
     const minutes = Math.floor(seconds / 60);
     if (minutes < 60) {
       return `${minutes} min`;
-    } else if (minutes < 1440) { // less than a day
+    } else if (minutes < 1440) {
+      // less than a day
       const hours = Math.floor(minutes / 60);
       const remainingMinutes = minutes % 60;
-      return `${hours} hr${hours > 1 ? 's' : ''} ${remainingMinutes > 0 ? remainingMinutes + " min" : ""}`;
-    } else { // one day or more
+      return `${hours} hr${hours > 1 ? "s" : ""} ${
+        remainingMinutes > 0 ? remainingMinutes + " min" : ""
+      }`;
+    } else {
+      // one day or more
       const days = Math.floor(minutes / 1440);
       const remainingMinutes = minutes % 1440;
       const hours = Math.floor(remainingMinutes / 60);
       const finalMinutes = remainingMinutes % 60;
-      return `${days} day${days > 1 ? 's' : ''} ${hours > 0 ? hours + " hr" + (hours > 1 ? 's' : '') : ""} ${finalMinutes > 0 ? finalMinutes + " min" : ""}`;
+      return `${days} day${days > 1 ? "s" : ""} ${
+        hours > 0 ? hours + " hr" + (hours > 1 ? "s" : "") : ""
+      } ${finalMinutes > 0 ? finalMinutes + " min" : ""}`;
     }
   };
-  
 
   const handleDistanceFormat = (meters) => {
     // console.log(routeData?.distance)
@@ -112,12 +119,19 @@ export default function Search() {
   };
 
   useEffect(() => {
-    if (routeData) {
+    if (routeData && (userLocation.lat !== null)) {
       const formattedDistance = handleDistanceFormat(routeData.distance);
       const formattedDuration = handleDurationFormat(routeData.duration);
+      const originLat = userLocation.lat;
+      const originLng = userLocation.lng;
+      const destinationLat = selectedListing.latitude;
+      const destinationLng = selectedListing.longitude;
+      const travelMode = routeType;
+      const directionsUrl = `https://www.google.com/maps/dir/?api=1&origin=${originLat},${originLng}&destination=${destinationLat},${destinationLng}&travelmode=${travelMode}`;
       setFormattedRouteData({
         duration: formattedDuration,
         distance: formattedDistance,
+        googleMapsLink: directionsUrl,
       });
     }
   }, [routeData]);
@@ -193,6 +207,13 @@ export default function Search() {
                     <strong className="duration">
                       {formattedRouteData.duration}
                     </strong>
+                    <Link
+                      to={formattedRouteData.googleMapsLink}
+                      className="get-directions"
+                      target="_blank"
+                    >
+                      Get directions
+                    </Link>
                   </div>
                 </div>
               )}

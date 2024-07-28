@@ -72,6 +72,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: baseline;
 }
 
 .route-type-result .distance {
@@ -80,6 +81,11 @@
 
 .route-type-result .duration {
   color: var(--black-12);
+}
+
+.route-type-result .get-directions {
+  color: var(--blue-10);
+  font-size: 0.7rem;
 }
 
 .search-listings-input input {

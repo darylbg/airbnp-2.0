@@ -106,7 +106,7 @@ export default function SearchMap({
             });
 
             map.current.addLayer({
-              id: "route",
+              id: "route-border",
               type: "line",
               source: "route",
               layout: {
@@ -114,8 +114,8 @@ export default function SearchMap({
                 "line-join": "round",
               },
               paint: {
-                "line-color": "#000",
-                "line-width": 5,
+                "line-color": "#0588F0", // Border color
+                "line-width": 5, // Border width (should be greater than route line width)
               },
             });
           }
