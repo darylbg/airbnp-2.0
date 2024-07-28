@@ -4,7 +4,6 @@ import { GET_ALL_LISTINGS } from "../../utils/queries";
 import { useDispatch, useSelector } from "react-redux";
 import { SearchBox } from "@mapbox/search-js-react";
 import * as Form from "@radix-ui/react-form";
-import { useForm } from "react-hook-form";
 import SearchListing from "../../components/SearchListing/SearchListing";
 import "./Search.css";
 import SearchMap from "../../components/SearchMap/SearchMap";
@@ -13,7 +12,7 @@ import {
   clearRefetchFlag,
 } from "../../reducers/allListingsReducer";
 import ButtonComponent from "../../components/PrimitiveComponents/ButtonComponent/ButtonComponent";
-import { resetBooking, setUserLocation } from "../../reducers/bookingReducer";
+import { setUserLocation } from "../../reducers/bookingReducer";
 import { Link } from "react-router-dom";
 
 export default function Search() {
@@ -119,7 +118,7 @@ export default function Search() {
   };
 
   useEffect(() => {
-    if (routeData && (userLocation.lat !== null)) {
+    if (routeData && userLocation.lat !== null) {
       const formattedDistance = handleDistanceFormat(routeData.distance);
       const formattedDuration = handleDurationFormat(routeData.duration);
       const originLat = userLocation.lat;

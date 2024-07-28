@@ -2,6 +2,7 @@
     display: flex;
     width: 100%;
     flex-direction: row;
+    gap: 2rem;
 }
 
 .listing-booking-details {
@@ -10,21 +11,31 @@
     flex: 1;
 }
 
+.listing-booking-details .booking-images {
+    display: flex;
+    height: 200px;
+}
+
+.listing-booking-details .booking-images .carousel-container {
+    width: 100%;
+}
+
+.listing-booking-details .booking-images img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
 .listing-booking-details .map-container {
-    max-height: 300px;
+    max-height: 250px;
     border-radius: 10px;
 }
 
 .listing-marker {
     background-color: var(--pink-10);
-    /* background-image: url("../../../assets//images/icons/toilet-paper.png");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain; */
     width: 1.2rem;
     height: 1.2rem;
     border-radius: 50%;
-    /* border: 3px solid var(--white-13); */
 }
 
 .listing-booking-info {

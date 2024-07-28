@@ -5,7 +5,6 @@ import mapboxgl from "mapbox-gl";
 import ButtonComponent from "../PrimitiveComponents/ButtonComponent/ButtonComponent";
 import {
   setSelectedListing,
-  resetBooking,
   resetUserLocation,
   setUserLocation,
   setListingDetails,
@@ -114,8 +113,8 @@ export default function SearchMap({
                 "line-join": "round",
               },
               paint: {
-                "line-color": "#0588F0", // Border color
-                "line-width": 5, // Border width (should be greater than route line width)
+                "line-color": "#0588F0",
+                "line-width": 5, 
               },
             });
           }
@@ -400,7 +399,7 @@ export default function SearchMap({
         closeDialog={closeDetailDialog}
         icon="close"
         backdropClosable={false}
-        dialogHeader={listingDetail?.listing_title}
+        dialogHeader={`Book ${listingDetail?.listing_title}`}
         minimize={true}
       >
         <ListingDetail />

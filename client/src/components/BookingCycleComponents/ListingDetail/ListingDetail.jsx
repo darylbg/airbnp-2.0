@@ -8,12 +8,21 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import PinIcon from "../../../assets/images/icons/pin_icon3.png";
 import { setBookingDetails } from "../../../reducers/bookingReducer";
 import ButtonComponent from "../../PrimitiveComponents/ButtonComponent/ButtonComponent";
+import Carousel from "react-multi-carousel";
+import {
+  CustomLeftArrow,
+  CustomRightArrow,
+} from "../../SearchListing/SearchListing";
 
 export default function ListingDetail() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const listing = useSelector(
     (state) => state.bookingCycle.booking.listingDetail
   );
+  if (listing != null) {
+    console.log(listing.listing_image);
+  }
+
   const userLocation = useSelector((state) => state.bookingCycle.userLocation);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -176,7 +185,7 @@ export default function ListingDetail() {
                 "line-join": "round",
               },
               paint: {
-                "line-color": "#000",
+                "line-color": "#0588F0",
                 "line-width": 5,
               },
             });
@@ -241,14 +250,60 @@ export default function ListingDetail() {
     }
   }, [routeData]);
 
+  // image carousel deets
+  const responsive = {
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 1,
+      slidesToSlide: 1,
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 1,
+      slidesToSlide: 1,
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1,
+      slidesToSlide: 1,
+    },
+  };
+
   return (
     <div className="listing-booking-content">
       <div className="listing-booking-details">
+        <div className="booking-images">
+          {listing ? (
+            <Carousel
+              swipeable={false}
+              draggable={false}
+              showDots={false}
+              responsive={responsive}
+              infinite={true}
+              keyBoardControl={true}
+              customTransition="all .5"
+              transitionDuration={500}
+              containerClass="carousel-container"
+              // removeArrowOnDeviceType={["tablet", "mobile"]}
+              dotListClass="custom-dot-list-style"
+              itemClass="carousel-item-padding-40-px"
+              arrows={true}
+              customLeftArrow={<CustomLeftArrow />}
+              customRightArrow={<CustomRightArrow />}
+            >
+              {listing.listing_image.map((image, index) => (
+                <img key={index} src={image} alt="image" className="" />
+              ))}
+            </Carousel>
+          ) : (
+            <div>no images</div>
+          )}
+        </div>
         <div
           style={{ height: "500px", width: "100%" }} // Adjust height and width as needed
           ref={mapContainerRef}
           className="map-container"
-        />
+        ></div>
         {(userLocation.coordinates.lat !== null ||
           userLocation.coordinates.lng !== null) && (
           <div className="search-route-types">
