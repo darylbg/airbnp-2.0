@@ -273,7 +273,7 @@ export default function ListingDetail() {
     <div className="listing-booking-content">
       <div className="listing-booking-details">
         <div className="booking-images">
-          {listing ? (
+          {/* {listing ? ( */}
             <Carousel
               swipeable={false}
               draggable={false}
@@ -283,7 +283,7 @@ export default function ListingDetail() {
               keyBoardControl={true}
               customTransition="all .5"
               transitionDuration={500}
-              containerClass="carousel-container"
+              containerClass="booking-carousel-container"
               // removeArrowOnDeviceType={["tablet", "mobile"]}
               dotListClass="custom-dot-list-style"
               itemClass="carousel-item-padding-40-px"
@@ -291,13 +291,14 @@ export default function ListingDetail() {
               customLeftArrow={<CustomLeftArrow />}
               customRightArrow={<CustomRightArrow />}
             >
-              {listing.listing_image.map((image, index) => (
+              <img src="https://imageio.forbes.com/specials-images/imageserve/5d35eacaf1176b0008974b54/2020-Chevrolet-Corvette-Stingray/0x0.jpg?format=jpg&crop=4560,2565,x790,y784,safe&width=960" alt="" />
+              {/* {listing.listing_image.map((image, index) => (
                 <img key={index} src={image} alt="image" className="" />
-              ))}
+              ))} */}
             </Carousel>
-          ) : (
-            <div>no images</div>
-          )}
+          {/* ) : ( */}
+            {/* <div>no images</div>
+          )} */}
         </div>
         <div
           style={{ height: "500px", width: "100%" }} // Adjust height and width as needed
