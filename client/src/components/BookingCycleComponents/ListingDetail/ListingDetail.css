@@ -29,10 +29,52 @@
     object-fit: cover;
 }
 
+.booking-header-subtitle {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.booking-header-subtitle .available {
+    color: green;
+}
+
+.booking-header-subtitle .unavailable {
+    color: red;
+}
+
 .listing-booking-details .map-container {
     max-height: 250px;
     border-radius: 10px;
 }
+
+.booking-header-subtitle .travel {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+}
+
+.booking-header-subtitle .travel .duration,
+.booking-header-subtitle .travel .distance {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.booking-header-subtitle .travel .duration .material-symbols-outlined {
+    font-size: 1.1rem;
+}
+
+.booking-header-subtitle .travel .distance .material-symbols-outlined {
+    font-size: 10px;
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
 
 .listing-marker {
     background-color: var(--pink-10);

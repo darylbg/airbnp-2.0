@@ -21,6 +21,7 @@ export default function ListingDetail() {
   );
 
   const userLocation = useSelector((state) => state.bookingCycle.userLocation);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -32,14 +33,12 @@ export default function ListingDetail() {
     duration: null,
     googleMapsLink: "",
   });
-
   const [walkingRouteData, setWalkingRouteData] = useState(null);
-  // console.log(walkingRouteData?.duration);
   const [formattedWalkingRouteData, setFormattedWalkingRouteData] = useState({
     distance: null,
-    duration: null
+    duration: null,
   });
-  console.log(walkingRouteData);
+
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
 
@@ -241,11 +240,15 @@ export default function ListingDetail() {
   useEffect(() => {
     if (routeData && userLocation.coordinates.lat !== null) {
       // set walking data fixed
-      const formattedWalkingDistance = handleDistanceFormat(walkingRouteData?.distance);
-      const formattedWalkingDuration = handleDurationFormat(walkingRouteData?.duration);
+      const formattedWalkingDistance = handleDistanceFormat(
+        walkingRouteData?.distance
+      );
+      const formattedWalkingDuration = handleDurationFormat(
+        walkingRouteData?.duration
+      );
       setFormattedWalkingRouteData({
         distance: formattedWalkingDistance,
-        duration: formattedWalkingDuration
+        duration: formattedWalkingDuration,
       });
       // set other transport methods when called
       const formattedDistance = handleDistanceFormat(routeData.distance);
@@ -313,16 +316,36 @@ export default function ListingDetail() {
         <div className="booking-header">
           <p className="house-type">private home</p>
           <h2 className="title">{listing?.listing_title}</h2>
-          <div className="subtitle">
+          <div className="booking-header-subtitle">
             {listing?.availability ? (
               <span className="available">Open now</span>
             ) : (
               <span className="unavailable">Closed</span>
             )}
-            <div className="travel-duration">
-              <span class="material-symbols-outlined">directions_walk</span>
-              <span>{formattedWalkingRouteData?.duration !== null ? formattedWalkingRouteData.duration : ""}</span>
+            {userLocation.coordinates.lng == null ||
+              userLocation.coordinates.lat == null ?
+            (<span>set your location to view travel</span> ) : (
+            <div className="travel">
+              <div className="duration">
+                <span class="material-symbols-outlined">directions_walk</span>
+                <span className="text">
+                  {formattedWalkingRouteData?.duration !== null
+                    ? formattedWalkingRouteData.duration
+                    : ""}
+                </span>
+              </div>
+              <div className="distance">
+                <span class="material-symbols-outlined">
+                  radio_button_unchecked
+                </span>
+                <strong className="text">
+                  {formattedWalkingRouteData?.distance !== null
+                    ? formattedWalkingRouteData.distance
+                    : ""}
+                </strong>
+              </div>
             </div>
+            )}
           </div>
         </div>
         <div className="booking-body"></div>
