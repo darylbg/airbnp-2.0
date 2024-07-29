@@ -123,8 +123,8 @@ export default function Search() {
       const formattedDuration = handleDurationFormat(routeData.duration);
       const originLat = userLocation.lat;
       const originLng = userLocation.lng;
-      const destinationLat = selectedListing.latitude;
-      const destinationLng = selectedListing.longitude;
+      const destinationLat = selectedListing?.latitude;
+      const destinationLng = selectedListing?.longitude;
       const travelMode = routeType;
       const directionsUrl = `https://www.google.com/maps/dir/?api=1&origin=${originLat},${originLng}&destination=${destinationLat},${destinationLng}&travelmode=${travelMode}`;
       setFormattedRouteData({

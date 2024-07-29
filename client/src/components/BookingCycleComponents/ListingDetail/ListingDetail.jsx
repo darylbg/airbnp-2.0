@@ -17,11 +17,8 @@ import {
 export default function ListingDetail() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const listing = useSelector(
-    (state) => state.bookingCycle.booking.listingDetail
+    (state) => state.bookingCycle.booking.listingDetail?.listing
   );
-  if (listing != null) {
-    console.log(listing.listing_image);
-  }
 
   const userLocation = useSelector((state) => state.bookingCycle.userLocation);
   const navigate = useNavigate();
@@ -36,6 +33,13 @@ export default function ListingDetail() {
     googleMapsLink: "",
   });
 
+  const [walkingRouteData, setWalkingRouteData] = useState(null);
+  // console.log(walkingRouteData?.duration);
+  const [formattedWalkingRouteData, setFormattedWalkingRouteData] = useState({
+    distance: null,
+    duration: null
+  });
+  console.log(walkingRouteData);
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
 
@@ -127,8 +131,10 @@ export default function ListingDetail() {
       defineRoute(
         [userLocation.coordinates.lng, userLocation.coordinates.lat],
         [listing?.longitude, listing?.latitude],
-        routeType
-      );
+        "walking"
+      ).then((data) => {
+        setWalkingRouteData(data);
+      });
     });
 
     return () => {
@@ -191,6 +197,7 @@ export default function ListingDetail() {
             });
           }
         }
+        return data.routes[0];
       } else {
         console.warn("No routes found");
       }
@@ -227,13 +234,20 @@ export default function ListingDetail() {
   };
 
   const handleDistanceFormat = (meters) => {
-    // console.log(routeData?.distance)
     const kilometers = (meters * 0.00062137).toFixed(2);
     return `${kilometers} miles`;
   };
 
   useEffect(() => {
     if (routeData && userLocation.coordinates.lat !== null) {
+      // set walking data fixed
+      const formattedWalkingDistance = handleDistanceFormat(walkingRouteData?.distance);
+      const formattedWalkingDuration = handleDurationFormat(walkingRouteData?.duration);
+      setFormattedWalkingRouteData({
+        distance: formattedWalkingDistance,
+        duration: formattedWalkingDuration
+      });
+      // set other transport methods when called
       const formattedDistance = handleDistanceFormat(routeData.distance);
       const formattedDuration = handleDurationFormat(routeData.duration);
       const originLat = userLocation.coordinates.lat;
@@ -273,33 +287,45 @@ export default function ListingDetail() {
     <div className="listing-booking-content">
       <div className="listing-booking-details">
         <div className="booking-images">
-          {/* {listing ? ( */}
+          {listing ? (
             <Carousel
               swipeable={false}
               draggable={false}
-              showDots={false}
+              showDots={listing?.listing_image.length > 1}
+              arrows={listing?.listing_image.length > 1}
               responsive={responsive}
               infinite={true}
               keyBoardControl={true}
               customTransition="all .5"
               transitionDuration={500}
-              containerClass="booking-carousel-container"
-              // removeArrowOnDeviceType={["tablet", "mobile"]}
+              containerClass="carousel-container"
               dotListClass="custom-dot-list-style"
               itemClass="carousel-item-padding-40-px"
-              arrows={true}
-              customLeftArrow={<CustomLeftArrow />}
-              customRightArrow={<CustomRightArrow />}
             >
-              <img src="https://imageio.forbes.com/specials-images/imageserve/5d35eacaf1176b0008974b54/2020-Chevrolet-Corvette-Stingray/0x0.jpg?format=jpg&crop=4560,2565,x790,y784,safe&width=960" alt="" />
-              {/* {listing.listing_image.map((image, index) => (
+              {listing?.listing_image.map((image, index) => (
                 <img key={index} src={image} alt="image" className="" />
-              ))} */}
+              ))}
             </Carousel>
-          {/* ) : ( */}
-            {/* <div>no images</div>
-          )} */}
+          ) : (
+            <div>no images</div>
+          )}
         </div>
+        <div className="booking-header">
+          <p className="house-type">private home</p>
+          <h2 className="title">{listing?.listing_title}</h2>
+          <div className="subtitle">
+            {listing?.availability ? (
+              <span className="available">Open now</span>
+            ) : (
+              <span className="unavailable">Closed</span>
+            )}
+            <div className="travel-duration">
+              <span class="material-symbols-outlined">directions_walk</span>
+              <span>{formattedWalkingRouteData?.duration !== null ? formattedWalkingRouteData.duration : ""}</span>
+            </div>
+          </div>
+        </div>
+        <div className="booking-body"></div>
         <div
           style={{ height: "500px", width: "100%" }} // Adjust height and width as needed
           ref={mapContainerRef}

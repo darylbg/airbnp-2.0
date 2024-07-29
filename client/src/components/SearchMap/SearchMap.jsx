@@ -47,7 +47,7 @@ export default function SearchMap({
     (state) => state.bookingCycle.booking.selectedListing
   );
   const listingDetail = useSelector(
-    (state) => state.bookingCycle.booking.listingDetail
+    (state) => state.bookingCycle.booking.listingDetail?.listing
   );
 
   const userLocation = useSelector((state) => state.bookingCycle.userLocation);
@@ -105,7 +105,7 @@ export default function SearchMap({
             });
 
             map.current.addLayer({
-              id: "route-border",
+              id: "route",
               type: "line",
               source: "route",
               layout: {
@@ -307,7 +307,7 @@ export default function SearchMap({
 
   const openDetailDialog = (e, listing) => {
     e.preventDefault();
-    dispatch(setListingDetails(listing));
+    dispatch(setListingDetails({listing: listing}));
     setDetailDialog(true);
 
     // update url
@@ -322,7 +322,7 @@ export default function SearchMap({
 
   const closeDetailDialog = (e, listing) => {
     e.preventDefault();
-    dispatch(setListingDetails(null));
+    dispatch(setListingDetails({listing: null}));
     dispatch(setCurrentStep("selectedListing"));
     setDetailDialog(false);
 

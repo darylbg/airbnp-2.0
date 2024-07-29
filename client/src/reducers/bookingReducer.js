@@ -11,9 +11,12 @@ const initialState = {
         fullAddress: ""
     },
     booking: {
-        currentStep: "", // Start with no specific step
+        currentStep: "", 
         selectedListing: null,
-        listingDetail: null,
+        listingDetail: {
+            listing: null,
+            travel: null
+        },
         bookingDetails: {
             listing: null,
             numberOfPeople: 1,
