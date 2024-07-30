@@ -332,28 +332,28 @@ export default function SearchMap({
     window.history.pushState({ dialogOpen: false }, "", url);
   };
 
-  const handleLocateUser = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const { latitude, longitude } = position.coords;
-        const userLocation = {
-          coordinates: {
-            lng: longitude,
-            lat: latitude,
-          },
-          fullAddress: "",
-        };
-        dispatch(setUserLocation(userLocation));
-        setMapCenterCoordinates({
-          lng: userLocation.coordinates.lng,
-          lat: userLocation.coordinates.lat,
-        });
-      });
-    } else {
-      console.log("error");
-      alert("geolocation not supported on this browser");
-    }
-  };
+  // const handleLocateUser = () => {
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition((position) => {
+  //       const { latitude, longitude } = position.coords;
+  //       const userLocation = {
+  //         coordinates: {
+  //           lng: longitude,
+  //           lat: latitude,
+  //         },
+  //         fullAddress: "",
+  //       };
+  //       dispatch(setUserLocation(userLocation));
+  //       setMapCenterCoordinates({
+  //         lng: userLocation.coordinates.lng,
+  //         lat: userLocation.coordinates.lat,
+  //       });
+  //     });
+  //   } else {
+  //     console.log("error");
+  //     alert("geolocation not supported on this browser");
+  //   }
+  // };
 
   return (
     <div className="search-map-wrapper">
@@ -389,9 +389,9 @@ export default function SearchMap({
           ))}
         </div>
       </div>
-      <ButtonComponent className="locate-user-button" action={handleLocateUser}>
+      {/* <ButtonComponent className="locate-user-button" action={handleLocateUser}>
         <span className="material-symbols-outlined">location_searching</span>
-      </ButtonComponent>
+      </ButtonComponent> */}
       <div ref={mapContainer} className="search-map-container" />
       <DialogComponent
         className="full-width-dialog"

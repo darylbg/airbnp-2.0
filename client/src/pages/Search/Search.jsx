@@ -45,7 +45,7 @@ export default function Search() {
   const userLocation = useSelector(
     (state) => state.bookingCycle.userLocation.coordinates
   );
-  console.log(userLocation);
+  // console.log(userLocation);
 
   useEffect(() => {
     if (refetchListings) {
@@ -135,6 +135,29 @@ export default function Search() {
     }
   }, [routeData]);
 
+  const handleLocateUser = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const { latitude, longitude } = position.coords;
+        const userLocation = {
+          coordinates: {
+            lng: longitude,
+            lat: latitude,
+          },
+          fullAddress: "",
+        };
+        dispatch(setUserLocation(userLocation));
+        setMapCenterCoordinates({
+          lng: userLocation.coordinates.lng,
+          lat: userLocation.coordinates.lat,
+        });
+      });
+    } else {
+      console.log("error");
+      alert("geolocation not supported on this browser");
+    }
+  };
+
   if (error) {
     console.log(error);
   }
@@ -145,19 +168,30 @@ export default function Search() {
       <div className="search-listings">
         <div className="search-listings-header">
           <div className="search-listings-input">
-            <Form.Root>
-              <Form.Field>
-                <SearchBox
-                  accessToken="pk.eyJ1IjoiZGF6emExMjMiLCJhIjoiY2x5MDM4c29yMGh1eTJqcjZzZTRzNzEzaiJ9.dkx0lvLDJy35oWNvOW5mFg"
-                  options={{
-                    language: "en",
-                    country: "GB",
-                  }}
-                  placeholder="Search address or city"
-                  onRetrieve={handleAddressSearch}
-                />
-              </Form.Field>
-            </Form.Root>
+            <div className="locators">
+              <Form.Root className="search-listings-form">
+                <Form.Field>
+                  <SearchBox
+                    accessToken="pk.eyJ1IjoiZGF6emExMjMiLCJhIjoiY2x5MDM4c29yMGh1eTJqcjZzZTRzNzEzaiJ9.dkx0lvLDJy35oWNvOW5mFg"
+                    options={{
+                      language: "en",
+                      country: "GB",
+                    }}
+                    placeholder="Search address or city"
+                    onRetrieve={handleAddressSearch}
+                  />
+                </Form.Field>
+              </Form.Root>
+              <ButtonComponent
+                className="locate-user-button primary-button"
+                action={handleLocateUser}
+              >
+                Near me
+                <span className="material-symbols-outlined">
+                  location_searching
+                </span>
+              </ButtonComponent>
+            </div>
             {selectedListing &&
               (userLocation.lat !== null || userLocation.lng !== null) && (
                 <div className="search-route-types">
@@ -224,7 +258,7 @@ export default function Search() {
             </ButtonComponent>
           </div>
         </div>
-        <div className="search-listings-display">
+        <div className="search-listings-display scrollbar-1">
           {listings &&
             listings.map((listing) => (
               <SearchListing

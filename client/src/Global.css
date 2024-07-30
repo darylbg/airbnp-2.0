@@ -89,7 +89,7 @@ body {
 
 /* custom scrollbar styling */
 .scrollbar-1::-webkit-scrollbar {
-  width: 5px;
+  width: 0.3rem;
 }
 
 .scrollbar-1::-webkit-scrollbar-track {
@@ -100,7 +100,7 @@ body {
 
 .scrollbar-1::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background-color: var(--black-50);
+  background-color: var(--black-7);
 }
 
 

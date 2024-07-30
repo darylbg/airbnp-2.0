@@ -42,6 +42,6 @@ const populateAmenities = async () => {
     console.log(error)
   }
 }
-populateAmenities();
+// populateAmenities();
 
 module.exports = Amenity;
