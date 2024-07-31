@@ -66,7 +66,7 @@ export default function MapMarkerPopup({
       <div className="map-popup-action">
         <PrimaryButton
           type="button"
-          className="default-button map-popup-button"
+          className="default-button action-button map-popup-button"
           loading={loading}
           action={(e) => openDetailDialog(e, listing)}
         >

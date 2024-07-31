@@ -9,6 +9,7 @@ import PinIcon from "../../../assets/images/icons/pin_icon3.png";
 import { setBookingDetails } from "../../../reducers/bookingReducer";
 import ButtonComponent from "../../PrimitiveComponents/ButtonComponent/ButtonComponent";
 import Carousel from "react-multi-carousel";
+import ProgressBar from "../../PrimitiveComponents/ProgressBar/ProgressBar";
 import {
   CustomLeftArrow,
   CustomRightArrow,
@@ -286,6 +287,12 @@ export default function ListingDetail() {
     },
   };
 
+  const progressSteps = [
+    { 1: "Select listing" },
+    { 2: "Booking info" },
+    { 3: "C" },
+  ];
+
   return (
     <div className="listing-booking-content">
       <div className="listing-booking-details">
@@ -323,28 +330,29 @@ export default function ListingDetail() {
               <span className="unavailable">Closed</span>
             )}
             {userLocation.coordinates.lng == null ||
-              userLocation.coordinates.lat == null ?
-            (<span>set your location to view travel</span> ) : (
-            <div className="travel">
-              <div className="duration">
-                <span class="material-symbols-outlined">directions_walk</span>
-                <span className="text">
-                  {formattedWalkingRouteData?.duration !== null
-                    ? formattedWalkingRouteData.duration
-                    : ""}
-                </span>
+            userLocation.coordinates.lat == null ? (
+              <span>set your location to view travel</span>
+            ) : (
+              <div className="travel">
+                <div className="duration">
+                  <span class="material-symbols-outlined">directions_walk</span>
+                  <span className="text">
+                    {formattedWalkingRouteData?.duration !== null
+                      ? formattedWalkingRouteData.duration
+                      : ""}
+                  </span>
+                </div>
+                <div className="distance">
+                  <span class="material-symbols-outlined">
+                    radio_button_unchecked
+                  </span>
+                  <strong className="text">
+                    {formattedWalkingRouteData?.distance !== null
+                      ? formattedWalkingRouteData.distance
+                      : ""}
+                  </strong>
+                </div>
               </div>
-              <div className="distance">
-                <span class="material-symbols-outlined">
-                  radio_button_unchecked
-                </span>
-                <strong className="text">
-                  {formattedWalkingRouteData?.distance !== null
-                    ? formattedWalkingRouteData.distance
-                    : ""}
-                </strong>
-              </div>
-            </div>
             )}
           </div>
         </div>
@@ -408,13 +416,24 @@ export default function ListingDetail() {
         )}
       </div>
       <div className="listing-booking-info">
-        Booking info
-        <button onClick={handleProceedToCheckout}>Checkout</button>
-        {showLoginRequiredPrompt && (
-          <LoginRegisterComponent
-            handleLoginToCheckout={handleLoginToCheckout}
-          />
-        )}
+        <div className="booking-info-wrapper">
+          <div className="booking-info-header">
+            <ProgressBar progressSteps={progressSteps} currentStep={2} className="booking-progress-steps" />
+          </div>
+          Booking info
+          <ButtonComponent
+            type="button"
+            className="default-button action-button checkout-button"
+            onClick={handleProceedToCheckout}
+          >
+            Checkout
+          </ButtonComponent>
+          {showLoginRequiredPrompt && (
+            <LoginRegisterComponent
+              handleLoginToCheckout={handleLoginToCheckout}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

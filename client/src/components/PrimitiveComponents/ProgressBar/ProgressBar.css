@@ -1,0 +1,14 @@
+.step-progress-bar {
+    display: flex;
+    flex-direction: row;
+    /* justify-content: space-between; */
+    position: relative;
+}
+
+.step-progress-bar .step {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+}

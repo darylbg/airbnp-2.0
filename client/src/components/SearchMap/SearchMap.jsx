@@ -332,29 +332,6 @@ export default function SearchMap({
     window.history.pushState({ dialogOpen: false }, "", url);
   };
 
-  // const handleLocateUser = () => {
-  //   if (navigator.geolocation) {
-  //     navigator.geolocation.getCurrentPosition((position) => {
-  //       const { latitude, longitude } = position.coords;
-  //       const userLocation = {
-  //         coordinates: {
-  //           lng: longitude,
-  //           lat: latitude,
-  //         },
-  //         fullAddress: "",
-  //       };
-  //       dispatch(setUserLocation(userLocation));
-  //       setMapCenterCoordinates({
-  //         lng: userLocation.coordinates.lng,
-  //         lat: userLocation.coordinates.lat,
-  //       });
-  //     });
-  //   } else {
-  //     console.log("error");
-  //     alert("geolocation not supported on this browser");
-  //   }
-  // };
-
   return (
     <div className="search-map-wrapper">
       <ButtonComponent type="button" className="search-this-area-button">
