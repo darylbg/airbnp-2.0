@@ -287,10 +287,10 @@ export default function ListingDetail() {
     },
   };
 
-  const progressSteps = [
+    const progressSteps = [
     { 1: "Select listing" },
     { 2: "Booking info" },
-    { 3: "C" },
+    { 3: "Checkout" },
   ];
 
   return (
@@ -418,7 +418,11 @@ export default function ListingDetail() {
       <div className="listing-booking-info">
         <div className="booking-info-wrapper">
           <div className="booking-info-header">
-            <ProgressBar progressSteps={progressSteps} currentStep={2} className="booking-progress-steps" />
+            <StepProgressBar
+          progressSteps={progressSteps}
+          currentStep={2}
+          className="booking-progress-bar"
+        />
           </div>
           Booking info
           <ButtonComponent
