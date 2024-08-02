@@ -48,16 +48,11 @@
 
 /* locate me button */
 .locate-user-button {
-  background-color: var(--black-11);
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 50px;
-  display: flex;
-  justify-content: space-between;
   gap: 1rem;
-  align-items: center;
-  /* box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.05), 0 0 6px 1px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.1); */
-  align-self: stretch;
+  border-radius: 20px;
+  padding-top: 0;
+  padding-bottom: 0;
+  height: 100%;
 }
 
 .locate-user-button:hover {
@@ -65,7 +60,7 @@
 }
 
 .locate-user-button .material-symbols-outlined {
-  font-size:1.2rem;
+  font-size: 1.2rem;
   font-weight: 500;
 }
 

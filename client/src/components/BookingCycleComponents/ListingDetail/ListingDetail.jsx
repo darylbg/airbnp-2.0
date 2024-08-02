@@ -9,7 +9,7 @@ import PinIcon from "../../../assets/images/icons/pin_icon3.png";
 import { setBookingDetails } from "../../../reducers/bookingReducer";
 import ButtonComponent from "../../PrimitiveComponents/ButtonComponent/ButtonComponent";
 import Carousel from "react-multi-carousel";
-import ProgressBar from "../../PrimitiveComponents/ProgressBar/ProgressBar";
+import StepProgressBar from "../../PrimitiveComponents/StepProgressBar/StepProgressBar";
 import {
   CustomLeftArrow,
   CustomRightArrow,

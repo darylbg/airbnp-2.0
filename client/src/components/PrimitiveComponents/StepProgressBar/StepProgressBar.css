@@ -1,20 +1,3 @@
-body {
-  background: transparent;
-  padding: 0 24px;
-  margin: 0;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-}
-
-.container {
-  width: 80vw;
-  outline: 1px solid red;
-}
-
 .step-progress-bar {
   display: flex;
   flex-direction: row;
@@ -29,14 +12,14 @@ body {
 
 .step-progress-bar .bar {
   height: 2px;
-  background-color: #989898;
+  background-color: var(--black-6);
   position: absolute;
   width: 100%;
   transform: translateY(-50%);
 }
 
 .step-progress-bar .bar .bar-highlight {
-  background-color: #FF385C;
+  background-color: var(--pink-10);
   height: 100%;
   
 }
@@ -54,39 +37,39 @@ body {
 .step-progress-bar .step .step-number {
   height: 30px;
   width: 30px;
-  border: 1px solid #707070;
+  border: 1px solid var(--black-9);
   background-color: white;
     display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  font-size: 14px
+  font-size: 14px;
+  color: var(--black-9);
 }
 
 
 .step-progress-bar .step-current .step-number {
-  background-color: #ff668d;
+  background-color: var(--pink-7);
   color: white;
-  /* border: 1px solid  #FF385C; */
   border: none;
 }
 
 .step-progress-bar .step-completed .step-number {
-  background-color: #FF385C;
-  color: white;
+  background-color: var(--pink-10);
+  color: var(--white-13);
   border: none
 }
 
 .step-progress-bar .step .step-caption {
   font-size: 12px;
-  color: black
+  color: var(--black-9);
 }
 
 .step-progress-bar .step-current .step-caption {
-  color: #ff385c
+  color: var(--pink-7);
 }
 
 .step-progress-bar .step-completed .step-caption {
-  color: #ff385c
+  color: var(--pink-10);
 }
 

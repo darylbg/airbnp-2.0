@@ -34,7 +34,7 @@ export default function Bookings() {
         }}
       >
         <PrimaryButton loading={false} className="default-button action-button">action</PrimaryButton>
-        <PrimaryButton loading={false} className="default-button main-button">main</PrimaryButton>
+        <PrimaryButton loading={false} className="default-button primary-button">main</PrimaryButton>
         <PrimaryButton loading={false} className="default-button secondary-button">secondary</PrimaryButton>
         <PrimaryButton loading={false} className="default-button control-button">control</PrimaryButton>
         <PrimaryButton loading={false} className="default-button delete-button">delete</PrimaryButton>
@@ -49,7 +49,7 @@ export default function Bookings() {
         }}
       >
         <PrimaryButton loading={true} className="default-button action-button">action</PrimaryButton>
-        <PrimaryButton loading={true} className="default-button main-button">main</PrimaryButton>
+        <PrimaryButton loading={true} className="default-button primary-button">main</PrimaryButton>
         <PrimaryButton loading={true} className="default-button secondary-button">secondary</PrimaryButton>
         <PrimaryButton loading={true} className="default-button control-button">control</PrimaryButton>
         <PrimaryButton loading={true} className="default-button delete-button">delete</PrimaryButton>

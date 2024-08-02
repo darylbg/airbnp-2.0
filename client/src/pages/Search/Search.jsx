@@ -183,7 +183,7 @@ export default function Search() {
                 </Form.Field>
               </Form.Root>
               <ButtonComponent
-                className="locate-user-button primary-button"
+                className="locate-user-button default-button primary-button"
                 action={handleLocateUser}
               >
                 Near me

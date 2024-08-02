@@ -1,4 +1,4 @@
-/* general button styles */
+general button styles
 button {
   position: relative;
 }
@@ -17,11 +17,15 @@ button:disabled {
   padding: 0.6rem 1.2rem;
   font-size: 1rem;
   border-radius: 4px;
-  font-weight: 400;
+  font-weight: 500;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.default-button:active {
+  transform: scale(0.98);
 }
 
 .large-rounded-button {
@@ -32,7 +36,6 @@ button:disabled {
   border-radius: 50px;
   width: -moz-fit-content;
   width: fit-content;
-  font-family: var(--inter);
 }
 
 @media screen and (max-width: 1000px) {
@@ -58,12 +61,12 @@ button:disabled {
   background-color: var(--pink-11);
 }
 
-.action-button:focus {
-  box-shadow: 0 0 0 2px #ffffff, 0 0 2px 5px var(--pink-8);
+.action-button:active {
+  background-color: var(--pink-12);
 }
 
 .action-button:disabled {
-  background-color: var(--pink-8);
+  background-color: var(--pink-6);
 }
 
 /* primary button for MAIN CRUD OPERATIONS */
@@ -76,8 +79,8 @@ button:disabled {
   background-color: var(--black-12);
 }
 
-.primary-button:focus {
-  box-shadow: 0 0 0 2px #ffffff, 0 0 2px 5px var(--black-7);
+.primary-button:active {
+  background-color: black;
 }
 
 .primary-button:disabled {
@@ -95,8 +98,8 @@ button:disabled {
   background-color: var(--black-3);
 }
 
-.secondary-button:focus {
-  box-shadow: 0 0 0 2px #ffffff, 0 0 2px 5px var(--black-2);
+.secondary-button:active {
+  background-color: var(--black-4);
 }
 
 .secondary-button:disabled {
@@ -108,17 +111,16 @@ button:disabled {
 .control-button {
   background-color: transparent;
   color: var(--black-12);
-  font-weight: 550;
+  font-weight: 600;
   text-decoration: underline;
 }
 
 .control-button:hover {
-  background-color: var(--black-2);
+  background-color: var(--black-1);
 }
 
-.control-button:focus {
+.control-button:active {
   background-color: var(--black-2);
-  box-shadow: 0 0 0 2px #ffffff, 0 0 2px 5px var(--black-2);
 }
 
 .control-button:disabled {
@@ -137,8 +139,8 @@ button:disabled {
   background-color: var(--red-11);
 }
 
-.delete-button:focus {
-  box-shadow: 0 0 0 2px #ffffff, 0 0 2px 5px var(--black-7);
+.delete-button:active {
+  background-color: var(--red-12);
 }
 
 .delete-button:disabled {

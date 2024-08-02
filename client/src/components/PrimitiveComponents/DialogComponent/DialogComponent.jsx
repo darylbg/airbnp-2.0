@@ -36,19 +36,12 @@ export default function DialogComponent({
     if (minimize) {
       setMinimized(true);
     }
-
-    // if (windowControlBtnRef.current) {
-    //   windowControlBtnRef.current.blur();
-    // }
   };
 
   const handleMaximizeDialog = (e) => {
     if (minimize) {
       setMinimized(false);
     }
-    // if (windowControlBtnRef.current) {
-    //   windowControlBtnRef.current.blur();
-    // }
   };
 
   const handleContentClick = (e) => {
