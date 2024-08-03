@@ -1,0 +1,16 @@
+.time-picker {
+    border: 1px solid var(--black-2);
+    display: flex;
+    flex-direction: row;
+}
+
+.time-picker .hour-selector {
+    /* overflow-y: auto; */
+    /* height: 500px; */
+    flex: 1;
+}
+
+.time-picker .minute-selector {
+    /* max-height: 200px; */
+    flex: 1;
+}

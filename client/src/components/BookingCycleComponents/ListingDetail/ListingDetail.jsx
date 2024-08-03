@@ -14,6 +14,8 @@ import {
   CustomLeftArrow,
   CustomRightArrow,
 } from "../../SearchListing/SearchListing";
+import WindowControlButton from "../../PrimitiveComponents/WindowControlButton/WindowControlButton";
+import TimePicker from "../../PrimitiveComponents/TimePicker/TimePicker";
 
 export default function ListingDetail() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -27,8 +29,11 @@ export default function ListingDetail() {
   const dispatch = useDispatch();
 
   const [showLoginRequiredPrompt, setShowLoginRequiredPrompt] = useState(false);
+  const [numberOfPeople, setNumberOfPeople] = useState(1);
+  const [arrivalTime, setArrivalTime] = useState("");
   const [routeType, setRouteType] = useState("walking");
   const [routeData, setRouteData] = useState(null);
+  const [showTimePicker, setShowTimePicker] = useState(false);
   const [formattedRouteData, setFormattedRouteData] = useState({
     distance: null,
     duration: null,
@@ -42,37 +47,6 @@ export default function ListingDetail() {
 
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
-
-  // Function to set booking details in Redux store
-  const handleReduxCheckout = () => {
-    dispatch(
-      setBookingDetails({
-        listing: listing,
-        numberOfPeople: 2,
-        arrivalTime: 1245,
-        specialRequests: "Your special request here",
-      })
-    );
-  };
-
-  // Function to handle proceed to checkout
-  const handleProceedToCheckout = () => {
-    if (isLoggedIn) {
-      handleReduxCheckout();
-      navigate("/checkout");
-    } else {
-      console.log("Please log in");
-      setShowLoginRequiredPrompt(true);
-    }
-  };
-
-  // Function to handle login and proceed to checkout
-  const handleLoginToCheckout = () => {
-    console.log("Login to checkout");
-    handleReduxCheckout();
-    setShowLoginRequiredPrompt(false);
-    navigate("/checkout");
-  };
 
   useEffect(() => {
     if (mapRef.current) return; // Avoid initializing more than once
@@ -238,6 +212,33 @@ export default function ListingDetail() {
     return `${kilometers} miles`;
   };
 
+  const handleDurationToTimeFormat = (seconds) => {
+    const now = new Date();
+
+    now.setSeconds(now.getSeconds() + seconds);
+
+    // Extract the hours, minutes, and seconds from the new time
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    // const secs = now.getSeconds();
+
+    // Format the time components to always be two digits
+    const formattedHours = hours.toString().padStart(2, "0");
+    const formattedMinutes = minutes.toString().padStart(2, "0");
+    // const formattedSeconds = secs.toString().padStart(2, "0");
+
+    // Combine the formatted time components into the desired format
+    setArrivalTime(`${formattedHours}:${formattedMinutes}`);
+  };
+
+  useEffect(() => {
+    if (routeData && userLocation.coordinates.lat !== null) {
+      const formattedDurationToTime = handleDurationToTimeFormat(
+        routeData.duration
+      );
+    }
+  }, [routeType, routeData]);
+
   useEffect(() => {
     if (routeData && userLocation.coordinates.lat !== null) {
       // set walking data fixed
@@ -287,10 +288,57 @@ export default function ListingDetail() {
     },
   };
 
-    const progressSteps = [
+  // set number of people booking for
+  const incrementNumberOfPeople = () => {
+    const max = 10;
+    if (numberOfPeople < max) {
+      setNumberOfPeople(numberOfPeople + 1);
+    }
+  };
+
+  const decrementNumberOfPeople = () => {
+    const min = 1;
+    if (numberOfPeople > min) {
+      setNumberOfPeople(numberOfPeople - 1);
+    }
+  };
+
+  // Function to set booking details in Redux store
+  const handleReduxCheckout = () => {
+    dispatch(
+      setBookingDetails({
+        listing: listing,
+        numberOfPeople: 2,
+        arrivalTime: 1245,
+        specialRequests: "Your special request here",
+      })
+    );
+  };
+
+  // Function to handle proceed to checkout
+  const handleProceedToCheckout = () => {
+    console.log("to checkout");
+    if (isLoggedIn) {
+      handleReduxCheckout();
+      navigate("/checkout");
+    } else {
+      console.log("Please log in");
+      setShowLoginRequiredPrompt(true);
+    }
+  };
+
+  // Function to handle login and proceed to checkout
+  const handleLoginToCheckout = () => {
+    console.log("Login to checkout");
+    handleReduxCheckout();
+    setShowLoginRequiredPrompt(false);
+    navigate("/checkout");
+  };
+
+  const progressSteps = [
     { 1: "Select listing" },
     { 2: "Booking info" },
-    { 3: "Checkout" },
+    { 3: "Payment" },
   ];
 
   return (
@@ -417,25 +465,131 @@ export default function ListingDetail() {
       </div>
       <div className="listing-booking-info">
         <div className="booking-info-wrapper">
-          <div className="booking-info-header">
-            <StepProgressBar
-          progressSteps={progressSteps}
-          currentStep={2}
-          className="booking-progress-bar"
-        />
-          </div>
-          Booking info
-          <ButtonComponent
-            type="button"
-            className="default-button action-button checkout-button"
-            onClick={handleProceedToCheckout}
-          >
-            Checkout
-          </ButtonComponent>
-          {showLoginRequiredPrompt && (
-            <LoginRegisterComponent
-              handleLoginToCheckout={handleLoginToCheckout}
-            />
+          {showLoginRequiredPrompt ? (
+            <>
+              <div className="back-to-booking-details">
+                <WindowControlButton
+                  icon="arrow_back"
+                  action={() => setShowLoginRequiredPrompt(false)}
+                />
+                <span>sign in to complete checkout</span>
+              </div>
+              <LoginRegisterComponent
+                handleLoginToCheckout={handleLoginToCheckout}
+              />
+            </>
+          ) : (
+            <>
+              <div className="booking-info-header">
+                <StepProgressBar
+                  progressSteps={progressSteps}
+                  currentStep={2}
+                  className="booking-progress-bar"
+                />
+              </div>
+              <div className="booking-info-body">
+                <h3>Your booking</h3>
+                <div className="your-booking-details">
+                  <div className="number-of-people">
+                    <div className="content">
+                      <span class="material-symbols-outlined">
+                        emoji_people
+                      </span>
+                      <span className="number">{numberOfPeople}</span>
+                      <span className="text">
+                        {numberOfPeople > 1 ? "people" : "person"}
+                      </span>
+                    </div>
+                    <div className="action">
+                      <WindowControlButton
+                        className=""
+                        icon="keyboard_arrow_up"
+                        action={incrementNumberOfPeople}
+                      />
+                      <WindowControlButton
+                        className=""
+                        icon="keyboard_arrow_down"
+                        action={decrementNumberOfPeople}
+                      />
+                    </div>
+                  </div>
+                  <div className="booking-time">
+                    <div className="default-display">
+                      <div className="content">
+                        <span class="material-symbols-outlined">schedule</span>
+                        <span className="time">{arrivalTime}</span>
+                        <span className="text">Arrival time</span>
+                      </div>
+                      <div className="action">
+                        {(userLocation.coordinates.lat !== null ||
+                          userLocation.coordinates.lng !== null) && (
+                          <div className="booking-time-route-types">
+                            <div className="button-group">
+                              <ButtonComponent
+                                type="button"
+                                className={`booking-time-route-button ${
+                                  routeType === "walking" ? "active" : ""
+                                }`}
+                                action={() => handleRouteTypeSwitch("walking")}
+                              >
+                                <span class="material-symbols-outlined">
+                                  directions_walk
+                                </span>
+                              </ButtonComponent>
+                              <ButtonComponent
+                                type="button"
+                                className={`booking-time-route-button ${
+                                  routeType === "cycling" ? "active" : ""
+                                }`}
+                                action={() => handleRouteTypeSwitch("cycling")}
+                              >
+                                <span class="material-symbols-outlined">
+                                  directions_bike
+                                </span>
+                              </ButtonComponent>
+                              <ButtonComponent
+                                type="button"
+                                className={`booking-time-route-button ${
+                                  routeType === "driving" ? "active" : ""
+                                }`}
+                                action={() => handleRouteTypeSwitch("driving")}
+                              >
+                                <span class="material-symbols-outlined">
+                                  directions_car
+                                </span>
+                              </ButtonComponent>
+                            </div>
+                            <div className="booking-time-route-result">
+                              <span className="duration">
+                                {formattedRouteData.duration}
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <div className="booking-custom-time">
+                      <ButtonComponent
+                        type="button"
+                        className="booking-custom-time-button default-button control-button"
+                        action={() => setShowTimePicker(!showTimePicker)}
+                      >
+                        Custom time
+                      </ButtonComponent>
+                      {showTimePicker && <TimePicker />}
+                    </div>
+                  </div>
+                </div>
+                <div className="booking-price-details"></div>
+              </div>
+              <ButtonComponent
+                type="button"
+                className="default-button action-button checkout-button"
+                action={handleProceedToCheckout}
+              >
+                Continue to payment
+              </ButtonComponent>
+            </>
           )}
         </div>
       </div>
