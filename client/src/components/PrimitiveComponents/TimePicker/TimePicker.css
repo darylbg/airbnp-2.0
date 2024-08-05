@@ -1,16 +1,87 @@
-.time-picker {
-    border: 1px solid var(--black-2);
+.default-time {
     display: flex;
     flex-direction: row;
-}
-
-.time-picker .hour-selector {
-    /* overflow-y: auto; */
-    /* height: 500px; */
+    justify-content: space-between;
+  }
+  
+  .custom-time {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+  }
+  
+  .custom-time-btn {
+    width: fit-content;
+    align-self: flex-end;
+  }
+  
+  .time-picker {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+  
+  .hour-section {
+    display: flex;
+    flex-direction: column;
     flex: 1;
-}
-
-.time-picker .minute-selector {
-    /* max-height: 200px; */
+  }
+  
+  .hour-section .hours {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .hour-section .hours::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .hour-section .hours {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  
+  .minute-section {
+    display: flex;
+    flex-direction: column;
     flex: 1;
-}
+  }
+  
+  .minute-section .minutes {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  
+  .hour,
+  .minute {
+    border: none;
+    border-bottom: 1px solid gray;
+    padding: 8px;
+  }
+  
+  .hour:last-of-type,
+  .minute:last-child {
+    border: none;
+  }
+  
+  .hour:hover,
+  .minute:hover {
+    cursor: pointer;
+    background-color: gray;
+  }
+  
+  .hour:disabled,
+  .minute:disabled {
+    cursor: auto;
+    background-color: white;
+  }
+  
+  .hours .selected,
+  .minutes .selected {
+    background-color: black;
+  }
+  

@@ -30,7 +30,7 @@ export default function ListingDetail() {
 
   const [showLoginRequiredPrompt, setShowLoginRequiredPrompt] = useState(false);
   const [numberOfPeople, setNumberOfPeople] = useState(1);
-  const [arrivalTime, setArrivalTime] = useState("");
+  // const [arrivalTime, setArrivalTime] = useState("");
   const [routeType, setRouteType] = useState("walking");
   const [routeData, setRouteData] = useState(null);
   const [showTimePicker, setShowTimePicker] = useState(false);
@@ -43,6 +43,10 @@ export default function ListingDetail() {
   const [formattedWalkingRouteData, setFormattedWalkingRouteData] = useState({
     distance: null,
     duration: null,
+  });
+  const [arrivalTime, setArrivalTime] = useState({
+    hour: "",
+    minute: "",
   });
 
   const mapContainerRef = useRef(null);
@@ -228,7 +232,12 @@ export default function ListingDetail() {
     // const formattedSeconds = secs.toString().padStart(2, "0");
 
     // Combine the formatted time components into the desired format
-    setArrivalTime(`${formattedHours}:${formattedMinutes}`);
+    // setArrivalTime(`${formattedHours}:${formattedMinutes}`);
+    setArrivalTime((prev) => ({
+      ...prev,
+      hour: formattedHours,
+      minute: formattedMinutes,
+    }));
   };
 
   useEffect(() => {
@@ -340,6 +349,16 @@ export default function ListingDetail() {
     { 2: "Booking info" },
     { 3: "Payment" },
   ];
+
+  useEffect(() => {
+    const now = new Date();
+  const futureTime = new Date(now.getTime() + 20 * 60000); // Adds 20 minutes in milliseconds
+
+  const hours = futureTime.getHours();
+  const minutes = futureTime.getMinutes();
+
+    setArrivalTime({hour: hours, minute: minutes})
+  }, []);
 
   return (
     <div className="listing-booking-content">
@@ -517,7 +536,9 @@ export default function ListingDetail() {
                     <div className="default-display">
                       <div className="content">
                         <span class="material-symbols-outlined">schedule</span>
-                        <span className="time">{arrivalTime}</span>
+                        <span className="time">
+                          {arrivalTime.hour}:{arrivalTime.minute}
+                        </span>
                         <span className="text">Arrival time</span>
                       </div>
                       <div className="action">
@@ -576,7 +597,9 @@ export default function ListingDetail() {
                       >
                         Custom time
                       </ButtonComponent>
-                      {showTimePicker && <TimePicker />}
+                      {showTimePicker && (
+                        <TimePicker setArrivalTime={setArrivalTime} />
+                      )}
                     </div>
                   </div>
                 </div>
