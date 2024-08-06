@@ -7,6 +7,8 @@ import StepProgressBar from "../../PrimitiveComponents/StepProgressBar/StepProgr
 import TimePicker from "../../PrimitiveComponents/TimePicker/TimePicker";
 import LoginRegisterComponent from "../../LoginRegisterComponents/LoginRegisterComponent";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import * as Form from "@radix-ui/react-form";
 import "./BookingInfo.css";
 
 export default function BookingInfo({
@@ -31,6 +33,8 @@ export default function BookingInfo({
   const [showLoginRequiredPrompt, setShowLoginRequiredPrompt] = useState(false);
   const [numberOfPeople, setNumberOfPeople] = useState(1);
   const [addPromoCode, setAddPromoCode] = useState(false);
+  const [promoMessage, setPromoMessage] = useState("use code 10%OFF");
+  const [appliedPromoCode, setAppliedPromoCode] = useState("");
 
   // set number of people booking for
   const incrementNumberOfPeople = () => {
@@ -94,6 +98,44 @@ export default function BookingInfo({
 
     setArrivalTime({ hour: hours, minute: minutes });
   }, []);
+
+  const {
+    register,
+    handleSubmit,
+    setError,
+    clearErrors,
+    watch,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      promoCode: "",
+    },
+  });
+
+  const testPromoCode = "10%OFF";
+  const handleAddPromo = (formData) => {
+    if (formData.promoCode == testPromoCode) {
+      console.log(formData.promoCode, testPromoCode);
+      setPromoMessage("Promo applied!");
+      setAppliedPromoCode(testPromoCode);
+      clearErrors("promoCode");
+    } else {
+      console.log(formData.promoCode, testPromoCode);
+      setPromoMessage("Not a valid code");
+      setError("promoCode", {
+        type: "manual",
+        message: "Not a valid code",
+      });
+    }
+  };
+
+  const promoCode = watch("promoCode");
+  useEffect(() => {
+    if (!promoCode) {
+        setPromoMessage("Use code 10%OFF");
+        clearErrors("promoCode");
+      }
+  }, [promoCode, clearErrors]);
 
   return (
     <div className="booking-info-wrapper">
@@ -225,18 +267,25 @@ export default function BookingInfo({
                   <span>Add promo code</span>
                 </div>
                 <div className="content-right">
+                    <span>{appliedPromoCode}</span>
                   <span class="material-symbols-outlined">chevron_right</span>
                 </div>
               </button>
               {addPromoCode && (
-                <div className="price-detail price-add-promo">
-                  <div className="content-left">
-                    <input type="text" />
-                  </div>
-                  <div className="content-right">
-                    <button onClick={() => setAddPromoCode(false)}>add</button>
-                  </div>
-                </div>
+                <Form.Root
+                  onSubmit={handleSubmit(handleAddPromo)}
+                  className="price-detail price-add-promo"
+                >
+                  <Form.Field className="content-left">
+                    <Form.Control type="text" {...register("promoCode")} />
+                    <Form.Message className="field-message">
+                      {promoMessage}
+                    </Form.Message>
+                  </Form.Field>
+                  <Form.Field className="content-right">
+                    <Form.Submit>add</Form.Submit>
+                  </Form.Field>
+                </Form.Root>
               )}
               <div className="price-detail price-breakdown">
                 <div className="content-left">

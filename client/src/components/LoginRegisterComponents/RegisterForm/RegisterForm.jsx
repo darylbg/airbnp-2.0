@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { ApolloError } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import * as Form from "@radix-ui/react-form";
 import { useMutation } from "@apollo/client";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import Auth from "../../../utils/auth";
 import { loginUser } from "../../../reducers/authReducer";
 import { setUserDetails } from "../../../reducers/userDetailsReducer";
