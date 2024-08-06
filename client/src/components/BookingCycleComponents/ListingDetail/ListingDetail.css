@@ -133,8 +133,7 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  /* align-items: center; */
-  /* justify-content: space-between; */
+  gap: 1rem;
   border-bottom: 1px solid var(--black-2);
   padding: 1rem 0;
 }
@@ -200,13 +199,26 @@
 .booking-custom-time {
     display: flex;
     flex-direction: column;
-    /* justify-content: flex-end; */
+    gap: 1rem;
 }
 
 .booking-custom-time-button {
     align-self: flex-end;
     width: max-content;
+    padding: 0;
+    font-size: 0.8rem;
+    text-decoration: none;
 }
+
+.booking-custom-time-button span:first-child {
+  text-decoration: underline;
+}
+
+.booking-custom-time-button:hover,
+.booking-custom-time-button:active {
+  background-color: transparent;
+}
+
 .checkout-button {
   width: 100%;
 }

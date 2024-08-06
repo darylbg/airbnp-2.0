@@ -352,12 +352,15 @@ export default function ListingDetail() {
 
   useEffect(() => {
     const now = new Date();
-  const futureTime = new Date(now.getTime() + 20 * 60000); // Adds 20 minutes in milliseconds
+    const futureTime = new Date(now.getTime() + 20 * 60000); // Adds 20 minutes in milliseconds
 
-  const hours = futureTime.getHours();
-  const minutes = futureTime.getMinutes();
+    const hours = futureTime.getHours();
+    const minutes = futureTime.getMinutes();
 
-    setArrivalTime({hour: hours, minute: minutes})
+    setArrivalTime({
+      hour: hours < 10 ? `0${hours}` : hours,
+      minute: minutes < 10 ? `0${minutes}` : minutes,
+    });
   }, []);
 
   return (
@@ -595,10 +598,22 @@ export default function ListingDetail() {
                         className="booking-custom-time-button default-button control-button"
                         action={() => setShowTimePicker(!showTimePicker)}
                       >
-                        Custom time
+                         <span>Custom time</span>
+                        {showTimePicker ? (
+                          <span class="material-symbols-outlined">
+                            arrow_drop_up
+                          </span>
+                        ) : (
+                          <span class="material-symbols-outlined">
+                            arrow_drop_down
+                          </span>
+                        )}
                       </ButtonComponent>
                       {showTimePicker && (
-                        <TimePicker setArrivalTime={setArrivalTime} />
+                        <TimePicker
+                          setArrivalTime={setArrivalTime}
+                          arrivalTime={arrivalTime}
+                        />
                       )}
                     </div>
                   </div>

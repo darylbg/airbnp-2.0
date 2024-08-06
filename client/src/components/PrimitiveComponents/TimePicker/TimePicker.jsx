@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./TimePicker.css";
 
-export default function TimePicker({ setArrivalTime }) {
+export default function TimePicker({ setArrivalTime, arrivalTime }) {
   const [selectedHour, setSelectedHour] = useState(null);
   const [pickerHeight, setPickerHeight] = useState(0);
   const hourRefs = useRef([]);
@@ -38,7 +38,7 @@ export default function TimePicker({ setArrivalTime }) {
       hours.push(
         <button
           key={i}
-          className={`hour`}
+          className={`hour ${i == arrivalTime.hour ? "selected-time" : ""}`}
           disabled={
             i < currentHour || (i === currentHour && currentMinute > 50)
           }
@@ -70,7 +70,7 @@ export default function TimePicker({ setArrivalTime }) {
       minutes.push(
         <button
           key={i}
-          className={`minute`}
+          className={`minute ${i == arrivalTime.minute ? "selected-time" : ""}`}
           disabled={isDisabled}
           onClick={() =>
             setArrivalTime((prev) => ({
@@ -89,11 +89,11 @@ export default function TimePicker({ setArrivalTime }) {
   return (
     <div className="time-picker">
       <div className="hour-section" style={{ height: pickerHeight }}>
-        <span>hours</span>
+        <span className="heading">hours</span>
         <div className="hours">{renderHours()}</div>
       </div>
       <div className="minute-section" ref={minuteSectionRef}>
-        <span>minutes</span>
+        <span className="heading">minutes</span>
         <div className="minutes">{renderMinutes()}</div>
       </div>
     </div>

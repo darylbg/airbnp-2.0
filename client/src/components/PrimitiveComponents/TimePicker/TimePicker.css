@@ -18,7 +18,7 @@
   .time-picker {
     display: flex;
     flex-direction: row;
-    gap: 10px;
+    /* gap: 10px; */
   }
   
   .hour-section {
@@ -26,11 +26,18 @@
     flex-direction: column;
     flex: 1;
   }
+
+  .time-picker .heading {
+    align-self: center;
+    font-size: 0.8rem;
+    color: var(--black-9);
+  }
   
   .hour-section .hours {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    border-right: 1px solid var(--black-2);
   }
   
   /* Hide scrollbar for Chrome, Safari and Opera */
@@ -59,7 +66,7 @@
   .hour,
   .minute {
     border: none;
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid var(--black-2);
     padding: 8px;
   }
   
@@ -71,17 +78,17 @@
   .hour:hover,
   .minute:hover {
     cursor: pointer;
-    background-color: gray;
+    background-color: var(--black-3);
   }
   
   .hour:disabled,
   .minute:disabled {
     cursor: auto;
-    background-color: white;
+    background-color: var(--black-1);
   }
   
-  .hours .selected,
-  .minutes .selected {
-    background-color: black;
+  .hours .selected-time,
+  .minutes .selected-time {
+    background-color: var(--black-4);
   }
   
