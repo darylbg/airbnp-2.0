@@ -21,7 +21,8 @@ const initialState = {
             listing: null,
             numberOfPeople: 1,
             arrivalTime: null,
-            specialRequests: ""
+            specialRequests: "",
+            price: null
         },
         checkoutInfo: {
             paymentMethod: null,
