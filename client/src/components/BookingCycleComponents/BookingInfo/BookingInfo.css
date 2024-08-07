@@ -1,156 +1,229 @@
 .booking-info-wrapper {
-    position: sticky;
-    top: 0;
-    border-radius: 20px;
-    /* box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;     */
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
-    border: 1px solid var(--black-2);
-  }
-  
-  .back-to-booking-details {
-    display: flex;
-    gap: 2rem;
-    align-items: center;
-  }
-  
-  .booking-info-header {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  
-  .your-booking-details {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    gap: 1rem;
-  }
-  
-  .number-of-people {
-    display: flex;
-    flex: 1;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--black-2);
-    padding: 1rem 0;
-  }
-  
-  .booking-time {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    border-bottom: 1px solid var(--black-2);
-    padding: 1rem 0;
-  }
-  
-  .number-of-people .content,
-  .number-of-people .action {
-    display: flex;
-    flex-direction: row;
-    gap: 0.5rem;
-    align-items: center;
-  }
-  
-  .booking-time .default-display {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-  }
-  
-  .booking-time .default-display .content {
-    display: flex;
-    flex-direction: row;
-    gap: 0.5rem;
-    align-items: center;
-  }
-  
-  .booking-time-route-types {
-      display: flex;
-      flex-direction: column;
-  }
-  
-  .booking-time-route-types .button-group {
-      display: flex;
-      flex-direction: row;
-      gap: 0.5rem;
-  }
-  
-  .booking-time-route-button {
-      display: flex;
-      flex-direction: row;
-      justify-items: center;
-      align-items: center;
-      background-color: transparent;
-      border: none;
-      padding: 8px;
-      border-radius: 50%;  
-  }
-  
-  .booking-time-route-types .button-group .active {
-      color: var(--blue-10);
-      background-color: var(--blue-2); 
-  }
-  
-  .booking-time-route-button .material-symbols-outlined {
-      font-size: 1.1rem;
-  }
-  
-  .booking-time-route-result {
-      font-size: 0.7rem;
-      display: flex;
-      justify-content: flex-end;
-  }
-  
-  .booking-custom-time {
-      display: flex;
-      flex-direction: column;
-      /* justify-content: flex-end; */
-  }
-  
-  .booking-custom-time-button {
-      align-self: flex-end;
-      width: max-content;
-      padding: 0;
-      font-size: 0.8rem;
-      text-decoration: none;
-  }
-
-  .booking-custom-time-button span:first-child {
-    text-decoration: underline;
+  position: sticky;
+  top: 0;
+  border-radius: 20px;
+  /* box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;     */
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  border: 1px solid var(--black-2);
 }
-  
-  .booking-price-details {
+
+.back-to-booking-detail-button {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.booking-info-body {
+  display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.booking-info-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.your-booking-details {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  /* gap: 0.5rem; */
+}
+
+.number-of-people {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--black-2);
+  padding: 1rem 0;
+}
+
+.booking-time {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  border-bottom: 1px solid var(--black-2);
+  padding: 1rem 0;
+  gap: 0.5rem;
+}
+
+.number-of-people .content,
+.number-of-people .action {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.text-1 {
+  color: var(--black-9);
+  font-size: 1rem;
+}
+
+.text-2 {
+  color: var(--black-8);
+  font-size: 0.9rem;
+  font-weight: 300;
+}
+
+.booking-time .default-display {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.booking-time .default-display .content {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.booking-time-route-types {
+  display: flex;
+  flex-direction: column;
+}
+
+.booking-time-route-types .button-group {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.booking-time-route-button {
+  display: flex;
+  flex-direction: row;
+  justify-items: center;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  padding: 8px;
+  border-radius: 50%;
+}
+
+.booking-time-route-types .button-group .active {
+  color: var(--blue-10);
+  background-color: var(--blue-2);
+}
+
+.booking-time-route-button .material-symbols-outlined {
+  font-size: 1.1rem;
+}
+
+.booking-time-route-result {
+  font-size: 0.7rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.booking-custom-time {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.booking-custom-time-button {
+  align-self: flex-end;
+  width: max-content;
+  padding: 0;
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+
+.booking-custom-time-button:hover {
+  background-color: transparent;
+}
+
+.booking-custom-time-button span:first-child {
+  text-decoration: underline;
+}
+
+.booking-price-details {
+  display: flex;
+  flex-direction: column;
+  /* gap: 1rem; */
+  border-bottom: 1px solid var(--black-2);
+}
+
+.booking-detail-subheader {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.booking-detail-subheader h3 {
+  margin: 0;
+  color: var(--black-11);
+}
+
+.price-detail {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.price-detail .content-left,
+.price-detail .content-right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.price-detail-promo {
+  padding: 1rem 0;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-  }
-  
-  .booking-price-details .price-detail {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .booking-price-details .price-detail .content-left,
-  .booking-price-details .price-detail .content-right {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  
-  
-  
-  
-  
-  
-  
-  .checkout-button {
-    width: 100%;
-  }
-  
+    border-bottom: 1px solid var(--black-2);
+}
+
+.add-promo-button {
+  padding: 0;
+  background-color: transparent;
+  border: none;
+}
+
+.add-promo-button .content-right .material-symbols-outlined {
+  padding-right: 0.1rem;
+}
+
+.add-promo-button:hover > .content-right .material-symbols-outlined {
+  transform: translateX(3px);
+  transition: all ease-in-out 0.2s;
+}
+
+.price-detail-breakdown {
+  padding: 1rem 0;
+}
+
+.price-fees .content-left .material-symbols-outlined {
+  font-size: 1rem;
+  padding: 0;
+  background-color: var(--white-13);
+  border: none;
+}
+
+.fee-info-dialog-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex: 1;
+}
+
+.fee-info-dialog-button {
+  width: 100%;
+}
+
+.checkout-button {
+  width: 100%;
+}

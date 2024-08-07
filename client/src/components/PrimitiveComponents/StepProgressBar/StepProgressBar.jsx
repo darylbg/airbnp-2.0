@@ -46,9 +46,9 @@ export default function StepProgressBar({
     }
 
     const index = progressSteps.findIndex(
-      (item) => Object.keys(item)[0] == currentStep,
+      (item) => parseInt(Object.keys(item)[0]) === currentStep
     );
-
+console.log("index", currentStep)
     if (index === -1) {
       console.log("Item not found in the array");
       return;
@@ -79,7 +79,8 @@ export default function StepProgressBar({
           ></div>
         </div>
         {progressSteps.map((step, index) => {
-          const stepCaption = step[index + 1];
+          console.log(step[1])
+          const stepCaption = step.title;
           const position = (index / (totalSteps - 1)) * 100;
 
           return (
