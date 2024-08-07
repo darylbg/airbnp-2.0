@@ -20,7 +20,10 @@ const initialState = {
         bookingDetails: {
             listing: null,
             numberOfPeople: 1,
-            arrivalTime: null,
+            arrivalTime: {
+                hour: "",
+                minute: ""
+            },
             specialRequests: "",
             price: null
         },

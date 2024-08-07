@@ -26,6 +26,7 @@ export default function BookingInfo({
   const bookingDetails = useSelector(
     (state) => state.bookingCycle.booking.bookingDetails
   );
+  console.log(arrivalTime)
   const navigate = useNavigate();
   const dispatch = useDispatch();
 

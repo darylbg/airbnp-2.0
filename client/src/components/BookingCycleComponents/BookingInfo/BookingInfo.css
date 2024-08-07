@@ -114,7 +114,14 @@
   .booking-custom-time-button {
       align-self: flex-end;
       width: max-content;
+      padding: 0;
+      font-size: 0.8rem;
+      text-decoration: none;
   }
+
+  .booking-custom-time-button span:first-child {
+    text-decoration: underline;
+}
   
   .booking-price-details {
     display: flex;

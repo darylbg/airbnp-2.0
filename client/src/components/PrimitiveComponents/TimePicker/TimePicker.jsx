@@ -2,14 +2,18 @@ import React, { useState, useEffect, useRef } from "react";
 import "./TimePicker.css";
 
 export default function TimePicker({ setArrivalTime, arrivalTime }) {
-  const [selectedHour, setSelectedHour] = useState(null);
+  const [selectedTime, setSelectedTime] = useState({
+    hour: "",
+    minute: "",
+  });
   const [pickerHeight, setPickerHeight] = useState(0);
   const hourRefs = useRef([]);
   const minuteSectionRef = useRef(null);
-
+  console.log("arrival time",arrivalTime);
+  // console.log("selected time",selectedTime);
   useEffect(() => {
     const currentTime = new Date();
-    setSelectedHour(currentTime.getHours());
+    setSelectedTime((prev) => ({ ...prev, hour: currentTime.getHours() }));
 
     // console.log(minuteSectionRef.current);
     if (minuteSectionRef.current) {
@@ -38,12 +42,15 @@ export default function TimePicker({ setArrivalTime, arrivalTime }) {
       hours.push(
         <button
           key={i}
-          className={`hour ${i == arrivalTime.hour ? "selected-time" : ""}`}
+          className={`hour ${i === arrivalTime?.hour ? "selected-time" : ""}`}
           disabled={
             i < currentHour || (i === currentHour && currentMinute > 50)
           }
           onClick={() => {
-            setSelectedHour(i);
+            setSelectedTime((prev) => ({
+              ...prev,
+              hour: i < 10 ? `0${i}` : i,
+            }));
             setArrivalTime((prev) => ({ ...prev, hour: i < 10 ? `0${i}` : i }));
           }}
           ref={(el) => (hourRefs.current[i] = el)}
@@ -63,21 +70,27 @@ export default function TimePicker({ setArrivalTime, arrivalTime }) {
     const minutes = [];
     for (let i = 0; i < 60; i += 10) {
       let isDisabled = false;
-      if (selectedHour === currentHour && i <= currentMinute) {
+      if (selectedTime.hour === currentHour && i <= currentMinute) {
         isDisabled = true;
       }
 
       minutes.push(
         <button
           key={i}
-          className={`minute ${i == arrivalTime.minute ? "selected-time" : ""}`}
+          className={`minute ${
+            i === arrivalTime?.minute ? "selected-time" : ""
+          }`}
           disabled={isDisabled}
-          onClick={() =>
+          onClick={() => {
             setArrivalTime((prev) => ({
               ...prev,
               minute: i < 10 ? `0${i}` : i,
-            }))
-          }
+            }));
+            setSelectedTime((prev) => ({
+              ...prev,
+              minute: i < 10 ? `0${i}` : i,
+            }));
+          }}
         >
           {i < 10 ? `0${i}` : i}
         </button>
