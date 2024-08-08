@@ -1,10 +1,67 @@
+// const express = require("express");
+// const { ApolloServer, gql } = require("apollo-server-express");
+// const path = require("path");
+// const cors = require('cors');
+
+// const db = require("./config/connection");
+// const {authMiddleware} = require('./utils/auth');
+// const { typeDefs, resolvers } = require('./schemas');
+
+// const PORT = process.env.PORT || 3001;
+// const app = express();
+
+// const server = new ApolloServer({ 
+//     typeDefs, 
+//     resolvers,
+//     // context: authMiddleware,
+//     context: ({ req }) => {
+//       const modifiedReq = authMiddleware({ req });
+//       return { user: modifiedReq.user };
+//     },
+//     introspection: true,
+//     playground: true,
+// });
+
+// app.use(cors());
+// app.use(express.urlencoded({ limit: "50mb", extended: false }));
+// app.use(express.json({ limit: "50mb" }));
+
+// if (process.env.NODE_ENV === "production") {
+//   app.use(express.static(path.join(__dirname, "../client/build")));
+// }
+
+// // this code block, when enabled, occasionally shows a blank page on http://localhost:3001/graphql
+// // app.get("*", (req, res) => {
+// //   res.sendFile(path.join(__dirname, "../client/build", "index.html"));
+// // });
+
+// app.get("/", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../client/build/index.html"));
+// });
+
+// const startApolloServer = async () => {
+//   await server.start();
+//   server.applyMiddleware({ app });
+
+//   db.once("open", () => {
+//     app.listen(PORT, () => {
+//       console.log(`API server running on port ${PORT}!`);
+//       console.log(
+//         `Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`
+//       );
+//     });
+//   });
+// };
+
+// startApolloServer();
+
 const express = require("express");
-const { ApolloServer, gql } = require("apollo-server-express");
+const { ApolloServer } = require("apollo-server-express");
 const path = require("path");
 const cors = require('cors');
 
 const db = require("./config/connection");
-const {authMiddleware} = require('./utils/auth');
+const { authMiddleware } = require('./utils/auth');
 const { typeDefs, resolvers } = require('./schemas');
 
 const PORT = process.env.PORT || 3001;
@@ -13,7 +70,6 @@ const app = express();
 const server = new ApolloServer({ 
     typeDefs, 
     resolvers,
-    // context: authMiddleware,
     context: ({ req }) => {
       const modifiedReq = authMiddleware({ req });
       return { user: modifiedReq.user };
@@ -28,16 +84,15 @@ app.use(express.json({ limit: "50mb" }));
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../client/build")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../client/build/index.html"));
+  });
+} else {
+  app.get("/", (req, res) => {
+    res.send("API is running...");
+  });
 }
-
-// this code block, when enabled, occasionally shows a blank page on http://localhost:3001/graphql
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../client/build", "index.html"));
-// });
-
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/build/index.html"));
-});
 
 const startApolloServer = async () => {
   await server.start();
@@ -46,9 +101,7 @@ const startApolloServer = async () => {
   db.once("open", () => {
     app.listen(PORT, () => {
       console.log(`API server running on port ${PORT}!`);
-      console.log(
-        `Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`
-      );
+      console.log(`Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`);
     });
   });
 };
