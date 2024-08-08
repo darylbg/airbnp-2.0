@@ -161,11 +161,22 @@ const typeDefs = gql`
     payment_status: String
   }
 
+
+#   type SessionStatusResponse {
+#   status: String!
+#   customerEmail: String!
+# }
+
+type CheckoutSessionResponse {
+  id: String!
+}
+
   # queries
   type Query {
     user(id: ID!): User
     getListingById(user_id: ID!): Listing
     getAllListings: [Listing]
+    # sessionStatus(sessionId: String!): SessionStatusResponse!
   }
 
   # mutations
@@ -183,6 +194,7 @@ const typeDefs = gql`
       listingId: ID!
       notificationData: notificationInput
     ): Notification
+    createCheckoutSession(amount: Int!, currency: String, productName: String!): CheckoutSessionResponse
     createPayment(listingId: ID!, paymentData: paymentInput): Payment
     updatePayment(paymentId: ID!, paymentData: paymentInput): Payment
   }

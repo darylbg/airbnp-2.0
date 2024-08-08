@@ -25,7 +25,7 @@ const initialState = {
                 minute: ""
             },
             specialRequests: "",
-            price: null
+            totalPrice: null
         },
         checkoutInfo: {
             paymentMethod: null,

@@ -49,8 +49,9 @@ export default function BookingInfo({
       setBookingDetails({
         listing: listing,
         numberOfPeople: numberOfPeople,
-        arrivalTime: `${arrivalTime.hour}:${arrivalTime.minute}`,
+        arrivalTime: {hour: `${arrivalTime.hour}`, minute: `${arrivalTime.minute}`},
         specialRequests: "",
+        totalPrice: totalPrice.toFixed(2)
       })
     );
   };
