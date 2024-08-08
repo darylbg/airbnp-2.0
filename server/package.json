@@ -8,8 +8,6 @@
     "start": "node server.js",
     "watch": "nodemon server.js"
   },
-  // proxy for github codespaces
-  "proxy": "http://localhost:3001",
   "dependencies": {
     "apollo-server": "^3.13.0",
     "apollo-server-express": "^3.13.0",
