@@ -161,15 +161,9 @@ const typeDefs = gql`
     payment_status: String
   }
 
-
-#   type SessionStatusResponse {
-#   status: String!
-#   customerEmail: String!
-# }
-
-type CheckoutSessionResponse {
-  id: String!
-}
+  type PaymentIntent {
+    clientSecret: String!
+  }
 
   # queries
   type Query {
@@ -194,7 +188,7 @@ type CheckoutSessionResponse {
       listingId: ID!
       notificationData: notificationInput
     ): Notification
-    createCheckoutSession(amount: Int!, currency: String, productName: String!): CheckoutSessionResponse
+    createPaymentIntent(amount: Int!): PaymentIntent!
     createPayment(listingId: ID!, paymentData: paymentInput): Payment
     updatePayment(paymentId: ID!, paymentData: paymentInput): Payment
   }

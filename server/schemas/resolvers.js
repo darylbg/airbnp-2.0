@@ -60,69 +60,20 @@ const resolvers = {
         console.log(error);
       }
     },
-    // sessionStatus: async (parent, { sessionId }, context) => {
-    //   const session = await stripe.checkout.sessions.retrieve(sessionId);
-
-    //   return {
-    //     status: session.status,
-    //     customerEmail: session.customer_details.email,
-    //   };
-    // },
   },
 
   Mutation: {
-    createCheckoutSession: async (
-      parent,
-      { amount, currency = "usd", productName },
-      context
-    ) => {
-      console.log("checkout", amount, currency, productName);
+    createPaymentIntent: async (parent, { amount }, context) => {
       try {
-        const session = await stripe.checkout.sessions.create({
-          payment_method_types: ["card"],
-          line_items: [
-            {
-              price_data: {
-                currency: currency,
-                product_data: {
-                  name: productName,
-                },
-                unit_amount: amount, // amount in the smallest currency unit (e.g., cents)
-              },
-              quantity: 1,
-            },
-          ],
-          mode: "payment",
-          // change when deploying
-          success_url: `http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}`,
-          cancel_url: `http://localhost:3000/cancel`,
+        const paymentIntent = await stripe.paymentIntents.create({
+          amount,
+          currency: 'gbp',
         });
-
-        return { id: session.id };
+        return { clientSecret: paymentIntent.client_secret };
       } catch (error) {
-        console.error("Error creating checkout session:", error);
-        throw new Error("Failed to create checkout session");
+        throw new Error(error.message);
       }
     },
-    // createCheckoutSession: async (parent, { priceId }, context) => {
-    //   const session = await stripe.checkout.sessions.create({
-    //     ui_mode: 'embedded',
-    //     line_items: [
-    //       {
-    //         price: priceId,
-    //         quantity: 1,
-    //       },
-    //     ],
-    //     mode: 'payment',
-    //     return_url: `${YOUR_DOMAIN}/return?session_id={CHECKOUT_SESSION_ID}`,
-    //   });
-
-    //   return {
-    //     clientSecret: session.client_secret,
-    //   };
-    // },
-    // },
-
     login: async (parent, { email, password }) => {
       try {
         const user = await User.findOne({ email }).populate({

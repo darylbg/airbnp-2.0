@@ -31,10 +31,10 @@ import Notifications from "./components/DashboardComponents/Notifications/Notifi
 import Payments from "./components/DashboardComponents/Payments/Payments";
 import Reviews from "./components/DashboardComponents/Reviews/Reviews";
 import Checkout from "./components/BookingCycleComponents/Checkout/Checkout";
-import StripeProvider from "./stripeProvider/StripeProvider";
+// import StripeProvider from "./stripeProvider/StripeProvider";
 
 const httpLink = createHttpLink({
-  uri: "http://localhost:3001/graphql",
+  uri: "http://localhost:3001/graphql"
 });
 
 const authLink = setContext((_, { headers }) => {

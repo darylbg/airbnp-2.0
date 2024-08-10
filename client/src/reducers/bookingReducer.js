@@ -25,7 +25,15 @@ const initialState = {
                 minute: ""
             },
             specialRequests: "",
-            totalPrice: null
+            pricing: {
+                basePrice: null,
+                totalFees: null,
+                totalPromos: {
+                    name: "",
+                    discount: null
+                },
+                totalPrice: null
+            }
         },
         checkoutInfo: {
             paymentMethod: null,

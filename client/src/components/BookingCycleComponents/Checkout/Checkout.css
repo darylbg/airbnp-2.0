@@ -1,0 +1,81 @@
+.checkout-page  {
+    display: flex;
+    flex: 1;
+    padding: 5%;
+    flex-direction: column;
+    align-items: center;
+}
+
+.checkout-page-header {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+}
+
+.checkout-page-body {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 800px;
+    gap: 1rem;
+}
+
+.checkout-page-body .back-button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8rem;
+}
+
+.checkout-page-body .content {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+}
+
+.checkout-listing-card {
+    display: flex; 
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.checkout-listing-card img {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    object-position: center center;
+    border-radius: 20px;
+}
+
+.checkout-listing-card-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.checkout-listing-card-text .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.checkout-listing-card-text .header .rating {
+    display: flex;
+    flex-direction: row;
+    gap: 3px;
+    align-items: center;
+}
+
+.checkout-listing-card-text .header .rating .material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
+.checkout-form {
+    flex: 1;
+    max-width: 600px;
+}

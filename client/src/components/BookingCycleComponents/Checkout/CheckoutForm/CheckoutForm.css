@@ -1,0 +1,9 @@
+.custom-checkout-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.custom-checkout-form .card-element-base {
+    padding: 10px 5px;
+}

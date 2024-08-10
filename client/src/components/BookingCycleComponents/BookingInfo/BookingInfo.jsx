@@ -35,13 +35,50 @@ export default function BookingInfo({
   const [showLoginRequiredPrompt, setShowLoginRequiredPrompt] = useState(false);
   const [numberOfPeople, setNumberOfPeople] = useState(1);
   const [addPromoCode, setAddPromoCode] = useState(false);
-  const [promoMessage, setPromoMessage] = useState("Use code 10%OFF");
+  const [promoMessage, setPromoMessage] = useState("Use code 20%OFF");
   const [appliedPromoCode, setAppliedPromoCode] = useState("");
-  const [feePercentage, setFeePercentage] = useState(0.02);
+  const [feePercentage, setFeePercentage] = useState(0.1);
+
   const [feeInfoDialog, setFeeInfoDialog] = useState(false);
 
   const basePrice = listing?.price || 0;
-  const promoCodeDiscount = appliedPromoCode === "10%OFF" ? 0.1 : 0;
+  const promoCodeDiscount = appliedPromoCode === "20%OFF" ? 0.20 : 0;
+
+  const [pricingDetails, setPricingDetails] = useState({
+    basePrice: listing?.price || 0,
+    totalFees: 0,
+    totalPromos: {
+      name: "",
+      discount: 0,
+    },
+    totalPrice: 0,
+  });
+
+  useEffect(() => {
+    const calculatePricingDetails = () => {
+      const subtotal = numberOfPeople * pricingDetails.basePrice;
+      const fees = subtotal * feePercentage;
+      const discount = subtotal * promoCodeDiscount;
+      const totalPrice = subtotal + fees - discount;
+      setPricingDetails({
+        basePrice: pricingDetails.basePrice,
+        totalFees: fees,
+        totalPromos: {
+          name: appliedPromoCode,
+          discount: discount,
+        },
+        totalPrice: totalPrice,
+      });
+    };
+
+    calculatePricingDetails();
+  }, [
+    numberOfPeople,
+    feePercentage,
+    promoCodeDiscount,
+    appliedPromoCode,
+    pricingDetails.basePrice,
+  ]);
 
   // Function to set booking details in Redux store
   const handleReduxCheckout = () => {
@@ -49,9 +86,12 @@ export default function BookingInfo({
       setBookingDetails({
         listing: listing,
         numberOfPeople: numberOfPeople,
-        arrivalTime: {hour: `${arrivalTime.hour}`, minute: `${arrivalTime.minute}`},
+        arrivalTime: {
+          hour: `${arrivalTime.hour}`,
+          minute: `${arrivalTime.minute}`,
+        },
         specialRequests: "",
-        totalPrice: totalPrice.toFixed(2)
+        pricing: pricingDetails,
       })
     );
   };
@@ -112,7 +152,7 @@ export default function BookingInfo({
   });
 
   const handleAddPromo = (formData) => {
-    if (formData.promoCode === "10%OFF") {
+    if (formData.promoCode === "20%OFF") {
       setPromoMessage("Promo applied!");
       setAppliedPromoCode(formData.promoCode);
       clearErrors("promoCode");
@@ -128,7 +168,7 @@ export default function BookingInfo({
   const promoCode = watch("promoCode");
   useEffect(() => {
     if (!promoCode) {
-      setPromoMessage("Use code 10%OFF");
+      setPromoMessage("Use code 20%OFF");
       clearErrors("promoCode");
     }
   }, [promoCode, clearErrors]);
@@ -262,16 +302,18 @@ export default function BookingInfo({
                 </div>
                 <div className="booking-custom-time">
                   {userLocation.coordinates.lat !== null ||
-                    userLocation.coordinates.lng !== null ? (<ButtonComponent
-                    type="button"
-                    className="booking-custom-time-button default-button control-button"
-                    action={() => setShowTimePicker(!showTimePicker)}
-                  >
-                    <span>Custom time</span>
-                    <span className="material-symbols-outlined">
-                      {showTimePicker ? "arrow_drop_up" : "arrow_drop_down"}
-                    </span>
-                  </ButtonComponent>): null}
+                  userLocation.coordinates.lng !== null ? (
+                    <ButtonComponent
+                      type="button"
+                      className="booking-custom-time-button default-button control-button"
+                      action={() => setShowTimePicker(!showTimePicker)}
+                    >
+                      <span>Custom time</span>
+                      <span className="material-symbols-outlined">
+                        {showTimePicker ? "arrow_drop_up" : "arrow_drop_down"}
+                      </span>
+                    </ButtonComponent>
+                  ) : null}
                   {showTimePicker && (
                     <TimePicker setArrivalTime={setArrivalTime} />
                   )}
@@ -319,11 +361,14 @@ export default function BookingInfo({
                 <div className="price-detail price-calc">
                   <div className="content-left">
                     <span className="text-2">
-                      {numberOfPeople} people at £{basePrice}/per person
+                      {numberOfPeople} x £{pricingDetails.basePrice.toFixed(2)}
+                      /per person
                     </span>
                   </div>
                   <div className="content-right">
-                    <span className="text-2">£{numberOfPeople * basePrice}</span>
+                    <span className="text-2">
+                      £{(numberOfPeople * pricingDetails.basePrice).toFixed(2)}
+                    </span>
                   </div>
                 </div>
                 <div className="price-detail price-fees">
@@ -338,7 +383,7 @@ export default function BookingInfo({
                   </div>
                   <div className="content-right">
                     <span className="text-2">
-                      £{(numberOfPeople * basePrice * feePercentage).toFixed(2)}
+                      £{pricingDetails.totalFees.toFixed(2)}
                     </span>
                   </div>
                   <DialogComponent
@@ -368,12 +413,7 @@ export default function BookingInfo({
                     </div>
                     <div className="content-right">
                       <span className="text-2">
-                        -£
-                        {(
-                          numberOfPeople *
-                          basePrice *
-                          promoCodeDiscount
-                        ).toFixed(2)}
+                        -£{pricingDetails.totalPromos.discount.toFixed(2)}
                       </span>
                     </div>
                   </div>
@@ -383,7 +423,7 @@ export default function BookingInfo({
                     <h2>Total price</h2>
                   </div>
                   <div className="content-right">
-                    <h2>£{totalPrice.toFixed(2)}</h2>
+                    <h2>£{pricingDetails.totalPrice.toFixed(2)}</h2>
                   </div>
                 </div>
               </div>

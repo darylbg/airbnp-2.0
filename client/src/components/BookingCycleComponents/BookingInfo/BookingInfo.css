@@ -224,6 +224,10 @@
   width: 100%;
 }
 
+.price-total {
+  padding-top: 1rem;
+}
+
 .checkout-button {
   width: 100%;
 }

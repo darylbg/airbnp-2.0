@@ -199,10 +199,10 @@ export const DELETE_LISTING_MUTATION = gql`
   }
 `;
 
-export const CREATE_CHECKOUT_SESSION = gql`
-  mutation CreateCheckoutSession($amount: Int!, $currency: String, $productName: String!) {
-    createCheckoutSession(amount: $amount, currency: $currency, productName: $productName) {
-      id
+export const CREATE_PAYMENT_INTENT = gql`
+  mutation CreatePaymentIntent($amount: Int!) {
+    createPaymentIntent(amount: $amount) {
+      clientSecret
     }
   }
 `;
