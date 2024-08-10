@@ -23,10 +23,8 @@ export default function BookingInfo({
   const listing = useSelector(
     (state) => state.bookingCycle.booking.listingDetail?.listing
   );
+  console.log(listing)
   const userLocation = useSelector((state) => state.bookingCycle.userLocation);
-  const bookingDetails = useSelector(
-    (state) => state.bookingCycle.booking.bookingDetails
-  );
 
   const navigate = useNavigate();
   const dispatch = useDispatch();

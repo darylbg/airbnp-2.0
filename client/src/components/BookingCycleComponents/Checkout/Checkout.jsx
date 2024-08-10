@@ -61,7 +61,7 @@ export default function Checkout() {
           <div className="content">
             <div className="checkout-listing">
               <card className="checkout-listing-card">
-                <img src={listing.listing_image[0]} alt="" />
+                <img src={listing?.listing_image[0]} alt="" />
                 <div className="checkout-listing-card-text">
                   <div className="header">
                     <h3 className="title">{listing?.listing_title}</h3>
