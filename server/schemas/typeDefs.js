@@ -170,6 +170,7 @@ const typeDefs = gql`
     user(id: ID!): User
     getListingById(user_id: ID!): Listing
     getAllListings: [Listing]
+    generateToken: String
     # sessionStatus(sessionId: String!): SessionStatusResponse!
   }
 
@@ -191,6 +192,7 @@ const typeDefs = gql`
     createPaymentIntent(amount: Int!): PaymentIntent!
     createPayment(listingId: ID!, paymentData: paymentInput): Payment
     updatePayment(paymentId: ID!, paymentData: paymentInput): Payment
+    validateToken(urlToken: String!): Boolean
   }
 `;
 

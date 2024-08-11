@@ -1,11 +1,7 @@
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { useMutation } from "@apollo/client";
-import {
-  setBookingDetails,
-  resetBooking,
-} from "../../../reducers/bookingReducer";
+import { useNavigate, useLocation } from "react-router-dom";
+import { setBookingDetails, resetBooking } from "../../../reducers/bookingReducer";
 import DialogComponent from "../../PrimitiveComponents/DialogComponent/DialogComponent";
 import ButtonComponent from "../../PrimitiveComponents/ButtonComponent/ButtonComponent";
 import { loadStripe } from "@stripe/stripe-js";
@@ -13,9 +9,22 @@ import CheckoutForm from "./CheckoutForm/CheckoutForm";
 import "./Checkout.css";
 import { Elements } from "@stripe/react-stripe-js";
 import WindowControlButton from "../../PrimitiveComponents/WindowControlButton/WindowControlButton";
+import { VALIDATE_TOKEN } from "../../../utils/mutations/urlGenerationMutations";
+import { GENERATE_TOKEN } from "../../../utils/queries/urlGenerationQueries";
+import { useMutation, useQuery } from "@apollo/client";
 
 const stripePromise = loadStripe("pk_test_doIfqdnODmzgg00kfQcj9wHj00ld9K3l0D");
 
+
+// checkout logic
+// when user navigates to checkout, unique token generated and set in url
+// if user leaves checkout page with unfinished checkout: 
+//  - retain unique checkout url, store token in localstorage?
+//  - send unfinished checkout notification to user notifications with link
+//  - reset checkout procedure if user starts new checkout
+// destroy unique token on successful checkout
+// back to search retains checkout
+// cancel checkout resets checkout procedure
 export default function Checkout() {
   const listing = useSelector(
     (state) => state.bookingCycle.booking.bookingDetails?.listing
@@ -26,25 +35,93 @@ export default function Checkout() {
   const listingPricing = useSelector(
     (state) => state.bookingCycle.booking.bookingDetails?.pricing
   );
-  console.log("listingPrice discount", listingPricing.totalPromos.discount);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const [feeInfoDialog, setFeeInfoDialog] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
+  // const [prevLocation, setPrevLocation] = useState(location.pathname);
+
+  // console.log({
+  //   location: location,
+  //   prevLocation: prevLocation
+  // });
+
+  const { refetch: generateToken } = useQuery(GENERATE_TOKEN, { skip: true });
+  const [validateToken] = useMutation(VALIDATE_TOKEN);
 
   useEffect(() => {
+    const setUniqueUrl = async () => {
+      try {
+        const { data } = await generateToken();
+        const token = data.generateToken;
+        const url = new URL(window.location);
+        url.searchParams.set("listing", listing.id);
+        url.searchParams.set("token", token);
+        window.history.pushState({ listingId: listing.id }, "", url);
+      } catch (error) {
+        console.error('Error generating token:', error);
+      }
+    };
+
     if (listing && listing.id) {
-      const url = new URL(window.location);
-      url.searchParams.set("listing", listing.id);
-      window.history.pushState({ listingId: listing.id }, "", url);
+      setUniqueUrl();
     } else {
       navigate("/search");
     }
-  }, [listing]);
+  }, [listing, navigate, generateToken]);
+
+  const handleCheckout = async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+
+    try {
+      const { data } = await validateToken({ variables: { token } });
+      if (data.validateToken) {
+        // Proceed with checkout
+        console.log('Token is valid, proceed with checkout');
+      } else {
+        // Handle invalid token
+        console.log('Token is invalid or has been used');
+        navigate('/search');
+      }
+    } catch (error) {
+      console.error('Error validating token:', error);
+    }
+  };
+
+  useEffect(() => {
+    handleCheckout();
+  }, []);
+
+  // useEffect(() => {
+  //   if (listing && listing.id) {
+  //     const url = new URL(window.location);
+  //     url.searchParams.set("listing", listing.id);
+  //     window.history.pushState({ listingId: listing.id }, "", url);
+  //   } else {
+  //     navigate("/search");
+  //   }
+  // }, [listing, navigate]);
+
+  // useEffect(() => {
+  //   if (paymentSuccess && location.pathname !== prevLocation) {
+  //     dispatch(resetBooking());
+  //   }
+  // }, [location, paymentSuccess, prevLocation, dispatch]);
+
+  // useEffect(() => {
+  //   setPrevLocation(location.pathname);
+  // }, [location.pathname]);
 
   const handleBack = () => {
     navigate("/search");
     dispatch(setBookingDetails(resetBooking()));
+  };
+
+  const handlePaymentSuccess = () => {
+    setPaymentSuccess(true);
   };
 
   return (
@@ -110,8 +187,7 @@ export default function Checkout() {
                     </div>
                     <div className="content-right">
                       <span className="text-2">
-                        £
-                        {listingPricing.totalFees}
+                        £{listingPricing.totalFees}
                       </span>
                     </div>
                     <DialogComponent
@@ -143,8 +219,7 @@ export default function Checkout() {
                       </div>
                       <div className="content-right">
                         <span className="text-2">
-                          -£
-                          {listingPricing.totalPromos.discount || ""}
+                          -£{listingPricing.totalPromos.discount || ""}
                         </span>
                       </div>
                     </div>
@@ -161,6 +236,7 @@ export default function Checkout() {
               </div>
               <CheckoutForm
                 amount={listingPricing.totalPrice}
+                onSuccess={handlePaymentSuccess}
                 cardElementClasses={{
                   formClass: "custom-checkout-form",
                   baseClass: "card-element-base",

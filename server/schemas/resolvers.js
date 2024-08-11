@@ -11,6 +11,9 @@ const { signToken } = require("../utils/auth");
 const { model, default: mongoose } = require("mongoose");
 const { cloudinary } = require("../config/cloudinary");
 const stripe = require("stripe")(process.env.stripe_secret_key);
+const crypto = require("crypto");
+
+let urlTokens = new Set();
 
 const resolvers = {
   Query: {
@@ -60,9 +63,22 @@ const resolvers = {
         console.log(error);
       }
     },
+    generateToken: () => {
+      const urlToken = crypto.randomBytes(16).toString('hex');
+      urlTokens.add(urlToken);
+      return urlToken;
+    },
   },
 
   Mutation: {
+    validateToken: (parent, { urlToken }, context) => {
+      if (urlTokens.has(urlToken)) {
+        urlTokens.delete(urlToken);
+        return true;
+      } else {
+        return false;
+      }
+    },
     createPaymentIntent: async (parent, { amount }, context) => {
       try {
         const paymentIntent = await stripe.paymentIntents.create({

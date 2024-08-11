@@ -1,21 +1,18 @@
-// src/CheckoutForm.js
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { CREATE_PAYMENT_INTENT } from "../../../../utils/mutations";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import "./CheckoutForm.css";
-import { useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { resetBooking } from "../../../../reducers/bookingReducer";
 import ButtonComponent from "../../../PrimitiveComponents/ButtonComponent/ButtonComponent";
 import ToastComponent from "../../../PrimitiveComponents/ToastComponent/ToastComponent";
 import toast from "react-hot-toast";
 
-const CheckoutForm = ({ amount, cardElementClasses = {} }) => {
-  const navigate = useNavigate();
+const CheckoutForm = ({ amount, onSuccess, cardElementClasses = {} }) => {
   const dispatch = useDispatch();
-
-  const getArrivalTime = useSelector(
+  const arrivalTime = useSelector(
     (state) => state.bookingCycle.booking.bookingDetails?.arrivalTime
   );
 
@@ -24,10 +21,6 @@ const CheckoutForm = ({ amount, cardElementClasses = {} }) => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [arrivalTime, setArrivalTime] = useState({
-    hour: getArrivalTime?.hour,
-    minute: getArrivalTime?.minute,
-  });
 
   const [createPaymentIntent] = useMutation(CREATE_PAYMENT_INTENT);
 
@@ -41,7 +34,6 @@ const CheckoutForm = ({ amount, cardElementClasses = {} }) => {
     try {
       // Create PaymentIntent
       setLoading(true);
-      // const amountInPence = parseFloat(amount * 100);
       const { data } = await createPaymentIntent({
         variables: { amount: amount * 100 },
       });
@@ -71,20 +63,13 @@ const CheckoutForm = ({ amount, cardElementClasses = {} }) => {
           />
         );
         console.log("Payment successful:", paymentIntent);
-        redirectToBookingHistory();
-        dispatch(resetBooking());
+        onSuccess();
       }
     } catch (err) {
       setError(err.message);
       setSuccess(false);
       setLoading(false);
     }
-  };
-
-  const redirectToBookingHistory = () => {
-    setTimeout(() => {
-      navigate("/account/booking-history");
-    }, 5000);
   };
 
   const cardElementOptions = {
@@ -116,11 +101,11 @@ const CheckoutForm = ({ amount, cardElementClasses = {} }) => {
   return (
     <form onSubmit={handleSubmit} className={cardElementClasses.formClass}>
       <div className="text-checkout-info">
-        <p>This is a dummy test checkout. to checkout use details:</p>
+        <p>This is a dummy test checkout. To checkout, use the following details:</p>
         <ul>
-          <li>card number: 4242 4242 4242 4242</li>
-          <li>card expiry date: *use any date in the future</li>
-          <li>card cvv: *use any 3 numbers</li>
+          <li>Card number: 4242 4242 4242 4242</li>
+          <li>Card expiry date: *use any date in the future</li>
+          <li>Card CVV: *use any 3 numbers</li>
         </ul>
       </div>
       <CardElement options={cardElementOptions} />
@@ -135,10 +120,12 @@ const CheckoutForm = ({ amount, cardElementClasses = {} }) => {
       {error && <div className={cardElementClasses.errorClass}>{error}</div>}
       {success && (
         <div className={cardElementClasses.successClass}>
-          Redirecting to your bookings...
+          <span>Successfully booked! We have let your hosts know you will arrive around {arrivalTime.hour}:{arrivalTime.minute}.</span>
+          <span>View your booking <NavLink to="/account/booking-history">here</NavLink>.</span>
         </div>
       )}
     </form>
   );
 };
+
 export default CheckoutForm;

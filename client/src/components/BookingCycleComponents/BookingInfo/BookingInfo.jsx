@@ -23,7 +23,7 @@ export default function BookingInfo({
   const listing = useSelector(
     (state) => state.bookingCycle.booking.listingDetail?.listing
   );
-  console.log(listing)
+  
   const userLocation = useSelector((state) => state.bookingCycle.userLocation);
 
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ export default function BookingInfo({
   const promoCodeDiscount = appliedPromoCode === "20%OFF" ? 0.20 : 0;
 
   const [pricingDetails, setPricingDetails] = useState({
-    basePrice: listing?.price || 0,
+    basePrice: 0,
     totalFees: 0,
     totalPromos: {
       name: "",
@@ -53,13 +53,22 @@ export default function BookingInfo({
   });
 
   useEffect(() => {
+    if (listing?.price) {
+      setPricingDetails((prevDetails) => ({
+        ...prevDetails,
+        basePrice: listing.price,
+      }));
+    }
+  }, [listing]);
+
+  useEffect(() => {
     const calculatePricingDetails = () => {
-      const subtotal = numberOfPeople * pricingDetails.basePrice;
+      const subtotal = numberOfPeople * basePrice;
       const fees = subtotal * feePercentage;
       const discount = subtotal * promoCodeDiscount;
       const totalPrice = subtotal + fees - discount;
       setPricingDetails({
-        basePrice: pricingDetails.basePrice,
+        basePrice: basePrice,
         totalFees: fees,
         totalPromos: {
           name: appliedPromoCode,
@@ -75,7 +84,7 @@ export default function BookingInfo({
     feePercentage,
     promoCodeDiscount,
     appliedPromoCode,
-    pricingDetails.basePrice,
+    basePrice,
   ]);
 
   // Function to set booking details in Redux store
@@ -198,11 +207,11 @@ export default function BookingInfo({
       ) : (
         <>
           <div className="booking-info-header">
-            <StepProgressBar
+            {/* <StepProgressBar
               progressSteps={progressSteps}
               currentStep={2}
               className="booking-progress-bar"
-            />
+            /> */}
           </div>
           <div className="booking-info-body">
             <div className="your-booking-details">
