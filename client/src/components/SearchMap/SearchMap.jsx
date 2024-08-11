@@ -143,7 +143,7 @@ export default function SearchMap({
 
   // clear route when user location changes
   useEffect(() => {
-    console.log("user location", userLocation);
+    // console.log("user location", userLocation);
     clearRoute();
   }, [userLocation]);
 

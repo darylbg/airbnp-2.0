@@ -26,18 +26,18 @@ const initialState = {
             },
             specialRequests: "",
             pricing: {
-                basePrice: null,
-                totalFees: null,
+                basePrice: 0.00,
+                totalFees: 0.00,
                 totalPromos: {
                     name: "",
-                    discount: null
+                    discount: 0.00
                 },
-                totalPrice: null
+                totalPrice: 0.00
             }
         },
         checkoutInfo: {
             paymentMethod: null,
-            billingAddress: null
+            checkoutSuccess: false
         }
     }
 };
@@ -80,7 +80,7 @@ const bookingSlice = createSlice({
         proceedToCheckout(state) {
             state.booking.currentStep = "checkout";
         },
-        updateCheckoutInfo(state, action) {
+        setCheckoutInfo(state, action) {
             state.booking.checkoutInfo = {
                 ...state.booking.checkoutInfo,
                 ...action.payload
@@ -104,7 +104,7 @@ export const {
     setListingDetails,
     setBookingDetails,
     proceedToCheckout,
-    updateCheckoutInfo,
+    setCheckoutInfo,
     resetBooking,
     resetUserLocation
 } = bookingSlice.actions;

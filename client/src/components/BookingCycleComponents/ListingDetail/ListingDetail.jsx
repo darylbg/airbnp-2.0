@@ -49,7 +49,7 @@ export default function ListingDetail() {
     });
 
     mapRef.current.on("load", () => {
-      console.log("user location", userLocation);
+      // console.log("user location", userLocation);
       if (
         userLocation.coordinates.lng !== null &&
         userLocation.coordinates.lat !== null

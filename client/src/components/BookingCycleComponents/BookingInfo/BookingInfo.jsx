@@ -11,6 +11,9 @@ import { useForm } from "react-hook-form";
 import * as Form from "@radix-ui/react-form";
 import DialogComponent from "../../PrimitiveComponents/DialogComponent/DialogComponent";
 import "./BookingInfo.css";
+import { VALIDATE_TOKEN } from "../../../utils/mutations/urlGenerationMutations";
+import { GENERATE_TOKEN } from "../../../utils/queries/urlGenerationQueries";
+import { useMutation, useQuery } from "@apollo/client";
 
 export default function BookingInfo({
   routeType,
@@ -23,7 +26,7 @@ export default function BookingInfo({
   const listing = useSelector(
     (state) => state.bookingCycle.booking.listingDetail?.listing
   );
-  
+
   const userLocation = useSelector((state) => state.bookingCycle.userLocation);
 
   const navigate = useNavigate();
@@ -40,17 +43,18 @@ export default function BookingInfo({
   const [feeInfoDialog, setFeeInfoDialog] = useState(false);
 
   const basePrice = listing?.price || 0;
-  const promoCodeDiscount = appliedPromoCode === "20%OFF" ? 0.20 : 0;
+  const promoCodeDiscount = appliedPromoCode === "20%OFF" ? 0.2 : 0;
 
   const [pricingDetails, setPricingDetails] = useState({
-    basePrice: 0,
-    totalFees: 0,
+    basePrice: 0.00,
+    totalFees: 0.00,
     totalPromos: {
       name: "",
-      discount: 0,
+      discount: 0.00,
     },
-    totalPrice: 0,
+    totalPrice: 0.00,
   });
+  console.log(pricingDetails);
 
   useEffect(() => {
     if (listing?.price) {
@@ -76,6 +80,7 @@ export default function BookingInfo({
         },
         totalPrice: totalPrice,
       });
+      
     };
 
     calculatePricingDetails();
@@ -86,39 +91,6 @@ export default function BookingInfo({
     appliedPromoCode,
     basePrice,
   ]);
-
-  // Function to set booking details in Redux store
-  const handleReduxCheckout = () => {
-    dispatch(
-      setBookingDetails({
-        listing: listing,
-        numberOfPeople: numberOfPeople,
-        arrivalTime: {
-          hour: `${arrivalTime.hour}`,
-          minute: `${arrivalTime.minute}`,
-        },
-        specialRequests: "",
-        pricing: pricingDetails,
-      })
-    );
-  };
-
-  // Function to handle proceed to checkout
-  const handleProceedToCheckout = () => {
-    if (isLoggedIn) {
-      handleReduxCheckout();
-      navigate("/checkout");
-    } else {
-      setShowLoginRequiredPrompt(true);
-    }
-  };
-
-  // Function to handle login and proceed to checkout
-  const handleLoginToCheckout = () => {
-    handleReduxCheckout();
-    setShowLoginRequiredPrompt(false);
-    navigate("/checkout");
-  };
 
   // Increment and decrement number of people booking for
   const incrementNumberOfPeople = () => {
@@ -189,6 +161,67 @@ export default function BookingInfo({
 
   const totalPrice = calculateTotalPrice();
 
+  // set unique checkout urls
+  const { refetch: generateToken } = useQuery(GENERATE_TOKEN, {
+    skip: true,
+    fetchPolicy: "network-only",
+  });
+  const [validateToken] = useMutation(VALIDATE_TOKEN);
+  const setUniqueUrl = async () => {
+    try {
+      const { data } = await generateToken();
+      const token = data.generateToken;
+      if (token) {
+        return token;
+      } else {
+        console.error("No token generated");
+        return null;
+      }
+    } catch (error) {
+      console.error("Error generating token:", error);
+      return null;
+    }
+  };
+
+  const bookingToCheckout = async () => {
+    // generate a token, set to url
+    const token = await setUniqueUrl();
+    if (token) {
+      console.log("token", token);
+      navigate("/checkout");
+      const url = new URL(window.location);
+      url.searchParams.set("listing", listing.id);
+      url.searchParams.set("token", token);
+      window.history.pushState({ listingId: listing.id }, "", url);
+
+      localStorage.setItem("checkoutToken", token);
+    } else {
+      console.error("Failed to generate checkout token");
+    }
+    // send booking details to redux
+    dispatch(
+      setBookingDetails({
+        listing: listing,
+        numberOfPeople: numberOfPeople,
+        arrivalTime: {
+          hour: `${arrivalTime.hour}`,
+          minute: `${arrivalTime.minute}`,
+        },
+        specialRequests: "",
+        pricing: pricingDetails,
+      })
+    );
+  };
+
+  // if logged out, show loggin prompt then proceed to checkout
+  const handleLoggedOutBookingToCheckout = () => {
+    if (isLoggedIn) {
+      bookingToCheckout();
+    } else {
+      setShowLoginRequiredPrompt(true);
+    }
+  };
+
   return (
     <div className="booking-info-wrapper">
       {showLoginRequiredPrompt ? (
@@ -200,9 +233,7 @@ export default function BookingInfo({
             />
             <span>Sign in to complete checkout</span>
           </div>
-          <LoginRegisterComponent
-            handleLoginToCheckout={handleLoginToCheckout}
-          />
+          <LoginRegisterComponent handleLoginToCheckout={bookingToCheckout} />
         </>
       ) : (
         <>
@@ -439,7 +470,7 @@ export default function BookingInfo({
           <ButtonComponent
             type="button"
             className="default-button action-button checkout-button"
-            action={handleProceedToCheckout}
+            action={handleLoggedOutBookingToCheckout}
           >
             Continue to payment
           </ButtonComponent>
