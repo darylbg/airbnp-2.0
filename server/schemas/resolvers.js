@@ -33,7 +33,7 @@ const resolvers = {
       throw new AuthenticationError("You need to be logged in");
     },
 
-    getListingById: async (parent, args, context) => {
+    getListingByUserId: async (parent, args, context) => {
       try {
         if (context.user) {
           const userListings = await Listing.find({ user_id: context.user.id })
@@ -63,8 +63,39 @@ const resolvers = {
         console.log(error);
       }
     },
+    getListingById: async (parent, { listingId }, context) => {
+      // Log the received listingId for debugging purposes
+      console.log("Received listingId:", listingId);
+    
+      // Validate the listingId format
+      if (!listingId || !mongoose.Types.ObjectId.isValid(listingId)) {
+        console.error("Invalid or missing listingId:", listingId);
+        throw new Error("Invalid or missing listingId");
+      }
+    
+      try {
+        // Fetch the listing by ID
+        const listing = await Listing.findById(listingId)
+          .populate({ path: "amenities" })
+          .populate({ path: "reviews" })
+          .populate({ path: "payments" });
+    
+        // Check if listing is found
+        if (!listing) {
+          console.log("Listing not found for ID:", listingId);
+          return null; // or throw an error based on your use case
+        }
+        console.log(listing)
+        return listing;
+      } catch (error) {
+        console.error("Error fetching listing:", error);
+        throw new Error("Failed to fetch listing");
+      }
+    },
+    
+    
     generateToken: () => {
-      const urlToken = crypto.randomBytes(16).toString('hex');
+      const urlToken = crypto.randomBytes(16).toString("hex");
       urlTokens.add(urlToken);
       return urlToken;
     },
@@ -83,7 +114,7 @@ const resolvers = {
       try {
         const paymentIntent = await stripe.paymentIntents.create({
           amount,
-          currency: 'gbp',
+          currency: "gbp",
         });
         return { clientSecret: paymentIntent.client_secret };
       } catch (error) {

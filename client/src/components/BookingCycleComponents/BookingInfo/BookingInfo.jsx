@@ -29,12 +29,14 @@ export default function BookingInfo({
 
   const userLocation = useSelector((state) => state.bookingCycle.userLocation);
 
+  const reduxNumberOfPeople = useSelector((state) => state.bookingCycle.booking.bookingDetails.numberOfPeople)
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [showLoginRequiredPrompt, setShowLoginRequiredPrompt] = useState(false);
-  const [numberOfPeople, setNumberOfPeople] = useState(1);
+  const [numberOfPeople, setNumberOfPeople] = useState(reduxNumberOfPeople);
   const [addPromoCode, setAddPromoCode] = useState(false);
   const [promoMessage, setPromoMessage] = useState("Use code 20%OFF");
   const [appliedPromoCode, setAppliedPromoCode] = useState("");
@@ -46,15 +48,15 @@ export default function BookingInfo({
   const promoCodeDiscount = appliedPromoCode === "20%OFF" ? 0.2 : 0;
 
   const [pricingDetails, setPricingDetails] = useState({
-    basePrice: 0.00,
-    totalFees: 0.00,
+    basePrice: 0.0,
+    totalFees: 0.0,
     totalPromos: {
       name: "",
-      discount: 0.00,
+      discount: 0.0,
     },
-    totalPrice: 0.00,
+    totalPrice: 0.0,
   });
-  console.log(pricingDetails);
+  // console.log(pricingDetails);
 
   useEffect(() => {
     if (listing?.price) {
@@ -80,7 +82,6 @@ export default function BookingInfo({
         },
         totalPrice: totalPrice,
       });
-      
     };
 
     calculatePricingDetails();
@@ -152,21 +153,12 @@ export default function BookingInfo({
     }
   }, [promoCode, clearErrors]);
 
-  const calculateTotalPrice = () => {
-    const subtotal = numberOfPeople * basePrice;
-    const fees = subtotal * feePercentage;
-    const discount = subtotal * promoCodeDiscount;
-    return subtotal + fees - discount;
-  };
-
-  const totalPrice = calculateTotalPrice();
-
   // set unique checkout urls
   const { refetch: generateToken } = useQuery(GENERATE_TOKEN, {
     skip: true,
     fetchPolicy: "network-only",
   });
-  const [validateToken] = useMutation(VALIDATE_TOKEN);
+
   const setUniqueUrl = async () => {
     try {
       const { data } = await generateToken();
@@ -187,12 +179,18 @@ export default function BookingInfo({
     // generate a token, set to url
     const token = await setUniqueUrl();
     if (token) {
-      console.log("token", token);
-      navigate("/checkout");
       const url = new URL(window.location);
-      url.searchParams.set("listing", listing.id);
-      url.searchParams.set("token", token);
-      window.history.pushState({ listingId: listing.id }, "", url);
+    url.pathname = "/checkout";
+    
+    // Remove the existing dialog parameter if it exists
+    url.searchParams.delete("dialog");
+    
+    // Set the required search parameters
+    url.searchParams.set("listing", listing.id);
+    url.searchParams.set("token", token);
+    
+    // Use navigate with the full URL including the search parameters
+    navigate(`${url.pathname}${url.search}`);
 
       localStorage.setItem("checkoutToken", token);
     } else {

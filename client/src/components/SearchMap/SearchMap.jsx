@@ -10,6 +10,9 @@ import {
   setListingDetails,
   setCurrentStep,
 } from "../../reducers/bookingReducer";
+import { GET_LISTING_BY_ID } from "../../utils/queries";
+import { useQuery, useLazyQuery } from "@apollo/client";
+import { useLocation } from "react-router-dom";
 import MapMarkerPopup from "../MapMarkerPopup/MapMarkerPopup";
 import { mapStyleOptions } from "./mapStyleOptions"; // Adjust the path as necessary
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -25,7 +28,6 @@ export default function SearchMap({
   mapCenterCoordinates,
   routeType,
   setRouteData,
-  setMapCenterCoordinates,
 }) {
   mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 
@@ -51,6 +53,28 @@ export default function SearchMap({
   );
 
   const userLocation = useSelector((state) => state.bookingCycle.userLocation);
+
+  const location = useLocation();
+  
+  const [getListingById, { data, loading, error }] = useLazyQuery(GET_LISTING_BY_ID);
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const listingId = queryParams.get('dialog'); // Adjust this if your parameter is different
+
+    if (listingId) {
+      console.log("running", listingDetail.listing)
+      getListingById({ variables: { listingId } })
+        .then(response => {
+          // console.log(response.data.getListingById);
+          dispatch(setListingDetails({listing: response.data.getListingById}));
+          setDetailDialog(true);
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    } 
+  }, []);
 
   // clear user location on page refresh
   useEffect(() => {

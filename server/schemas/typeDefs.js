@@ -168,8 +168,9 @@ const typeDefs = gql`
   # queries
   type Query {
     user(id: ID!): User
-    getListingById(user_id: ID!): Listing
+    getListingByUserId(user_id: ID!): Listing
     getAllListings: [Listing]
+    getListingById(listingId: ID!): Listing
     generateToken: String
     # sessionStatus(sessionId: String!): SessionStatusResponse!
   }

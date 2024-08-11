@@ -46,7 +46,7 @@ export default function Checkout() {
   }, []);
 
   const handleBack = () => {
-    navigate("/search");
+    navigate(-1);
     dispatch(setBookingDetails(resetBooking()));
   };
 
@@ -79,7 +79,7 @@ export default function Checkout() {
             <>
               <div className="back-button">
                 <WindowControlButton icon="arrow_back" action={handleBack} />
-                <span>Back to Search</span>
+                <span>Back to your details</span>
               </div>
               <div className="content">
                 <div className="checkout-listing">

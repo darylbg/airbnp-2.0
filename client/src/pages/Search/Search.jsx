@@ -13,7 +13,7 @@ import {
 } from "../../reducers/allListingsReducer";
 import ButtonComponent from "../../components/PrimitiveComponents/ButtonComponent/ButtonComponent";
 import { setUserLocation } from "../../reducers/bookingReducer";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export default function Search() {
   const dispatch = useDispatch();
@@ -30,6 +30,7 @@ export default function Search() {
     lat: 52.54851,
     lng: -1.9801,
   });
+
   const { error, loading, data, refetch } = useQuery(GET_ALL_LISTINGS);
   const allListingEntities = useSelector(
     (state) => state.allListings.defaultListings.entities
@@ -45,7 +46,6 @@ export default function Search() {
   const userLocation = useSelector(
     (state) => state.bookingCycle.userLocation.coordinates
   );
-  // console.log(userLocation);
 
   useEffect(() => {
     if (refetchListings) {
