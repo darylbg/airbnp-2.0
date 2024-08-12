@@ -73,7 +73,7 @@ export default function Listings() {
       >
         <div className="listing-header-button-group">
           <PrimaryButton
-          className="default-button filter-listings-button"
+          className="default-button white-button"
           action={() => setFilterDialog(true)}
           >
             <span className="text">

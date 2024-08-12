@@ -31,10 +31,12 @@ import Notifications from "./components/DashboardComponents/Notifications/Notifi
 import Payments from "./components/DashboardComponents/Payments/Payments";
 import Reviews from "./components/DashboardComponents/Reviews/Reviews";
 import Checkout from "./components/BookingCycleComponents/Checkout/Checkout";
-// import StripeProvider from "./stripeProvider/StripeProvider";
+import GuestReservations from "./components/DashboardComponents/Bookings/GuestReservations/GuestReservations";
+import MyBookingHistory from "./components/DashboardComponents/Bookings/MyBookingHistory/MyBookingHistory";
+import BookingOverview from "./components/DashboardComponents/Bookings/BookingOverview/BookingOverview";
 
 const httpLink = createHttpLink({
-  uri: "http://localhost:3001/graphql"
+  uri: "http://localhost:3001/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -81,8 +83,11 @@ function App() {
               <Route path="about" element={<About />}></Route>
               <Route path="contact" element={<Contact />}></Route>
               <Route path="dashboard" element={<Dashboard />}>
-                {/* <Route path="" element={<Bookings />} /> */}
-                <Route path="bookings" element={<Bookings />} />
+                <Route path="bookings" element={<Bookings />}>
+                  <Route path="" element={<BookingOverview />} />
+                  <Route path="my-booking-history" element={<MyBookingHistory />} />
+                  <Route path="guest-reservations" element={<GuestReservations />} />
+                </Route>
                 <Route path="listings" element={<Listings />} />
                 <Route path="notifications" element={<Notifications />} />
                 <Route path="payments" element={<Payments />} />
@@ -106,7 +111,7 @@ function App() {
                   element={<TermsAndConditions />}
                 />
               </Route>
-              <Route path="checkout" element={<Checkout />}/>
+              <Route path="checkout" element={<Checkout />} />
             </Routes>
             <MobileNavbar />
           </div>

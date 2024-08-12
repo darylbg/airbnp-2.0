@@ -1,41 +1,19 @@
-dialog {
-    background-color: red;
+.dropdown-menu-content {
+    background-color: var(--white-13) ;
 }
 
-dialog::backdrop {
-    color: blue;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgb(0, 0, 0, 0.7);
+.dropdown-menu-item {
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
 }
 
-body.modal-open {
-    overflow: hidden !important;
+.dropdown-menu-item a {
+    font-family: var(--font-figtree);
+    text-decoration: none;
+    color: var(--black-10);
 }
 
-.ontop {
-    z-index: 1100;
-    color: pink;
-    background-color: blue;
-}
-
-.modal-backdrop {
-    background-color: rgb(0, 0, 0, 0.7);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-}
-
-.modal {
-    background-color: white;
-    height: 400px;
-    width: 400px;
-    /* display: flex; */
-    /* justify-content: center; */
-    /* align-items: center; */
+.dropdown-menu-item .active {
+    color: var(--black-12);
+    font-weight: 800;
 }
