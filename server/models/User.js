@@ -44,42 +44,49 @@ const userSchema = new Schema(
       {
         type: Schema.Types.ObjectId,
         ref: "Listing",
-        required: true
+        // required: true
       },
     ],
     saved_listings: [
       {
         type: Schema.Types.ObjectId,
         ref: "Listing",
-        required: true
+        // required: true
       },
     ],
     notifications: [
       {
         type: Schema.Types.ObjectId,
         ref: "Notification",
-        required: true
+        // required: true
       },
     ],
     reviews: [
       {
         type: Schema.Types.ObjectId,
         ref: "Review",
-        required: true
+        // required: true
       },
     ],
     payments: [
       {
         type: Schema.Types.ObjectId,
         ref: "Payment",
-        required: true
+        // required: true
       },
     ],
     booking_history: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Listing",
-        required: true
+        ref: "Booking",
+        // required: true
+      },
+    ],
+    guest_reservations: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Booking",
+        // required: true
       },
     ],
   },

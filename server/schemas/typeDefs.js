@@ -16,7 +16,8 @@ const typeDefs = gql`
     notifications: [Notification]
     reviews: [Review]
     payments: [Payment]
-    booking_history: [Listing]
+    booking_history: [Booking]
+    guest_reservations: [Booking]
   }
 
   type Listing {
@@ -78,6 +79,22 @@ const typeDefs = gql`
     listing_id: ID!
   }
 
+  type Booking {
+    id: ID!
+    listing: Listing!
+    listing_url: String
+    guest_id: ID!
+    host_id: ID!
+    number_of_people: Int!
+    arrival_time: String!
+    created_at: String!
+    booking_status: String!
+    booking_status_updated_at: String
+    total_price: Float!
+    payment_status: String!
+    special_requests: String
+  }
+
   # authorization type
 
   type Auth {
@@ -101,6 +118,7 @@ const typeDefs = gql`
     reviews: [ID!]
     payments: [ID!]
     booking_history: [ID!]
+    guest_reservations: [ID!]
     password: String!
   }
 
@@ -161,6 +179,21 @@ const typeDefs = gql`
     payment_status: String
   }
 
+  input bookingInput {
+    listing: ID!
+    listing_url: String
+    guest_id: ID!
+    host_id: ID!
+    number_of_people: Int!
+    arrival_time: String!
+    created_at: String!
+    booking_status: String!
+    booking_status_updated_at: String
+    total_price: Float!
+    payment_status: String!
+    special_requests: String
+  }
+
   type PaymentIntent {
     clientSecret: String!
   }
@@ -172,7 +205,10 @@ const typeDefs = gql`
     getAllListings: [Listing]
     getListingById(listingId: ID!): Listing
     generateToken: String
-    # sessionStatus(sessionId: String!): SessionStatusResponse!
+
+    getBookingById(booking_id: ID!): Booking
+    getUserBookingHistory(user_id: ID!): [Booking]
+    getUserGuestReservations(user_id: ID!): [Booking]
   }
 
   # mutations
@@ -194,6 +230,10 @@ const typeDefs = gql`
     createPayment(listingId: ID!, paymentData: paymentInput): Payment
     updatePayment(paymentId: ID!, paymentData: paymentInput): Payment
     validateToken(urlToken: String!): Boolean
+
+    createBooking(input: bookingInput): Booking
+    updateBooking(booking_id: ID!, input: bookingInput): Booking
+    deleteBooking(booking_id: ID!): Booking
   }
 `;
 
