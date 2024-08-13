@@ -44,6 +44,7 @@ class AuthService {
 
   login(idToken) {
     localStorage.setItem("id_token", idToken);
+    console.log("login function firing", idToken)
     this.startTokenCheck();
     // window.location.assign("/");
   }

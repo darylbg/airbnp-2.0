@@ -9,8 +9,18 @@ import { resetBooking } from "../../../../reducers/bookingReducer";
 import ButtonComponent from "../../../PrimitiveComponents/ButtonComponent/ButtonComponent";
 import ToastComponent from "../../../PrimitiveComponents/ToastComponent/ToastComponent";
 import toast from "react-hot-toast";
+import { CREATE_BOOKING } from "../../../../utils/mutations/bookingMutations";
 
-const CheckoutForm = ({ amount, onSuccess, cardElementClasses = {} }) => {
+const CheckoutForm = ({
+  listing,
+  numberOfPeople,
+  listingPricing,
+  // arrivalTime,
+  amount,
+  onSuccess,
+  cardElementClasses = {},
+}) => {
+  const userId = useSelector((state) => state.auth.currentUser);
   const dispatch = useDispatch();
   const arrivalTime = useSelector(
     (state) => state.bookingCycle.booking.bookingDetails?.arrivalTime
@@ -22,7 +32,44 @@ const CheckoutForm = ({ amount, onSuccess, cardElementClasses = {} }) => {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const [createBooking] = useMutation(CREATE_BOOKING);
   const [createPaymentIntent] = useMutation(CREATE_PAYMENT_INTENT);
+
+  const createBookingEntry = async () => {
+    const listingId = listing.id;
+    const guestId = userId;
+    const hostId = listing.user_id;
+    const now = new Date();
+
+    const { protocol, hostname, port } = window.location;
+    const baseUrl = `${protocol}//${hostname}${port ? `:${port}` : ""}`;
+    const listingUrl = `${baseUrl}/search?dialog=${listingId}`;
+
+    try {
+      const { data } = await createBooking({
+        variables: {
+          bookingInput: {
+            listing: [listing],
+            listing_url: listingUrl,
+            guest_id: guestId,
+            host_id: hostId,
+            number_of_people: numberOfPeople,
+            arrival_time: `${arrivalTime.hour}:${arrivalTime.minute}`,
+            booking_status: "Active",
+            booking_status_updated_at: "date and time",
+            total_price: listingPricing.totalPrice,
+            payment_status: "Paid",
+            special_requests: "",
+          },
+        },
+      });
+
+      return data.createBooking;
+    } catch (error) {
+      console.error("Error creating booking", error);
+      throw error;
+    }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -31,15 +78,19 @@ const CheckoutForm = ({ amount, onSuccess, cardElementClasses = {} }) => {
       return;
     }
 
+    setLoading(true);
+    setError(null);
+
     try {
-      // Create PaymentIntent
-      setLoading(true);
+      // Create booking first
+      const newBooking = await createBookingEntry();
+
+      // If booking creation successful, proceed with payment
       const { data } = await createPaymentIntent({
         variables: { amount: amount * 100 },
       });
       const clientSecret = data.createPaymentIntent.clientSecret;
 
-      // Confirm the payment
       const cardElement = elements.getElement(CardElement);
       const { error, paymentIntent } = await stripe.confirmCardPayment(
         clientSecret,
@@ -53,9 +104,8 @@ const CheckoutForm = ({ amount, onSuccess, cardElementClasses = {} }) => {
       if (error) {
         setError(error.message);
         setSuccess(false);
-        setLoading(false);
+        // TODO: Cancel or update the booking status to "Failed"
       } else {
-        setError(null);
         setSuccess(true);
         toast.success(
           <ToastComponent
@@ -63,15 +113,19 @@ const CheckoutForm = ({ amount, onSuccess, cardElementClasses = {} }) => {
           />
         );
         console.log("Payment successful:", paymentIntent);
+        
+        // TODO: Update the booking status to "Confirmed" or "Paid"
+        
         onSuccess();
       }
     } catch (err) {
       setError(err.message);
       setSuccess(false);
+      // TODO: Handle booking creation failure
+    } finally {
       setLoading(false);
     }
   };
-
   const cardElementOptions = {
     style: {
       base: {
@@ -101,7 +155,9 @@ const CheckoutForm = ({ amount, onSuccess, cardElementClasses = {} }) => {
   return (
     <form onSubmit={handleSubmit} className={cardElementClasses.formClass}>
       <div className="text-checkout-info">
-        <p>This is a dummy test checkout. To checkout, use the following details:</p>
+        <p>
+          This is a dummy test checkout. To checkout, use the following details:
+        </p>
         <ul>
           <li>Card number: 4242 4242 4242 4242</li>
           <li>Card expiry date: *use any date in the future</li>
@@ -120,8 +176,14 @@ const CheckoutForm = ({ amount, onSuccess, cardElementClasses = {} }) => {
       {error && <div className={cardElementClasses.errorClass}>{error}</div>}
       {success && (
         <div className={cardElementClasses.successClass}>
-          <span>Successfully booked! We have let your hosts know you will arrive around {arrivalTime.hour}:{arrivalTime.minute}.</span>
-          <span>View your booking <NavLink to="/account/booking-history">here</NavLink>.</span>
+          <span>
+            Successfully booked! We have let your hosts know you will arrive
+            around {arrivalTime.hour}:{arrivalTime.minute}.
+          </span>
+          <span>
+            View your booking{" "}
+            <NavLink to="/account/booking-history">here</NavLink>.
+          </span>
         </div>
       )}
     </form>

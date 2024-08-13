@@ -153,6 +153,10 @@ const resolvers = {
       }
     },
     createPaymentIntent: async (parent, { amount }, context) => {
+      console.log(context);
+      if (!context.user) {
+        throw new AuthenticationError("You must be logged in!");
+      }
       try {
         const paymentIntent = await stripe.paymentIntents.create({
           amount,
@@ -163,7 +167,8 @@ const resolvers = {
         throw new Error(error.message);
       }
     },
-    login: async (parent, { email, password }) => {
+    login: async (parent, { email, password }, context) => {
+      // console.log("login context", context);
       try {
         const user = await User.findOne({ email }).populate({
           path: "user_listings",
@@ -186,6 +191,7 @@ const resolvers = {
 
         const token = signToken(user);
         console.log("token on login:", JSON.stringify(token));
+        // console.log("login context", context);
         return { token, user };
       } catch (error) {
         console.error("Error during login:", error);
@@ -248,6 +254,7 @@ const resolvers = {
     },
 
     createListing: async (parent, { listingData }, context) => {
+      console.log("context on create listing", context.user);
       if (context.user) {
         try {
           // Check if listing_data contains listing_image field
@@ -554,30 +561,67 @@ const resolvers = {
         throw new AuthenticationError("You must be logged in!");
       }
       try {
+        // Fetch the full listing document
+        const listing = await Listing.findById(bookingInput.listing);
+        if (!listing) {
+          throw new Error("Listing not found");
+        }
+    
+        // Create the booking with the full listing embedded
         const new_booking = await Booking.create({
           ...bookingInput,
+          listing: listing.toObject(), // Embed the full listing object
         });
-
+    
         const guest_id = bookingInput.guest_id;
         const host_id = bookingInput.host_id;
         const new_booking_id = new_booking._id;
-
-          await User.findOneAndUpdate(
-            { _id: guest_id },
-            { $push: { booking_history: new_booking_id } },
-            { new: true }
-          );
-
-          await User.findOneAndUpdate(
-            { _id: host_id },
-            { $push: { guest_reservations: new_booking_id } },
-            { new: true }
-          );
-
+    
+        // Update the guest's booking history
+        await User.findByIdAndUpdate(
+          guest_id,
+          { $push: { booking_history: new_booking_id } },
+          { new: true }
+        );
+    
+        // Update the host's guest reservations
+        await User.findByIdAndUpdate(
+          host_id,
+          { $push: { guest_reservations: new_booking_id } },
+          { new: true }
+        );
+    
         return new_booking;
       } catch (error) {
+        console.error("Error creating booking:", error);
+        throw new Error("Error creating booking: " + error.message);
+      }
+    },
+    updateBooking: async (parent, { booking_id, bookingInput }, context) => {
+      if (!context.user) {
+        throw new AuthenticationError("You must be logged in!");
+      }
+      try {
+        // const booking
+        const booking = await Booking.findByIdAndUpdate(
+          booking_id,
+          {
+            ...booking,
+            number_of_people: bookingInput.number_of_people,
+            arrival_time: bookingInput.arrival_time,
+            booking_status: bookingInput.booking_status,
+            booking_status_updated_at: bookingInput.booking_status_updated_at,
+            total_price: bookingInput.total_price,
+            payment_status: bookingInput.payment_status,
+            special_requests: bookingInput.special_requests,
+          },
+          { new: true }
+        );
+
+        return booking;
+      } catch (error) {
         console.log(error);
-        throw new Error("Error creating booking", error);
+        throw new Error("Error updating booking", error);
       }
     },
   },

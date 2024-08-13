@@ -83,7 +83,7 @@ export default function Checkout() {
               </div>
               <div className="content">
                 <div className="checkout-listing">
-                  <card className="checkout-listing-card">
+                  <div className="checkout-listing-card">
                     <img src={listing?.listing_image[0]} alt="" />
                     <div className="checkout-listing-card-text">
                       <div className="header">
@@ -100,7 +100,7 @@ export default function Checkout() {
                         <h3 className="price">{listing?.price}</h3>
                       </div>
                     </div>
-                  </card>
+                  </div>
                 </div>
                 <div className="checkout-form">
                   <div className="booking-price-details">
@@ -184,6 +184,10 @@ export default function Checkout() {
                     </div>
                   </div>
                   <CheckoutForm
+                    listing={listing}
+                    numberOfPeople={numberOfPeople}
+                    listingPricing={listingPricing}
+                    arrivalTime={arrivalTime}
                     amount={listingPricing.totalPrice}
                     onSuccess={handlePaymentSuccess}
                     cardElementClasses={{

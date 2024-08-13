@@ -73,7 +73,7 @@ export default function SearchListing({
           containerClass="carousel-container"
           dotListClass="custom-dot-list-style"
           itemClass="carousel-item-padding-40-px"
-          arrows={listing.listing_image.length > 1}
+          arrows={listing.listing_image?.length > 1}
           customLeftArrow={<CustomLeftArrow />}
           customRightArrow={<CustomRightArrow />}
         >

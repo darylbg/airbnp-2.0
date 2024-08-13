@@ -12,7 +12,11 @@ import { setUserDetails } from "../../../reducers/userDetailsReducer";
 import { setUserListings } from "../../../reducers/userListingsReducer";
 import "./SignInRegisterForms.css";
 
-export default function SignInForm({ handleSignInRegisterToggle, handleLoginToCheckout }) {
+export default function SignInForm({
+  handleSignInRegisterToggle,
+  handleLoginToCheckout,
+  closeLoginRegisterDialog
+}) {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
   const dispatch = useDispatch();
@@ -38,21 +42,24 @@ export default function SignInForm({ handleSignInRegisterToggle, handleLoginToCh
       const userListingsData = loggedInUserData.user.user_listings;
 
       // updated redux dispatch
-      dispatch(loginUser({id: userId, token: loggedInUserData.token}));
+      dispatch(loginUser({ id: userId, token: loggedInUserData.token }));
       dispatch(setUserDetails(loggedInUserData.user));
       dispatch(setUserListings(userListingsData));
+      
 
       // if loggin in to checkout, redirect to checkout page
-      handleLoginToCheckout();
-
+      // handleLoginToCheckout();
+      console.log("this is the token", loggedInUser.data.login.token);
       Auth.login(loggedInUser.data.login.token);
-      
+
+      // closeLoginRegisterDialog();
+
       const firstName = loggedInUserData.user.first_name;
-      toast.success(<ToastComponent message={`Welcome ${firstName}.`}/>);
-    } catch ({error, graphQLErrors, networkError}) {
+      toast.success(<ToastComponent message={`Welcome ${firstName}.`} />);
+    } catch ({ error, graphQLErrors, networkError }) {
       console.log("Sign in error:", error);
       if (graphQLErrors && graphQLErrors.length > 0) {
-        console.log("graphQLErrors error", graphQLErrors)
+        console.log("graphQLErrors error", graphQLErrors);
       }
       if (graphQLErrors && graphQLErrors.length > 0) {
         const firstGraphQLErrorCode = graphQLErrors[0].extensions.code;
@@ -73,7 +80,8 @@ export default function SignInForm({ handleSignInRegisterToggle, handleLoginToCh
             console.log("Unhandled GraphQL error:", error);
             setError("otherLoginError", {
               type: "otherLoginError",
-              message: "Something went wrong, please refresh the page and try again",
+              message:
+                "Something went wrong, please refresh the page and try again",
             });
         }
       } else if (networkError) {
@@ -91,7 +99,6 @@ export default function SignInForm({ handleSignInRegisterToggle, handleLoginToCh
       }
     }
   };
-  
 
   const handleEmailValidation = (e) => {
     setValue("email", e.target.value, {
@@ -141,7 +148,9 @@ export default function SignInForm({ handleSignInRegisterToggle, handleLoginToCh
             />
           </Form.Control>
           <div className="field-message">{errors.email?.message}</div>
-          <div className="field-message">{errors.noUserFoundError?.message}</div>
+          <div className="field-message">
+            {errors.noUserFoundError?.message}
+          </div>
         </Form.Field>
         <Form.Field className="form-field" name="password">
           <Form.Label className="field-label">Password</Form.Label>
@@ -163,7 +172,9 @@ export default function SignInForm({ handleSignInRegisterToggle, handleLoginToCh
             </div>
           </div>
           <div className="field-message">{errors.password?.message}</div>
-          <div className="field-message">{errors.incorrectPasswordError?.message}</div>
+          <div className="field-message">
+            {errors.incorrectPasswordError?.message}
+          </div>
           <div className="field-message">{errors.otherLoginError?.message}</div>
         </Form.Field>
         <Form.Field className="form-submit-button">

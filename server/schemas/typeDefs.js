@@ -87,7 +87,7 @@ const typeDefs = gql`
     host_id: ID!
     number_of_people: Int!
     arrival_time: String!
-    created_at: String!
+    created_at: String
     booking_status: String!
     booking_status_updated_at: String
     total_price: Float!
@@ -186,7 +186,7 @@ const typeDefs = gql`
     host_id: ID!
     number_of_people: Int!
     arrival_time: String!
-    created_at: String!
+    # created_at: String!
     booking_status: String!
     booking_status_updated_at: String
     total_price: Float!
@@ -231,9 +231,9 @@ const typeDefs = gql`
     updatePayment(paymentId: ID!, paymentData: paymentInput): Payment
     validateToken(urlToken: String!): Boolean
 
-    createBooking(input: bookingInput): Booking
-    updateBooking(booking_id: ID!, input: bookingInput): Booking
-    deleteBooking(booking_id: ID!): Booking
+    createBooking(bookingInput: bookingInput): Booking
+    updateBooking(bookingId: ID!, bookingInput: bookingInput): Booking
+    # deleteBooking(booking_id: ID!): Booking
   }
 `;
 

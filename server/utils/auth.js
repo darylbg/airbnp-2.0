@@ -30,6 +30,8 @@ module.exports = {
   
   signToken: function ({ display_name, email, _id }) {
     const payload = { display_name, email, _id };
+    console.log("login payload", payload);
+    // req.user = payload;
     return jwt.sign({ data: payload }, secret, { expiresIn: expiration });
   },
 };

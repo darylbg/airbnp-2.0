@@ -14,8 +14,10 @@ const server = new ApolloServer({
     typeDefs, 
     resolvers,
     // context: authMiddleware,
+    
     context: ({ req }) => {
       const modifiedReq = authMiddleware({ req });
+      console.log('Context created:', modifiedReq.user);
       return { user: modifiedReq.user };
     },
     introspection: true,
