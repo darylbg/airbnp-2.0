@@ -41,6 +41,7 @@ export default function SignInForm({
       const userId = loggedInUserData.user.id;
       const userListingsData = loggedInUserData.user.user_listings;
 
+      console.log(loggedInUserData);
       // updated redux dispatch
       dispatch(loginUser({ id: userId, token: loggedInUserData.token }));
       dispatch(setUserDetails(loggedInUserData.user));

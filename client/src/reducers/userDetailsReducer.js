@@ -18,7 +18,7 @@ const userDetailsSlice = createSlice({
         notifications: user.notifications.length,
         reviews: user.reviews.length,
         payments: user.payments.length,
-        booking_history: user.booking_history.length,
+        // booking_history: user.booking_history.length,
       };
       if (!state.allIds.includes(user.id)) {
         state.allIds.push(user.id);

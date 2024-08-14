@@ -1,19 +1,73 @@
 .dropdown-menu-content {
-    background-color: var(--white-13) ;
+  background-color: var(--white-13);
 }
 
 .dropdown-menu-item {
-    padding: 0.6rem 1.2rem;
-    font-size: 1rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
 }
 
 .dropdown-menu-item a {
-    font-family: var(--font-figtree);
-    text-decoration: none;
-    color: var(--black-10);
+  font-family: var(--font-figtree);
+  text-decoration: none;
+  color: var(--black-10);
 }
 
 .dropdown-menu-item .active {
+  color: var(--black-12);
+  font-weight: 800;
+}
+
+/* custom dropdown menu */
+
+.dropdown-menu {
+  background-color: white;
+  position: relative;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  background-color: var(--white-12);
+  box-shadow: rgba(100, 100, 111, 0.1) 0px 1px 10px 0px;
+}
+
+.dropdown-menu:hover {
+  background-color: var(--white-13);
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 2px 15px 0px;
+}
+
+.dropdown-menu-trigger button {
+  background-color: transparent;
+  gap: 10px;
+}
+
+.dropdown-icon-collapse {
+    transform: rotate(180);
+}
+
+.dropdown-icon-expand {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu-content {
+  position: absolute;
+  width: 100%;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  box-shadow: rgba(100, 100, 111, 0.1) 0px 10px 15px 0px;
+}
+
+.dropdown-menu-content .active {
     color: var(--black-12);
-    font-weight: 800;
+    font-weight: 600;
+}
+
+.dropdown-menu-item {
+  justify-content: flex-start;
+  text-decoration: none;
+  color: var(--black-9);
+  font-family: var(--font-figtree);
+  font-weight: 500;
+}
+
+.dropdown-menu-item:hover {
+  background-color: var(--black-1);
 }

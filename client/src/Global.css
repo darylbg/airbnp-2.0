@@ -1,11 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
 
 /* radix ui colors */
-@import "@radix-ui/colors/gray.css";
+/* @import "@radix-ui/colors/gray.css"; */
 @import "@radix-ui/colors/blue.css";
 @import "@radix-ui/colors/green.css";
 @import "@radix-ui/colors/red.css";
 @import "@radix-ui/colors/yellow.css";
+@import "@radix-ui/colors/orange.css";
+@import "@radix-ui/colors/amber.css";
 
 /* custom black and white because radix ui is retarded and has every other color */
 :root {
@@ -51,6 +53,20 @@
   --white-3: #484848;
   --white-2: #343434;
   --white-1: #202020;
+
+  /* green */
+  /* --green-1: #E3F7F3;
+  --green-2: #C8F0E6;
+  --green-3: #ADE9DA;
+  --green-4: #92E2CD;
+  --green-5: #77DBC1;
+  --green-6: #5CD4B5;
+  --green-7: #41CDAD;
+  --green-8: #26C7A6;
+  --green-9: #0BC1A0;
+  --green-10: #00A67E; 
+  --green-11: #008B66;
+  --green-12: #006F4E; 
 
   /* fonts */
   --font-sohne: "Sohne", sans-serif;

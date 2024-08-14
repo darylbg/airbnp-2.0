@@ -9,69 +9,83 @@ import ButtonComponent from "../../PrimitiveComponents/ButtonComponent/ButtonCom
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
 export default function Bookings() {
-  const [bookingsPage, setBookingsPage] = useState("Bookings overview");
+  const [dashboardBookingsSubPage, setDashboardBookingsSubPage] =
+    useState("Bookings overview");
+  const [dropdownMenu, setDropdownMenu] = useState(false);
 
-  // dropdown with MyBookingHistory and GuestBookings
-  // my booking history with current bookings/ past bookings / all bookings / saved bookings
-  // guest bookings with upcoming/currently hosting/all
+  const dropdownMenuToggle = () => {
+    // event.stopPropagation();
+    console.log("dropdwonmenutoggle running");
+    setDropdownMenu(!dropdownMenu);
+  };
+
+  const dropdownMenuItemToggle = (item) => {
+    // event.stopPropagation();
+    setDashboardBookingsSubPage(item);
+    setDropdownMenu(false);
+  };
 
   return (
     <>
       <DashboardHeader
-        title={bookingsPage}
+        title={dashboardBookingsSubPage}
         subtitle="View your booking history/Guest reservations"
         icon="today"
       >
-        <div className="booking-page-menu-dropdown">
-          <DropdownMenu.Root className="">
-            <DropdownMenu.Trigger asChild>
-              <button className="default-button white-button">
-                <span>{bookingsPage}</span>
-                <span className="material-symbols-outlined">arrow_drop_down</span>
-              </button>
-            </DropdownMenu.Trigger>
-            <DropdownMenu.Portal>
-              <DropdownMenu.Content
-                side="bottom"
-                align="start"
-                sideOffset={5}
-                className="dropdown-menu-content"
+        <div
+          className="dropdown-menu"
+          style={{
+            borderBottomLeftRadius: !dropdownMenu ? "4px" : "0",
+            borderBottomRightRadius: !dropdownMenu ? "4px" : "0",
+          }}
+        >
+          <div className="dropdown-menu-trigger">
+            <ButtonComponent
+              type="button"
+              className="default-button"
+              action={dropdownMenuToggle}
+            >
+              <span>{dashboardBookingsSubPage}</span>
+              <span className={`material-symbols-outlined`}>
+                {dropdownMenu ? "arrow_drop_up" : "arrow_drop_down"}
+              </span>
+            </ButtonComponent>
+          </div>
+          {dropdownMenu && (
+            <div className="dropdown-menu-content">
+              <NavLink
+                end
+                className="default-button dropdown-menu-item"
+                to="/dashboard/bookings"
+                onClick={() => dropdownMenuItemToggle("Bookings overview")}
+                type="button"
               >
-                <DropdownMenu.Item className="dropdown-menu-item">
-                  <NavLink
-                    to="/dashboard/bookings"
-                    onClick={() => setBookingsPage("Bookings overview")}
-                  >
-                    Bookings overview
-                  </NavLink>
-                </DropdownMenu.Item>
-                <DropdownMenu.Item className="dropdown-menu-item">
-                  <NavLink
-                    to="/dashboard/bookings/guest-reservations"
-                    onClick={() => setBookingsPage("Guest reservations")}
-                  >
-                    Guest Reservations
-                  </NavLink>
-                </DropdownMenu.Item>
-                <DropdownMenu.Item className="dropdown-menu-item">
-                  <NavLink
-                    to="/dashboard/bookings/my-booking-history"
-                    onClick={() => setBookingsPage("My booking history")}
-                  >
-                    My booking history
-                  </NavLink>
-                </DropdownMenu.Item>
-              </DropdownMenu.Content>
-            </DropdownMenu.Portal>
-          </DropdownMenu.Root>
+                <span>Bookings overview</span>
+              </NavLink>
+              <NavLink
+                end
+                className="default-button dropdown-menu-item"
+                to="/dashboard/bookings/guest-reservations"
+                onClick={() => dropdownMenuItemToggle("Guest reservations")}
+                type="button"
+              >
+                <span>Guest reservations</span>
+              </NavLink>
+              <NavLink
+                end
+                className="default-button dropdown-menu-item"
+                to="/dashboard/bookings/my-booking-history"
+                onClick={() => dropdownMenuItemToggle("My bookings history")}
+                type="button"
+              >
+                <span>My booking history</span>
+              </NavLink>
+            </div>
+          )}
         </div>
       </DashboardHeader>
-      <div>
-        <Outlet>
-          <NavLink to="/guest-reservations">guest reservations</NavLink>
-          <NavLink to="/my-booking-history">My booking history</NavLink>
-        </Outlet>
-      </div>
+
+      <Outlet />
     </>
   );
 }
