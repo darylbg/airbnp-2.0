@@ -44,21 +44,21 @@ export default function MapMarkerPopup({
       <div className="map-popup-content">
         {listing.availability ? (
           <div className="availability available">
-            <span class="material-symbols-outlined">adjust</span>
+            <span className="material-symbols-outlined">adjust</span>
             <span className="text">Available</span>
           </div>
         ) : (
           <div className="availability unavailable">
-            <span class="material-symbols-outlined">cancel</span>
+            <span className="material-symbols-outlined">cancel</span>
             <span className="text">Not available</span>
           </div>
         )}
         <div className="rating">
-          <span class="material-symbols-outlined">star_rate</span>
+          <span className="material-symbols-outlined">star_rate</span>
           <span className="text">4.9</span>
         </div>
         <div className="distance">
-          <span class="material-symbols-outlined">directions_walk</span>
+          <span className="material-symbols-outlined">directions_walk</span>
           <span className="text">{route?.distance} miles</span>
           <span className="text">{route?.duration} minutes</span>
         </div>

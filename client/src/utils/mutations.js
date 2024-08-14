@@ -27,9 +27,11 @@ export const REGISTER_MUTATION = gql`
         payments {
           id
         }
-        booking_history {
-          id
-        }
+        booking_history
+        guest_reservations
+        # booking_history {
+        #   id
+        # }
       }
     }
   }
@@ -88,9 +90,11 @@ export const SIGN_IN_MUTATION = gql`
         payments {
           id
         }
-        booking_history {
-          id
-        }
+        booking_history
+        guest_reservations
+        # booking_history {
+        #   id
+        # }
       }
     }
   }

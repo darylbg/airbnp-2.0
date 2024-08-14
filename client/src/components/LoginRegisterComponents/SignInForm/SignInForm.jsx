@@ -49,7 +49,7 @@ export default function SignInForm({
 
       // if loggin in to checkout, redirect to checkout page
       // handleLoginToCheckout();
-      console.log("this is the token", loggedInUser.data.login.token);
+      console.log("this is the token", loggedInUser.data);
       Auth.login(loggedInUser.data.login.token);
 
       // closeLoginRegisterDialog();

@@ -16,8 +16,8 @@ const typeDefs = gql`
     notifications: [Notification]
     reviews: [Review]
     payments: [Payment]
-    booking_history: [Booking]
-    guest_reservations: [Booking]
+    booking_history: [ID]
+    guest_reservations: [ID]
   }
 
   type Listing {

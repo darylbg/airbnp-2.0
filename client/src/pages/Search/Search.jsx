@@ -203,7 +203,7 @@ export default function Search() {
                       }`}
                       action={() => handleRouteTypeSwitch("walking")}
                     >
-                      <span class="material-symbols-outlined">
+                      <span className="material-symbols-outlined">
                         directions_walk
                       </span>
                       <span> Walk</span>
@@ -215,7 +215,7 @@ export default function Search() {
                       }`}
                       action={() => handleRouteTypeSwitch("cycling")}
                     >
-                      <span class="material-symbols-outlined">
+                      <span className="material-symbols-outlined">
                         directions_bike
                       </span>
                       <span> Cycle</span>
@@ -227,7 +227,7 @@ export default function Search() {
                       }`}
                       action={() => handleRouteTypeSwitch("driving")}
                     >
-                      <span class="material-symbols-outlined">
+                      <span className="material-symbols-outlined">
                         directions_car
                       </span>
                       <span> Drive</span>

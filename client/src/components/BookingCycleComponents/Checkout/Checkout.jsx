@@ -89,7 +89,7 @@ export default function Checkout() {
                       <div className="header">
                         <h3 className="title">{listing?.listing_title}</h3>
                         <div className="rating">
-                          <span class="material-symbols-outlined">star</span>
+                          <span className="material-symbols-outlined">star</span>
                           <span>4.8</span>
                         </div>
                       </div>

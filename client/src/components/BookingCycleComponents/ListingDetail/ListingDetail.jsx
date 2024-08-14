@@ -323,7 +323,7 @@ export default function ListingDetail() {
             ) : (
               <div className="travel">
                 <div className="duration">
-                  <span class="material-symbols-outlined">directions_walk</span>
+                  <span className="material-symbols-outlined">directions_walk</span>
                   <span className="text">
                     {formattedWalkingRouteData?.duration !== null
                       ? formattedWalkingRouteData.duration
@@ -331,7 +331,7 @@ export default function ListingDetail() {
                   </span>
                 </div>
                 <div className="distance">
-                  <span class="material-symbols-outlined">
+                  <span className="material-symbols-outlined">
                     radio_button_unchecked
                   </span>
                   <strong className="text">
@@ -361,7 +361,7 @@ export default function ListingDetail() {
                 }`}
                 action={() => handleRouteTypeSwitch("walking")}
               >
-                <span class="material-symbols-outlined">directions_walk</span>
+                <span className="material-symbols-outlined">directions_walk</span>
                 <span> Walk</span>
               </ButtonComponent>
               <ButtonComponent
@@ -371,7 +371,7 @@ export default function ListingDetail() {
                 }`}
                 action={() => handleRouteTypeSwitch("cycling")}
               >
-                <span class="material-symbols-outlined">directions_bike</span>
+                <span className="material-symbols-outlined">directions_bike</span>
                 <span> Cycle</span>
               </ButtonComponent>
               <ButtonComponent
@@ -381,7 +381,7 @@ export default function ListingDetail() {
                 }`}
                 action={() => handleRouteTypeSwitch("driving")}
               >
-                <span class="material-symbols-outlined">directions_car</span>
+                <span className="material-symbols-outlined">directions_car</span>
                 <span> Drive</span>
               </ButtonComponent>
             </div>

@@ -112,7 +112,7 @@ export default function SearchListing({
 
 export const CustomLeftArrow = ({ onClick }) => (
   <button className="custom-arrow custom-arrow-left" onClick={onClick}>
-    <span class="material-symbols-outlined">arrow_back_ios</span>
+    <span className="material-symbols-outlined">arrow_back_ios</span>
   </button>
 );
 
@@ -122,6 +122,6 @@ export const CustomRightArrow = ({ onClick }) => (
     className="custom-arrow custom-arrow-right"
     onClick={onClick}
   >
-    <span class="material-symbols-outlined">arrow_forward_ios</span>
+    <span className="material-symbols-outlined">arrow_forward_ios</span>
   </button>
 );

@@ -79,14 +79,12 @@ const userSchema = new Schema(
       {
         type: Schema.Types.ObjectId,
         ref: "Booking",
-        // required: true
       },
     ],
     guest_reservations: [
       {
         type: Schema.Types.ObjectId,
         ref: "Booking",
-        // required: true
       },
     ],
   },

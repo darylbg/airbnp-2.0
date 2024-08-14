@@ -27,7 +27,7 @@ export default function Bookings() {
             <DropdownMenu.Trigger asChild>
               <button className="default-button white-button">
                 <span>{bookingsPage}</span>
-                <span class="material-symbols-outlined">arrow_drop_down</span>
+                <span className="material-symbols-outlined">arrow_drop_down</span>
               </button>
             </DropdownMenu.Trigger>
             <DropdownMenu.Portal>
