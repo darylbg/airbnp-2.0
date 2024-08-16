@@ -74,6 +74,11 @@
 
 /* hero section search form */
 
+.hero-address-searchBox {
+  border-radius: 50px !important;
+  box-shadow: none !important;
+}
+
 .hero-search-form {
   display: flex;
   flex-direction: column;
@@ -89,7 +94,7 @@
   border-radius: 50px;
   padding: 18px 30px;
   border: 1px solid var(--black-6);
-  flex: 1;
+  height: auto;
   font-size: 1.4rem;
   font-weight: 700;
   color: var(--black-11);

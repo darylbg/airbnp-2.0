@@ -13,6 +13,8 @@ import {
   IconButton,
 } from "@mui/material";
 import { ExpandMore, ExpandLess } from "@mui/icons-material";
+import ClockComponent from "../ClockComponent/ClockComponent";
+import ButtonComponent from "../ButtonComponent/ButtonComponent";
 
 export default function MobileTableComponent({ data, tableSortBy }) {
   const [selected, setSelected] = useState([]);
@@ -91,27 +93,40 @@ export default function MobileTableComponent({ data, tableSortBy }) {
 
   return (
     <>
-      <Box display="flex" justifyContent="space-between" mb={2}>
-        <Button variant="contained" onClick={handleMarkAsComplete}>
-          Mark as complete
-        </Button>
-        <Checkbox
-          indeterminate={
-            selected.length > 0 &&
-            selected.length <
-              sortedData.filter((row) => row.booking_status !== "Completed")
-                .length
-          }
-          checked={
-            selected.length > 0 &&
-            selected.length ===
-              sortedData.filter((row) => row.booking_status !== "Completed")
-                .length
-          }
-          onChange={handleSelectAllClick}
-          inputProps={{ "aria-label": "select all" }}
-        />
-      </Box>
+      <div className="table-controls">
+        <div className="table-check-control">
+          <Checkbox
+            indeterminate={
+              selected.length > 0 &&
+              selected.length <
+                sortedData.filter((row) => row.booking_status !== "Completed")
+                  .length
+            }
+            checked={
+              selected.length > 0 &&
+              selected.length ===
+                sortedData.filter((row) => row.booking_status !== "Completed")
+                  .length
+            }
+            onChange={handleSelectAllClick}
+            inputProps={{ "aria-label": "select all" }}
+          />
+          <ButtonComponent
+            loading={selected.length < 1}
+            className="table-control-complete-button default-button"
+            action={handleMarkAsComplete}
+          >
+            <span class="material-symbols-outlined">check</span>
+            <span className="text">Mark as complete</span>
+          </ButtonComponent>
+        </div>
+        <div className="table-control-clock">
+          <span class="material-symbols-outlined">schedule</span>
+          <div className="time-display">
+            <ClockComponent />
+          </div>
+        </div>
+      </div>
       <TableContainer component={Paper}>
         <Table>
           <TableBody>

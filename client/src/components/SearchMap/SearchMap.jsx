@@ -78,7 +78,7 @@ export default function SearchMap({
 
   // clear user location on page refresh
   useEffect(() => {
-    dispatch(resetUserLocation());
+    // dispatch(resetUserLocation());
   }, []);
 
   useEffect(() => {

@@ -31,3 +31,15 @@
     flex-direction: column;
     gap: 1rem;
 }
+
+@media screen and (max-width: 600px) {
+    .bookings-table-filter-buttons {
+        justify-content: space-between;
+        gap: 0.5rem;
+    }
+
+    .table-filter-button {
+        flex: 1;
+        padding: 0.5rem 5px;
+    }
+}

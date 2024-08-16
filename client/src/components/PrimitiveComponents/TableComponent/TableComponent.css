@@ -28,8 +28,19 @@
     font-size: 1rem;
 }
 
+.table-control-complete-button {
+    background-color: transparent;
+    padding: 0;
+}
+
 .table-controls .table-control-complete-button .text {
     text-decoration: underline;
+}
+
+.table-check-control {
+    display: flex;
+    flex-direction: row;
+    gap: 0.2rem;
 }
 
 .table-control-clock {
@@ -49,8 +60,8 @@
 }
 
 .table-control-clock .time-display {
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: var(--white-12);
-    font-family: var(--font-figtree);
+    font-family: 'Courier New', Courier, monospace;
     font-weight: 600;
 }

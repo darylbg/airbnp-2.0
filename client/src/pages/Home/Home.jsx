@@ -1,12 +1,63 @@
-import React, { useRef } from "react";
+import React, { useState } from "react";
 import * as Form from "@radix-ui/react-form";
 import * as Accordion from "@radix-ui/react-accordion";
 import ButtonComponent from "../../components/PrimitiveComponents/ButtonComponent/ButtonComponent";
 import HeroImage from "../../assets/images/HeroImage.jpg";
 import Phone1 from "../../assets/images/phone2.png"
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { SearchBox } from "@mapbox/search-js-react";
+import { setUserLocation, setMapCenter } from "../../reducers/bookingReducer";
 import "./Home.css";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+  const [addressData, setAddressData] = useState(null);
+  const [addressValue, setAddressValue] = React.useState('');
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    formState: {errors}
+  } = useForm({
+    defaultValues: {
+      addressSearch: ""
+    }
+  });
+
+  const handleAddressChange = (d) => {
+    setAddressValue(d);
+  };
+
+  const handleAddressRetrieve = (result) => {
+    const features = result.features[0];
+    const userLocation = {
+      coordinates: {
+        lng: features.geometry.coordinates[0],
+        lat: features.geometry.coordinates[1],
+      },
+      fullAddress: features.properties.full_address,
+    };
+    // dispatch(setUserLocation(userLocation))
+    setAddressData(userLocation);
+  };
+
+  const onSubmit = () => {
+    if (addressData) {
+      const mapCenter = {
+        coordinates: addressData.coordinates,
+      };
+      console.log("address data", addressData);
+      dispatch(setUserLocation(addressData));
+      dispatch(setMapCenter(mapCenter));
+
+      navigate("/search");
+    }
+  };
+
   return (
     <div className="home-page">
       <section className="home-hero-section">
@@ -20,15 +71,24 @@ export default function Home() {
               <p className="subtitle-2">Go out stress free</p>
             </div>
             <div className="search">
-              <Form.Root className="hero-search-form">
+              <Form.Root onSubmit={handleSubmit(onSubmit)} className="hero-search-form">
                 <Form.Field className="search-field">
-                  <Form.Control asChild>
-                    <input type="text" placeholder="Search address or city" />
-                  </Form.Control>
+                <SearchBox
+                className="hero-address-searchBox"
+                    accessToken="pk.eyJ1IjoiZGF6emExMjMiLCJhIjoiY2x5MDM4c29yMGh1eTJqcjZzZTRzNzEzaiJ9.dkx0lvLDJy35oWNvOW5mFg"
+                    options={{
+                      language: "en",
+                      country: "GB",
+                    }}
+                    placeholder="Search address or city"
+                    onRetrieve={handleAddressRetrieve}
+                    value={addressValue}
+                    onChange={handleAddressChange}
+                  />
                 </Form.Field>
                 <Form.Field className="search-button">
                   <Form.Submit asChild>
-                    <ButtonComponent className="large-rounded-button action-button">
+                    <ButtonComponent type="submit" className="large-rounded-button action-button">
                       Search closest locations
                     </ButtonComponent>
                   </Form.Submit>

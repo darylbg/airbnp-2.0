@@ -12,8 +12,8 @@ import {
   clearRefetchFlag,
 } from "../../reducers/allListingsReducer";
 import ButtonComponent from "../../components/PrimitiveComponents/ButtonComponent/ButtonComponent";
-import { setUserLocation } from "../../reducers/bookingReducer";
-import { Link, useLocation } from "react-router-dom";
+import { setUserLocation, setMapCenter } from "../../reducers/bookingReducer";
+import { Link } from "react-router-dom";
 
 export default function Search() {
   const dispatch = useDispatch();
@@ -26,10 +26,7 @@ export default function Search() {
     duration: null,
     googleMapsLink: "",
   });
-  const [mapCenterCoordinates, setMapCenterCoordinates] = useState({
-    lat: 52.54851,
-    lng: -1.9801,
-  });
+  const [addressValue, setAddressValue] = useState("");
 
   const { error, loading, data, refetch } = useQuery(GET_ALL_LISTINGS);
   const allListingEntities = useSelector(
@@ -45,6 +42,10 @@ export default function Search() {
 
   const userLocation = useSelector(
     (state) => state.bookingCycle.userLocation.coordinates
+  );
+
+  const mapCenterCoordinates = useSelector(
+    (state) => state.bookingCycle.mapCenter.coordinates
   );
 
   useEffect(() => {
@@ -68,6 +69,10 @@ export default function Search() {
     }
   }, [allListingEntities]);
 
+  const handleAddressChange = (d) => {
+    setAddressValue(d);
+  };
+
   const handleAddressSearch = (result) => {
     const features = result.features[0];
     const userLocation = {
@@ -77,11 +82,14 @@ export default function Search() {
       },
       fullAddress: features.properties.full_address,
     };
+    const mapCenter = {
+      coordinates: {
+        lng: features.geometry.coordinates[0],
+        lat: features.geometry.coordinates[1],
+      },
+    }
     dispatch(setUserLocation(userLocation));
-    setMapCenterCoordinates({
-      lng: userLocation.coordinates.lng,
-      lat: userLocation.coordinates.lat,
-    });
+    dispatch(setMapCenter(mapCenter));
   };
 
   const handleRouteTypeSwitch = (method) => {
@@ -146,11 +154,14 @@ export default function Search() {
           },
           fullAddress: "",
         };
-        dispatch(setUserLocation(userLocation));
-        setMapCenterCoordinates({
-          lng: userLocation.coordinates.lng,
+        const mapCenter = {
+          coordinates: {
+            lng: userLocation.coordinates.lng,
           lat: userLocation.coordinates.lat,
-        });
+          }
+        }
+        dispatch(setUserLocation(userLocation));
+        dispatch(setMapCenter(mapCenter));
       });
     } else {
       console.log("error");
@@ -179,6 +190,8 @@ export default function Search() {
                     }}
                     placeholder="Search address or city"
                     onRetrieve={handleAddressSearch}
+                    onChange={handleAddressChange}
+                    value={addressValue}
                   />
                 </Form.Field>
               </Form.Root>
@@ -281,7 +294,7 @@ export default function Search() {
             hoveredListing={hoveredListing}
             mapLoading={loading}
             mapCenterCoordinates={mapCenterCoordinates}
-            setMapCenterCoordinates={setMapCenterCoordinates}
+            // setMapCenterCoordinates={setMapCenterCoordinates}
             routeType={routeType}
             setRouteData={setRouteData}
           />
