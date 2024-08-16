@@ -12,7 +12,8 @@ import {
   Avatar,
 } from "@mui/material";
 import { NavLink } from "react-router-dom";
-import Clock from 'react-clock';
+import Clock from "react-clock";
+import ClockComponent from "../ClockComponent/ClockComponent";
 import "./TableComponent.css";
 
 export default function TableComponent({ data, tableSortBy, parent }) {
@@ -81,7 +82,7 @@ export default function TableComponent({ data, tableSortBy, parent }) {
   const handleMarkAsComplete = () => {
     console.log("Selected rows:", selected);
   };
-  
+
   useEffect(() => {
     const interval = setInterval(() => setValue(new Date()), 1000);
 
@@ -103,7 +104,9 @@ export default function TableComponent({ data, tableSortBy, parent }) {
         </Button>
         <div className="table-control-clock">
           <span class="material-symbols-outlined">schedule</span>
-          <div className="time-display"><Clock value={value} />10:15</div>
+          <div className="time-display">
+             <ClockComponent />
+          </div>
         </div>
       </div>
 
@@ -150,58 +153,62 @@ export default function TableComponent({ data, tableSortBy, parent }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {sortedData?.map((row) => {
-              if (sortedData.length < 1) {
-                console.log("no data")
-                return (<span>no bookings</span>);
-              }
-              const isItemSelected = isSelected(row.id);
-              const labelId = `enhanced-table-checkbox-${row.id}`;
+            {sortedData.length === 0 
+              ? (<TableRow>
+                <TableCell colSpan={9} align="center">
+                  <span className="no-table-data-message">{`No ${tableSortBy.toLowerCase()} ${parent === "GuestReservations" ? "reservations" : "bookings"}`}</span>
+                </TableCell>
+              </TableRow>)
+              : (sortedData?.map((row) => {
+                  const isItemSelected = isSelected(row.id);
+                  const labelId = `enhanced-table-checkbox-${row.id}`;
 
-              return (
-                <TableRow
-                  hover
-                  role="checkbox"
-                  aria-checked={isItemSelected}
-                  tabIndex={-1}
-                  key={row.id}
-                >
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      checked={
-                        isItemSelected || row.booking_status === "Completed"
-                      }
-                      disabled={row.booking_status === "Completed"}
-                      onClick={(event) => handleCheckboxClick(event, row.id)}
-                      inputProps={{ "aria-labelledby": labelId }}
-                    />
-                  </TableCell>
-                  <TableCell
-                    component="th"
-                    id={labelId}
-                    scope="row"
-                    padding="none"
-                  >
-                    {row.host_id.display_name}
-                  </TableCell>
-                  <TableCell>
-                    {parent === "MyBookingHistory" ? (
-                      <NavLink to={row.listing_url}>
-                        {row.listing.listing_title}
-                      </NavLink>
-                    ) : (
-                      <>{row.listing.listing_title}</>
-                    )}
-                  </TableCell>
-                  <TableCell>{row.booking_status}</TableCell>
-                  <TableCell>{row.arrival_time}</TableCell>
-                  <TableCell>{row.number_of_people}</TableCell>
-                  <TableCell>${row.total_price.toFixed(2)}</TableCell>
-                  <TableCell>{row.payment_status}</TableCell>
-                  <TableCell>{row.special_requests}</TableCell>
-                </TableRow>
-              );
-            })}
+                  return (
+                    <TableRow
+                      hover
+                      role="checkbox"
+                      aria-checked={isItemSelected}
+                      tabIndex={-1}
+                      key={row.id}
+                    >
+                      <TableCell padding="checkbox">
+                        <Checkbox
+                          checked={
+                            isItemSelected || row.booking_status === "Completed"
+                          }
+                          disabled={row.booking_status === "Completed"}
+                          onClick={(event) =>
+                            handleCheckboxClick(event, row.id)
+                          }
+                          inputProps={{ "aria-labelledby": labelId }}
+                        />
+                      </TableCell>
+                      <TableCell
+                        component="th"
+                        id={labelId}
+                        scope="row"
+                        padding="none"
+                      >
+                        {row.host_id.display_name}
+                      </TableCell>
+                      <TableCell>
+                        {parent === "MyBookingHistory" ? (
+                          <NavLink to={row.listing_url}>
+                            {row.listing.listing_title}
+                          </NavLink>
+                        ) : (
+                          <>{row.listing.listing_title}</>
+                        )}
+                      </TableCell>
+                      <TableCell>{row.booking_status}</TableCell>
+                      <TableCell>{row.arrival_time}</TableCell>
+                      <TableCell>{row.number_of_people}</TableCell>
+                      <TableCell>${row.total_price.toFixed(2)}</TableCell>
+                      <TableCell>{row.payment_status}</TableCell>
+                      <TableCell>{row.special_requests}</TableCell>
+                    </TableRow>
+                  );
+                }))}
           </TableBody>
         </Table>
       </TableContainer>
