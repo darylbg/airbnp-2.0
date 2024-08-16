@@ -49,7 +49,8 @@ const CheckoutForm = ({
       const { data } = await createBooking({
         variables: {
           bookingInput: {
-            listing: [listing],
+            // listing: [listing],
+            listing: listingId,
             listing_url: listingUrl,
             guest_id: guestId,
             host_id: hostId,

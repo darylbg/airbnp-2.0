@@ -33,8 +33,7 @@ import Reviews from "./components/DashboardComponents/Reviews/Reviews";
 import Checkout from "./components/BookingCycleComponents/Checkout/Checkout";
 import GuestReservations from "./components/DashboardComponents/Bookings/GuestReservations/GuestReservations";
 import MyBookingHistory from "./components/DashboardComponents/Bookings/MyBookingHistory/MyBookingHistory";
-import BookingOverview from "./components/DashboardComponents/Bookings/BookingOverview/BookingOverview";
-
+import BookingsOverview from "./components/DashboardComponents/Bookings/BookingsOverview/BookingsOverview";
 const httpLink = createHttpLink({
   uri: "http://localhost:3001/graphql",
 });
@@ -84,7 +83,7 @@ function App() {
               <Route path="contact" element={<Contact />}></Route>
               <Route path="dashboard" element={<Dashboard />}>
                 <Route path="bookings" element={<Bookings />}>
-                  <Route path="" element={<BookingOverview />} />
+                  <Route path="" element={<BookingsOverview />} />
                   <Route path="my-booking-history" element={<MyBookingHistory />} />
                   <Route path="guest-reservations" element={<GuestReservations />} />
                 </Route>

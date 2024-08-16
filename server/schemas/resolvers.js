@@ -561,6 +561,7 @@ const resolvers = {
         throw new AuthenticationError("You must be logged in!");
       }
       try {
+        // const listing_id = new mongoose.ObjectId()
         // Fetch the full listing document
         const listing = await Listing.findById(bookingInput.listing);
         if (!listing) {

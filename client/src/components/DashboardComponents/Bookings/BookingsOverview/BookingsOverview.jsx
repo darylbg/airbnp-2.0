@@ -1,20 +1,19 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useOutletContext } from "react-router-dom";
 import "./BookingOverview.css";
 
-export default function BookingOverview({ }) {
+export default function BookingsOverview({}) {
   return (
     <div className="booking-overview-content">
       <div className="booking-overview-cards">
         <NavLink
-          // onClick={() => setDashboardBookingsSubPage("Guest reservations")}
           to="/dashboard/bookings/guest-reservations"
-          className="booking-overview-card"
+          className="bookings-overview-card"
         >
-          <div className="booking-overview-card-header">
+          <div className="bookings-overview-card-header">
             <h2>GUEST RESERVATIONS</h2>
           </div>
-          <div className="booking-overview-card-body">
+          <div className="bookings-overview-card-body">
             <div className="card-item">
               <div className="icon-wrapper active-icon-wrapper">
                 <span class="material-symbols-outlined">wash</span>
@@ -38,19 +37,18 @@ export default function BookingOverview({ }) {
               <span className="card-item-text">Rate your past guests</span>
             </div>
           </div>
-          <div className="booking-overview-card-footer">
+          <div className="bookings-overview-card-footer">
             <span class="material-symbols-outlined">east</span>
           </div>
         </NavLink>
         <NavLink
-          // onClick={() => setDashboardBookingsSubPage("My booking history")}
           to="/dashboard/bookings/my-booking-history"
-          className="booking-overview-card"
+          className="bookings-overview-card"
         >
-          <div className="booking-overview-card-header">
+          <div className="bookings-overview-card-header">
             <h2>MY BOOKING HISTORY</h2>
           </div>
-          <div className="booking-overview-card-body">
+          <div className="bookings-overview-card-body">
             <div className="card-item">
               <div className="icon-wrapper active-icon-wrapper">
                 <span class="material-symbols-outlined">wash</span>
@@ -74,7 +72,7 @@ export default function BookingOverview({ }) {
               <span className="card-item-text">Rate your past guests</span>
             </div>
           </div>
-          <div className="booking-overview-card-footer">
+          <div className="bookings-overview-card-footer">
             <span class="material-symbols-outlined">east</span>
           </div>
         </NavLink>

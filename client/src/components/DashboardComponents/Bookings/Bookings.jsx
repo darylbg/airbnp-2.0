@@ -1,35 +1,41 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import DashboardHeader from "../DashboardHeader/DashboardHeader";
-import AddressSearch from "../../AddressSearch/AddressSearch";
-import PrimaryButton from "../../PrimitiveComponents/ButtonComponent/ButtonComponent";
 import "./Bookings.css";
-import DialogComponent from "../../PrimitiveComponents/DialogComponent/DialogComponent";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
 import ButtonComponent from "../../PrimitiveComponents/ButtonComponent/ButtonComponent";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
 export default function Bookings() {
-  const [dashboardBookingsSubPage, setDashboardBookingsSubPage] =
-    useState("Bookings overview");
+    const [headingTitle, setHeadingTitle] = useState("Bookings overview");
+    const [headingSubTitle, setHeadingSubTitle] = useState("View your bookings");
   const [dropdownMenu, setDropdownMenu] = useState(false);
 
   const dropdownMenuToggle = () => {
-    // event.stopPropagation();
-    console.log("dropdwonmenutoggle running");
     setDropdownMenu(!dropdownMenu);
   };
 
-  const dropdownMenuItemToggle = (item) => {
-    // event.stopPropagation();
-    setDashboardBookingsSubPage(item);
-    setDropdownMenu(false);
-  };
+
+  const location = useLocation();
+
+useEffect(() => {
+  const path = location.pathname.split("/")[3];
+  console.log(path)
+  if (path === "guest-reservations") {
+    setHeadingTitle("Guest Reservations");
+    setHeadingSubTitle("Manage reservations to your listings");
+  } else if (path === "my-booking-history") {
+    setHeadingTitle("My Booking History");
+    setHeadingSubTitle("View your bookings");
+  } else {
+    setHeadingTitle("Bookings Overview");
+    setHeadingSubTitle("Manage guest reservations and your bookings");
+  }
+}, [location]);
 
   return (
     <>
       <DashboardHeader
-        title={dashboardBookingsSubPage}
-        subtitle="View your booking history/Guest reservations"
+        title={headingTitle}
+        subtitle={headingSubTitle}
         icon="today"
       >
         <div
@@ -45,7 +51,7 @@ export default function Bookings() {
               className="default-button"
               action={dropdownMenuToggle}
             >
-              <span>{dashboardBookingsSubPage}</span>
+              <span>{headingTitle}</span>
               <span className={`material-symbols-outlined`}>
                 {dropdownMenu ? "arrow_drop_up" : "arrow_drop_down"}
               </span>
@@ -57,7 +63,7 @@ export default function Bookings() {
                 end
                 className="default-button dropdown-menu-item"
                 to="/dashboard/bookings"
-                onClick={() => dropdownMenuItemToggle("Bookings overview")}
+                onClick={dropdownMenuToggle}
                 type="button"
               >
                 <span>Bookings overview</span>
@@ -66,7 +72,7 @@ export default function Bookings() {
                 end
                 className="default-button dropdown-menu-item"
                 to="/dashboard/bookings/guest-reservations"
-                onClick={() => dropdownMenuItemToggle("Guest reservations")}
+                onClick={dropdownMenuToggle}
                 type="button"
               >
                 <span>Guest reservations</span>
@@ -75,7 +81,7 @@ export default function Bookings() {
                 end
                 className="default-button dropdown-menu-item"
                 to="/dashboard/bookings/my-booking-history"
-                onClick={() => dropdownMenuItemToggle("My bookings history")}
+                onClick={dropdownMenuToggle}
                 type="button"
               >
                 <span>My booking history</span>
@@ -84,7 +90,6 @@ export default function Bookings() {
           )}
         </div>
       </DashboardHeader>
-
       <Outlet />
     </>
   );

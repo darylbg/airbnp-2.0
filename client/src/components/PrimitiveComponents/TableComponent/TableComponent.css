@@ -1,0 +1,56 @@
+.table-controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.table-controls .table-control-complete-button {
+    padding: 5px;
+    color: var(--blue-10);
+    text-transform: lowercase;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+}
+
+.table-controls .table-control-complete-button:hover {
+    color: var(--blue-11);
+    background-color: transparent;
+}
+
+.table-controls .table-control-complete-button:disabled {
+    color: var(--black-9);
+    background-color: transparent;
+}
+
+.table-controls .table-control-complete-button .material-symbols-outlined {
+    font-size: 1rem;
+}
+
+.table-controls .table-control-complete-button .text {
+    text-decoration: underline;
+}
+
+.table-control-clock {
+    background-color: var(--black-11);
+    color: var(--white-12);
+    padding: 5px 10px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+
+.table-control-clock .material-symbols-outlined {
+    font-size: 1rem;
+    color: var(--white-10);
+}
+
+.table-control-clock .time-display {
+    font-size: 1rem;
+    color: var(--white-12);
+    font-family: var(--font-figtree);
+    font-weight: 600;
+}

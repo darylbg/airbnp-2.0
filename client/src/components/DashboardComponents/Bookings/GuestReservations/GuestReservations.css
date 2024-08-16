@@ -1,0 +1,33 @@
+.dashboard-bookings-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.bookings-table-filter-buttons {
+    display: flex;
+    flex-direction: row;
+    flex-direction: row;
+    gap: 2rem;
+    padding: 1rem 0;
+}
+
+.table-filter-button {
+    background-color: var(--white-13);
+    border-radius: 20px;
+    box-shadow: rgba(100, 100, 111, 0.1) 0px 1px 10px;
+    box-sizing: border-box;
+    border: 2px solid var(--white-13);
+    
+}
+
+.bookings-table-filter-buttons .selected {
+    border: 2px solid var(--black-12);
+    font-weight: 600;
+}
+
+.bookings-table-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}

@@ -8,9 +8,10 @@
   display: flex;
   gap: 1rem;
   height: fit-content;
+  flex: 1;
 }
 
-.booking-overview-card {
+.bookings-overview-card {
   display: flex;
   flex-direction: column;
   text-decoration: none;
@@ -22,21 +23,21 @@
   box-shadow: rgba(100, 100, 111, 0.1) 0px 1px 10px 0px;
 }
 
-.booking-overview-card:hover {
+.bookings-overview-card:hover {
   box-shadow: rgba(100, 100, 111, 0.2) 0px 2px 15px 0px;
 }
 
-.booking-overview-card-header h2 {
+.bookings-overview-card-header h2 {
   color: var(--black-9);
 }
 
-.booking-overview-card-body {
+.bookings-overview-card-body {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.booking-overview-card-body .card-item {
+.bookings-overview-card-body .card-item {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -44,7 +45,7 @@
   align-items: center;
 }
 
-.booking-overview-card-body .card-item .icon-wrapper {
+.bookings-overview-card-body .card-item .icon-wrapper {
   height: fit-content;
   border-radius: 4px;
   display: flex;
@@ -52,59 +53,59 @@
   align-items: center;
 }
 
-.booking-overview-card-body .active-icon-wrapper {
+.bookings-overview-card-body .active-icon-wrapper {
   background-color: var(--green-2);
 }
 
-.booking-overview-card-body .upcoming-icon-wrapper {
+.bookings-overview-card-body .upcoming-icon-wrapper {
     background-color: var(--orange-2);
   }
 
-  .booking-overview-card-body .rate-icon-wrapper {
+  .bookings-overview-card-body .rate-icon-wrapper {
     background-color: var(--amber-2);
   }
 
-.booking-overview-card-body
+.bookings-overview-card-body
   .card-item
   .icon-wrapper
   .material-symbols-outlined {
   padding: 5px;
 }
 
-.booking-overview-card-body
+.bookings-overview-card-body
   .upcoming-icon-wrapper
   .material-symbols-outlined {
   color: var(--orange-10);
 }
 
-.booking-overview-card-body
+.bookings-overview-card-body
   .rate-icon-wrapper
   .material-symbols-outlined {
   color: var(--amber-10);
 }
 
-.booking-overview-card-body
+.bookings-overview-card-body
   .active-icon-wrapper
   .material-symbols-outlined {
   color: var(--green-10);
 }
 
-.booking-overview-card-body .card-item-text {
+.bookings-overview-card-body .card-item-text {
   color: var(--black-12);
 }
 
-.booking-overview-card-footer {
+.bookings-overview-card-footer {
     display: flex;
     justify-content: flex-end;
 }
 
-.booking-overview-card-footer .material-symbols-outlined {
+.bookings-overview-card-footer .material-symbols-outlined {
     font-size: 2.5rem;
     padding-right: 0.5rem;
     color: var(--black-12);
 }
 
-.booking-overview-card:hover .booking-overview-card-footer .material-symbols-outlined {
+.bookings-overview-card:hover .bookings-overview-card-footer .material-symbols-outlined {
     padding-right: 0rem;
     transition: all ease-in-out 0.2s;
     

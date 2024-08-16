@@ -63,7 +63,7 @@ export default function SearchMap({
     const listingId = queryParams.get('dialog'); // Adjust this if your parameter is different
 
     if (listingId) {
-      console.log("running", listingDetail.listing)
+      // console.log("running", listingDetail.listing)
       getListingById({ variables: { listingId } })
         .then(response => {
           // console.log(response.data.getListingById);
