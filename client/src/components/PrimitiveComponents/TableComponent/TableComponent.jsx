@@ -12,7 +12,6 @@ import {
   Avatar,
 } from "@mui/material";
 import { NavLink } from "react-router-dom";
-import Clock from "react-clock";
 import ClockComponent from "../ClockComponent/ClockComponent";
 import "./TableComponent.css";
 

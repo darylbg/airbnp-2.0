@@ -207,6 +207,7 @@ const typeDefs = gql`
     generateToken: String
 
     getBookingById(booking_id: ID!): Booking
+    getAllUserBookings(user_id: ID!): [Booking]
     getUserBookingHistory(user_id: ID!): [Booking]
     getUserGuestReservations(user_id: ID!): [Booking]
   }
