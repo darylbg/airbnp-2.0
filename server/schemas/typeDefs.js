@@ -52,8 +52,8 @@ const typeDefs = gql`
     id: ID!
     rating_value: Int
     rating_text: String
-    created_at: String
     user_id: ID!
+    reviewed_user_id: ID!
     listing_id: ID!
   }
 
@@ -210,6 +210,9 @@ const typeDefs = gql`
     getAllUserBookings(user_id: ID!): [Booking]
     getUserBookingHistory(user_id: ID!): [Booking]
     getUserGuestReservations(user_id: ID!): [Booking]
+
+    getAllReviewsByUser(user_id: ID!): [Review]
+    getReviewById(review_id: ID!): Review
   }
 
   # mutations
@@ -222,7 +225,7 @@ const typeDefs = gql`
     deleteListing(listingId: ID!): User
     createAmenity(amenityData: amenityInput): Listing
     deleteAmenity(amenityId: ID!): Listing
-    createReview(listingId: ID!, reviewData: reviewInput): Review
+    createReview(listingId: ID, reviewed_user_id: ID!, reviewData: reviewInput): Review
     createNotification(
       listingId: ID!
       notificationData: notificationInput

@@ -459,26 +459,27 @@ const resolvers = {
       }
       throw new AuthenticationError("You must be logged in!");
     },
-    createReview: async (parent, { listingId, reviewData }, context) => {
+    createReview: async (parent, { listingId, reviewed_user_id, reviewData }, context) => {
       if (context.user) {
-        console.log("user", context.user._id);
         try {
           const review = await Review.create({
             user_id: context.user._id,
             listing_id: listingId,
+            reviewed_user_id: reviewed_user_id,
             ...reviewData,
           });
-          console.log("listingId", listingId);
-          console.log("reviewData", reviewData);
-          const listing = await Listing.findOneAndUpdate(
+
+          await Listing.findOneAndUpdate(
             { _id: listingId },
             { $push: { reviews: review } },
             { new: true }
-          )
-            .populate({ path: "amenities" })
-            // .populate({ path: "notifications" })
-            .populate({ path: "reviews" })
-            .populate({ path: "payments" });
+          );
+
+          await User.findOneAndUpdate(
+            { _id: reviewed_user_id },
+            { $push: { reviews: review } },
+            { new: true }
+          );
 
           return review;
         } catch (error) {

@@ -15,7 +15,12 @@ import { NavLink } from "react-router-dom";
 import ClockComponent from "../ClockComponent/ClockComponent";
 import "./TableComponent.css";
 
-export default function TableComponent({ data, tableSortBy, parent }) {
+export default function TableComponent({
+  data,
+  tableSortBy,
+  parent,
+  openReviewDialog,
+}) {
   const [selected, setSelected] = useState([]);
   const [sortedData, setSortedData] = useState([]);
   const [value, setValue] = useState(new Date());
@@ -104,7 +109,7 @@ export default function TableComponent({ data, tableSortBy, parent }) {
         <div className="table-control-clock">
           <span class="material-symbols-outlined">schedule</span>
           <div className="time-display">
-             <ClockComponent />
+            <ClockComponent />
           </div>
         </div>
       </div>
@@ -149,65 +154,79 @@ export default function TableComponent({ data, tableSortBy, parent }) {
               <TableCell>Total Price</TableCell>
               <TableCell>Payment Status</TableCell>
               <TableCell>Special Requests</TableCell>
+              <TableCell>
+                Contact {parent === "MyBookingHistory" ? "Host" : "Guest"}
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {sortedData.length === 0 
-              ? (<TableRow>
+            {sortedData.length === 0 ? (
+              <TableRow>
                 <TableCell colSpan={9} align="center">
-                  <span className="no-table-data-message">{`No ${tableSortBy.toLowerCase()} ${parent === "GuestReservations" ? "reservations" : "bookings"}`}</span>
+                  <span className="no-table-data-message">{`No ${tableSortBy.toLowerCase()} ${
+                    parent === "GuestReservations" ? "reservations" : "bookings"
+                  }`}</span>
                 </TableCell>
-              </TableRow>)
-              : (sortedData?.map((row) => {
-                  const isItemSelected = isSelected(row.id);
-                  const labelId = `enhanced-table-checkbox-${row.id}`;
+              </TableRow>
+            ) : (
+              sortedData?.map((row) => {
+                const isItemSelected = isSelected(row.id);
+                const labelId = `enhanced-table-checkbox-${row.id}`;
 
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.id}
+                return (
+                  <TableRow
+                    hover
+                    role="checkbox"
+                    aria-checked={isItemSelected}
+                    tabIndex={-1}
+                    key={row.id}
+                  >
+                    <TableCell padding="checkbox">
+                      <Checkbox
+                        checked={
+                          isItemSelected || row.booking_status === "Completed"
+                        }
+                        disabled={row.booking_status === "Completed"}
+                        onClick={(event) => handleCheckboxClick(event, row.id)}
+                        inputProps={{ "aria-labelledby": labelId }}
+                      />
+                    </TableCell>
+                    <TableCell
+                      component="th"
+                      id={labelId}
+                      scope="row"
+                      padding="none"
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={
-                            isItemSelected || row.booking_status === "Completed"
-                          }
-                          disabled={row.booking_status === "Completed"}
-                          onClick={(event) =>
-                            handleCheckboxClick(event, row.id)
-                          }
-                          inputProps={{ "aria-labelledby": labelId }}
-                        />
-                      </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                      >
-                        {row.host_id.display_name}
-                      </TableCell>
-                      <TableCell>
-                        {parent === "MyBookingHistory" ? (
-                          <NavLink to={row.listing_url}>
-                            {row.listing.listing_title}
-                          </NavLink>
-                        ) : (
-                          <>{row.listing.listing_title}</>
-                        )}
-                      </TableCell>
-                      <TableCell>{row.booking_status}</TableCell>
-                      <TableCell>{row.arrival_time}</TableCell>
-                      <TableCell>{row.number_of_people}</TableCell>
-                      <TableCell>${row.total_price.toFixed(2)}</TableCell>
-                      <TableCell>{row.payment_status}</TableCell>
-                      <TableCell>{row.special_requests}</TableCell>
-                    </TableRow>
-                  );
-                }))}
+                      {row.host_id.display_name}
+                    </TableCell>
+                    <TableCell>
+                      {parent === "MyBookingHistory" ? (
+                        <NavLink to={row.listing_url}>
+                          {row.listing.listing_title}
+                        </NavLink>
+                      ) : (
+                        <>{row.listing.listing_title}</>
+                      )}
+                    </TableCell>
+                    <TableCell>{row.booking_status}</TableCell>
+                    <TableCell>{row.arrival_time}</TableCell>
+                    <TableCell>{row.number_of_people}</TableCell>
+                    <TableCell>${row.total_price.toFixed(2)}</TableCell>
+                    <TableCell>{row.payment_status}</TableCell>
+                    <TableCell>{row.special_requests}</TableCell>
+                    <TableCell>
+                      <button onClick={openReviewDialog}>
+                        {row.booking_status === "Completed"
+                          ? "Review"
+                          : `Contact ${
+                              parent === "MyBookingHistory" ? "Host" : "Guest"
+                            }`}
+                      </button>{" "}
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            )}
           </TableBody>
         </Table>
       </TableContainer>

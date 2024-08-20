@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import { useSelector } from "react-redux";
+import { useOutletContext } from "react-router-dom";
 import TableComponent from "../../../PrimitiveComponents/TableComponent/TableComponent";
 import TableComponentMobile from "../../../PrimitiveComponents/TableComponentMobile/TableComponentMobile";
 import ButtonComponent from "../../../PrimitiveComponents/ButtonComponent/ButtonComponent";
@@ -10,7 +11,8 @@ import "./GuestReservations.css";
 export default function GuestReservations() {
   const [tableData, setTableData] = useState([]);
   const [tableSortBy, setTableSortBy] = useState("All");
-  console.log(tableData);
+  
+  const {openReviewDialog} = useOutletContext();
 
   const checkoutSuccess = useSelector(
     (state) => state.bookingCycle.booking.checkoutInfo.checkoutSuccess
@@ -73,12 +75,14 @@ export default function GuestReservations() {
             tableSortBy={tableSortBy}
             data={tableData}
             parent="GuestReservations"
+            openReviewDialog={openReviewDialog}
           />
         ) : (
           <TableComponent
             tableSortBy={tableSortBy}
             data={tableData}
             parent="GuestReservations"
+            openReviewDialog={openReviewDialog}
           />
         )}
       </div>

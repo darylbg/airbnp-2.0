@@ -71,7 +71,7 @@ export default function Payments() {
   }, [dataGuestReservations, dataBookingHistory, checkoutSuccess]);
 
   const calculatePaymentsBalance = (data) => {
-    console.log("running payment calc")
+    console.log("running payment calc");
     if (data) {
       const balance = data.reduce((acc, booking) => {
         if (booking.guest_id === userId) {
