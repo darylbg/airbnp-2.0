@@ -4,8 +4,9 @@ import SignInForm from "./SignInForm/SignInForm";
 import "./LoginRegisterComponent.css";
 
 export default function LoginRegisterComponent({
-  closeLoginRegisterDialog,
+  // closeLoginRegisterDialog,
   handleLoginToCheckout,
+  setLoginRegisterDialog
 }) {
   const [toggleSignInRegister, setToggleSignInRegister] = useState(true);
   const handleSignInRegisterToggle = (e) => {
@@ -18,14 +19,16 @@ export default function LoginRegisterComponent({
       {toggleSignInRegister ? (
         <SignInForm
           handleSignInRegisterToggle={handleSignInRegisterToggle}
-          closeLoginRegisterDialog={closeLoginRegisterDialog}
+          // closeLoginRegisterDialog={closeLoginRegisterDialog}
           handleLoginToCheckout={handleLoginToCheckout}
+          setLoginRegisterDialog={setLoginRegisterDialog}
         />
       ) : (
         <RegisterForm
           handleSignInRegisterToggle={handleSignInRegisterToggle}
-          closeLoginRegisterDialog={closeLoginRegisterDialog}
+          // closeLoginRegisterDialog={closeLoginRegisterDialog}
           handleLoginToCheckout={handleLoginToCheckout}
+          setLoginRegisterDialog={setLoginRegisterDialog}
         />
       )}
     </div>

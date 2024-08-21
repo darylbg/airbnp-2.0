@@ -4,20 +4,45 @@ import "./Bookings.css";
 import DialogComponent from "../../PrimitiveComponents/DialogComponent/DialogComponent";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import ButtonComponent from "../../PrimitiveComponents/ButtonComponent/ButtonComponent";
+import { useQuery } from "@apollo/client";
+import { GET_USER_BY_ID_QUERY } from "../../../utils/queries/userQueries";
+import * as Form from "@radix-ui/react-form";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import ToastComponent from "../../PrimitiveComponents/ToastComponent/ToastComponent";
 
 export default function Bookings() {
   const [headingTitle, setHeadingTitle] = useState("Bookings overview");
   const [headingSubTitle, setHeadingSubTitle] = useState("View your bookings");
   const [dropdownMenu, setDropdownMenu] = useState(false);
   const [reviewDialog, setReviewDialog] = useState(false);
+  const [reviewedListing, setReviewedListing] = useState(null);
+  const [reviewedListingHost, setReviewedListingHost] = useState(null);
 
-  const openReviewDialog = () => {
-    console.log("opened");
+  const { user_id: userId } = reviewedListing || {};
+
+  const { data, error, loading } = useQuery(GET_USER_BY_ID_QUERY, {
+    variables: { userId },
+    skip: !userId,
+  });
+
+  useEffect(() => {
+    if (data) {
+      // console.log("user", data)
+      setReviewedListingHost(data.user);
+    } else {
+      console.log(error);
+    }
+  }, [data, error]);
+
+  const openReviewDialog = (listing) => {
+    setReviewedListing(listing);
     setReviewDialog(true);
   };
 
   const closeReviewDialog = () => {
     setReviewDialog(false);
+    reset();
   };
 
   const dropdownMenuToggle = () => {
@@ -39,6 +64,25 @@ export default function Bookings() {
       setHeadingSubTitle("Manage guest reservations and your bookings");
     }
   }, [location]);
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm();
+
+  const submitReview = (formData) => {
+    try {
+      console.log(formData);
+      setReviewDialog(false);
+      reset();
+      toast.success(<ToastComponent message="Review submitted"></ToastComponent>)
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -106,10 +150,86 @@ export default function Bookings() {
         closeDialog={closeReviewDialog}
         dialogHeader="Leave a review"
         icon="close"
-        backdropClosable={true}
+        backdropClosable={false}
         minimize={false}
       >
-        leave a review
+        <div className="review-dialog-content">
+          <div className="reviewed-listing">
+            <div className="reviewed-listing-img">
+              <img src={reviewedListing?.listing_image[0] || ""} alt="" />
+            </div>
+            <div className="reviewed-listing-text">
+              <p>Hosted by: {reviewedListingHost?.display_name}</p>
+              <p>{reviewedListing?.fullAddress}</p>
+            </div>
+          </div>
+          <div className="review-input">
+            <form onSubmit={handleSubmit(submitReview)}>
+              <div className="rating">
+                <input
+                  {...register("rating", { required: true })}
+                  type="radio"
+                  id="star5"
+                  name="rating"
+                  value="5"
+                />
+                <label for="star5">&#9733;</label>
+                <input
+                  {...register("rating", { required: true })}
+                  type="radio"
+                  id="star4"
+                  name="rating"
+                  value="4"
+                />
+                <label for="star4">&#9733;</label>
+                <input
+                  {...register("rating", { required: true })}
+                  type="radio"
+                  id="star3"
+                  name="rating"
+                  value="3"
+                />
+                <label for="star3">&#9733;</label>
+                <input
+                  {...register("rating", { required: true })}
+                  type="radio"
+                  id="star2"
+                  name="rating"
+                  value="2"
+                />
+                <label for="star2">&#9733;</label>
+                <input
+                  {...register("rating", { required: true })}
+                  type="radio"
+                  id="star1"
+                  name="rating"
+                  value="1"
+                />
+                <label for="star1">&#9733;</label>
+              </div>
+
+              {errors.rating && <p className="error">Rating is required.</p>}
+
+              <div className="comment">
+                <label htmlFor="comment">Leave a comment</label>
+                <textarea
+                  id="comment"
+                  {...register("reviewComment", { required: true })}
+                />
+                {errors.reviewComment && (
+                  <p className="error">Comment is required.</p>
+                )}
+              </div>
+
+              <ButtonComponent
+                type="submit"
+                className="default-button primary-button"
+              >
+                Submit
+              </ButtonComponent>
+            </form>
+          </div>
+        </div>
       </DialogComponent>
     </>
   );

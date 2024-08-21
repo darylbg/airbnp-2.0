@@ -15,7 +15,8 @@ import "./SignInRegisterForms.css";
 export default function SignInForm({
   handleSignInRegisterToggle,
   handleLoginToCheckout,
-  closeLoginRegisterDialog
+  // closeLoginRegisterDialog
+  setLoginRegisterDialog
 }) {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
@@ -50,6 +51,7 @@ export default function SignInForm({
 
       // if loggin in to checkout, redirect to checkout page
       // handleLoginToCheckout();
+      setLoginRegisterDialog(false);
       console.log("this is the token", loggedInUser.data);
       Auth.login(loggedInUser.data.login.token);
 

@@ -13,7 +13,7 @@ import "../SignInForm/SignInRegisterForms.css";
 
 export default function RegisterForm({
   handleSignInRegisterToggle,
-  closeLoginRegisterDialog,
+  setLoginRegisterDialog,
   handleLoginToCheckout
 }) {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
@@ -67,9 +67,9 @@ export default function RegisterForm({
       // dispatch to updated redux store
       dispatch(loginUser({id: userId, token: registeredUserData.token}));
       dispatch(setUserDetails(registeredUserData.user));
-      closeLoginRegisterDialog();
 
       // if loggin in to checkout, redirect to checkout page
+      setLoginRegisterDialog(false);
       handleLoginToCheckout();
 
       // set token in local storage

@@ -22,10 +22,10 @@ const resolvers = {
       if (context.user) {
         try {
           const userData = await User.findOne({ _id: context.user._id })
-            .select("-__v -password")
-            .populate("user_listings")
-            .populate("amenities");
-          console.log("user_listings", context.user.user_listings);
+            .select("-__v -password");
+            // .populate("user_listings")
+            // .populate("amenities");
+          // console.log("user_listings", context.user.user_listings);
           return userData;
         } catch (error) {
           console.log(error);
@@ -599,14 +599,14 @@ const resolvers = {
         throw new Error("Error creating booking: " + error.message);
       }
     },
-    updateBooking: async (parent, { booking_id, bookingInput }, context) => {
+    updateBooking: async (parent, { bookingId, bookingInput }, context) => {
       if (!context.user) {
         throw new AuthenticationError("You must be logged in!");
       }
       try {
         // const booking
         const booking = await Booking.findByIdAndUpdate(
-          booking_id,
+          bookingId,
           {
             ...booking,
             number_of_people: bookingInput.number_of_people,

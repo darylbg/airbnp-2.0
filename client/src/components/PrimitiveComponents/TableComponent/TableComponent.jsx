@@ -13,6 +13,8 @@ import {
 } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import ClockComponent from "../ClockComponent/ClockComponent";
+import { useMutation } from "@apollo/client";
+import { UPDATE_BOOKING_MUTATION } from "../../../utils/mutations/bookingMutations";
 import "./TableComponent.css";
 
 export default function TableComponent({
@@ -85,6 +87,7 @@ export default function TableComponent({
 
   const handleMarkAsComplete = () => {
     console.log("Selected rows:", selected);
+
   };
 
   useEffect(() => {
@@ -215,7 +218,7 @@ export default function TableComponent({
                     <TableCell>{row.payment_status}</TableCell>
                     <TableCell>{row.special_requests}</TableCell>
                     <TableCell>
-                      <button onClick={openReviewDialog}>
+                      <button onClick={() => openReviewDialog(row.listing)}>
                         {row.booking_status === "Completed"
                           ? "Review"
                           : `Contact ${
