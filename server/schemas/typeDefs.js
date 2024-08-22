@@ -40,7 +40,13 @@ const typeDefs = gql`
     user_id: ID!
     amenities: [ListingAmenity]
     reviews: [Review]
+    average_rating: AverageRating
     payments: [Payment]
+  }
+
+  type AverageRating {
+    count: Int
+    value: Float
   }
 
   type ListingAmenity {
@@ -55,6 +61,8 @@ const typeDefs = gql`
     user_id: ID!
     reviewed_user_id: ID!
     listing_id: ID!
+    createdAt: String
+    updatedAt: String
   }
 
   type Notification {
@@ -225,7 +233,11 @@ const typeDefs = gql`
     deleteListing(listingId: ID!): User
     createAmenity(amenityData: amenityInput): Listing
     deleteAmenity(amenityId: ID!): Listing
-    createReview(listingId: ID, reviewed_user_id: ID!, reviewData: reviewInput): Review
+    createReview(
+      listingId: ID
+      reviewed_user_id: ID!
+      reviewData: reviewInput
+    ): Review
     createNotification(
       listingId: ID!
       notificationData: notificationInput

@@ -82,6 +82,16 @@ const listingSchema = new Schema(
         required: true,
       },
     ],
+    average_rating: {
+      count: {
+        type: Number,
+        default: 0
+      },
+      value: {
+        type:Number,
+        default: 0
+      }
+    },
     reviews: [
       {
         type: Schema.Types.ObjectId,

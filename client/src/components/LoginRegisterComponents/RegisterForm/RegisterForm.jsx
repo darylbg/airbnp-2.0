@@ -70,7 +70,7 @@ export default function RegisterForm({
 
       // if loggin in to checkout, redirect to checkout page
       setLoginRegisterDialog(false);
-      handleLoginToCheckout();
+      // handleLoginToCheckout();
 
       // set token in local storage
       Auth.login(registeredUser.data.register.token);

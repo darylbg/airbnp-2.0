@@ -17,6 +17,8 @@ export const CREATE_REVIEW_MUTATION = gql`
       rating_value
       reviewed_user_id
       user_id
+      createdAt
+      updatedAt
     }
   }
 `;

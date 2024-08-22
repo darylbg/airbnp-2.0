@@ -9,7 +9,10 @@ import { GET_USER_BY_ID_QUERY } from "../../../utils/queries/userQueries";
 import * as Form from "@radix-ui/react-form";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { useMutation } from "@apollo/client";
+import { CREATE_REVIEW_MUTATION } from "../../../utils/mutations/reviewMutations";
 import ToastComponent from "../../PrimitiveComponents/ToastComponent/ToastComponent";
+import { Preview } from "@mui/icons-material";
 
 export default function Bookings() {
   const [headingTitle, setHeadingTitle] = useState("Bookings overview");
@@ -17,9 +20,17 @@ export default function Bookings() {
   const [dropdownMenu, setDropdownMenu] = useState(false);
   const [reviewDialog, setReviewDialog] = useState(false);
   const [reviewedListing, setReviewedListing] = useState(null);
-  const [reviewedListingHost, setReviewedListingHost] = useState(null);
+  const [reviewedUser, setReviewedUser] = useState(null);
 
-  const { user_id: userId } = reviewedListing || {};
+  const [reviewData, setReviewData] = useState({
+    listing: null,
+    userId: null,
+    userData: null,
+    bookingType: ""
+  });
+  console.log(reviewData);
+
+  const userId = reviewData.userId || {};
 
   const { data, error, loading } = useQuery(GET_USER_BY_ID_QUERY, {
     variables: { userId },
@@ -28,15 +39,26 @@ export default function Bookings() {
 
   useEffect(() => {
     if (data) {
-      // console.log("user", data)
-      setReviewedListingHost(data.user);
+      console.log("reviewed user", data)
+      setReviewedUser(data.user);
+      setReviewData(prevState => ({
+        ...prevState, 
+        userData: data.user
+      }))
     } else {
       console.log(error);
     }
   }, [data, error]);
 
-  const openReviewDialog = (listing) => {
+  const openReviewDialog = (listing, user, bookingType) => {
     setReviewedListing(listing);
+    setReviewedUser(user)
+
+    setReviewData({
+      listing: listing,
+      userId: user,
+      bookingType: bookingType
+    })
     setReviewDialog(true);
   };
 
@@ -73,9 +95,21 @@ export default function Bookings() {
     formState: { errors },
   } = useForm();
 
-  const submitReview = (formData) => {
+const [createReviewMutation] = useMutation(CREATE_REVIEW_MUTATION);
+  const submitReview = async (formData) => {
+    console.log(formData);
     try {
-      console.log(formData);
+      const newReview = await createReviewMutation({
+        variables: {
+          reviewedUserId: reviewedListing.user_id,
+          listingId: reviewedListing.id,
+          reviewData: {
+            rating_value: +formData.rating,
+            rating_text: formData.reviewComment
+          }
+        }
+      })
+      console.log("new review", newReview);
       setReviewDialog(false);
       reset();
       toast.success(<ToastComponent message="Review submitted"></ToastComponent>)
@@ -159,12 +193,14 @@ export default function Bookings() {
               <img src={reviewedListing?.listing_image[0] || ""} alt="" />
             </div>
             <div className="reviewed-listing-text">
-              <p>Hosted by: {reviewedListingHost?.display_name}</p>
-              <p>{reviewedListing?.fullAddress}</p>
+              <p>rating: {reviewData.listing?.average_rating.value}</p>
+              <p>Hosted by: {reviewData.userData?.display_name}</p>
+              <p>{reviewData.listing?.fullAddress}</p>
             </div>
           </div>
           <div className="review-input">
             <form onSubmit={handleSubmit(submitReview)}>
+              <span>Rate</span>
               <div className="rating">
                 <input
                   {...register("rating", { required: true })}

@@ -5,7 +5,7 @@ import { useOutletContext } from "react-router-dom"; // Correct hook to use
 import TableComponent from "../../../PrimitiveComponents/TableComponent/TableComponent";
 import TableComponentMobile from "../../../PrimitiveComponents/TableComponentMobile/TableComponentMobile";
 import ButtonComponent from "../../../PrimitiveComponents/ButtonComponent/ButtonComponent";
-import { GET_USER_GUEST_RESERVATIONS } from "../../../../utils/queries/bookingsQueries";
+import { GET_USER_BOOKING_HISTORY } from "../../../../utils/queries/bookingsQueries";
 import "../GuestReservations/GuestReservations.css";
 
 export default function MyBookingHistory() {
@@ -19,13 +19,13 @@ export default function MyBookingHistory() {
   );
 
   const userId = useSelector((state) => state.auth.currentUser);
-  const { loading, error, data } = useQuery(GET_USER_GUEST_RESERVATIONS, {
+  const { loading, error, data } = useQuery(GET_USER_BOOKING_HISTORY, {
     variables: { userId },
   });
 
   useEffect(() => {
     if (data) {
-      setTableData(data.getUserGuestReservations);
+      setTableData(data.getUserBookingHistory);
     }
   }, [data, checkoutSuccess]);
 

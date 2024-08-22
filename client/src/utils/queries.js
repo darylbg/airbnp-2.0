@@ -20,6 +20,10 @@ export const GET_ALL_LISTINGS = gql`
       longitude
       price
       user_id
+      average_rating {
+        count
+        value
+      }
     }
   }
 `;
@@ -44,6 +48,10 @@ export const GET_LISTING_BY_ID = gql`
       longitude
       price
       user_id
+      average_rating {
+        count
+        value
+      }
     }
   }
 `;

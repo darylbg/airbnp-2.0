@@ -50,10 +50,10 @@ export default function TableComponent({
   const handleSelectAllClick = (event) => {
     const checked = event.target.checked;
     if (checked) {
-      // Select all items that are not completed
-      const newSelecteds = sortedData
-        .filter((row) => row.booking_status !== "Completed")
-        .map((n) => n.id);
+      // Select all items that are not completed and store the entire booking object
+      const newSelecteds = sortedData.filter(
+        (row) => row.booking_status !== "Completed"
+      );
       setSelected(newSelecteds);
     } else {
       // Unselect all items
@@ -64,30 +64,54 @@ export default function TableComponent({
   const handleCheckboxClick = (event, id) => {
     event.stopPropagation(); // Prevent row click from being triggered
 
-    // Do not toggle selection if status is 'Completed'
     const row = sortedData.find((row) => row.id === id);
     if (row.booking_status === "Completed") return;
 
-    const selectedIndex = selected.indexOf(id);
+    const selectedIndex = selected.findIndex((item) => item.id === id);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
+      newSelected = [...selected, row];
     } else {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
+      newSelected = [
+        ...selected.slice(0, selectedIndex),
+        ...selected.slice(selectedIndex + 1),
+      ];
     }
 
     setSelected(newSelected);
   };
 
-  const isSelected = (id) => selected.indexOf(id) !== -1;
+  const isSelected = (id) => selected.some((item) => item.id === id);
 
-  const handleMarkAsComplete = () => {
+  const [UpdateBooking] = useMutation(UPDATE_BOOKING_MUTATION);
+  const handleMarkAsComplete = async () => {
     console.log("Selected rows:", selected);
-
+    console.log("ididid", selected[0].listing.id);
+    try {
+      for (const booking of selected) {
+        const updatedBooking = await UpdateBooking({
+          variables: {
+            bookingId: booking.id,
+            bookingInput: {
+              booking_status: "Completed",
+              booking_status_updated_at: new Date().toISOString(), // Ensure correct date format
+              listing: booking.listing, // Ensure listing is passed as ID
+              guest_id: booking.guest_id,
+              host_id: booking.host_id,
+              number_of_people: booking.number_of_people,
+              arrival_time: booking.arrival_time,
+              total_price: booking.total_price,
+              payment_status: booking.payment_status,
+              special_requests: booking.special_requests,
+            },
+          },
+        });
+        console.log("updated booking", updatedBooking);
+      }
+    } catch (error) {
+      console.error("Error updating bookings:", error);
+    }
   };
 
   useEffect(() => {
@@ -163,7 +187,7 @@ export default function TableComponent({
             </TableRow>
           </TableHead>
           <TableBody>
-            {sortedData.length === 0 ? (
+            {sortedData.length == 0 ? (
               <TableRow>
                 <TableCell colSpan={9} align="center">
                   <span className="no-table-data-message">{`No ${tableSortBy.toLowerCase()} ${
@@ -218,13 +242,23 @@ export default function TableComponent({
                     <TableCell>{row.payment_status}</TableCell>
                     <TableCell>{row.special_requests}</TableCell>
                     <TableCell>
-                      <button onClick={() => openReviewDialog(row.listing)}>
+                      <button
+                        onClick={() =>
+                          openReviewDialog(
+                            row.listing,
+                            parent === "MyBookingHistory"
+                              ? row.host_id
+                              : row.guest_id,
+                            parent
+                          )
+                        }
+                      >
                         {row.booking_status === "Completed"
                           ? "Review"
                           : `Contact ${
                               parent === "MyBookingHistory" ? "Host" : "Guest"
                             }`}
-                      </button>{" "}
+                      </button>
                     </TableCell>
                   </TableRow>
                 );

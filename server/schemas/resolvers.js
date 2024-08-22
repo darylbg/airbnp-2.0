@@ -21,10 +21,11 @@ const resolvers = {
     user: async (parent, args, context) => {
       if (context.user) {
         try {
-          const userData = await User.findOne({ _id: context.user._id })
-            .select("-__v -password");
-            // .populate("user_listings")
-            // .populate("amenities");
+          const userData = await User.findOne({ _id: context.user._id }).select(
+            "-__v -password"
+          );
+          // .populate("user_listings")
+          // .populate("amenities");
           // console.log("user_listings", context.user.user_listings);
           return userData;
         } catch (error) {
@@ -439,7 +440,7 @@ const resolvers = {
 
       throw new AuthenticationError("You must be logged in!");
     },
-    deleteAmenity: async (parents, { amenityId }, context) => {
+    deleteAmenity: async (parent, { amenityId }, context) => {
       if (context.user) {
         try {
           const amenity = await Amenity.findByIdAndDelete(amenityId);
@@ -459,7 +460,11 @@ const resolvers = {
       }
       throw new AuthenticationError("You must be logged in!");
     },
-    createReview: async (parent, { listingId, reviewed_user_id, reviewData }, context) => {
+    createReview: async (
+      parent,
+      { listingId, reviewed_user_id, reviewData },
+      context
+    ) => {
       if (context.user) {
         try {
           const review = await Review.create({
@@ -469,7 +474,7 @@ const resolvers = {
             ...reviewData,
           });
 
-          await Listing.findOneAndUpdate(
+          const listing = await Listing.findOneAndUpdate(
             { _id: listingId },
             { $push: { reviews: review } },
             { new: true }
@@ -477,9 +482,23 @@ const resolvers = {
 
           await User.findOneAndUpdate(
             { _id: reviewed_user_id },
-            { $push: { reviews: review } },
+            { $push: { reviews: review._id } },
             { new: true }
           );
+
+          const ratingCount = listing.average_rating.count;
+          const ratingValue = listing.average_rating.value;
+
+          const newRatingValue =
+            (ratingValue * ratingCount + reviewData.rating_value) /
+            (ratingCount + 1);
+
+          listing.average_rating = {
+            count: ratingCount + 1,
+            value: newRatingValue,
+          };
+
+          await listing.save();
 
           return review;
         } catch (error) {
@@ -568,31 +587,31 @@ const resolvers = {
         if (!listing) {
           throw new Error("Listing not found");
         }
-    
+
         // Create the booking with the full listing embedded
         const new_booking = await Booking.create({
           ...bookingInput,
           listing: listing.toObject(), // Embed the full listing object
         });
-    
+
         const guest_id = bookingInput.guest_id;
         const host_id = bookingInput.host_id;
         const new_booking_id = new_booking._id;
-    
+
         // Update the guest's booking history
         await User.findByIdAndUpdate(
           guest_id,
           { $push: { booking_history: new_booking_id } },
           { new: true }
         );
-    
+
         // Update the host's guest reservations
         await User.findByIdAndUpdate(
           host_id,
           { $push: { guest_reservations: new_booking_id } },
           { new: true }
         );
-    
+
         return new_booking;
       } catch (error) {
         console.error("Error creating booking:", error);
@@ -608,7 +627,7 @@ const resolvers = {
         const booking = await Booking.findByIdAndUpdate(
           bookingId,
           {
-            ...booking,
+            ...bookingInput,
             number_of_people: bookingInput.number_of_people,
             arrival_time: bookingInput.arrival_time,
             booking_status: bookingInput.booking_status,
@@ -616,6 +635,9 @@ const resolvers = {
             total_price: bookingInput.total_price,
             payment_status: bookingInput.payment_status,
             special_requests: bookingInput.special_requests,
+            listing: bookingInput.listing, // Convert listing to ObjectId
+            guest_id: new mongoose.Types.ObjectId(bookingInput.guest_id), // Ensure guest_id is ObjectId
+            host_id: new mongoose.Types.ObjectId(bookingInput.host_id),
           },
           { new: true }
         );
