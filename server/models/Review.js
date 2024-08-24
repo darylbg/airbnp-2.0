@@ -1,7 +1,13 @@
+const { KnownTypeNamesRule } = require("graphql");
 const { Schema, model } = require("mongoose");
 
 const reviewSchema = new Schema(
   {
+    review_type: {
+      type: String,
+      enum: ["User", "Listing"],
+      required: true
+    },
     rating_value: {
       type: Number,
       required: true,
@@ -16,14 +22,14 @@ const reviewSchema = new Schema(
       ref: "User",
       required: true,
     },
-    reviewed_user_id: {  // The user being reviewed (if applicable)
+    reviewed_user_id: { 
       type: Schema.Types.ObjectId,
       ref: "User",
+      required: true // all reviews are user reviews
     },
-    listing_id: {  // The listing being reviewed
+    listing_id: {  // The listing being reviewed not required if reviewing a user
       type: Schema.Types.ObjectId,
       ref: "Listing",
-      required: true,
     },
   },
   {

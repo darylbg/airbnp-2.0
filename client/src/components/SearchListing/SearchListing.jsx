@@ -21,7 +21,7 @@ export default function SearchListing({
   const [listingHighlight, setListingHighlight] = useState(false);
 
   const isHovered = hoveredListing && hoveredListing.id === listing.id;
-  const isSelected = selectedListing?.id === listing.id;
+  const isSelected = selectedListing?.id === listing?.id;
 
   useEffect(() => {
     if (isHovered || isSelected) {
@@ -73,7 +73,8 @@ export default function SearchListing({
           containerClass="carousel-container"
           dotListClass="custom-dot-list-style"
           itemClass="carousel-item-padding-40-px"
-          arrows={listing.listing_image?.length > 1}
+          // arrows={true}
+          arrows={listing && listing.listing_image.length > 1}
           customLeftArrow={<CustomLeftArrow />}
           customRightArrow={<CustomRightArrow />}
         >

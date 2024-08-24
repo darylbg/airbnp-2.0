@@ -131,7 +131,7 @@ export default function NewListing({ closeDialog }) {
           updates: { user_listings: userListingCount + 1 },
         })
       );
-      dispatch(addToAllListings(addListing));
+      dispatch(addToAllListings(addedListing));
 
       closeDialog();
       setSelectedImages([null, null, null, null, null]);

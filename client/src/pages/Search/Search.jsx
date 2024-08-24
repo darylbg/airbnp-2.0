@@ -17,7 +17,8 @@ import { Link } from "react-router-dom";
 
 export default function Search() {
   const dispatch = useDispatch();
-  const [listings, setListings] = useState(null);
+  const [listings, setListings] = useState([]);
+  console.log(listings)
   const [hoveredListing, setHoveredListing] = useState(null);
   const [routeType, setRouteType] = useState("walking");
   const [routeData, setRouteData] = useState(null);
@@ -275,8 +276,9 @@ export default function Search() {
         <div className="search-listings-display scrollbar-1">
           {listings &&
             listings.map((listing) => (
+              console.log(listings),
               <SearchListing
-                key={listing._id}
+                key={listing?._id}
                 listing={listing}
                 setHoveredListing={setHoveredListing}
                 hoveredListing={hoveredListing}

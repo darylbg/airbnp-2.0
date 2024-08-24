@@ -77,6 +77,10 @@ export const SIGN_IN_MUTATION = gql`
           reviews {
             id
           }
+          average_rating {
+            count
+            value
+          }
         }
         saved_listings {
           id
@@ -86,6 +90,10 @@ export const SIGN_IN_MUTATION = gql`
         }
         reviews {
           id
+        }
+        average_rating {
+          count
+          value
         }
         payments {
           id

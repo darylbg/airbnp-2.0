@@ -14,6 +14,7 @@ const typeDefs = gql`
     user_listings: [Listing]
     saved_listings: [Listing]
     notifications: [Notification]
+    average_rating: AverageRating
     reviews: [Review]
     payments: [Payment]
     booking_history: [ID]
@@ -56,11 +57,12 @@ const typeDefs = gql`
 
   type Review {
     id: ID!
+    review_type: String!
     rating_value: Int
     rating_text: String
     user_id: ID!
     reviewed_user_id: ID!
-    listing_id: ID!
+    listing_id: ID
     createdAt: String
     updatedAt: String
   }
@@ -157,9 +159,9 @@ const typeDefs = gql`
     longitude: Float!
     availability: Boolean
     price: Float!
-    amenities: [ID!] # List of amenity IDs to mark as available
-    payments: [ID!]
-    reviews: [ID!]
+    amenities: [ID] # List of amenity IDs to mark as available
+    payments: [ID]
+    reviews: [ID]
   }
 
   input amenityInput {
@@ -169,7 +171,7 @@ const typeDefs = gql`
   }
 
   input reviewInput {
-    rating_value: Int
+    rating_value: Int!
     rating_text: String
   }
 
@@ -234,6 +236,7 @@ const typeDefs = gql`
     createAmenity(amenityData: amenityInput): Listing
     deleteAmenity(amenityId: ID!): Listing
     createReview(
+      reviewType: String!
       listingId: ID
       reviewed_user_id: ID!
       reviewData: reviewInput

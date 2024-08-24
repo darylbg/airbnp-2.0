@@ -82,13 +82,11 @@ const CheckoutForm = ({
     setLoading(true);
     setError(null);
 
-    try {
-      // Create booking first
-      const newBooking = await createBookingEntry();
+    try {     
 
       // If booking creation successful, proceed with payment
       const { data } = await createPaymentIntent({
-        variables: { amount: amount * 100 },
+        variables: { amount: Math.round(amount * 100) },
       });
       const clientSecret = data.createPaymentIntent.clientSecret;
 
@@ -101,6 +99,8 @@ const CheckoutForm = ({
           },
         }
       );
+
+      const newBooking = await createBookingEntry();
 
       if (error) {
         setError(error.message);

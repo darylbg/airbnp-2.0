@@ -101,6 +101,7 @@ const [createReviewMutation] = useMutation(CREATE_REVIEW_MUTATION);
     try {
       const newReview = await createReviewMutation({
         variables: {
+          reviewType: "Listing",
           reviewedUserId: reviewedListing.user_id,
           listingId: reviewedListing.id,
           reviewData: {

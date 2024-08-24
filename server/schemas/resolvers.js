@@ -462,51 +462,96 @@ const resolvers = {
     },
     createReview: async (
       parent,
-      { listingId, reviewed_user_id, reviewData },
+      { reviewType, listingId, reviewed_user_id, reviewData },
       context
     ) => {
-      if (context.user) {
-        try {
-          const review = await Review.create({
-            user_id: context.user._id,
-            listing_id: listingId,
-            reviewed_user_id: reviewed_user_id,
-            ...reviewData,
-          });
-
+      console.log("review ", {
+        reviewType,
+        reviewed_user_id,
+        listingId,
+        ...reviewData
+      });
+    
+      if (!context.user) {
+        throw new AuthenticationError("You must be logged in!");
+      }
+    
+      const session = await mongoose.startSession();
+      session.startTransaction();
+    
+      try {
+        // Create a new review
+        const review = await Review.create(
+          [
+            {
+              user_id: context.user._id,
+              listing_id: listingId,
+              review_type: reviewType,  // Corrected from review_type to reviewType
+              reviewed_user_id: reviewed_user_id,
+              ...reviewData,
+            },
+          ],
+          { session }
+        );
+    
+        // Update the reviewed user's reviews array and recalculate average rating
+        const user = await User.findOneAndUpdate(
+          { _id: reviewed_user_id },
+          { $push: { reviews: review[0]._id } }, // Correct indexing to get review ID
+          { new: true, session }
+        );
+    
+        const userRatingCount = user.average_rating?.count || 0;
+        const userRatingValue = user.average_rating?.value || 0;
+    
+        const newUserRatingValue =
+          (userRatingValue * userRatingCount + reviewData.rating_value) /
+          (userRatingCount + 1);
+    
+        user.average_rating = {
+          count: userRatingCount + 1,
+          value: newUserRatingValue,
+        };
+    
+        await user.save({ session });
+    
+        // If reviewType is "Listing", update the listing's reviews array and recalculate average rating
+        if (reviewType === "Listing" && listingId) {
           const listing = await Listing.findOneAndUpdate(
             { _id: listingId },
-            { $push: { reviews: review } },
-            { new: true }
+            { $push: { reviews: review[0]._id } }, // Correct indexing to get review ID
+            { new: true, session }
           );
-
-          await User.findOneAndUpdate(
-            { _id: reviewed_user_id },
-            { $push: { reviews: review._id } },
-            { new: true }
-          );
-
-          const ratingCount = listing.average_rating.count;
-          const ratingValue = listing.average_rating.value;
-
+    
+          const ratingCount = listing.average_rating?.count || 0;
+          const ratingValue = listing.average_rating?.value || 0;
+    
           const newRatingValue =
             (ratingValue * ratingCount + reviewData.rating_value) /
             (ratingCount + 1);
-
+    
           listing.average_rating = {
             count: ratingCount + 1,
             value: newRatingValue,
           };
-
-          await listing.save();
-
-          return review;
-        } catch (error) {
-          console.log(error);
+    
+          await listing.save({ session });
         }
+    
+        // Commit transaction
+        await session.commitTransaction();
+        session.endSession();
+    
+        return review[0]; // Return the created review
+      } catch (error) {
+        // Abort transaction in case of error
+        await session.abortTransaction();
+        session.endSession();
+        console.error("Error creating review:", error);
+        throw new Error("Failed to create review");
       }
-      throw new AuthenticationError("You must be logged in!");
     },
+    
     createNotification: async (
       parent,
       { userId, listingId, notificationData },
@@ -635,9 +680,9 @@ const resolvers = {
             total_price: bookingInput.total_price,
             payment_status: bookingInput.payment_status,
             special_requests: bookingInput.special_requests,
-            listing: bookingInput.listing, // Convert listing to ObjectId
-            guest_id: new mongoose.Types.ObjectId(bookingInput.guest_id), // Ensure guest_id is ObjectId
-            host_id: new mongoose.Types.ObjectId(bookingInput.host_id),
+            listing: bookingInput.listing._id,
+            guest_id: bookingInput.guest_id,
+            host_id: bookingInput.host_id,
           },
           { new: true }
         );
