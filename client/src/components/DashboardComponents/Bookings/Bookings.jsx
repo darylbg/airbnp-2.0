@@ -6,58 +6,56 @@ import { NavLink, Outlet, useLocation } from "react-router-dom";
 import ButtonComponent from "../../PrimitiveComponents/ButtonComponent/ButtonComponent";
 import { useQuery } from "@apollo/client";
 import { GET_USER_BY_ID_QUERY } from "../../../utils/queries/userQueries";
-import * as Form from "@radix-ui/react-form";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useMutation } from "@apollo/client";
 import { CREATE_REVIEW_MUTATION } from "../../../utils/mutations/reviewMutations";
 import ToastComponent from "../../PrimitiveComponents/ToastComponent/ToastComponent";
-import { Preview } from "@mui/icons-material";
 
 export default function Bookings() {
   const [headingTitle, setHeadingTitle] = useState("Bookings overview");
   const [headingSubTitle, setHeadingSubTitle] = useState("View your bookings");
   const [dropdownMenu, setDropdownMenu] = useState(false);
   const [reviewDialog, setReviewDialog] = useState(false);
-  const [reviewedListing, setReviewedListing] = useState(null);
-  const [reviewedUser, setReviewedUser] = useState(null);
+  // const [reviewedListing, setReviewedListing] = useState(null);
+  // const [reviewedUser, setReviewedUser] = useState(null);
 
   const [reviewData, setReviewData] = useState({
-    listing: null,
-    userId: null,
-    userData: null,
-    bookingType: ""
+    reviewedListing: null,
+    reviewedUserId: null,
+    reviewedUserData: null,
+    reviewType: ""
   });
   console.log(reviewData);
 
-  const userId = reviewData.userId || {};
+  const reviewedUserId = reviewData.reviewedUserId || {};
 
   const { data, error, loading } = useQuery(GET_USER_BY_ID_QUERY, {
-    variables: { userId },
-    skip: !userId,
+    variables: { reviewedUserId },
+    skip: !reviewedUserId,
   });
 
   useEffect(() => {
     if (data) {
       console.log("reviewed user", data)
-      setReviewedUser(data.user);
+      // setReviewedUser(data.user);
       setReviewData(prevState => ({
         ...prevState, 
-        userData: data.user
+        reviewedUserId: data.user
       }))
     } else {
       console.log(error);
     }
   }, [data, error]);
 
-  const openReviewDialog = (listing, user, bookingType) => {
-    setReviewedListing(listing);
-    setReviewedUser(user)
+  const openReviewDialog = (listing, userId, bookingType) => {
+    // setReviewedListing(listing);
+    // setReviewedUser(userId)
 
     setReviewData({
-      listing: listing,
-      userId: user,
-      bookingType: bookingType
+      reviewedListing: listing,
+      reviewedUserId: userId,
+      reviewType: bookingType === "MyBookingHistory" ? "Listing" : "user"
     })
     setReviewDialog(true);
   };
@@ -101,9 +99,9 @@ const [createReviewMutation] = useMutation(CREATE_REVIEW_MUTATION);
     try {
       const newReview = await createReviewMutation({
         variables: {
-          reviewType: "Listing",
-          reviewedUserId: reviewedListing.user_id,
-          listingId: reviewedListing.id,
+          reviewType: reviewData.reviewType,
+          reviewedUserId: reviewData.reviewedUserId,
+          listingId: reviewData.reviewedListing.id,
           reviewData: {
             rating_value: +formData.rating,
             rating_text: formData.reviewComment
@@ -189,14 +187,15 @@ const [createReviewMutation] = useMutation(CREATE_REVIEW_MUTATION);
         minimize={false}
       >
         <div className="review-dialog-content">
+          <p>{reviewData.reviewType} review</p>
           <div className="reviewed-listing">
             <div className="reviewed-listing-img">
-              <img src={reviewedListing?.listing_image[0] || ""} alt="" />
+              <img src={reviewData.reviewedListing?.listing_image[0] || ""} alt="" />
             </div>
             <div className="reviewed-listing-text">
-              <p>rating: {reviewData.listing?.average_rating.value}</p>
-              <p>Hosted by: {reviewData.userData?.display_name}</p>
-              <p>{reviewData.listing?.fullAddress}</p>
+              <p>rating: {reviewData.reviewedListing?.average_rating.value}</p>
+              <p>Hosted by: {reviewData.reviewedUserData?.display_name}</p>
+              <p>{reviewData.reviewedListing?.fullAddress}</p>
             </div>
           </div>
           <div className="review-input">
