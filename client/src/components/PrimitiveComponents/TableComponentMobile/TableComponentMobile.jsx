@@ -15,11 +15,20 @@ import {
 import { ExpandMore, ExpandLess } from "@mui/icons-material";
 import ClockComponent from "../ClockComponent/ClockComponent";
 import ButtonComponent from "../ButtonComponent/ButtonComponent";
+import { useMutation } from "@apollo/client";
+import { UPDATE_BOOKING_MUTATION } from "../../../utils/mutations/bookingMutations"; // Make sure to import the mutation
 
-export default function MobileTableComponent({ data, tableSortBy }) {
+export default function MobileTableComponent({
+  data,
+  tableSortBy,
+  parent,
+  openReviewDialog,
+  openChatBot
+}) {
   const [selected, setSelected] = useState([]);
   const [sortedData, setSortedData] = useState([]);
   const [expandedRows, setExpandedRows] = useState({});
+  const [UpdateBooking] = useMutation(UPDATE_BOOKING_MUTATION); // Use mutation hook
 
   useEffect(() => {
     let sorted = [];
@@ -47,14 +56,15 @@ export default function MobileTableComponent({ data, tableSortBy }) {
   }, [data, tableSortBy]);
 
   const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = sortedData
-        .filter((row) => row.booking_status !== "Completed")
-        .map((n) => n.id);
+    const checked = event.target.checked;
+    if (checked) {
+      const newSelecteds = sortedData.filter(
+        (row) => row.booking_status !== "Completed"
+      );
       setSelected(newSelecteds);
-      return;
+    } else {
+      setSelected([]);
     }
-    setSelected([]);
   };
 
   const handleCheckboxClick = (event, id) => {
@@ -62,25 +72,48 @@ export default function MobileTableComponent({ data, tableSortBy }) {
     const row = sortedData.find((row) => row.id === id);
     if (row.booking_status === "Completed") return; // Do not toggle if status is 'Completed'
 
-    const selectedIndex = selected.indexOf(id);
+    const selectedIndex = selected.findIndex((item) => item.id === id);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
+      newSelected = [...selected, row];
     } else {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
+      newSelected = [
+        ...selected.slice(0, selectedIndex),
+        ...selected.slice(selectedIndex + 1),
+      ];
     }
 
     setSelected(newSelected);
   };
 
-  const isSelected = (id) => selected.indexOf(id) !== -1;
+  const isSelected = (id) => selected.some((item) => item.id === id);
 
-  const handleMarkAsComplete = () => {
-    console.log("Selected rows:", selected);
+  const handleMarkAsComplete = async () => {
+    try {
+      for (const booking of selected) {
+        const updatedBooking = await UpdateBooking({
+          variables: {
+            bookingId: booking.id,
+            bookingInput: {
+              booking_status: "Completed",
+              booking_status_updated_at: new Date().toISOString(), // Ensure correct date format
+              listing: booking.listing.id, // Ensure listing is passed as ID
+              guest_id: booking.guest_id,
+              host_id: booking.host_id,
+              number_of_people: booking.number_of_people,
+              arrival_time: booking.arrival_time,
+              total_price: booking.total_price,
+              payment_status: booking.payment_status,
+              special_requests: booking.special_requests,
+            },
+          },
+        });
+        console.log("updated booking", updatedBooking);
+      }
+    } catch (error) {
+      console.error("Error updating bookings:", error);
+    }
   };
 
   const handleExpandClick = (event, id) => {
@@ -112,16 +145,16 @@ export default function MobileTableComponent({ data, tableSortBy }) {
             inputProps={{ "aria-label": "select all" }}
           />
           <ButtonComponent
-            loading={selected.length < 1}
+            disabled={selected.length < 1}
             className="table-control-complete-button default-button"
             action={handleMarkAsComplete}
           >
-            <span class="material-symbols-outlined">check</span>
+            <span className="material-symbols-outlined">check</span>
             <span className="text">Mark as complete</span>
           </ButtonComponent>
         </div>
         <div className="table-control-clock">
-          <span class="material-symbols-outlined">schedule</span>
+          <span className="material-symbols-outlined">schedule</span>
           <div className="time-display">
             <ClockComponent />
           </div>
@@ -175,8 +208,11 @@ export default function MobileTableComponent({ data, tableSortBy }) {
                     <TableRow>
                       <TableCell colSpan={3}>
                         <Box>
-                          <Typography component="div">
-                            <strong>Hosted by:</strong>{" "}
+                          <Typography component="div" className="asdf">
+                            <strong>
+                              {parent === "GuestReservations" ? "Guest" : "Host"}
+                              :
+                            </strong>{" "}
                             {row.host_id.display_name}
                           </Typography>
                           <Typography component="div">
@@ -207,6 +243,47 @@ export default function MobileTableComponent({ data, tableSortBy }) {
                             <strong>Status updated:</strong>{" "}
                             {row.booking_status_updated_at}
                           </Typography>
+
+                          <Typography component="div">
+                          <strong>Contact {parent === "MyBookingHistory" ? "Host" : "Guest"}</strong>{" "}
+                          <ButtonComponent
+                            className="default-button contact-review-button"
+                            type="button"
+                            action={() =>
+                              row.booking_status === "Completed"
+                                ? openReviewDialog(
+                                    row.listing,
+                                    parent === "MyBookingHistory"
+                                      ? row.host_id
+                                      : row.guest_id,
+                                    parent
+                                  )
+                                : openChatBot(row)
+                            }
+                          >
+                            {row.booking_status === "Completed" ? (
+                              <>
+                                <span>Leave a review</span>
+                                <span className="material-symbols-outlined">
+                                  star
+                                </span>
+                              </>
+                            ) : (
+                              <>
+                                <span>
+                                  Chat with{" "}
+                                  {parent === "MyBookingHistory"
+                                    ? "Host"
+                                    : "Guest"}
+                                </span>
+                                <span className="material-symbols-outlined">
+                                  forum
+                                </span>
+                              </>
+                            )}
+                          </ButtonComponent>
+                          </Typography>
+                          
                         </Box>
                       </TableCell>
                     </TableRow>
