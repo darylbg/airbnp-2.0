@@ -9,6 +9,7 @@ import userDetailsReducer from "./reducers/userDetailsReducer";
 import userListingsReducer from "./reducers/userListingsReducer";
 import allListingsReducer from "./reducers/allListingsReducer";
 import bookingReducer from "./reducers/bookingReducer";
+import chatBotReducer from "./reducers/chatBotReducer";
 
 const persistConfig = {
     key: "root",
@@ -22,7 +23,8 @@ const persistedReducer = persistReducer(
         userDetails: userDetailsReducer,
         userListings: userListingsReducer,
         allListings: allListingsReducer,
-        bookingCycle: bookingReducer
+        bookingCycle: bookingReducer,
+        chatBot: chatBotReducer
     }),
     
 );

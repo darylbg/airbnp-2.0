@@ -34,6 +34,8 @@ import Checkout from "./components/BookingCycleComponents/Checkout/Checkout";
 import GuestReservations from "./components/DashboardComponents/Bookings/GuestReservations/GuestReservations";
 import MyBookingHistory from "./components/DashboardComponents/Bookings/MyBookingHistory/MyBookingHistory";
 import BookingsOverview from "./components/DashboardComponents/Bookings/BookingsOverview/BookingsOverview";
+import ChatBot from "./components/PrimitiveComponents/ChatBot/ChatBot";
+import { useSelector } from "react-redux";
 const httpLink = createHttpLink({
   uri: "http://localhost:3001/graphql",
 });
@@ -56,7 +58,10 @@ const client = new ApolloClient({
 });
 
 function App() {
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const isChatBotOpen = useSelector((state) => state.chatBot.open);
   const [windowSize, setWindowSize] = useState(window.innerWidth);
+  // const [chatBot, setChatBot] = useState(true);
 
   useEffect(() => {
     const handleWindowResize = () => {
@@ -68,6 +73,18 @@ function App() {
       window.removeEventListener("resize", handleWindowResize);
     };
   }, []);
+
+  // useEffect(() => {
+  //   const handleChatBot = (event) => {
+  //     console.log(event)
+
+
+  //   window.addEventListener('storage', handleChatBot);
+
+  //   return () => {
+  //     window.removeEventListener('storage', handleChatBot);
+  //   };
+  // }, []);
 
   return (
     <ApolloProvider client={client}>
@@ -115,11 +132,12 @@ function App() {
             <MobileNavbar />
           </div>
           <Toaster
-            position={windowSize > 768 ? "bottom-right" : "top-right"}
+            position={windowSize > 768 ? "bottom-left" : "top-right"}
             toastOptions={{
               className: "toast",
             }}
           />
+          {isLoggedIn && isChatBotOpen && <ChatBot />}
         </div>
       </Router>
       {/* </StripeProvider> */}

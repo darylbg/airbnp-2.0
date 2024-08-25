@@ -12,7 +12,7 @@ export default function GuestReservations() {
   const [tableData, setTableData] = useState([]);
   const [tableSortBy, setTableSortBy] = useState("All");
   
-  const {openReviewDialog} = useOutletContext();
+  const {openReviewDialog, openChatBot} = useOutletContext();
 
   const checkoutSuccess = useSelector(
     (state) => state.bookingCycle.booking.checkoutInfo.checkoutSuccess
@@ -75,6 +75,7 @@ export default function GuestReservations() {
             tableSortBy={tableSortBy}
             data={tableData}
             parent="GuestReservations"
+            openChatBot={openChatBot}
             openReviewDialog={openReviewDialog}
           />
         ) : (
@@ -82,6 +83,7 @@ export default function GuestReservations() {
             tableSortBy={tableSortBy}
             data={tableData}
             parent="GuestReservations"
+            openChatBot={openChatBot}
             openReviewDialog={openReviewDialog}
           />
         )}

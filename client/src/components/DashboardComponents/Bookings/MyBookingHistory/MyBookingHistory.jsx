@@ -12,7 +12,7 @@ export default function MyBookingHistory() {
   const [tableData, setTableData] = useState([]);
   const [tableSortBy, setTableSortBy] = useState("All");
 
-  const { openReviewDialog } = useOutletContext(); // Access the function here
+  const { openReviewDialog, openChatBot } = useOutletContext(); // Access the function here
 
   const checkoutSuccess = useSelector(
     (state) => state.bookingCycle.booking.checkoutInfo.checkoutSuccess
@@ -81,6 +81,7 @@ export default function MyBookingHistory() {
             tableSortBy={tableSortBy}
             data={tableData}
             parent="MyBookingHistory"
+            openChatBot={openChatBot}
             openReviewDialog={openReviewDialog} // Pass it here
           />
         ) : (
@@ -88,6 +89,7 @@ export default function MyBookingHistory() {
             tableSortBy={tableSortBy}
             data={tableData}
             parent="MyBookingHistory"
+            openChatBot={openChatBot}
             openReviewDialog={openReviewDialog} // Pass it here
           />
         )}

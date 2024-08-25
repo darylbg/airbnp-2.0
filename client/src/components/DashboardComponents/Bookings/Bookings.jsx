@@ -7,6 +7,8 @@ import ButtonComponent from "../../PrimitiveComponents/ButtonComponent/ButtonCom
 import { useQuery } from "@apollo/client";
 import { GET_USER_BY_ID_QUERY } from "../../../utils/queries/userQueries";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { setChatBotOpen } from "../../../reducers/chatBotReducer";
 import toast from "react-hot-toast";
 import { useMutation } from "@apollo/client";
 import { CREATE_REVIEW_MUTATION } from "../../../utils/mutations/reviewMutations";
@@ -17,8 +19,8 @@ export default function Bookings() {
   const [headingSubTitle, setHeadingSubTitle] = useState("View your bookings");
   const [dropdownMenu, setDropdownMenu] = useState(false);
   const [reviewDialog, setReviewDialog] = useState(false);
-  // const [reviewedListing, setReviewedListing] = useState(null);
-  // const [reviewedUser, setReviewedUser] = useState(null);
+
+  const dispatch = useDispatch();
 
   const [reviewData, setReviewData] = useState({
     reviewedListing: null,
@@ -49,9 +51,6 @@ export default function Bookings() {
   }, [data, error]);
 
   const openReviewDialog = (listing, userId, bookingType) => {
-    // setReviewedListing(listing);
-    // setReviewedUser(userId)
-
     setReviewData({
       reviewedListing: listing,
       reviewedUserId: userId,
@@ -117,6 +116,15 @@ const [createReviewMutation] = useMutation(CREATE_REVIEW_MUTATION);
     }
   };
 
+  const openChatBot = (item) => {
+    const chatBotData = {
+      open: true,
+      sender: "sender",
+      receiver: item
+    }
+    dispatch(setChatBotOpen(chatBotData));
+  }
+
   return (
     <>
       <DashboardHeader
@@ -176,7 +184,7 @@ const [createReviewMutation] = useMutation(CREATE_REVIEW_MUTATION);
           )}
         </div>
       </DashboardHeader>
-      <Outlet context={{ openReviewDialog }} />
+      <Outlet context={{ openReviewDialog, openChatBot }} />
       <DialogComponent
         className="content-width-dialog review-dialog"
         dialogState={reviewDialog}

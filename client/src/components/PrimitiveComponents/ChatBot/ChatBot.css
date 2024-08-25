@@ -1,0 +1,61 @@
+.chatBot {
+    padding: 2rem;
+    background-color: transparent;
+    position: fixed;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    
+}
+
+.chatBot-trigger {
+    position: relative;
+    background-color: var(--pink-10);
+    height: 3rem;
+    width: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+}
+
+.chatBot-trigger .material-symbols-outlined {
+    color: var(--white-13);
+}
+
+.chatBot-content {
+    position: absolute;
+    top: 0;
+    right: 1rem;
+    transform: translateY(-100%);
+    background-color: var(--white-13);
+    width: 100vw;
+    max-width: 300px;
+    border: 1px solid var(--pink-9);
+    padding: 1rem;
+    border-radius: 10px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chatBot-heading {
+    border-bottom: 1px solid var(--black-1);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+}
+
+.chatBot-heading .chatBot-control-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.chatBot-body {
+    display: flex;
+    flex: 1;
+    align-items: center;
+}

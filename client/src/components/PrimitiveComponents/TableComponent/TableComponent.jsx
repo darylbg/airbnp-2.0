@@ -16,12 +16,14 @@ import ClockComponent from "../ClockComponent/ClockComponent";
 import { useMutation } from "@apollo/client";
 import { UPDATE_BOOKING_MUTATION } from "../../../utils/mutations/bookingMutations";
 import "./TableComponent.css";
+import ButtonComponent from "../ButtonComponent/ButtonComponent";
 
 export default function TableComponent({
   data,
   tableSortBy,
   parent,
   openReviewDialog,
+  openChatBot
 }) {
   const [selected, setSelected] = useState([]);
   const [sortedData, setSortedData] = useState([]);
@@ -86,8 +88,6 @@ export default function TableComponent({
 
   const [UpdateBooking] = useMutation(UPDATE_BOOKING_MUTATION);
   const handleMarkAsComplete = async () => {
-    console.log("Selected rows:", selected);
-    console.log("ididid", selected[0].listing.id);
     try {
       for (const booking of selected) {
         const updatedBooking = await UpdateBooking({
@@ -96,7 +96,7 @@ export default function TableComponent({
             bookingInput: {
               booking_status: "Completed",
               booking_status_updated_at: new Date().toISOString(), // Ensure correct date format
-              listing: booking.listing, // Ensure listing is passed as ID
+              listing: booking.listing.id, // Ensure listing is passed as ID
               guest_id: booking.guest_id,
               host_id: booking.host_id,
               number_of_people: booking.number_of_people,
@@ -229,10 +229,10 @@ export default function TableComponent({
                     <TableCell>
                       {parent === "MyBookingHistory" ? (
                         <NavLink to={row.listing_url}>
-                          {row.listing.listing_title}
+                          {row.listing.fullAddress}
                         </NavLink>
                       ) : (
-                        <>{row.listing.listing_title}</>
+                        <>{row.listing.fullAddress}</>
                       )}
                     </TableCell>
                     <TableCell>{row.booking_status}</TableCell>
@@ -242,23 +242,36 @@ export default function TableComponent({
                     <TableCell>{row.payment_status}</TableCell>
                     <TableCell>{row.special_requests}</TableCell>
                     <TableCell>
-                      <button
-                        onClick={() =>
-                          openReviewDialog(
+                      <ButtonComponent
+                      className="default-button contact-review-button"
+                        type="button"
+                        action={() =>
+                          row.booking_status === "Completed" ? openReviewDialog(
                             row.listing,
                             parent === "MyBookingHistory"
                               ? row.host_id
                               : row.guest_id,
                             parent
                           )
+                          :
+                          openChatBot(row)
                         }
                       >
-                        {row.booking_status === "Completed"
-                          ? "Review"
-                          : `Contact ${
-                              parent === "MyBookingHistory" ? "Host" : "Guest"
-                            }`}
-                      </button>
+                        {row.booking_status === "Completed" ? (
+                          <>
+                            <span>Leave a review</span>
+                            <span class="material-symbols-outlined">star</span>
+                          </>
+                        ) : (
+                          <>
+                            <span>
+                              Chat with{" "}
+                              {parent === "MyBookingHistory" ? "Host" : "Guest"}
+                            </span>
+                            <span class="material-symbols-outlined">forum</span>
+                          </>
+                        )}
+                      </ButtonComponent>
                     </TableCell>
                   </TableRow>
                 );
