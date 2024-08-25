@@ -75,14 +75,12 @@ const userSchema = new Schema(
       {
         type: Schema.Types.ObjectId,
         ref: "Review",
-        // required: true
       },
     ],
     payments: [
       {
         type: Schema.Types.ObjectId,
         ref: "Payment",
-        // required: true
       },
     ],
     booking_history: [

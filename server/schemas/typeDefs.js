@@ -15,8 +15,8 @@ const typeDefs = gql`
     saved_listings: [Listing]
     notifications: [Notification]
     average_rating: AverageRating
-    reviews: [Review]
-    payments: [Payment]
+    reviews: [ID]
+    payments: [ID]
     booking_history: [ID]
     guest_reservations: [ID]
   }
@@ -40,7 +40,7 @@ const typeDefs = gql`
     created_at: String
     user_id: ID!
     amenities: [ListingAmenity]
-    reviews: [Review]
+    reviews: [ID]
     average_rating: AverageRating
     payments: [Payment]
   }
@@ -56,16 +56,17 @@ const typeDefs = gql`
   }
 
   type Review {
-    id: ID!
-    review_type: String!
-    rating_value: Int
-    rating_text: String
-    user_id: ID!
-    reviewed_user_id: ID!
-    listing_id: ID
-    createdAt: String
-    updatedAt: String
-  }
+  id: ID!
+  review_type: String!
+  rating_value: Int
+  rating_text: String
+  user: User!
+  reviewed_user_id: ID!
+  listing_id: ID
+  createdAt: String
+  updatedAt: String
+}
+
 
   type Notification {
     id: ID!
@@ -165,14 +166,16 @@ const typeDefs = gql`
   }
 
   input amenityInput {
-    # amenity_text: String
-    # amenity_icon: String
     id: ID!
   }
 
   input reviewInput {
     rating_value: Int!
     rating_text: String
+    review_type: String!
+    reviewed_user_id: ID!
+    listing_id: ID
+    user: ID!
   }
 
   input notificationInput {
@@ -196,7 +199,6 @@ const typeDefs = gql`
     host_id: ID!
     number_of_people: Int!
     arrival_time: String!
-    # created_at: String!
     booking_status: String!
     booking_status_updated_at: String
     total_price: Float!
@@ -221,7 +223,7 @@ const typeDefs = gql`
     getUserBookingHistory(user_id: ID!): [Booking]
     getUserGuestReservations(user_id: ID!): [Booking]
 
-    getAllReviewsByUser(user_id: ID!): [Review]
+    getAllUserReviews(userId: ID!): [Review]
     getReviewById(review_id: ID!): Review
   }
 
@@ -235,12 +237,7 @@ const typeDefs = gql`
     deleteListing(listingId: ID!): User
     createAmenity(amenityData: amenityInput): Listing
     deleteAmenity(amenityId: ID!): Listing
-    createReview(
-      reviewType: String!
-      listingId: ID
-      reviewed_user_id: ID!
-      reviewData: reviewInput
-    ): Review
+    createReview(reviewData: reviewInput): Review
     createNotification(
       listingId: ID!
       notificationData: notificationInput

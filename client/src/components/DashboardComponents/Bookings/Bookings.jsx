@@ -7,7 +7,7 @@ import ButtonComponent from "../../PrimitiveComponents/ButtonComponent/ButtonCom
 import { useQuery } from "@apollo/client";
 import { GET_USER_BY_ID_QUERY } from "../../../utils/queries/userQueries";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setChatBotOpen } from "../../../reducers/chatBotReducer";
 import toast from "react-hot-toast";
 import { useMutation } from "@apollo/client";
@@ -15,6 +15,8 @@ import { CREATE_REVIEW_MUTATION } from "../../../utils/mutations/reviewMutations
 import ToastComponent from "../../PrimitiveComponents/ToastComponent/ToastComponent";
 
 export default function Bookings() {
+  const currentUser = useSelector((state) => state.auth.currentUser);
+  console.log(currentUser);
   const [headingTitle, setHeadingTitle] = useState("Bookings overview");
   const [headingSubTitle, setHeadingSubTitle] = useState("View your bookings");
   const [dropdownMenu, setDropdownMenu] = useState(false);
@@ -26,9 +28,8 @@ export default function Bookings() {
     reviewedListing: null,
     reviewedUserId: null,
     reviewedUserData: null,
-    reviewType: ""
+    reviewType: "",
   });
-  console.log(reviewData);
 
   const reviewedUserId = reviewData.reviewedUserId || {};
 
@@ -39,12 +40,12 @@ export default function Bookings() {
 
   useEffect(() => {
     if (data) {
-      console.log("reviewed user", data)
+      console.log("reviewed user", data);
       // setReviewedUser(data.user);
-      setReviewData(prevState => ({
-        ...prevState, 
-        reviewedUserId: data.user
-      }))
+      setReviewData((prevState) => ({
+        ...prevState,
+        reviewedUserId: data.user,
+      }));
     } else {
       console.log(error);
     }
@@ -54,8 +55,8 @@ export default function Bookings() {
     setReviewData({
       reviewedListing: listing,
       reviewedUserId: userId,
-      reviewType: bookingType === "MyBookingHistory" ? "Listing" : "user"
-    })
+      reviewType: bookingType === "MyBookingHistory" ? "Listing" : "User",
+    });
     setReviewDialog(true);
   };
 
@@ -92,25 +93,28 @@ export default function Bookings() {
     formState: { errors },
   } = useForm();
 
-const [createReviewMutation] = useMutation(CREATE_REVIEW_MUTATION);
+  const [createReviewMutation] = useMutation(CREATE_REVIEW_MUTATION);
   const submitReview = async (formData) => {
     console.log(formData);
     try {
       const newReview = await createReviewMutation({
         variables: {
-          reviewType: reviewData.reviewType,
-          reviewedUserId: reviewData.reviewedUserId,
-          listingId: reviewData.reviewedListing.id,
           reviewData: {
+            listing_id: reviewData.reviewedListing.id,
+            rating_text: formData.reviewComment,
             rating_value: +formData.rating,
-            rating_text: formData.reviewComment
+            review_type: reviewData.reviewType,
+            reviewed_user_id: reviewData.reviewedUserId,
+            user: currentUser
           }
         }
-      })
+      });
       console.log("new review", newReview);
       setReviewDialog(false);
       reset();
-      toast.success(<ToastComponent message="Review submitted"></ToastComponent>)
+      toast.success(
+        <ToastComponent message="Review submitted"></ToastComponent>
+      );
     } catch (error) {
       console.log(error);
     }
@@ -120,10 +124,10 @@ const [createReviewMutation] = useMutation(CREATE_REVIEW_MUTATION);
     const chatBotData = {
       open: true,
       sender: "sender",
-      receiver: item
-    }
+      receiver: item,
+    };
     dispatch(setChatBotOpen(chatBotData));
-  }
+  };
 
   return (
     <>
@@ -198,7 +202,10 @@ const [createReviewMutation] = useMutation(CREATE_REVIEW_MUTATION);
           <p>{reviewData.reviewType} review</p>
           <div className="reviewed-listing">
             <div className="reviewed-listing-img">
-              <img src={reviewData.reviewedListing?.listing_image[0] || ""} alt="" />
+              <img
+                src={reviewData.reviewedListing?.listing_image[0] || ""}
+                alt=""
+              />
             </div>
             <div className="reviewed-listing-text">
               <p>rating: {reviewData.reviewedListing?.average_rating.value}</p>
@@ -258,7 +265,7 @@ const [createReviewMutation] = useMutation(CREATE_REVIEW_MUTATION);
                 <label htmlFor="comment">Leave a comment</label>
                 <textarea
                   id="comment"
-                  {...register("reviewComment", { required: true })}
+                  {...register("reviewComment",)}
                 />
                 {errors.reviewComment && (
                   <p className="error">Comment is required.</p>

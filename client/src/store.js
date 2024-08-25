@@ -10,6 +10,7 @@ import userListingsReducer from "./reducers/userListingsReducer";
 import allListingsReducer from "./reducers/allListingsReducer";
 import bookingReducer from "./reducers/bookingReducer";
 import chatBotReducer from "./reducers/chatBotReducer";
+import reviewsReducer from "./reducers/reviewsReducer";
 
 const persistConfig = {
     key: "root",
@@ -24,7 +25,8 @@ const persistedReducer = persistReducer(
         userListings: userListingsReducer,
         allListings: allListingsReducer,
         bookingCycle: bookingReducer,
-        chatBot: chatBotReducer
+        chatBot: chatBotReducer,
+        reviews: reviewsReducer
     }),
     
 );

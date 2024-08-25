@@ -16,8 +16,6 @@ const chatBotSlice = createSlice({
       state.receiver = action.payload.receiver;
     },
     setChatBotClose(state) {
-      console.log("close chatbot running");
-      // Correct way to reset state
       state.open = false;
       state.sender = null;
       state.receiver = null;

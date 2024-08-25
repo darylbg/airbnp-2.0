@@ -21,17 +21,10 @@ export const REGISTER_MUTATION = gql`
         notifications {
           id
         }
-        reviews {
-          id
-        }
-        payments {
-          id
-        }
+        reviews
+        payments
         booking_history
         guest_reservations
-        # booking_history {
-        #   id
-        # }
       }
     }
   }
@@ -74,9 +67,7 @@ export const SIGN_IN_MUTATION = gql`
           payments {
             id
           }
-          reviews {
-            id
-          }
+          reviews
           average_rating {
             count
             value
@@ -88,16 +79,12 @@ export const SIGN_IN_MUTATION = gql`
         notifications {
           id
         }
-        reviews {
-          id
-        }
+        reviews
         average_rating {
           count
           value
         }
-        payments {
-          id
-        }
+        payments
         booking_history
         guest_reservations
         # booking_history {
@@ -132,9 +119,7 @@ export const NEW_LISTING_MUTATION = gql`
       availability
       price
       created_at
-      reviews {
-        id
-      }
+      reviews
       payments {
         id
       }
@@ -168,9 +153,7 @@ export const EDIT_LISTING_MUTATION = gql`
         id
       }
       price
-      reviews {
-        id
-      }
+      reviews
       user_id
     }
   }
@@ -202,9 +185,7 @@ export const DELETE_LISTING_MUTATION = gql`
           id
         }
         price
-        reviews {
-          id
-        }
+        reviews
         user_id
       }
     }

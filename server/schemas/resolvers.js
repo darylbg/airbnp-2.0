@@ -9,7 +9,7 @@ const {
   Booking,
 } = require("../models");
 const { signToken } = require("../utils/auth");
-const { model, default: mongoose } = require("mongoose");
+const { model, default: mongoose, Mongoose } = require("mongoose");
 const { cloudinary } = require("../config/cloudinary");
 const stripe = require("stripe")(process.env.stripe_secret_key);
 const crypto = require("crypto");
@@ -136,7 +136,19 @@ const resolvers = {
         throw new Error("Error fetching user guest reservation history", error);
       }
     },
-
+    getAllUserReviews: async (parent, { userId }, context) => {
+      // if (!context.user) {
+      //   throw new AuthenticationError("You must be logged in to see reviews");
+      // }
+      try {
+        const allUserReviews = await Review.find({ reviewed_user_id: userId })
+          .populate({path: "user"});
+        return allUserReviews;
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+        throw new Error("Failed to fetch reviews");
+      }
+    },
     generateToken: () => {
       const urlToken = crypto.randomBytes(16).toString("hex");
       urlTokens.add(urlToken);
@@ -460,16 +472,9 @@ const resolvers = {
       }
       throw new AuthenticationError("You must be logged in!");
     },
-    createReview: async (
-      parent,
-      { reviewType, listingId, reviewed_user_id, reviewData },
-      context
-    ) => {
+    createReview: async (parent, { reviewData }, context) => {
       console.log("review ", {
-        reviewType,
-        reviewed_user_id,
-        listingId,
-        ...reviewData
+        ...reviewData,
       });
     
       if (!context.user) {
@@ -484,10 +489,6 @@ const resolvers = {
         const review = await Review.create(
           [
             {
-              user_id: context.user._id,
-              listing_id: listingId,
-              review_type: reviewType,  // Corrected from review_type to reviewType
-              reviewed_user_id: reviewed_user_id,
               ...reviewData,
             },
           ],
@@ -496,7 +497,7 @@ const resolvers = {
     
         // Update the reviewed user's reviews array and recalculate average rating
         const user = await User.findOneAndUpdate(
-          { _id: reviewed_user_id },
+          { _id: reviewData.reviewed_user_id },
           { $push: { reviews: review[0]._id } }, // Correct indexing to get review ID
           { new: true, session }
         );
@@ -516,9 +517,9 @@ const resolvers = {
         await user.save({ session });
     
         // If reviewType is "Listing", update the listing's reviews array and recalculate average rating
-        if (reviewType === "Listing" && listingId) {
+        if (reviewData.review_type === "Listing" && reviewData.listing_id) {
           const listing = await Listing.findOneAndUpdate(
-            { _id: listingId },
+            { _id: reviewData.listing_id },
             { $push: { reviews: review[0]._id } }, // Correct indexing to get review ID
             { new: true, session }
           );
@@ -551,7 +552,7 @@ const resolvers = {
         throw new Error("Failed to create review");
       }
     },
-    
+
     createNotification: async (
       parent,
       { userId, listingId, notificationData },
@@ -636,7 +637,7 @@ const resolvers = {
         // Create the booking with the full listing embedded
         const new_booking = await Booking.create({
           ...bookingInput,
-          listing: listing.toObject(), // Embed the full listing object
+          listing: listing.toObject(), 
         });
 
         const guest_id = bookingInput.guest_id;

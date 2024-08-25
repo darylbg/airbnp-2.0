@@ -1,5 +1,5 @@
-const { KnownTypeNamesRule } = require("graphql");
 const { Schema, model } = require("mongoose");
+const User = require("./User");
 
 const reviewSchema = new Schema(
   {
@@ -17,17 +17,17 @@ const reviewSchema = new Schema(
     rating_text: {
       type: String,
     },
-    user_id: {  // The user who wrote the review
+    user: {  // Reference to the User who wrote the review
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "User", 
       required: true,
     },
     reviewed_user_id: { 
       type: Schema.Types.ObjectId,
       ref: "User",
-      required: true // all reviews are user reviews
+      required: true
     },
-    listing_id: {  // The listing being reviewed not required if reviewing a user
+    listing_id: {  // The listing being reviewed, not required if reviewing a user
       type: Schema.Types.ObjectId,
       ref: "Listing",
     },
@@ -39,7 +39,7 @@ const reviewSchema = new Schema(
 );
 
 // Adding indexes
-reviewSchema.index({ user_id: 1 });
+reviewSchema.index({ user: 1 });
 reviewSchema.index({ listing_id: 1 });
 reviewSchema.index({ reviewed_user_id: 1 });
 reviewSchema.index({ rating_text: "text" });
