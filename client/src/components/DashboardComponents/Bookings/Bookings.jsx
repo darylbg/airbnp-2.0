@@ -13,10 +13,11 @@ import toast from "react-hot-toast";
 import { useMutation } from "@apollo/client";
 import { CREATE_REVIEW_MUTATION } from "../../../utils/mutations/reviewMutations";
 import ToastComponent from "../../PrimitiveComponents/ToastComponent/ToastComponent";
+import { CREATE_NOTIFICATION_MUTATION } from "../../../utils/mutations/notificationMutations";
 
 export default function Bookings() {
   const currentUser = useSelector((state) => state.auth.currentUser);
-  console.log(currentUser);
+  // console.log(currentUser);
   const [headingTitle, setHeadingTitle] = useState("Bookings overview");
   const [headingSubTitle, setHeadingSubTitle] = useState("View your bookings");
   const [dropdownMenu, setDropdownMenu] = useState(false);
@@ -93,6 +94,8 @@ export default function Bookings() {
     formState: { errors },
   } = useForm();
 
+  const [createNotification] = useMutation(CREATE_NOTIFICATION_MUTATION);
+
   const [createReviewMutation] = useMutation(CREATE_REVIEW_MUTATION);
   const submitReview = async (formData) => {
     console.log(formData);
@@ -105,11 +108,25 @@ export default function Bookings() {
             rating_value: +formData.rating,
             review_type: reviewData.reviewType,
             reviewed_user_id: reviewData.reviewedUserId,
-            user: currentUser
-          }
-        }
+            user: currentUser,
+          },
+        },
       });
-      console.log("new review", newReview);
+      console.log("new review", newReview.data.createReview.id);
+      const newReviewId = newReview.data.createReview.id;
+      const newNotification = await createNotification({
+        variables: {
+          notificationInput: {
+            notification_text: "Someone left a review",
+            notification_type: "Review",
+            receiver: reviewData.reviewedUserId,
+            reference_id: newReviewId,
+            reference_type: "Review"
+
+          },
+        },
+      });
+      console.log(newNotification);
       setReviewDialog(false);
       reset();
       toast.success(
@@ -263,10 +280,7 @@ export default function Bookings() {
 
               <div className="comment">
                 <label htmlFor="comment">Leave a comment</label>
-                <textarea
-                  id="comment"
-                  {...register("reviewComment",)}
-                />
+                <textarea id="comment" {...register("reviewComment")} />
                 {errors.reviewComment && (
                   <p className="error">Comment is required.</p>
                 )}

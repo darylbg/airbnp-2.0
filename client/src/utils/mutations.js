@@ -18,9 +18,7 @@ export const REGISTER_MUTATION = gql`
         saved_listings {
           id
         }
-        notifications {
-          id
-        }
+        notifications
         reviews
         payments
         booking_history
@@ -76,9 +74,7 @@ export const SIGN_IN_MUTATION = gql`
         saved_listings {
           id
         }
-        notifications {
-          id
-        }
+        notifications
         reviews
         average_rating {
           count

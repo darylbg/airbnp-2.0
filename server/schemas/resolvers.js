@@ -17,6 +17,28 @@ const crypto = require("crypto");
 let urlTokens = new Set();
 
 const resolvers = {
+  Notification: {
+    reference: async (notification) => {
+      switch (notification.reference_type) {
+        case 'Booking':
+          return await Booking.findById(notification.reference_id).exec();
+        case 'Review':
+          return await Review.findById(notification.reference_id).exec();
+        // case 'Order':
+        //   return await Order.findById(notification.reference_id).exec();
+        default:
+          return null; // Or handle unknown types appropriately
+      }
+    }
+  },
+  Reference: {
+    __resolveType(obj) {
+      if (obj.listing) return 'Booking'; // Assume Booking has 'listing' field
+      if (obj.rating_value) return 'Review'; // Assume Review has 'rating_value' field
+      // if (obj.order_status) return 'Order'; // Assume Order has 'order_status' field
+      return null; // Or handle unknown types if necessary
+    }
+  },
   Query: {
     user: async (parent, args, context) => {
       if (context.user) {
@@ -24,9 +46,6 @@ const resolvers = {
           const userData = await User.findOne({ _id: context.user._id }).select(
             "-__v -password"
           );
-          // .populate("user_listings")
-          // .populate("amenities");
-          // console.log("user_listings", context.user.user_listings);
           return userData;
         } catch (error) {
           console.log(error);
@@ -137,16 +156,36 @@ const resolvers = {
       }
     },
     getAllUserReviews: async (parent, { userId }, context) => {
-      // if (!context.user) {
-      //   throw new AuthenticationError("You must be logged in to see reviews");
-      // }
+      if (!context.user) {
+        throw new AuthenticationError("You must be logged in to see reviews");
+      }
       try {
-        const allUserReviews = await Review.find({ reviewed_user_id: userId })
-          .populate({path: "user"});
+        const allUserReviews = await Review.find({
+          reviewed_user_id: userId,
+        }).populate({ path: "user" });
         return allUserReviews;
       } catch (error) {
         console.error("Error fetching reviews:", error);
         throw new Error("Failed to fetch reviews");
+      }
+    },
+    getAllUserNotifications: async (parent, { userId }, context) => {
+      // if (!context.user) {
+      //   throw new AuthenticationError("You must be logged in");
+      // }
+    
+      try {
+        // Fetch notifications
+        const userNotifications = await Notification.find({ receiver: userId })
+          .populate('sender')
+          .populate('receiver')
+          .exec();
+          
+          return userNotifications
+  
+      } catch (error) {
+        console.error(error);
+        throw new Error("Error fetching notifications");
       }
     },
     generateToken: () => {
@@ -476,14 +515,14 @@ const resolvers = {
       console.log("review ", {
         ...reviewData,
       });
-    
+
       if (!context.user) {
         throw new AuthenticationError("You must be logged in!");
       }
-    
+
       const session = await mongoose.startSession();
       session.startTransaction();
-    
+
       try {
         // Create a new review
         const review = await Review.create(
@@ -494,28 +533,28 @@ const resolvers = {
           ],
           { session }
         );
-    
+
         // Update the reviewed user's reviews array and recalculate average rating
         const user = await User.findOneAndUpdate(
           { _id: reviewData.reviewed_user_id },
           { $push: { reviews: review[0]._id } }, // Correct indexing to get review ID
           { new: true, session }
         );
-    
+
         const userRatingCount = user.average_rating?.count || 0;
         const userRatingValue = user.average_rating?.value || 0;
-    
+
         const newUserRatingValue =
           (userRatingValue * userRatingCount + reviewData.rating_value) /
           (userRatingCount + 1);
-    
+
         user.average_rating = {
           count: userRatingCount + 1,
           value: newUserRatingValue,
         };
-    
+
         await user.save({ session });
-    
+
         // If reviewType is "Listing", update the listing's reviews array and recalculate average rating
         if (reviewData.review_type === "Listing" && reviewData.listing_id) {
           const listing = await Listing.findOneAndUpdate(
@@ -523,26 +562,26 @@ const resolvers = {
             { $push: { reviews: review[0]._id } }, // Correct indexing to get review ID
             { new: true, session }
           );
-    
+
           const ratingCount = listing.average_rating?.count || 0;
           const ratingValue = listing.average_rating?.value || 0;
-    
+
           const newRatingValue =
             (ratingValue * ratingCount + reviewData.rating_value) /
             (ratingCount + 1);
-    
+
           listing.average_rating = {
             count: ratingCount + 1,
             value: newRatingValue,
           };
-    
+
           await listing.save({ session });
         }
-    
+
         // Commit transaction
         await session.commitTransaction();
         session.endSession();
-    
+
         return review[0]; // Return the created review
       } catch (error) {
         // Abort transaction in case of error
@@ -553,31 +592,29 @@ const resolvers = {
       }
     },
 
-    createNotification: async (
-      parent,
-      { userId, listingId, notificationData },
-      context
-    ) => {
-      if (context.user) {
-        try {
-          const notification = await Notification.create({
-            user_id: context.user._id,
-            listing_id: listingId,
-            ...notificationData,
-          });
-
-          const listing = await Listing.findById({ _id: listingId });
-          const user = await User.findOneAndUpdate(
-            { _id: listing.user_id },
-            { $push: { notifications: notification } },
-            { new: true }
-          );
-          return notification;
-        } catch (error) {
-          console.log(error);
-        }
+    createNotification: async (parent, { notificationInput }, context) => {
+      if (!context.user) {
+        throw new AuthenticationError("You must be logged in");
       }
-      throw new AuthenticationError("You must be logged in!");
+      console.log("notification input", notificationInput);
+      try {
+        const notification = await Notification.create({
+          ...notificationInput,
+          sender: context.user._id,
+          reference: {}
+        });
+
+        await User.findOneAndUpdate(
+          { _id: notificationInput.receiver },
+          { $push: { notifications: notification._id } },
+          { new: true }
+        );
+
+        return notification;
+      } catch (error) {
+        console.log(error);
+        throw new Error("error creating notification");
+      }
     },
     createPayment: async (parent, { listingId, paymentData }, context) => {
       if (context.user) {
@@ -637,7 +674,7 @@ const resolvers = {
         // Create the booking with the full listing embedded
         const new_booking = await Booking.create({
           ...bookingInput,
-          listing: listing.toObject(), 
+          listing: listing.toObject(),
         });
 
         const guest_id = bookingInput.guest_id;

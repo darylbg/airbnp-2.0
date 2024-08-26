@@ -13,7 +13,7 @@ const typeDefs = gql`
     user_image: String
     user_listings: [Listing]
     saved_listings: [Listing]
-    notifications: [Notification]
+    notifications: [ID]
     average_rating: AverageRating
     reviews: [ID]
     payments: [ID]
@@ -56,26 +56,29 @@ const typeDefs = gql`
   }
 
   type Review {
-  id: ID!
-  review_type: String!
-  rating_value: Int
-  rating_text: String
-  user: User!
-  reviewed_user_id: ID!
-  listing_id: ID
-  createdAt: String
-  updatedAt: String
-}
+    id: ID!
+    review_type: String!
+    rating_value: Int
+    rating_text: String
+    user: User!
+    reviewed_user_id: ID!
+    listing_id: ID
+    createdAt: String
+    updatedAt: String
+  }
 
+  union Reference = Booking | Review
 
   type Notification {
     id: ID!
-    notification_text: String!
     notification_type: String!
-    travel_time: String!
-    created_at: String
-    user_id: ID!
-    listing_id: ID!
+    notification_text: String!
+    notification_status: String!
+    sender: User!
+    receiver: User!
+    reference_id: ID!
+    reference_type: String
+    reference: Reference
   }
 
   type Payment {
@@ -179,9 +182,12 @@ const typeDefs = gql`
   }
 
   input notificationInput {
-    notification_text: String
-    travel_time: String
-    notification_type: String
+    notification_text: String!
+    notification_type: String!
+    notification_status: String
+    receiver: ID!
+    reference_id: ID
+    reference_type: String
   }
 
   input paymentInput {
@@ -225,6 +231,8 @@ const typeDefs = gql`
 
     getAllUserReviews(userId: ID!): [Review]
     getReviewById(review_id: ID!): Review
+
+    getAllUserNotifications(userId: ID!): [Notification]
   }
 
   # mutations
@@ -238,10 +246,6 @@ const typeDefs = gql`
     createAmenity(amenityData: amenityInput): Listing
     deleteAmenity(amenityId: ID!): Listing
     createReview(reviewData: reviewInput): Review
-    createNotification(
-      listingId: ID!
-      notificationData: notificationInput
-    ): Notification
     createPaymentIntent(amount: Int!): PaymentIntent!
     createPayment(listingId: ID!, paymentData: paymentInput): Payment
     updatePayment(paymentId: ID!, paymentData: paymentInput): Payment
@@ -249,7 +253,8 @@ const typeDefs = gql`
 
     createBooking(bookingInput: bookingInput): Booking
     updateBooking(bookingId: ID!, bookingInput: bookingInput): Booking
-    # deleteBooking(booking_id: ID!): Booking
+
+    createNotification(notificationInput: notificationInput): Notification
   }
 `;
 

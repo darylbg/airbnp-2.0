@@ -42,7 +42,7 @@ const httpLink = createHttpLink({
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem("id_token");
-  console.log("app.js token", token);
+
   return {
     headers: {
       ...headers,
@@ -73,18 +73,6 @@ function App() {
       window.removeEventListener("resize", handleWindowResize);
     };
   }, []);
-
-  // useEffect(() => {
-  //   const handleChatBot = (event) => {
-  //     console.log(event)
-
-
-  //   window.addEventListener('storage', handleChatBot);
-
-  //   return () => {
-  //     window.removeEventListener('storage', handleChatBot);
-  //   };
-  // }, []);
 
   return (
     <ApolloProvider client={client}>
