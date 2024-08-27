@@ -17,7 +17,6 @@ export default function GuestReservations() {
   const checkoutSuccess = useSelector(
     (state) => state.bookingCycle.booking.checkoutInfo.checkoutSuccess
   );
-  console.log("checkout success", checkoutSuccess);
 
   const userId = useSelector((state) => state.auth.currentUser);
   const { loading, error, data } = useQuery(GET_USER_GUEST_RESERVATIONS, {
@@ -34,7 +33,6 @@ export default function GuestReservations() {
   if (error) return <p>Error: {error.message}</p>;
 
   let windowWidth = window.innerWidth;
-  console.log(windowWidth);
 
   return (
     <div className="dashboard-bookings-content">

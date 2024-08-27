@@ -36,6 +36,9 @@ import MyBookingHistory from "./components/DashboardComponents/Bookings/MyBookin
 import BookingsOverview from "./components/DashboardComponents/Bookings/BookingsOverview/BookingsOverview";
 import ChatBot from "./components/PrimitiveComponents/ChatBot/ChatBot";
 import { useSelector } from "react-redux";
+import * as Realm from "realm-web";
+import NotificationsWatcher from "./components/DashboardComponents/Notifications/NotificationsWatcher";
+
 const httpLink = createHttpLink({
   uri: "http://localhost:3001/graphql",
 });
@@ -57,11 +60,35 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+// setting up realtime events for notifications collection mongodb atlas
+
+// Create the Application
+const app = new Realm.App({ id: "application-0-alpetok" });
+
 function App() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const isChatBotOpen = useSelector((state) => state.chatBot.open);
   const [windowSize, setWindowSize] = useState(window.innerWidth);
-  // const [chatBot, setChatBot] = useState(true);
+
+  const [user, setUser] = useState();
+  const [events, setEvents] = useState([]);
+  console.log("mongodb notification events", events);
+
+  useEffect(() => {
+    const login = async () => {
+      // Authenticate anonymously
+      const user = await app.logIn(Realm.Credentials.anonymous());
+      setUser(user); // Connect to the database
+
+      const mongodb = app.currentUser.mongoClient("mongodb-atlas");
+      const collection = mongodb.db("test").collection("notifications"); // Everytime a change happens in the stream, add it to the list of events
+
+      for await (const change of collection.watch()) {
+        setEvents((events) => [...events, change]);
+      }
+    };
+    login();
+  }, []);
 
   useEffect(() => {
     const handleWindowResize = () => {
@@ -76,7 +103,6 @@ function App() {
 
   return (
     <ApolloProvider client={client}>
-      {/* <StripeProvider> */}
       <Router>
         <div className="app-div">
           <Navbar />
@@ -89,8 +115,14 @@ function App() {
               <Route path="dashboard" element={<Dashboard />}>
                 <Route path="bookings" element={<Bookings />}>
                   <Route path="" element={<BookingsOverview />} />
-                  <Route path="my-booking-history" element={<MyBookingHistory />} />
-                  <Route path="guest-reservations" element={<GuestReservations />} />
+                  <Route
+                    path="my-booking-history"
+                    element={<MyBookingHistory />}
+                  />
+                  <Route
+                    path="guest-reservations"
+                    element={<GuestReservations />}
+                  />
                 </Route>
                 <Route path="listings" element={<Listings />} />
                 <Route path="notifications" element={<Notifications />} />
@@ -125,10 +157,10 @@ function App() {
               className: "toast",
             }}
           />
+          <NotificationsWatcher events={events} />
           {isLoggedIn && isChatBotOpen && <ChatBot />}
         </div>
       </Router>
-      {/* </StripeProvider> */}
     </ApolloProvider>
   );
 }

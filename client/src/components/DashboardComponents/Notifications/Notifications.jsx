@@ -2,10 +2,12 @@ import React, { useEffect } from "react";
 import DashboardHeader from "../DashboardHeader/DashboardHeader";
 import { useQuery } from "@apollo/client";
 import { GET_ALL_USER_NOTIFICATIONS_QUERY } from "../../../utils/queries/notificationQueries";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setNotifications } from "../../../reducers/notificationsReducer";
 
 export default function Notifications() {
   const userId = useSelector((state) => state.auth.currentUser);
+  const dispatch = useDispatch();
   const {
     data,
     error,
