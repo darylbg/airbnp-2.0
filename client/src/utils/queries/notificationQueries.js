@@ -6,6 +6,8 @@ export const GET_ALL_USER_NOTIFICATIONS_QUERY = gql`
       notification_status
       notification_text
       notification_type
+      createdAt
+      updatedAt
       receiver {
         first_name
         email

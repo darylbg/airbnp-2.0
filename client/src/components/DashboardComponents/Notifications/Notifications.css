@@ -1,0 +1,37 @@
+.notifications-display {
+    display: flex;
+    background-color: var(--white-13);
+}
+
+.notifications-list {
+    margin: 0;
+    padding: 0;
+    flex: 1;
+    padding: 1rem;
+}
+
+.notification-item {
+    list-style-type: none;
+    box-shadow: rgba(100, 100, 111, 0.1) 0px 1px 10px;
+    padding: 1rem;
+}
+
+.notification-alert {
+    font-size: 1rem;
+    padding: 0 5px;
+    background-color: var(--pink-1);
+    color: var(--pink-10);
+    border-radius: 10px;
+    margin-left: 8px;
+}
+
+.notification-status {
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background-color: transparent;
+}
+
+.status-unread {
+    background-color: var(--pink-10);
+}

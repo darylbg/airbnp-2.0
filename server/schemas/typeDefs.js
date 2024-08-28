@@ -79,6 +79,8 @@ const typeDefs = gql`
     reference_id: ID!
     reference_type: String
     reference: Reference
+    createdAt: String
+    updatedAt: String
   }
 
   type Payment {

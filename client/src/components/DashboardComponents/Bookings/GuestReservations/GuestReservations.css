@@ -4,7 +4,7 @@
     gap: 1rem;
 }
 
-.bookings-table-filter-buttons {
+.filter-button-group {
     display: flex;
     flex-direction: row;
     flex-direction: row;
@@ -21,7 +21,7 @@
     
 }
 
-.bookings-table-filter-buttons .selected {
+.filter-button-group .selected {
     border: 2px solid var(--black-12);
     font-weight: 600;
 }
@@ -33,7 +33,7 @@
 }
 
 @media screen and (max-width: 600px) {
-    .bookings-table-filter-buttons {
+    .filter-button-group {
         justify-content: space-between;
         gap: 0.5rem;
     }

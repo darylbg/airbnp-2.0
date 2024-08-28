@@ -36,7 +36,7 @@ export default function GuestReservations() {
 
   return (
     <div className="dashboard-bookings-content">
-      <div className="bookings-table-filter-buttons">
+      <div className="filter-button-group">
         <ButtonComponent
           action={() => setTableSortBy("Active")}
           type="button"

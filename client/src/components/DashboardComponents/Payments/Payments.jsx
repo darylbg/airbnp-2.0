@@ -125,7 +125,7 @@ export default function Payments() {
         <span>£{paymentsBalance.toFixed(2)}</span>
       </DashboardHeader>
       <div className="dashboard-bookings-content">
-        <div className="bookings-table-filter-buttons">
+        <div className="filter-button-group">
           <ButtonComponent
             action={() => setTableSortBy("Incoming")}
             type="button"
