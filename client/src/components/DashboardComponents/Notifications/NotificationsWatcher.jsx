@@ -14,6 +14,7 @@ export default function NotificationsWatcher({ events }) {
 
   useEffect(() => {
     if (data && !loading) {
+      console.log("running notification watcher", data)
       const allNotifications = data.getAllUserNotifications;
       const unreadNotifications = filterNotificationsByStatus(allNotifications, "Unread");
       const readNotifications = filterNotificationsByStatus(allNotifications, "Read");

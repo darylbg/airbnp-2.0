@@ -20,24 +20,24 @@ const resolvers = {
   Notification: {
     reference: async (notification) => {
       switch (notification.reference_type) {
-        case 'Booking':
+        case "Booking":
           return await Booking.findById(notification.reference_id).exec();
-        case 'Review':
+        case "Review":
           return await Review.findById(notification.reference_id).exec();
         // case 'Order':
         //   return await Order.findById(notification.reference_id).exec();
         default:
           return null; // Or handle unknown types appropriately
       }
-    }
+    },
   },
   Reference: {
     __resolveType(obj) {
-      if (obj.listing) return 'Booking'; // Assume Booking has 'listing' field
-      if (obj.rating_value) return 'Review'; // Assume Review has 'rating_value' field
+      if (obj.listing) return "Booking"; // Assume Booking has 'listing' field
+      if (obj.rating_value) return "Review"; // Assume Review has 'rating_value' field
       // if (obj.order_status) return 'Order'; // Assume Order has 'order_status' field
       return null; // Or handle unknown types if necessary
-    }
+    },
   },
   Query: {
     user: async (parent, args, context) => {
@@ -173,16 +173,15 @@ const resolvers = {
       // if (!context.user) {
       //   throw new AuthenticationError("You must be logged in");
       // }
-    
+
       try {
         // Fetch notifications
         const userNotifications = await Notification.find({ receiver: userId })
-          .populate('sender')
-          .populate('receiver')
+          .populate("sender")
+          .populate("receiver")
           .exec();
-          
-          return userNotifications
-  
+
+        return userNotifications;
       } catch (error) {
         console.error(error);
         throw new Error("Error fetching notifications");
@@ -601,7 +600,7 @@ const resolvers = {
         const notification = await Notification.create({
           ...notificationInput,
           sender: context.user._id,
-          reference: {}
+          reference: {},
         });
 
         await User.findOneAndUpdate(
@@ -614,6 +613,70 @@ const resolvers = {
       } catch (error) {
         console.log(error);
         throw new Error("error creating notification");
+      }
+    },
+    updateNotificationStatus: async (
+      parent,
+      { notificationId, notificationStatus },
+      context
+    ) => {
+      if (!context.user) {
+        throw new AuthenticationError("You must be logged in");
+      }
+      try {
+        const updatedNotification = await Notification.findByIdAndUpdate(
+          { _id: notificationId },
+          { $set: { notification_status: notificationStatus } },
+          { new: true }
+        );
+
+        return updatedNotification;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    deleteNotification: async (
+      parent,
+      { receiverId, notificationId },
+      context
+    ) => {
+      if (!context.user) {
+        throw new AuthenticationError("You must be logged in");
+      }
+      try {
+        const deletedNotification = await Notification.findByIdAndDelete(
+          notificationId
+        );
+        // console.log("deleted noti")
+        if (!deletedNotification) {
+          console.log("Notification not found.");
+          throw new Error("Notification not found");
+        }
+
+        // Remove the notification reference from the user's notifications array
+        const updatedUser = await User.findOneAndUpdate(
+          { _id: receiverId },
+          { $pull: { notifications: notificationId } }, // Correct pull syntax if it's just an ID
+          { new: true }
+        );
+
+        if (!updatedUser) {
+          console.log(
+            "User not found or notification reference not present in the user's list."
+          );
+          throw new Error(
+            "User not found or notification reference not present in the user's list"
+          );
+        }
+
+        console.log(
+          "Successfully deleted notification from:",
+          updatedUser.notifications
+        );
+
+        return updatedUser;
+      } catch (error) {
+        console.log(error);
       }
     },
     createPayment: async (parent, { listingId, paymentData }, context) => {

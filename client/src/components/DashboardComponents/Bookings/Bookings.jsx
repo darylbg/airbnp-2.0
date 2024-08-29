@@ -117,7 +117,7 @@ export default function Bookings() {
       const newNotification = await createNotification({
         variables: {
           notificationInput: {
-            notification_text: "Someone left a review",
+            notification_text: "left a review",
             notification_type: "Review",
             receiver: reviewData.reviewedUserId,
             reference_id: newReviewId,

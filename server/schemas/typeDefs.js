@@ -257,6 +257,8 @@ const typeDefs = gql`
     updateBooking(bookingId: ID!, bookingInput: bookingInput): Booking
 
     createNotification(notificationInput: notificationInput): Notification
+    updateNotificationStatus(notificationId: ID!, notificationStatus: String!): Notification
+    deleteNotification(receiverId: ID!, notificationId: ID!): User
   }
 `;
 

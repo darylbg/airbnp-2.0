@@ -72,7 +72,7 @@ function App() {
 
   const [user, setUser] = useState();
   const [events, setEvents] = useState([]);
-  // console.log("mongodb notification events", events);
+  console.log("mongodb notification events", events);
 
   useEffect(() => {
     const login = async () => {
