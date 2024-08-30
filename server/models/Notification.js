@@ -10,7 +10,7 @@ const notificationSchema = new Schema(
     notification_status: {
       type: String,
       required: true,
-      enum: ["Unread", "Read", "Archived"],
+      enum: ["Unread", "Read", "Archived", "Deleted"],
       default: "Unread"
     },
     notification_text: {
@@ -52,20 +52,6 @@ const notificationSchema = new Schema(
     },
   }
 );
-
-// Virtual for the notification description
-// notificationSchema.virtual("description").get(function () {
-//   return `${this.notification_type} Notification from ${this.sender} to ${this.receiver}`;
-// });
-
-// Pre-save hook to validate fields conditionally
-// notificationSchema.pre("save", function (next) {
-//   if (this.notification_type === "GuestReservation" && !this.reference_id) {
-//     return next(new Error("GuestReservation notifications require a reference to a Booking."));
-//   }
-  // Add more conditional validations as necessary
-  // next();
-// });
 
 // Create Indexes for faster lookup
 notificationSchema.index({ receiver: 1, sender: 1, notification_type: 1 });

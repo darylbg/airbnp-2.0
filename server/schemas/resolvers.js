@@ -644,8 +644,9 @@ const resolvers = {
         throw new AuthenticationError("You must be logged in");
       }
       try {
-        const deletedNotification = await Notification.findByIdAndDelete(
-          notificationId
+        const deletedNotification = await Notification.findOneAndDelete(
+          {_id: notificationId},
+          {new: true}
         );
         // console.log("deleted noti")
         if (!deletedNotification) {
@@ -674,7 +675,7 @@ const resolvers = {
           updatedUser.notifications
         );
 
-        return updatedUser;
+        return deletedNotification;
       } catch (error) {
         console.log(error);
       }

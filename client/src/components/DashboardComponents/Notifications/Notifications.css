@@ -2,10 +2,15 @@
 .notification-alert {
     font-size: 1rem;
     padding: 0 5px;
-    background-color: var(--pink-1);
-    color: var(--pink-10);
+    background-color: var(--black-1);
+    color: var(--black-10);
     border-radius: 10px;
     margin-left: 8px;
+}
+
+.notification-alert-inbox {
+    background-color: var(--pink-1);
+    color: var(--pink-10);
 }
 
 /* list of notification styling */
@@ -40,12 +45,16 @@
     justify-content: space-between;
     flex-direction: row;
 }
+.notification-detail:hover {
+    cursor: pointer;
+}
 
 .notification-detail-header {
     display: flex;
     flex-direction: row;
     gap: 1rem;
 }
+
 
 .notification-header-image {
     height: 2rem;

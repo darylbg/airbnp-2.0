@@ -33,8 +33,8 @@ export const DELETE_NOTIFICATION_MUTATION = gql`
       receiverId: $receiverId
       notificationId: $notificationId
     ) {
-      display_name
-      notifications
+      # display_name
+      # notifications
       id
     }
   }

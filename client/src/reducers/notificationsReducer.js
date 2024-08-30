@@ -6,6 +6,8 @@ const initialState = {
         unread: [],
         read: [],
         archived: [],
+        inbox: [],
+        deletedAction: false,
         loading: false
     },
 };
@@ -19,7 +21,9 @@ const notificationsSlice = createSlice({
             state.userNotifications.unread = action.payload.unread;
             state.userNotifications.read = action.payload.read;
             state.userNotifications.archived = action.payload.archived;
-        }
+            state.userNotifications.inbox = action.payload.inbox;
+        },
+    
     }
 });
 

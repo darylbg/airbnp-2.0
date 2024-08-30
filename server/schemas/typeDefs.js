@@ -135,7 +135,7 @@ const typeDefs = gql`
     payments: [ID!]
     booking_history: [ID!]
     guest_reservations: [ID!]
-    password: String!
+    # password: String!
   }
 
   input userListingInput {
@@ -258,7 +258,7 @@ const typeDefs = gql`
 
     createNotification(notificationInput: notificationInput): Notification
     updateNotificationStatus(notificationId: ID!, notificationStatus: String!): Notification
-    deleteNotification(receiverId: ID!, notificationId: ID!): User
+    deleteNotification(receiverId: ID!, notificationId: ID!): Notification
   }
 `;
 

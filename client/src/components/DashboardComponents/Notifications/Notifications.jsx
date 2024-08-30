@@ -12,28 +12,35 @@ export default function Notifications() {
     (state) => state.notifications.userNotifications
   );
 
-  const notificationRef = useRef();
-
   const [filter, setFilter] = useState("Inbox");
   const [notificationData, setNotificationData] = useState([]);
   const [expandedNotification, setExpandedNotification] = useState(null);
-  // console.log("inbox", notificationData);
 
   useEffect(() => {
+    console.log("all notifications", allNotifications);
+    let filteredNotifications = [];
+  
     switch (filter) {
       case "Inbox":
-        return setNotificationData([
-          ...allNotifications.unread,
-          ...allNotifications.read,
-        ]);
+        filteredNotifications = [...allNotifications.inbox]; // Make a shallow copy
+        break;
       case "Archived":
-        return setNotificationData(allNotifications.archived);
+        filteredNotifications = [...allNotifications.archived]; // Make a shallow copy
+        break;
       case "All":
-        return setNotificationData(allNotifications.all);
+        filteredNotifications = [...allNotifications.all]; // Make a shallow copy
+        break;
       default:
-        return false;
+        return;
     }
+  
+    // Sort the copied notifications by 'createdAt' in descending order
+    filteredNotifications.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  
+    setNotificationData(filteredNotifications);
   }, [filter, allNotifications]);
+  
+  
 
   function formatDate(timestamp) {
     // Create a new Date object using the timestamp
@@ -58,52 +65,47 @@ export default function Notifications() {
       setExpandedNotification(null);
       
     } else {
-      markAsReadNotification(e, id);
+      // markAsReadNotification(e, id);
       setExpandedNotification(id);
     }
   };
 
   const [updateNotificationStatusMutation] = useMutation(UPDATE_NOTIFICATION_STATUS_MUTATION);
-  const [deleteNotificationMutation] = useMutation(DELETE_NOTIFICATION_MUTATION);
 
   const markAsReadNotification = async (e, id) => {
     e.stopPropagation();
-    console.log("archived notification:", id);
+    // console.log("archived notification:", id);
     try {
       const updatedNotification = await updateNotificationStatusMutation({
         variables: {notificationId: id, notificationStatus: "Read"}
       });
-      console.log(updatedNotification);
+      // console.log(updatedNotification);
     } catch (error) {
       console.log(error)
     }
   }
-
-  // useEffect(() => {
-
-  // }, [no])
   
   const archiveNotification = async (e, id) => {
     e.stopPropagation();
-    console.log("archived notification:", id);
+    // console.log("archived notification:", id);
     try {
       const updatedNotification = await updateNotificationStatusMutation({
         variables: {notificationId: id, notificationStatus: "Archived"}
       });
-      console.log(updatedNotification);
+      // console.log("updated notification", updatedNotification);
     } catch (error) {
       console.log(error)
     }
   }
 
-  const deleteNotification = async (e, receiverId, notificationId) => {
+  const deleteNotification = async (e, id) => {
     e.stopPropagation();
-    console.log("deleted notification:", notificationId);
+    // console.log("archived notification:", id);
     try {
-      const updatedUser = await deleteNotificationMutation({
-        variables: {receiverId: receiverId, notificationId: notificationId}
+      const deletedNotification = await updateNotificationStatusMutation({
+        variables: {notificationId: id, notificationStatus: "Deleted"}
       });
-      console.log(updatedUser);
+      console.log("deleted notification", deletedNotification);
     } catch (error) {
       console.log(error)
     }
@@ -127,8 +129,8 @@ export default function Notifications() {
             }`}
           >
             <span>Inbox</span>
-            <span className="notification-alert">
-              {allNotifications.unread.length}
+            <span className={`notification-alert ${allNotifications.unread.length > 1 ? "notification-alert-inbox" : ""}`}>
+              {allNotifications.unread.length > 1 ? allNotifications.unread.length : allNotifications.inbox.length}
             </span>
           </ButtonComponent>
           <ButtonComponent
@@ -138,7 +140,10 @@ export default function Notifications() {
               filter === "Archived" ? "selected" : ""
             }`}
           >
-            Archived
+            <span>Archived</span>
+            <span className="notification-alert">
+              {allNotifications.archived.length}
+            </span>
           </ButtonComponent>
           <ButtonComponent
             action={() => setFilter("All")}
@@ -147,7 +152,10 @@ export default function Notifications() {
               filter === "All" ? "selected" : ""
             }`}
           >
-            All
+            <span>All</span>
+            <span className="notification-alert">
+              {allNotifications.all.length}
+            </span>
           </ButtonComponent>
         </div>
         <div className="notifications-display">
@@ -157,7 +165,6 @@ export default function Notifications() {
                 return (
                   <li
                     key={notification.id}
-                    ref={notificationRef}
                     className={`notification-item notification-${notification.notification_status.toLowerCase()}`}
                   >
                     <div
@@ -191,7 +198,7 @@ export default function Notifications() {
                           }
                           action={(e) => {
                             notification.notification_status === "Archived"
-                            ? deleteNotification(e, notification.receiver.id, notification.id)
+                            ? deleteNotification(e, notification.id)
                             : archiveNotification(e, notification.id)
                           }}
                         />
