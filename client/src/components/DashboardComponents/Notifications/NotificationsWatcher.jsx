@@ -15,41 +15,39 @@ export default function NotificationsWatcher({ events }) {
   useEffect(() => {
     if (data && !loading) {
       console.log("running notification watcher", data);
-  
+
       // Filter out notifications with the "Deleted" status
       const allNotifications = data.getAllUserNotifications.filter(
         (notification) => notification.notification_status !== "Deleted"
       );
-  
+
       // Sort all notifications by 'createdAt' in descending order
       allNotifications.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-  
+
       // Filter notifications based on their status
       const unreadNotifications = filterNotificationsByStatus(allNotifications, "Unread");
       const readNotifications = filterNotificationsByStatus(allNotifications, "Read");
       const archivedNotifications = filterNotificationsByStatus(allNotifications, "Archived");
-  
-      // Combine 'unread' and 'read' notifications to create the 'inbox'
-      const inboxNotifications = [...unreadNotifications, ...readNotifications];
-  
-      // Ensure 'inboxNotifications' is sorted in descending order by 'createdAt'
-      inboxNotifications.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-  
+
+      // Create the 'inbox' by filtering out archived notifications and sorting by 'createdAt'
+      const inboxNotifications = allNotifications.filter(
+        (notification) => notification.notification_status !== "Archived"
+      );
+
       // Prepare the notification data object to update the state
       const notificationData = {
         all: allNotifications,
         unread: unreadNotifications,
         read: readNotifications,
         archived: archivedNotifications,
-        inbox: inboxNotifications, 
+        inbox: inboxNotifications,
       };
-  
+
       dispatch(setNotifications(notificationData));
     } else {
       console.log(error);
     }
   }, [data, events]);
-  
 
   const filterNotificationsByStatus = (notifications, status) => {
     return notifications.filter((notification) => {
