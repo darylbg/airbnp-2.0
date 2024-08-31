@@ -390,9 +390,6 @@ export default function SearchMap({
           ))}
         </div>
       </div>
-      {/* <ButtonComponent className="locate-user-button" action={handleLocateUser}>
-        <span className="material-symbols-outlined">location_searching</span>
-      </ButtonComponent> */}
       <div ref={mapContainer} className="search-map-container" />
       <DialogComponent
         className="full-width-dialog"
@@ -402,6 +399,7 @@ export default function SearchMap({
         backdropClosable={false}
         dialogHeader={`Book ${listingDetail?.listing_title}`}
         minimize={true}
+        tooltip="Close"
       >
         <ListingDetail />
       </DialogComponent>

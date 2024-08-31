@@ -12,6 +12,7 @@ export default function DialogComponent({
   backdropClosable,
   children,
   minimize,
+  tooltip
 }) {
   const [minimized, setMinimized] = useState(false);
 
@@ -68,10 +69,11 @@ export default function DialogComponent({
               <WindowControlButton
                 action={minimized ? handleMaximizeDialog : handleMinimizeDialog}
                 icon={minimized ? "rectangle" : "remove"}
+                tooltip={minimized ? "Expand" : "Minimize"}
               />
             )}
             {icon && (
-              <WindowControlButton action={handleCloseDialog} icon={icon} />
+              <WindowControlButton tooltip={tooltip} action={handleCloseDialog} icon={icon} />
             )}
           </div>
         </div>

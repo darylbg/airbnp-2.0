@@ -185,6 +185,9 @@ export default function Notifications() {
                       <div className="notification-detail-footer">
                         <div className="notification-status"></div>
                         <WindowControlButton
+                        tooltip={ notification.notification_status === "Archived"
+                          ? "Delete"
+                          : "Archive"}
                           icon={
                             notification.notification_status === "Archived"
                               ? "delete"

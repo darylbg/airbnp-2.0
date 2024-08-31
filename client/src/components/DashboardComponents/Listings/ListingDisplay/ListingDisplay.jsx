@@ -70,6 +70,7 @@ export default function ListingDisplay({ props }) {
             dialogHeader={`Editing: ${props.listing_title}`}
             cancelEditDialog={cancelEditDialog}
             setCancelEditDialog={setCancelEditDialog}
+            tooltip="Close"
           >
             <CrudListing
               listing={props}
