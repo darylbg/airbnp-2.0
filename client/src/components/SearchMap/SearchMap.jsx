@@ -358,9 +358,9 @@ export default function SearchMap({
 
   return (
     <div className="search-map-wrapper">
-      <ButtonComponent type="button" className="search-this-area-button">
+      {/* <ButtonComponent type="button" className="search-this-area-button">
         Search this area
-      </ButtonComponent>
+      </ButtonComponent> */}
       <div className="map-styles">
         <div className="map-styles-trigger">
           <div className="map-style">

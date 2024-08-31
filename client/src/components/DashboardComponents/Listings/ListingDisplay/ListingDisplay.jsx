@@ -12,7 +12,7 @@ import { useDispatch } from "react-redux";
 export default function ListingDisplay({ props }) {
   const [editListingDialog, setEditListingDialog] = useState(false);
   const [cancelEditDialog, setCancelEditDialog] = useState(false);
-
+console.log("listing", props)
   // formate date back to 01/01/2001 formate
   const formateDate = (date) => {
     date = new Date(+date);
@@ -86,8 +86,8 @@ export default function ListingDisplay({ props }) {
               <p className="insight-text">Booked</p>
             </div>
             <div className="insight">
-              <strong className="insight-number">50</strong>
-              <p className="insight-text">Viewed</p>
+              <strong className="insight-number">{Math.average(+props.average_rating.value)}</strong>
+              <p className="insight-text">Rating</p>
             </div>
           </div>
         </div>
