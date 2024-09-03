@@ -44,12 +44,13 @@ export default function RegisterForm({
     try {
       const registeredUser = await registerMutation({
         variables: {
+          password: formData.password,
           userData: {
             first_name: formData.firstName,
             last_name: formData.lastName,
             display_name: displayName,
             email: formData.email,
-            password: formData.password,
+            // password: formData.password,
             gender: "",
             user_image: "https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg",
             user_listings: [],
@@ -61,6 +62,7 @@ export default function RegisterForm({
           },
         },
       });
+      console.log(registeredUser);
       const registeredUserData = registeredUser.data.register;
       const userId = registeredUserData.user.id;
 
@@ -74,7 +76,7 @@ export default function RegisterForm({
 
       // set token in local storage
       Auth.login(registeredUser.data.register.token);
-      toast.success(<ToastComponent message={`Welcome ${registeredUserData.firstName}.`}/>);
+      toast.success(<ToastComponent message={`Welcome ${registeredUserData.user.first_name}.`}/>);
     } catch (error) {
       if (error.graphQLErrors && error.graphQLErrors.length > 0) {
         const firstGraphQLErrorCode = error.graphQLErrors[0].extensions.code;

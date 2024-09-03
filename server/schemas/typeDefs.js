@@ -240,7 +240,7 @@ const typeDefs = gql`
   # mutations
   type Mutation {
     login(email: String!, password: String!): Auth
-    register(userData: userInput!): Auth
+    register(userData: userInput!, password: String!): Auth
     updateUser(userData: userInput): User
     createListing(listingData: listingInput): Listing
     updateListing(listingId: ID!, listingData: listingInput): Listing

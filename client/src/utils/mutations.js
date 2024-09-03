@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const REGISTER_MUTATION = gql`
-  mutation register($userData: userInput!) {
-    register(userData: $userData) {
+mutation Register($userData: userInput!, $password: String!) {
+  register(userData: $userData, password: $password) {
       token
       user {
         id

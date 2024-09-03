@@ -249,7 +249,7 @@ const resolvers = {
         throw error;
       }
     },
-    register: async (parent, { userData }) => {
+    register: async (parent, { userData, password }) => {
       try {
         const existingEmail = await User.findOne({ email: userData.email });
 
@@ -261,7 +261,9 @@ const resolvers = {
           );
         }
 
-        const newUser = await User.create(userData);
+        const newUser = await User.create({
+          ...userData,
+        password: password});
         const token = signToken(newUser);
 
         console.log("token:", JSON.stringify(token));
