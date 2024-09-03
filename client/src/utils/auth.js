@@ -53,6 +53,7 @@ class AuthService {
     return new Promise((resolve) => {
       localStorage.removeItem("id_token");
       localStorage.removeItem("persist:root");
+      window.location.assign("/");
       this.stopTokenCheck();
       resolve();
     });
