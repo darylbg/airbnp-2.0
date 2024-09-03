@@ -11,11 +11,9 @@ import { loginUser } from "../../../reducers/authReducer";
 import { setUserDetails } from "../../../reducers/userDetailsReducer";
 import { setUserListings } from "../../../reducers/userListingsReducer";
 import "./SignInRegisterForms.css";
+import ButtonComponent from "../../PrimitiveComponents/ButtonComponent/ButtonComponent";
 
 export default function SignInForm({
-  handleSignInRegisterToggle,
-  handleLoginToCheckout,
-  // closeLoginRegisterDialog
   setLoginRegisterDialog
 }) {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
@@ -139,6 +137,7 @@ export default function SignInForm({
           <Form.Label className="field-label">Email</Form.Label>
           <Form.Control asChild>
             <input
+            className="input-outlined"
               type="text"
               {...register("email", {
                 required: "This is required",
@@ -160,6 +159,7 @@ export default function SignInForm({
           <div className="password-input-wrapper">
             <Form.Control asChild>
               <input
+              className="input-outlined"
                 type={passwordVisibility ? "text" : "password"}
                 {...register("password", { required: "This is required" })}
                 onChange={handlePasswordValidation}
@@ -182,20 +182,12 @@ export default function SignInForm({
         </Form.Field>
         <Form.Field className="form-submit-button">
           <Form.Submit asChild>
-            <button>
+          <ButtonComponent type="submit" className="default-button action-button signIn-register-button">
               <strong>Sign in</strong>
-            </button>
+            </ButtonComponent>
           </Form.Submit>
         </Form.Field>
       </Form.Root>
-      <div className="signInRegister-form-toggle">
-        <p>
-          Don't have an account?{" "}
-          <span onClick={handleSignInRegisterToggle}>
-            <strong>Register here</strong>
-          </span>
-        </p>
-      </div>
     </div>
   );
 }

@@ -8,29 +8,32 @@ export default function LoginRegisterComponent({
   handleLoginToCheckout,
   setLoginRegisterDialog
 }) {
-  const [toggleSignInRegister, setToggleSignInRegister] = useState(true);
+  const [toggleSignInRegister, setToggleSignInRegister] = useState("signIn");
   const handleSignInRegisterToggle = (e) => {
     e.preventDefault();
     setToggleSignInRegister(!toggleSignInRegister);
   };
   return (
     <div className="login-register-wrapper">
-      {/* login register */}
       {toggleSignInRegister ? (
         <SignInForm
-          handleSignInRegisterToggle={handleSignInRegisterToggle}
-          // closeLoginRegisterDialog={closeLoginRegisterDialog}
           handleLoginToCheckout={handleLoginToCheckout}
           setLoginRegisterDialog={setLoginRegisterDialog}
         />
       ) : (
         <RegisterForm
-          handleSignInRegisterToggle={handleSignInRegisterToggle}
-          // closeLoginRegisterDialog={closeLoginRegisterDialog}
           handleLoginToCheckout={handleLoginToCheckout}
           setLoginRegisterDialog={setLoginRegisterDialog}
         />
       )}
+      <div className="signInRegister-form-toggle">
+        <p>
+          Don't have an account?{" "}
+          <span onClick={handleSignInRegisterToggle}>
+            <strong>{toggleSignInRegister ? "Register" : "Sign in"}</strong>
+          </span>
+        </p>
+      </div>
     </div>
   );
 }

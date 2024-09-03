@@ -1,3 +1,23 @@
 .login-register-wrapper {
     width: 100%;
 }
+
+.signInRegister-form {
+    padding: 1rem
+}
+
+.signInRegister-form-toggle {
+    padding: 1rem;
+}
+
+.signInRegister-form-toggle p {
+    font-size: 14px;
+  }
+   
+  .signInRegister-form-toggle p span {
+    text-decoration: underline;
+  }
+  
+  .signInRegister-form-toggle p span:hover {
+    cursor: pointer;
+  }

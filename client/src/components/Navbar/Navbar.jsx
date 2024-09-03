@@ -172,7 +172,6 @@ export default function Navbar({}) {
         dialogHeader="Login/Register"
       >
         <LoginRegisterComponent
-          // closeLoginRegisterDialog={closeLoginRegisterDialog}
           setLoginRegisterDialog={setLoginRegisterDialog}
         />
       </DialogComponent>

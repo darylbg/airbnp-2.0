@@ -10,11 +10,10 @@ import { REGISTER_MUTATION } from "../../../utils/mutations";
 import toast from "react-hot-toast";
 import ToastComponent from "../../PrimitiveComponents/ToastComponent/ToastComponent";
 import "../SignInForm/SignInRegisterForms.css";
+import ButtonComponent from "../../PrimitiveComponents/ButtonComponent/ButtonComponent";
 
 export default function RegisterForm({
-  handleSignInRegisterToggle,
   setLoginRegisterDialog,
-  handleLoginToCheckout
 }) {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
@@ -130,6 +129,7 @@ export default function RegisterForm({
           <Form.Label className="field-label">First name</Form.Label>
           <Form.Control asChild>
             <input
+            className="input-outlined"
               type="text"
               {...register("firstName", {
                 required: "This is required",
@@ -142,6 +142,7 @@ export default function RegisterForm({
           <Form.Label className="field-label">Last name</Form.Label>
           <Form.Control asChild>
             <input
+            className="input-outlined"
               type="text"
               {...register("lastName", {
                 required: "This is required",
@@ -154,6 +155,7 @@ export default function RegisterForm({
           <Form.Label className="field-label">Email</Form.Label>
           <Form.Control asChild>
             <input
+            className="input-outlined"
               type="text"
               {...register("email", {
                 required: "This is required",
@@ -173,6 +175,7 @@ export default function RegisterForm({
           <div className="password-input-wrapper">
             <Form.Control asChild>
               <input
+              className="input-outlined"
                 type={passwordVisibility ? "text" : "password"}
                 {...register("password", {
                   required: "This is required",
@@ -193,20 +196,12 @@ export default function RegisterForm({
         </Form.Field>
         <Form.Field className="form-submit-button">
           <Form.Submit asChild>
-            <button>
+            <ButtonComponent type="submit" className="default-button action-button signIn-register-button">
               <strong>Register</strong>
-            </button>
+            </ButtonComponent>
           </Form.Submit>
         </Form.Field>
       </Form.Root>
-      <div className="signInRegister-form-toggle">
-        <p>
-          Already have an account?{" "}
-          <span onClick={handleSignInRegisterToggle}>
-            <strong>Sign in here</strong>
-          </span>
-        </p>
-      </div>
     </div>
   );
 }
