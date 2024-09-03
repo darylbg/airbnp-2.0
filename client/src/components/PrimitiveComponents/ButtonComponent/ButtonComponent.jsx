@@ -1,5 +1,6 @@
 import React from "react";
 import "./ButtonStyles.css";
+import Spinner from "../Spinner/Spinner";
 
 export default function ButtonComponent({
   className,
@@ -15,7 +16,7 @@ export default function ButtonComponent({
       onClick={action}
       disabled={loading}
     >
-      {children}
+     {children} {loading ? <Spinner /> : null}
     </button>
   );
 }

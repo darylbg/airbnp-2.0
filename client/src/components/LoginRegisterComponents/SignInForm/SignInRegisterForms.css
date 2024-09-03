@@ -81,8 +81,9 @@
 }
 
 .field-message {
-  font-size: 12px;
-  color: var(--red);
+  font-size: 0.8rem;
+  color: var(--red-10);
+  padding-top: 5px;
 }
 
 .form-submit-button {

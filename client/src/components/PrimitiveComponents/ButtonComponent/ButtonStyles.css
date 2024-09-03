@@ -1,14 +1,16 @@
-general button styles
+/* general button styles */
 button {
   position: relative;
 }
 
 button:hover {
   cursor: pointer;
+  position: relative;
 }
 
 button:disabled {
   cursor: auto !important;
+  position: relative;
 }
 
 /* general primary button styles */
@@ -84,7 +86,8 @@ button:disabled {
 }
 
 .primary-button:disabled {
-  background-color: var(--black-7);
+  background-color: var(--black-8);
+  color: transparent;
 }
 
 /* secondary-button EDIT/CANCEL/FILTERS */

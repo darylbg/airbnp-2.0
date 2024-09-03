@@ -19,6 +19,8 @@ export default function PersonalInfo() {
   const [personalInfoEditSaving, setPersonalInfoEditSaving] = useState(false);
   const [editable, setEditable] = useState(false);
 
+  console.log("input disabled", editable, loading);
+
   const {
     register,
     handleSubmit,
@@ -57,51 +59,51 @@ export default function PersonalInfo() {
     setLoading(true);
     setPersonalInfoEditSaving(true);
 
-    setTimeout(async () => {
-      try {
-        setEditable(false);
-        console.log(FormData);
-        const updatedUser = await updateUserMutation({
-          variables: {
-            userData: {
-              first_name: FormData.firstName,
-              last_name: FormData.lastName,
-              display_name: FormData.displayName,
-              email: FormData.email,
-              gender: currentUser.gender,
-              user_image: currentUser.image,
-            },
+    // setTimeout(async () => {
+    try {
+      setEditable(false);
+      console.log(FormData);
+      const updatedUser = await updateUserMutation({
+        variables: {
+          userData: {
+            first_name: FormData.firstName,
+            last_name: FormData.lastName,
+            display_name: FormData.displayName,
+            email: FormData.email,
+            gender: currentUser.gender,
+            user_image: currentUser.image,
           },
-        });
+        },
+      });
 
-        // Dispatch the action to update user details in Redux
-        await dispatch(
-          updateUserDetails({
-            userId: currentUser.id,
-            updates: updatedUser.data.updateUser,
-          })
-        );
+      // Dispatch the action to update user details in Redux
+      await dispatch(
+        updateUserDetails({
+          userId: currentUser.id,
+          updates: updatedUser.data.updateUser,
+        })
+      );
 
-        // Set form values after Redux update
-        setValue("firstName", updatedUser.data.updateUser.first_name);
-        setValue("lastName", updatedUser.data.updateUser.last_name);
-        setValue("displayName", updatedUser.data.updateUser.display_name);
-        setValue("email", updatedUser.data.updateUser.email);
+      // Set form values after Redux update
+      setValue("firstName", updatedUser.data.updateUser.first_name);
+      setValue("lastName", updatedUser.data.updateUser.last_name);
+      setValue("displayName", updatedUser.data.updateUser.display_name);
+      setValue("email", updatedUser.data.updateUser.email);
 
-        // clear errors
-        clearErrors("firstName");
-        clearErrors("lastName");
-        clearErrors("displayName");
-        clearErrors("email");
+      // clear errors
+      clearErrors("firstName");
+      clearErrors("lastName");
+      clearErrors("displayName");
+      clearErrors("email");
 
-        toast.success(<ToastComponent message="Successfully updated." />);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-        setPersonalInfoEditSaving(false);
-      }
-    }, 10000);
+      toast.success(<ToastComponent message="Successfully updated." />);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+      setPersonalInfoEditSaving(false);
+    }
+    // }, 5000);
   };
 
   return (
@@ -113,12 +115,16 @@ export default function PersonalInfo() {
             <PrimaryButton
               action={handleEditEnable}
               loading={loading}
-              className="default-button edit-button"
+              className="default-button secondary-button"
             >
               Edit
             </PrimaryButton>
           ) : (
-            <PrimaryButton className="default-button " action={cancelPersonalInfoEdit} loading={loading}>
+            <PrimaryButton
+              className="default-button secondary-button"
+              action={cancelPersonalInfoEdit}
+              loading={loading}
+            >
               Cancel
             </PrimaryButton>
           )}
@@ -131,7 +137,8 @@ export default function PersonalInfo() {
             <Form.Label className="field-label">First Name</Form.Label>
             <Form.Control asChild>
               <input
-                disabled={!editable}
+              className="input-underline"
+                disabled={!editable || loading}
                 type="text"
                 {...register("firstName", {
                   required: "This is required",
@@ -146,7 +153,8 @@ export default function PersonalInfo() {
             <Form.Label className="field-label">Last Name</Form.Label>
             <Form.Control asChild>
               <input
-                disabled={!editable}
+                className="input-underline"
+                disabled={!editable || loading}
                 type="text"
                 {...register("lastName", {
                   required: "This is required",
@@ -161,7 +169,8 @@ export default function PersonalInfo() {
             <Form.Label className="field-label">Display Name</Form.Label>
             <Form.Control asChild>
               <input
-                disabled={!editable}
+              className="input-underline"
+                disabled={!editable || loading}
                 type="text"
                 {...register("displayName", {
                   required: "This is required",
@@ -176,7 +185,8 @@ export default function PersonalInfo() {
             <Form.Label className="field-label">Email</Form.Label>
             <Form.Control asChild>
               <input
-                disabled={!editable}
+              className="input-underline"
+                disabled={!editable || loading}
                 type="text"
                 {...register("email", {
                   required: "This is required",
@@ -190,7 +200,10 @@ export default function PersonalInfo() {
           <Form.Field className="edit-personal-info-field">
             <Form.Submit asChild>
               {editable && (
-                <PrimaryButton loading={loading} className="default-button save-button">
+                <PrimaryButton
+                  loading={loading}
+                  className="default-button primary-button"
+                >
                   Save
                   {personalInfoEditSaving ? <Spinner /> : null}
                 </PrimaryButton>

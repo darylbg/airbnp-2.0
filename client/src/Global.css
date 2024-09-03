@@ -153,6 +153,33 @@ body {
   height: 100%;
 }
 
+/* inputs */
+
+.input-underline {
+  background-color: white;
+  border: none;
+  border-bottom: 1px solid var(--black-10);
+  color: var(--black-11);
+  box-sizing: border-box;
+  width: 100%;
+  height: 3rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.input-underline:disabled {
+  background-color: white;
+  border: none;
+  border-bottom: 1px solid var(--black-8);
+  color: var(--black-8);
+}
+
+.input-underline:focus-visible {
+  border: none;
+  border-bottom: 1px solid var(--blue-10);
+  outline: none;
+}
+
 
 /* media queries */
 @media screen and (min-width: 768px) {
