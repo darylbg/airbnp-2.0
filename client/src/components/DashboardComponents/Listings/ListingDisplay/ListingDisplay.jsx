@@ -86,7 +86,7 @@ console.log("listing", props)
               <p className="insight-text">Booked</p>
             </div>
             <div className="insight">
-              <strong className="insight-number">{Math.average(+props.average_rating.value)}</strong>
+              <strong className="insight-number">{+props.average_rating.value.toFixed(1)}</strong>
               <p className="insight-text">Rating</p>
             </div>
           </div>

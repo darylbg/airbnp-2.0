@@ -74,10 +74,6 @@
 
 /* hero section search form */
 
-.hero-address-searchBox {
-  border-radius: 50px !important;
-  box-shadow: none !important;
-}
 
 .hero-search-form {
   display: flex;

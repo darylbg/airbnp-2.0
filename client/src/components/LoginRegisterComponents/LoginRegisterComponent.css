@@ -11,13 +11,13 @@
 }
 
 .signInRegister-form-toggle p {
-    font-size: 14px;
+    font-size: 0.9rem;
   }
    
-  .signInRegister-form-toggle p span {
+  .signInRegister-form-toggle strong {
     text-decoration: underline;
   }
   
-  .signInRegister-form-toggle p span:hover {
+  .signInRegister-form-toggle strong:hover {
     cursor: pointer;
   }

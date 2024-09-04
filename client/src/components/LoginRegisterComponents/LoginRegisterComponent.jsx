@@ -6,7 +6,7 @@ import "./LoginRegisterComponent.css";
 export default function LoginRegisterComponent({
   // closeLoginRegisterDialog,
   handleLoginToCheckout,
-  setLoginRegisterDialog
+  setLoginRegisterDialog,
 }) {
   const [toggleSignInRegister, setToggleSignInRegister] = useState("signIn");
   const handleSignInRegisterToggle = (e) => {
@@ -28,10 +28,10 @@ export default function LoginRegisterComponent({
       )}
       <div className="signInRegister-form-toggle">
         <p>
-          Don't have an account?{" "}
-          <span onClick={handleSignInRegisterToggle}>
-            <strong>{toggleSignInRegister ? "Register" : "Sign in"}</strong>
-          </span>
+          <span>{toggleSignInRegister ? "Don't have an account? " : "Already have an account? "}</span>
+          <strong onClick={handleSignInRegisterToggle}>
+            {toggleSignInRegister ? "Register" : "Sign in"}
+          </strong>
         </p>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectedListing } from "../../reducers/bookingReducer";
+import { setSelectedListing, setMapCenter } from "../../reducers/bookingReducer";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import ButtonComponent from "../PrimitiveComponents/ButtonComponent/ButtonComponent";
@@ -10,8 +10,6 @@ export default function SearchListing({
   listing,
   hoveredListing,
   setHoveredListing,
-  // CustomLeftArrow,
-  // CustomRightArrow
 }) {
   const dispatch = useDispatch();
 
@@ -32,7 +30,15 @@ export default function SearchListing({
   }, [isHovered, selectedListing]);
 
   const searchListingSelected = (listing) => {
+    const mapCenter = {
+      coordinates: {
+        lng: listing.longitude,
+        lat: listing.latitude
+      },
+    };
+    console.log(mapCenter);
     dispatch(setSelectedListing(listing));
+    dispatch(setMapCenter(mapCenter));
   };
 
   const responsive = {
@@ -55,10 +61,11 @@ export default function SearchListing({
 
   return (
     <div
-      className={`search-listing ${listingHighlight ? "is-hovered" : ""}`}
+      className={`search-listing ${
+        listingHighlight ? "is-hovered" : ""
+      } search-listing-${listing?.availability ? "open" : "closed"}`}
       onMouseEnter={() => setHoveredListing(listing)}
       onMouseLeave={() => setHoveredListing(null)}
-      // style={{ border: isHovered ? "2px solid blue" : "2px solid black" }}
     >
       <div className="search-listing-image">
         <Carousel
@@ -90,7 +97,25 @@ export default function SearchListing({
           <h3 className="heading">{listing?.listing_title}</h3>
         </div>
         <div className="search-listing-body">
-          <span>{listing?.fullAddress}</span>
+          <div className="line-1">
+            <div className="listing-rating">
+              <span class="star">&#9733;</span>
+              <span className="value">{listing?.average_rating.value.toFixed(1)}</span>
+              <span className="count">{`(${
+                listing?.average_rating.count > 0
+                  ? listing.average_rating.count
+                  : "no reviews"
+              })`}</span>
+            </div>
+            <div className="listing-availability">
+              {listing?.availability ? "Open" : "Closed"}
+            </div>
+          </div>
+              <div className="line-2">
+                <div className="listing-address">
+                  <span className="post-code">{listing?.addressPostCode}...</span><span>full address on checkout</span>
+                </div>
+              </div>
         </div>
         <div className="search-listing-footer">
           <div className="search-listing-price">
