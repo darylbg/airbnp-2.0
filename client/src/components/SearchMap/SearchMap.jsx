@@ -353,9 +353,6 @@ export default function SearchMap({
 
   return (
     <div className="search-map-wrapper">
-      {/* <ButtonComponent type="button" className="search-this-area-button">
-        Search this area
-      </ButtonComponent> */}
       <div className="map-styles">
         <div className="map-styles-trigger">
           <div className="map-style">
@@ -392,7 +389,7 @@ export default function SearchMap({
         closeDialog={closeDetailDialog}
         icon="close"
         backdropClosable={false}
-        dialogHeader={`Book ${listingDetail?.listing_title}`}
+        dialogHeader={listingDetail?.listing_title}
         minimize={true}
         tooltip="Close"
       >

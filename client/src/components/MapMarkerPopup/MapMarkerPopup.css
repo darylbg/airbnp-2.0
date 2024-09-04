@@ -2,28 +2,62 @@
     max-width: fit-content !important;
 }
 
-.mapboxgl-popup * h1,
-.mapboxgl-popup * p,
-.mapboxgl-popup * span {
-    margin: 0;
-    padding: 0;
+.mapboxgl-popup-content {
+    padding: 0 !important;
 }
 
 .map-popup {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    min-width: 200px;
+    min-width: 250px;
+    font-size: 0.9rem;
+    padding: 1rem;
+}
+
+.mapboxgl-popup-close-button:hover {
+    position: absolute !important;
+}
+
+.map-popup-heading {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--black-2);
+}
+
+.map-popup-heading span {
+    font-size: 0.8rem;
+color: var(--black-8);
+}
+
+.map-popup-content {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 1rem;
+}
+
+.map-popup-content .line-1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1rem 0 0.5rem 0;
+}
+
+.map-popup-content .line-2 {
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid var(--black-2);
+    padding: 0.2rem 0 1rem 0;
+}
+
+.popup-directions {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
 }
 
 .mapboxgl-popup-close-button {
     font-size: 1rem;
 }
 
-/* .map-popup-heading .title {
-    margin: 0;
-    padding: 0;
-} */
 
 .map-popup-heading .price {
     margin: 0;

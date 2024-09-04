@@ -6,18 +6,21 @@ export default function MapMarkerPopup({
   listing,
   openDetailDialog,
   startLngLat,
-  accessToken
+  accessToken,
 }) {
-  const [loading, setLoading] = useState(false);
   const [route, setRoute] = useState(null);
   useEffect(() => {
     const endLngLat = [listing.longitude, listing.latitude];
     const defineRoute = async (startLngLat, endLngLat) => {
-      const url = `https://api.mapbox.com/directions/v5/mapbox/walking/${startLngLat.join(',')};${endLngLat.join(',')}?alternatives=true&continue_straight=true&geometries=geojson&language=en&overview=full&steps=true&access_token=${accessToken}`;
+      const url = `https://api.mapbox.com/directions/v5/mapbox/walking/${startLngLat.join(
+        ","
+      )};${endLngLat.join(
+        ","
+      )}?alternatives=true&continue_straight=true&geometries=geojson&language=en&overview=full&steps=true&access_token=${accessToken}`;
       try {
         const response = await fetch(url);
         const data = await response.json();
-    
+
         if (data.routes && data.routes.length > 0) {
           setRoute(data.routes[0]);
         } else {
@@ -29,45 +32,77 @@ export default function MapMarkerPopup({
     };
 
     if (startLngLat && endLngLat) {
-      defineRoute(startLngLat,endLngLat);
+      defineRoute(startLngLat, endLngLat);
     }
-
-    
   }, []);
+
+  const handleDistanceFormat = (meters) => {
+    // console.log(routeData?.distance)
+    const kilometers = (meters * 0.00062137).toFixed(2);
+    return `${kilometers} miles`;
+  };
+
+  const handleDurationFormat = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) {
+      return `${minutes} min`;
+    } else if (minutes < 1440) {
+      // less than a day
+      const hours = Math.floor(minutes / 60);
+      const remainingMinutes = minutes % 60;
+      return `${hours} hr${hours > 1 ? "s" : ""} ${
+        remainingMinutes > 0 ? remainingMinutes + " min" : ""
+      }`;
+    } else {
+      // one day or more
+      const days = Math.floor(minutes / 1440);
+      const remainingMinutes = minutes % 1440;
+      const hours = Math.floor(remainingMinutes / 60);
+      const finalMinutes = remainingMinutes % 60;
+      return `${days} day${days > 1 ? "s" : ""} ${
+        hours > 0 ? hours + " hr" + (hours > 1 ? "s" : "") : ""
+      } ${finalMinutes > 0 ? finalMinutes + " min" : ""}`;
+    }
+  };
 
   return (
     <div className="map-popup">
       <div className="map-popup-heading">
-        <h1 className="title">{listing.listing_title}</h1>
-        <span className="price">{listing.price} /visit</span>
+        <h2 className="title">{listing.listing_title}</h2>
+        <span className="price">from {listing.price} /person</span>
+        <span>private home</span>
       </div>
       <div className="map-popup-content">
-        {listing.availability ? (
-          <div className="availability available">
-            <span className="material-symbols-outlined">adjust</span>
-            <span className="text">Available</span>
+        <div className="line-1">
+          <div className="popup-availability">
+            <span>{listing.availability ? "Open" : "Closed"}</span>
           </div>
-        ) : (
-          <div className="availability unavailable">
-            <span className="material-symbols-outlined">cancel</span>
-            <span className="text">Not available</span>
+          <div className="popup-rating">
+            <span class="star">&#9733;</span>
+            <span className="value">
+              {listing?.average_rating.value.toFixed(1)}
+            </span>
+            <span className="count">{`(${
+              listing?.average_rating.count > 0
+                ? listing.average_rating.count
+                : "no reviews"
+            })`}</span>
           </div>
-        )}
-        <div className="rating">
-          <span className="material-symbols-outlined">star_rate</span>
-          <span className="text">4.9</span>
         </div>
-        <div className="distance">
-          <span className="material-symbols-outlined">directions_walk</span>
-          <span className="text">{route?.distance} miles</span>
-          <span className="text">{route?.duration} minutes</span>
+
+        <div className="line-2">
+          <div className="popup-directions">
+            <span className="material-symbols-outlined">directions_walk</span>
+            <span className="text">{handleDistanceFormat(route?.distance)}</span>
+            <span className="text">{handleDurationFormat(route?.duration)}</span>
+          </div>
         </div>
       </div>
       <div className="map-popup-action">
         <PrimaryButton
           type="button"
           className="default-button action-button map-popup-button"
-          loading={loading}
+          loading={!listing.availability}
           action={(e) => openDetailDialog(e, listing)}
         >
           Book this bathroom
