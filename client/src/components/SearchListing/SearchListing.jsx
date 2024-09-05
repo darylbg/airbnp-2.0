@@ -89,7 +89,6 @@ export default function SearchListing({
             <img key={index} src={image} alt="image" className="" />
           ))}
         </Carousel>
-        <div className="search-listing-image-overlay"></div>
       </div>
       <div className="search-listing-content">
         <div className="search-listing-header">
@@ -108,7 +107,7 @@ export default function SearchListing({
               })`}</span>
             </div>
             <div className="listing-availability">
-              {listing?.availability ? "Open" : "Closed"}
+              {listing?.availability ? "Open now" : "Closed"}
             </div>
           </div>
               <div className="line-2">

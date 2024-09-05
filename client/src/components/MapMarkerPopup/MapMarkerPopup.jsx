@@ -66,35 +66,45 @@ export default function MapMarkerPopup({
   };
 
   return (
-    <div className="map-popup">
+    <div className={`map-popup popup-availability-${listing.availability}`}>
       <div className="map-popup-heading">
         <h2 className="title">{listing.listing_title}</h2>
-        <span className="price">from {listing.price} /person</span>
-        <span>private home</span>
+        <div className="subheading">
+          <span className="price">from {listing.price} /person</span>
+          <div className="divider"></div>
+          <span>private home</span>
+        </div>
       </div>
       <div className="map-popup-content">
         <div className="line-1">
           <div className="popup-availability">
-            <span>{listing.availability ? "Open" : "Closed"}</span>
+            <span className="caption">Opening times</span>
+            <span className="text availability">
+              {listing.availability ? "Open now" : "Closed"}
+            </span>
           </div>
           <div className="popup-rating">
-            <span class="star">&#9733;</span>
-            <span className="value">
-              {listing?.average_rating.value.toFixed(1)}
-            </span>
-            <span className="count">{`(${
-              listing?.average_rating.count > 0
-                ? listing.average_rating.count
-                : "no reviews"
-            })`}</span>
+            <span className="caption">Rating</span>
+            <div className="">
+              <span class="star">&#9733;</span>
+              <span className="value text">
+                {listing?.average_rating.value.toFixed(1)}{" "}
+              </span>
+              <span className="count text">{`(${listing.average_rating.count})`}</span>
+            </div>
           </div>
         </div>
 
         <div className="line-2">
           <div className="popup-directions">
             <span className="material-symbols-outlined">directions_walk</span>
-            <span className="text">{handleDistanceFormat(route?.distance)}</span>
-            <span className="text">{handleDurationFormat(route?.duration)}</span>
+            <span className="text">
+              {handleDistanceFormat(route?.distance)}
+            </span>
+            <span className="text duration">
+              {" "}
+              {handleDurationFormat(route?.duration)}
+            </span>
           </div>
         </div>
       </div>

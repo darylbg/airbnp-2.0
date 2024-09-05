@@ -9,6 +9,7 @@ import NewListing from "./NewListing/NewListing";
 import DialogComponent from "../../PrimitiveComponents/DialogComponent/DialogComponent";
 import ListingDisplay from "./ListingDisplay/ListingDisplay";
 import "./Listings.css";
+import ButtonComponent from "../../PrimitiveComponents/ButtonComponent/ButtonComponent";
 export default function Listings() {
   const userListings = useSelector((state) => state.userListings.byId) || {};
   const [newListingDialog, setNewListingDialog] = useState(false);
@@ -129,8 +130,8 @@ export default function Listings() {
               <Form.Label>Availability</Form.Label>
             </Form.Field>
             <Form.Submit asChild>
-              <PrimaryButton
-              className="default-button ">Update listings</PrimaryButton>
+              <ButtonComponent
+              className="default-button primary-button">Update listings</ButtonComponent>
             </Form.Submit>
           </Form.Root>
         </DialogComponent>

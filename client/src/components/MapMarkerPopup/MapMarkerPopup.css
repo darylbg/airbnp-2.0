@@ -9,7 +9,7 @@
 .map-popup {
     display: flex;
     flex-direction: column;
-    min-width: 250px;
+    min-width: 300px;
     font-size: 0.9rem;
     padding: 1rem;
 }
@@ -23,6 +23,20 @@
     border-bottom: 1px solid var(--black-2);
 }
 
+.map-popup-heading .subheading {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 3px;
+    align-items: center;
+}
+
+.map-popup-heading .subheading .divider {
+    width: 1px;
+    height: 15px;
+    background-color: var(--black-4);
+}
+
 .map-popup-heading span {
     font-size: 0.8rem;
 color: var(--black-8);
@@ -32,6 +46,7 @@ color: var(--black-8);
     display: flex;
     flex-direction: column;
     padding-bottom: 1rem;
+    gap: 1.5rem;
 }
 
 .map-popup-content .line-1 {
@@ -48,14 +63,49 @@ color: var(--black-8);
     padding: 0.2rem 0 1rem 0;
 }
 
+.map-popup-content .popup-availability,
+.map-popup-content .popup-rating {
+    display: flex;
+    flex-direction: column;
+}
+
+.map-popup-content .caption {
+   color: var(--black-8);
+   font-size: 0.8rem;
+   padding-bottom: 0.3rem;
+}
+
+.map-popup-content .text {
+   color: var(--black-11);
+   font-size: 1rem;
+}
+
+.map-popup-content .popup-availability .text,
+.map-popup-content .popup-rating .value,
+.popup-directions .duration {
+    font-weight: 550;
+}
+
+.popup-availability-true .availability {
+    color: var(--green-10);
+}
+
+.popup-availability-false .availability {
+    color: var(--red-10);
+}
+
 .popup-directions {
     display: flex;
     flex-direction: row;
     gap: 5px;
 }
 
+.popup-directions .material-symbols-outlined {
+    font-size: 1.1rem;
+}
+
 .mapboxgl-popup-close-button {
-    font-size: 1rem;
+    font-size: 1.3rem;
 }
 
 

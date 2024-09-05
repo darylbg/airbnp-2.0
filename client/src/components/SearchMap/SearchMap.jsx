@@ -132,7 +132,7 @@ export default function SearchMap({
                 "line-join": "round",
               },
               paint: {
-                "line-color": "#0588F0",
+                "line-color": "#000",
                 "line-width": 5, 
               },
             });

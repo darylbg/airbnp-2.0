@@ -7,6 +7,7 @@ import * as Form from "@radix-ui/react-form";
 import SearchListing from "../../components/SearchListing/SearchListing";
 import "./Search.css";
 import SearchMap from "../../components/SearchMap/SearchMap";
+import { useForm } from "react-hook-form";
 import {
   setAllListings,
   clearRefetchFlag,
@@ -14,11 +15,18 @@ import {
 import ButtonComponent from "../../components/PrimitiveComponents/ButtonComponent/ButtonComponent";
 import { setUserLocation, setMapCenter } from "../../reducers/bookingReducer";
 import { Link } from "react-router-dom";
+import DialogComponent from "../../components/PrimitiveComponents/DialogComponent/DialogComponent";
 
 export default function Search() {
   const dispatch = useDispatch();
   const [listings, setListings] = useState([]);
-  console.log(listings)
+  const [searchFilterDialog, setSearchFilterDialog] = useState(false);
+  const [searchFilter, setSearchFilter] = useState({
+    default: true,
+    availability: false,
+    distance: false,
+    rating: false,
+  });
   const [hoveredListing, setHoveredListing] = useState(null);
   const [routeType, setRouteType] = useState("walking");
   const [routeData, setRouteData] = useState(null);
@@ -89,7 +97,7 @@ export default function Search() {
         lng: features.geometry.coordinates[0],
         lat: features.geometry.coordinates[1],
       },
-    }
+    };
     dispatch(setUserLocation(userLocation));
     dispatch(setMapCenter(mapCenter));
   };
@@ -159,9 +167,9 @@ export default function Search() {
         const mapCenter = {
           coordinates: {
             lng: userLocation.coordinates.lng,
-          lat: userLocation.coordinates.lat,
-          }
-        }
+            lat: userLocation.coordinates.lat,
+          },
+        };
         dispatch(setUserLocation(userLocation));
         dispatch(setMapCenter(mapCenter));
       });
@@ -170,6 +178,31 @@ export default function Search() {
       alert("geolocation not supported on this browser");
     }
   };
+
+  const {
+    register,
+    handleSubmit,
+    clearErrors,
+    formState: { errors },
+  } = useForm();
+
+  const closeSearchFilterDialog = () => {
+    setSearchFilterDialog(false);
+  };
+
+  const handleFilterSearch = (formState) => {
+    const defaultCriteria = formState;
+    console.log(defaultCriteria)
+    setSearchFilter({
+      default: true,
+      availability: formState.availability,
+      distance: formState.distance,
+      rating: formState.rating,
+    });
+    
+    setSearchFilterDialog(false);
+  };
+  console.log("filtered", searchFilter);
 
   if (error) {
     console.log(error);
@@ -268,7 +301,11 @@ export default function Search() {
           </div>
           <div className="search-listings-filter">
             <p className="text">{listings?.length}+ locations near you</p>
-            <ButtonComponent className="default-button control-button">
+            <ButtonComponent
+              action={() => setSearchFilterDialog(true)}
+              type="button"
+              className="default-button control-button"
+            >
               Filter
             </ButtonComponent>
           </div>
@@ -276,7 +313,6 @@ export default function Search() {
         <div className="search-listings-display scrollbar-1">
           {listings &&
             listings.map((listing) => (
-              console.log(listings),
               <SearchListing
                 key={listing?._id}
                 listing={listing}
@@ -297,12 +333,49 @@ export default function Search() {
             hoveredListing={hoveredListing}
             mapLoading={loading}
             mapCenterCoordinates={mapCenterCoordinates}
-            // setMapCenterCoordinates={setMapCenterCoordinates}
             routeType={routeType}
             setRouteData={setRouteData}
           />
         )}
       </div>
+      <DialogComponent
+        className="content-width-dialog filter-search-dialog"
+        backdropClosable={false}
+        dialogHeader="Filter search"
+        dialogState={searchFilterDialog}
+        closeDialog={closeSearchFilterDialog}
+        icon="close"
+        tooltip="Close"
+      >
+        <Form.Root onSubmit={handleSubmit(handleFilterSearch)}>
+          <Form.Field>
+            <Form.Control asChild>
+              <input type="checkbox" {...register("distance")} />
+            </Form.Control>
+            <Form.Label>Distance from me</Form.Label>
+          </Form.Field>
+          <Form.Field>
+            <Form.Control asChild>
+              <input type="checkbox" {...register("rating")} />
+            </Form.Control>
+            <Form.Label>Average rating</Form.Label>
+          </Form.Field>
+          <Form.Field>
+            <Form.Control asChild>
+              <input type="checkbox" {...register("availability")} />
+            </Form.Control>
+            <Form.Label>Open now</Form.Label>
+          </Form.Field>
+          <Form.Submit asChild>
+            <ButtonComponent
+              className="default-button secondary-button"
+              type="submit"
+            >
+              Filter
+            </ButtonComponent>
+          </Form.Submit>
+        </Form.Root>
+      </DialogComponent>
     </div>
   );
 }
