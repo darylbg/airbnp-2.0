@@ -235,13 +235,6 @@ export default function BookingInfo({
         </>
       ) : (
         <>
-          <div className="booking-info-header">
-            {/* <StepProgressBar
-              progressSteps={progressSteps}
-              currentStep={2}
-              className="booking-progress-bar"
-            /> */}
-          </div>
           <div className="booking-info-body">
             <div className="your-booking-details">
               <div className="booking-detail-subheader">

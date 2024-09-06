@@ -5,6 +5,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import ButtonComponent from "../PrimitiveComponents/ButtonComponent/ButtonComponent";
 import "./SearchListing.css";
+import RatingComponent from "../PrimitiveComponents/RatingComponent/RatingComponent";
 
 export default function SearchListing({
   listing,
@@ -97,7 +98,8 @@ export default function SearchListing({
         </div>
         <div className="search-listing-body">
           <div className="line-1">
-            <div className="listing-rating">
+          <RatingComponent value={listing?.average_rating.value} count={listing?.average_rating.count} />
+            {/* <div className="listing-rating">
               <span class="star">&#9733;</span>
               <span className="value">{listing?.average_rating.value.toFixed(1)}</span>
               <span className="count">{`(${
@@ -105,7 +107,7 @@ export default function SearchListing({
                   ? listing.average_rating.count
                   : "no reviews"
               })`}</span>
-            </div>
+            </div> */}
             <div className="listing-availability">
               {listing?.availability ? "Open now" : "Closed"}
             </div>

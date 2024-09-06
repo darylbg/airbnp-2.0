@@ -6,6 +6,7 @@
   height: fit-content;
   max-width: 1000px;
   justify-self: center;
+  padding-right: 5px;
 }
 
 .listing-booking-details {
@@ -14,6 +15,86 @@
   flex: 1;
   width: 50%;
   gap: 2rem;
+}
+
+.booking-travel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.booking-travel .booking-map-wrapper {
+  height: 200px;
+  width: 100%;
+}
+
+.booking-travel .search-route-types {
+  width: 100%;
+  max-width: 100%;
+}
+
+.booking-heading {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.booking-heading-text {
+  padding-right: 1rem;
+}
+
+.booking-heading-text .building-type {
+  font-size: 0.8rem;
+  color: var(--black-8);
+  padding-bottom: 10px;
+}
+
+.booking-heading .subheading {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.true-listing-booking-content .availability {
+  color: var(--green-10);
+  font-weight: 550;
+}
+
+.booking-heading .distance {
+  display: flex;
+  gap: 2px;
+}
+
+.booking-heading .distance .material-symbols-outlined {
+  color: var(--black-8);
+  font-size: 1rem;
+}
+
+.booking-heading-action {
+  display: flex;
+  gap: 0.5rem;
+  height: fit-content;
+}
+
+.booking-heading-button {
+  padding: 0.5rem;
+  border-radius: 50%;
+  background-color: var(--white-13);
+  border: 1px solid var(--black-2);
+  height: auto;
+  width: auto;
+}
+
+.booking-heading-button:hover {
+  background-color: var(--black-1);
+}
+
+.booking-heading-button .material-symbols-outlined {
+  font-size: 1.1rem;
+}
+
+.booking-heading-button:hover > .material-symbols-outlined {
+  color: var(--pink-10);
 }
 
 .listing-booking-details .booking-images {
@@ -29,6 +110,8 @@
   height: 100%;
   width: 100%;
   object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--black-2);
 }
 
 .booking-header-subtitle {
@@ -43,11 +126,6 @@
 
 .booking-header-subtitle .unavailable {
   color: red;
-}
-
-.listing-booking-details .map-container {
-  max-height: 250px;
-  border-radius: 10px;
 }
 
 .booking-header-subtitle .travel {
@@ -87,4 +165,3 @@
   width: 50%;
   position: relative;
 }
-

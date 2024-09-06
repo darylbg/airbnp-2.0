@@ -64,28 +64,6 @@
     gap: 1rem;
 }
 
-.search-listing-body .listing-rating {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 3px;
-}
-
-.search-listing-body .listing-rating .value {
-    color: var(--black-98);
-    font-weight: 550;
-}
-
-.search-listing-body .listing-rating .count {
-    font-size: 0.9rem;
-    color: var(--black-8);
-}
-
-.search-listing-body .star {
-    font-size: 1.2rem;
-    color: gold;
-}
-
 .search-listing-body .listing-availability {
     display: flex;
     flex-direction: row;

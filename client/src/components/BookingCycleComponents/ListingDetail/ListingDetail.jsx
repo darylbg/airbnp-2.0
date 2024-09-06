@@ -1,13 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import mapboxgl from "mapbox-gl";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "./ListingDetail.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 import PinIcon from "../../../assets/images/icons/pin_icon3.png";
 import ButtonComponent from "../../PrimitiveComponents/ButtonComponent/ButtonComponent";
 import Carousel from "react-multi-carousel";
 import BookingInfo from "../BookingInfo/BookingInfo";
+import toast from "react-hot-toast";
+import WindowControlButton from "../../PrimitiveComponents/WindowControlButton/WindowControlButton";
+import ToastComponent from "../../PrimitiveComponents/ToastComponent/ToastComponent";
+import RatingComponent from "../../PrimitiveComponents/RatingComponent/RatingComponent";
 
 export default function ListingDetail() {
   const listing = useSelector(
@@ -153,7 +157,7 @@ export default function ListingDetail() {
                 "line-join": "round",
               },
               paint: {
-                "line-color": "#0588F0",
+                "line-color": "#000",
                 "line-width": 5,
               },
             });
@@ -281,10 +285,176 @@ export default function ListingDetail() {
     },
   };
 
+  const getSharableLink = () => {
+    const shareLink = window.location.href;
+    navigator.clipboard.writeText(shareLink);
+    toast.success(<ToastComponent message="Share link copied" />);
+  };
+
   return (
-    <div className="listing-booking-content">
+    <div
+      className={`listing-booking-content ${listing?.availability}-listing-booking-content`}
+    >
       <div className="listing-booking-details">
+        <div className="booking-travel">
+          <div className="booking-map-wrapper">
+            <div
+              style={{ height: "200px", width: "100%", borderRadius: "10px" }}
+              ref={mapContainerRef}
+              className="map-container booking-map"
+            ></div>
+          </div>
+          {userLocation.coordinates.lat !== null ||
+          userLocation.coordinates.lng !== null ? (
+            <div className="search-route-types">
+              <div className="button-group">
+                <ButtonComponent
+                  type="button"
+                  className={`route-type-btn ${
+                    routeType === "walking" ? "active" : ""
+                  }`}
+                  action={() => handleRouteTypeSwitch("walking")}
+                >
+                  <span className="material-symbols-outlined">
+                    directions_walk
+                  </span>
+                  <span> Walk</span>
+                </ButtonComponent>
+                <ButtonComponent
+                  type="button"
+                  className={`route-type-btn ${
+                    routeType === "cycling" ? "active" : ""
+                  }`}
+                  action={() => handleRouteTypeSwitch("cycling")}
+                >
+                  <span className="material-symbols-outlined">
+                    directions_bike
+                  </span>
+                  <span> Cycle</span>
+                </ButtonComponent>
+                <ButtonComponent
+                  type="button"
+                  className={`route-type-btn ${
+                    routeType === "driving" ? "active" : ""
+                  }`}
+                  action={() => handleRouteTypeSwitch("driving")}
+                >
+                  <span className="material-symbols-outlined">
+                    directions_car
+                  </span>
+                  <span> Drive</span>
+                </ButtonComponent>
+              </div>
+              <div className="route-type-result">
+                <strong className="distance">
+                  {formattedRouteData.distance}
+                </strong>
+                <strong className="duration">
+                  {formattedRouteData.duration}
+                </strong>
+                <Link
+                  to={formattedRouteData.googleMapsLink}
+                  className="get-directions"
+                  target="_blank"
+                >
+                  Get directions
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <span>Set your location to view travel options</span>
+          )}
+        </div>
+        <div className="booking-heading">
+          <div className="booking-heading-text">
+            <span className="building-type">Private residence</span>
+            <h1>{listing?.listing_title}</h1>
+            <div className="subheading">
+              <RatingComponent
+                value={listing?.average_rating.value}
+                count={listing?.average_rating.count}
+              />
+              <div className="availability">
+                <span>{listing?.availability ? "Open now" : "closed"}</span>
+              </div>
+              <div className="distance">
+                <span class="material-symbols-outlined">location_on</span>
+                <span>{formattedRouteData.distance}</span>
+              </div>
+            </div>
+          </div>
+          <div className="booking-heading-action">
+            <WindowControlButton
+              type="button"
+              className="default-button booking-heading-button"
+              icon="favorite"
+              tooltip="Like"
+            ></WindowControlButton>
+            <WindowControlButton
+              type="button"
+              className="default-button booking-heading-button"
+              icon="ios_share"
+              tooltip="Share"
+              action={getSharableLink}
+            ></WindowControlButton>
+          </div>
+        </div>
         <div className="booking-images">
+          {listing ? (
+            <Carousel
+              swipeable={false}
+              draggable={false}
+              showDots={listing?.listing_image.length > 1}
+              arrows={listing?.listing_image.length > 1}
+              responsive={responsive}
+              infinite={true}
+              keyBoardControl={true}
+              customTransition="all .5"
+              transitionDuration={500}
+              containerClass="carousel-container"
+              dotListClass="custom-dot-list-style"
+              itemClass="carousel-item-padding-40-px"
+            >
+              {listing?.listing_image.map((image, index) => (
+                <img key={index} src={image} alt="image" className="" />
+              ))}
+            </Carousel>
+          ) : (
+            <div>no images</div>
+          )}
+        </div>
+        <div className="booking-body">
+          <div className="booking-description">
+            <p>{listing?.listing_description}</p>
+          </div>
+          <div className="booking-amenities"></div>
+          <div className="booking-specifics">
+            <div className="specific">Online booking required</div>
+            <div className="specific">Address given at checkout</div>
+            <div className="specific">Personal protection guaranteed</div>
+          </div>
+          <div className="booking-reviews">
+            <div className="booking-reviews-header">
+              <div className="booking-body-caption"></div>
+              <div className="rating"></div>
+              <div className="rating-stars">
+                <div className="stars"></div>
+                <div className="text"></div>
+              </div>
+            </div>
+            <div className="booking-reviews-list">
+              <ul>
+                <li>review</li>
+                <li>review</li>
+                <li>review</li>
+                <li>review</li>
+                <li>review</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* <div className="booking-images">
           {listing ? (
             <Carousel
               swipeable={false}
@@ -344,13 +514,13 @@ export default function ListingDetail() {
             )}
           </div>
         </div>
-        <div className="booking-body"></div>
-        <div
-          style={{ height: "500px", width: "100%" }} // Adjust height and width as needed
+        <div className="booking-body"></div> */}
+        {/* <div
+          style={{ height: "500px", width: "100%" }} 
           ref={mapContainerRef}
           className="map-container"
-        ></div>
-        {(userLocation.coordinates.lat !== null ||
+        ></div> */}
+        {/* {(userLocation.coordinates.lat !== null ||
           userLocation.coordinates.lng !== null) && (
           <div className="search-route-types">
             <div className="button-group">
@@ -401,7 +571,7 @@ export default function ListingDetail() {
               </Link>
             </div>
           </div>
-        )}
+        )} */}
       </div>
       <div className="listing-booking-info">
         <BookingInfo

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PrimaryButton from "../PrimitiveComponents/ButtonComponent/ButtonComponent";
 import "./MapMarkerPopup.css";
+import RatingComponent from "../PrimitiveComponents/RatingComponent/RatingComponent";
 
 export default function MapMarkerPopup({
   listing,
@@ -85,13 +86,7 @@ export default function MapMarkerPopup({
           </div>
           <div className="popup-rating">
             <span className="caption">Rating</span>
-            <div className="">
-              <span class="star">&#9733;</span>
-              <span className="value text">
-                {listing?.average_rating.value.toFixed(1)}{" "}
-              </span>
-              <span className="count text">{`(${listing.average_rating.count})`}</span>
-            </div>
+            <RatingComponent value={listing?.average_rating.value} count={listing?.average_rating.count} />
           </div>
         </div>
 

@@ -1,0 +1,32 @@
+.ratingComponent {
+    display: flex;
+    justify-content: center;
+    align-items: center;   
+    gap: 3px;    
+  }
+  
+  .ratingComponent .star,
+  .ratingComponent .value,
+  .ratingComponent .count {
+    text-align: center;     
+  }
+
+  .ratingComponent .value {
+    color: var(--black-10);
+  }
+
+  .ratingComponent .star {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    font-size: 1em;
+    line-height: 1;
+    text-align: center;    
+  }
+
+  .ratingComponent .count {
+    font-style: italic;     
+    color: var(--black-8);
+    font-size: 0.9rem;
+  }

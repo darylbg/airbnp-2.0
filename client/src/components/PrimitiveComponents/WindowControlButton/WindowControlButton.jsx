@@ -11,7 +11,7 @@ export default function WindowControlButton({ action, icon, className, tooltip }
     }
   };
   return (
-    <Tooltip.Provider>
+    <Tooltip.Provider delayDuration={0}>
       <Tooltip.Root>
         <Tooltip.Trigger asChild>
           <button
