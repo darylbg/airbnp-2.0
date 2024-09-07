@@ -33,6 +33,7 @@ export default function SearchMap({
   mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 
   const [mapStyle, setMapStyle] = useState(mapStyleOptions[0]);
+  const [mapStylePicker, setMapStylePicker] = useState(false);
   const [popupOpen, setPopupOpen] = useState(null);
   const [detailDialog, setDetailDialog] = useState(false);
 
@@ -56,25 +57,28 @@ export default function SearchMap({
   const userLocation = useSelector((state) => state.bookingCycle.userLocation);
 
   const location = useLocation();
-  
-  const [getListingById, { data, loading, error }] = useLazyQuery(GET_LISTING_BY_ID);
+
+  const [getListingById, { data, loading, error }] =
+    useLazyQuery(GET_LISTING_BY_ID);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
-    const listingId = queryParams.get('dialog'); // Adjust this if your parameter is different
+    const listingId = queryParams.get("dialog"); // Adjust this if your parameter is different
 
     if (listingId) {
       // console.log("running", listingDetail.listing)
       getListingById({ variables: { listingId } })
-        .then(response => {
+        .then((response) => {
           // console.log(response.data.getListingById);
-          dispatch(setListingDetails({listing: response.data.getListingById}));
+          dispatch(
+            setListingDetails({ listing: response.data.getListingById })
+          );
           setDetailDialog(true);
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err);
         });
-    } 
+    }
   }, []);
 
   useEffect(() => {
@@ -134,7 +138,7 @@ export default function SearchMap({
               },
               paint: {
                 "line-color": "#000",
-                "line-width": 5, 
+                "line-width": 5,
               },
             });
           }
@@ -327,7 +331,7 @@ export default function SearchMap({
 
   const openDetailDialog = (e, listing) => {
     e.preventDefault();
-    dispatch(setListingDetails({listing: listing}));
+    dispatch(setListingDetails({ listing: listing }));
     setDetailDialog(true);
 
     // update url
@@ -342,7 +346,7 @@ export default function SearchMap({
 
   const closeDetailDialog = (e, listing) => {
     e.preventDefault();
-    dispatch(setListingDetails({listing: null}));
+    dispatch(setListingDetails({ listing: null }));
     dispatch(setCurrentStep("selectedListing"));
     setDetailDialog(false);
 
@@ -354,17 +358,11 @@ export default function SearchMap({
 
   return (
     <div className="search-map-wrapper">
-      <div className="map-styles">
-        <div className="map-styles-trigger">
-          <div className="map-style">
-            <button className="selected-map-style">
-              <img src={mapStyle.img} alt={mapStyle.option} />
-              <span className="text">{mapStyle.title}</span>
-            </button>
-          </div>
-        </div>
-
-        <div className="map-styles-dropdown">
+      <div className="map-styles"
+      onMouseEnter={() => setMapStylePicker(true)}
+      onMouseLeave={() => setMapStylePicker(false)}
+      >
+        <div className="map-styles-dropdown" style={{display: mapStylePicker ? "flex" : "none"}}>
           {mapStyleOptions.map((style) => (
             <div className="map-style" key={style.option}>
               <button
@@ -381,6 +379,12 @@ export default function SearchMap({
               <span>{style.title}</span>
             </div>
           ))}
+        </div>
+         <div className="map-styles-trigger">
+          <button>
+            <span class="material-symbols-outlined">stacks</span>
+          </button>
+          <span className="text">{mapStyle.title}</span>
         </div>
       </div>
       <div ref={mapContainer} className="search-map-container" />
