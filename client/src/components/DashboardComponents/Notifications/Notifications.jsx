@@ -104,7 +104,12 @@ export default function Notifications() {
         title="Notifications"
         subtitle="Manage your notifications"
         icon="notifications"
-      ></DashboardHeader>
+      >
+        <div className="title-text">
+          <h3>{allNotifications.unread.length}</h3>
+          <p>new notification{allNotifications.unread.length !== 1 ? "s": ""}</p>
+        </div>
+      </DashboardHeader>
       <div className="notifications-content">
         <div className="filter-button-group">
           <ButtonComponent

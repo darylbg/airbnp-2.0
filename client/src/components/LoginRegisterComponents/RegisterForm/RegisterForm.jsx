@@ -120,9 +120,8 @@ export default function RegisterForm({
   return (
     <div className="signInRegister-form">
       <div className="signInRegister-form-header">
-        <div className="logo"></div>
         <h2>Welcome to Airbnp!</h2>
-        <p>Sign up to your account here</p>
+        <p>Register your account here</p>
       </div>
       <Form.Root className="register-form" onSubmit={handleSubmit(onSubmit)}>
         <Form.Field className="form-field" name="firstName">

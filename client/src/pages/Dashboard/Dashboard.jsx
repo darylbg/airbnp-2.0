@@ -7,6 +7,7 @@ export default function Dashboard() {
   // querying redux for logged in user
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const currentUser = useSelector((state) => state.userDetails.byId);
+  const newNotifications = useSelector((state) => state.notifications.userNotifications.unread)
 
   const [mobileDashboardMenu, setMobileDashboardMenu] = useState(false);
 
@@ -66,6 +67,7 @@ export default function Dashboard() {
                       notifications
                     </span>
                     <span className="text">Notifications</span>
+                    <span class="dashboard-notification-alert">{newNotifications.length > 0 ? newNotifications.length : null}</span>
                   </NavLink>
                 </div>
                 <div className="dashboard-menu-item">

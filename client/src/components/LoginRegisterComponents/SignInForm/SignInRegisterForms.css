@@ -15,13 +15,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 50px;
+  gap: 10px;
 }
 
 .signInRegister-form-header h2,
 .signInRegister-form-header p {
-  margin: 0;
-  padding: 10px 0;
   text-align: center;
 }
 

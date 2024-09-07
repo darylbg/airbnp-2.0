@@ -9,8 +9,7 @@
 
 .dashboard-menu {
   display: flex;
-  min-width: 200px;
-  max-width: 250px;
+  width: fit-content;
   flex-direction: column;
   flex: 0.2;
   justify-content: space-between;
@@ -60,7 +59,7 @@
   align-items: center;
   background-color: var(--white-13);
   border: none;
-  padding: 0.7rem;
+  padding: 0.7rem 1rem 0.7rem 0.7rem;
   border-radius: 10px;
   border: 1px solid transparent;
   line-height: 100%;
@@ -112,6 +111,17 @@
   color: var(--black-12);
   font-weight: 500;
   font-size: 1rem;
+}
+
+.dashboard-notification-alert {
+  background-color: var(--white-13);
+  color: var(--pink-10);
+  font-family: var(--font-figtree);
+  padding: 1px 5px;
+  font-weight: 600;
+  margin-left: 8px;
+  border-radius: 50%;
+  aspect-ratio: 1/1;
 }
 
 .dashboard-menu-footer {
