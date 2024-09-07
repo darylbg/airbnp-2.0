@@ -232,6 +232,7 @@ const typeDefs = gql`
     getUserGuestReservations(user_id: ID!): [Booking]
 
     getAllUserReviews(userId: ID!): [Review]
+    getListingReviews(listingId: ID!): [Review]
     getReviewById(review_id: ID!): Review
 
     getAllUserNotifications(userId: ID!): [Notification]

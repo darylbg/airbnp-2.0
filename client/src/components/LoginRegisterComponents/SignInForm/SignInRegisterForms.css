@@ -31,20 +31,6 @@
   margin: 25px 0;
 }
 
-.form-field input {
-  background-color: var(--black-10);
-  border: 1px solid var(--black-10);
-  border-radius: 2px;
-  height: 45px;
-  padding: 0 10px;
-  font-size: 16px;
-  position: relative;
-}
-
-.form-field input:focus-visible {
-  border: 1px solid var(--black-10) !important;
-}
-
 .password-input-wrapper {
   position: relative;
   display: flex;

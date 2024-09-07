@@ -132,7 +132,7 @@ export default function RegisterForm({
             className="input-outlined"
               type="text"
               {...register("firstName", {
-                required: "This is required",
+                required: "First name is required",
               })}
             />
           </Form.Control>
@@ -145,7 +145,7 @@ export default function RegisterForm({
             className="input-outlined"
               type="text"
               {...register("lastName", {
-                required: "This is required",
+                required: "Last name is required",
               })}
             />
           </Form.Control>
@@ -158,7 +158,7 @@ export default function RegisterForm({
             className="input-outlined"
               type="text"
               {...register("email", {
-                required: "This is required",
+                required: "Email is required",
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                   message: "Invalid email address",
@@ -178,7 +178,7 @@ export default function RegisterForm({
               className="input-outlined"
                 type={passwordVisibility ? "text" : "password"}
                 {...register("password", {
-                  required: "This is required",
+                  required: "Password is required",
                   minLength: { value: 8, message: "Minimum 8 characters" },
                 })}
               />

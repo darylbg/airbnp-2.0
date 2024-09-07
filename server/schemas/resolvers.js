@@ -169,10 +169,21 @@ const resolvers = {
         throw new Error("Failed to fetch reviews");
       }
     },
+    getListingReviews: async (parent, {listingId}, context) => {
+      try {
+        const listingReviews = await Review.find({
+          listing_id: listingId
+        }).populate({path: "user"});
+
+        return listingReviews;
+      } catch (error) {
+        console.log(error)
+      }
+    },
     getAllUserNotifications: async (parent, { userId }, context) => {
-      // if (!context.user) {
-      //   throw new AuthenticationError("You must be logged in");
-      // }
+      if (!context.user) {
+        throw new AuthenticationError("You must be logged in");
+      }
 
       try {
         // Fetch notifications

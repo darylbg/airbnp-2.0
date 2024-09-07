@@ -12,10 +12,12 @@
 
 .signInRegister-form-toggle p {
     font-size: 0.9rem;
+    color: var(--black-9);
   }
    
   .signInRegister-form-toggle strong {
     text-decoration: underline;
+    color: var(--black-11);
   }
   
   .signInRegister-form-toggle strong:hover {

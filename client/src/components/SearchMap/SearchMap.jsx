@@ -20,6 +20,7 @@ import "./SearchMap.css";
 import { useDispatch, useSelector } from "react-redux";
 import PinIcon from "../../assets/images/icons/pin_icon3.png";
 import ListingDetail from "../BookingCycleComponents/ListingDetail/ListingDetail";
+import { setListingReviews } from "../../reducers/reviewsReducer";
 
 export default function SearchMap({
   listings,

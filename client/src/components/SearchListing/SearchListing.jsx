@@ -99,15 +99,6 @@ export default function SearchListing({
         <div className="search-listing-body">
           <div className="line-1">
           <RatingComponent value={listing?.average_rating.value} count={listing?.average_rating.count} />
-            {/* <div className="listing-rating">
-              <span class="star">&#9733;</span>
-              <span className="value">{listing?.average_rating.value.toFixed(1)}</span>
-              <span className="count">{`(${
-                listing?.average_rating.count > 0
-                  ? listing.average_rating.count
-                  : "no reviews"
-              })`}</span>
-            </div> */}
             <div className="listing-availability">
               {listing?.availability ? "Open now" : "Closed"}
             </div>

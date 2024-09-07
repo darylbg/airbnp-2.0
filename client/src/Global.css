@@ -54,20 +54,6 @@
   --white-2: #343434;
   --white-1: #202020;
 
-  /* green */
-  /* --green-1: #E3F7F3;
-  --green-2: #C8F0E6;
-  --green-3: #ADE9DA;
-  --green-4: #92E2CD;
-  --green-5: #77DBC1;
-  --green-6: #5CD4B5;
-  --green-7: #41CDAD;
-  --green-8: #26C7A6;
-  --green-9: #0BC1A0;
-  --green-10: #00A67E; 
-  --green-11: #008B66;
-  --green-12: #006F4E; 
-
   /* fonts */
   --font-sohne: "Sohne", sans-serif;
   --font-figtree: "Figtree", sans-serif;
@@ -140,7 +126,7 @@ body {
 
 .scrollbar-1::-webkit-scrollbar-track {
   border-radius: 10px;
-  margin: 10px 0 0 0;
+  margin: 0;
   background-color: var(--transparent);
 }
 
@@ -182,7 +168,15 @@ body {
 }
 
 .input-outlined {
-  
+  background-color: var(--white-13);
+  border: 1px solid var(--black-10);
+  border-radius: 4px;
+  padding: 1rem;
+  font-size: 1rem;
+}
+
+.input-outlined:focus-visible {
+  border: 1px solid var(--black-10) !important;
 }
 
 

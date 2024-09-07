@@ -6,7 +6,6 @@
   height: fit-content;
   max-width: 1000px;
   justify-self: center;
-  padding-right: 5px;
 }
 
 .listing-booking-details {
@@ -26,6 +25,13 @@
 .booking-travel .booking-map-wrapper {
   height: 200px;
   width: 100%;
+}
+
+.listing-marker {
+  background-color: var(--pink-10);
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
 }
 
 .booking-travel .search-route-types {
@@ -151,17 +157,140 @@
   font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
 }
 
-.listing-marker {
-  background-color: var(--pink-10);
-  width: 1.2rem;
-  height: 1.2rem;
-  border-radius: 50%;
+.booking-body {
+  display: flex;
+  flex-direction: column;
+  /* gap: 3rem; */
 }
+
+.booking-body > div {
+  padding: 1.5rem 0;
+}
+
+.booking-body > div:not(:last-child) {
+  border-bottom: 1px solid var(--black-2);
+}
+
+.booking-description {
+  color: var(--black-10);
+}
+
+.booking-specifics {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.booking-specifics .specific {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+}
+
+.booking-specifics .specific img {
+  height: 1rem;
+  width: 1rem;
+}
+
+.booking-specifics .specific .text {
+  font-size: 1.1rem;
+  color: var(--black-11);
+  font-weight: 600;
+}
+
+.booking-reviews {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.booking-reviews .booking-reviews-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.booking-reviews-header .rating-overview {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.booking-reviews-header .rating-overview .rating-value {
+  font-weight: 900;
+  font-size: 3rem;
+  line-height: 3rem;
+}
+
+.booking-reviews-header .rating-overview .rating-stars {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.booking-reviews-header .rating-overview .rating-stars .text {
+  color: var(--black-8);
+}
+
+/* listing reviews */
+
+.listing-reviews {
+  padding: 0;
+  margin: 0;
+}
+
+.listing-review {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--black-1);
+  gap: 5px;
+}
+
+.listing-review-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.listing-review-header .review-details {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.listing-review-header .review-details img {
+  height: 3rem;
+  width: 3rem;
+}
+
+.listing-review-header .review-details .text {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.listing-review-header .review-details .text .display-name {
+  color: var(--black-10);
+}
+
+.listing-review-header .review-details .text .created-at {
+  color: var(--black-7);
+  font-size: 0.8rem;
+  font-family: var(--font-montserrat);
+}
+
+.listing-review-body .message {
+  color: var(--black-8);
+}
+
+/* booking info */
 
 .listing-booking-info {
   display: flex;
   flex-direction: column;
   flex: 1;
   width: 50%;
+  max-width: 420px;
   position: relative;
 }

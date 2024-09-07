@@ -28,7 +28,7 @@ export default function LoginRegisterComponent({
       )}
       <div className="signInRegister-form-toggle">
         <p>
-          <span>{toggleSignInRegister ? "Don't have an account? " : "Already have an account? "}</span>
+          <span>{toggleSignInRegister ? "Don't have an account?  " : "Already have an account? "}</span>
           <strong onClick={handleSignInRegisterToggle}>
             {toggleSignInRegister ? "Register" : "Sign in"}
           </strong>

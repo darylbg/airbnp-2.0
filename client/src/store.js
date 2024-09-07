@@ -21,13 +21,13 @@ const persistConfig = {
 const persistedReducer = persistReducer(
     persistConfig,
     combineReducers({
+        reviews: reviewsReducer,
         auth: authReducer,
         userDetails: userDetailsReducer,
         userListings: userListingsReducer,
         allListings: allListingsReducer,
         bookingCycle: bookingReducer,
         chatBot: chatBotReducer,
-        reviews: reviewsReducer,
         notifications: notificationsReducer
     }),
     

@@ -140,7 +140,7 @@ export default function SignInForm({
             className="input-outlined"
               type="text"
               {...register("email", {
-                required: "This is required",
+                required: "Email is required",
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                   message: "Invalid email address",
@@ -161,7 +161,7 @@ export default function SignInForm({
               <input
               className="input-outlined"
                 type={passwordVisibility ? "text" : "password"}
-                {...register("password", { required: "This is required" })}
+                {...register("password", { required: "Password is required" })}
                 onChange={handlePasswordValidation}
               />
             </Form.Control>

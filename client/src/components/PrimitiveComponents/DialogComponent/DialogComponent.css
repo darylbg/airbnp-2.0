@@ -15,9 +15,7 @@
 
 .dialog-content {
   height: calc(100% - 2rem);
-  padding-top: 1rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding: 0 1px;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -41,7 +39,8 @@
   justify-content: space-between;
   position: relative;
   align-items: center;
-  padding-bottom: 1rem;
+  padding: 1rem 0;
+  margin: 0 1rem;
   border-bottom: 1px solid var(--black-2);
   background-color: var(--white);
   z-index: auto;
@@ -84,7 +83,7 @@
   height: auto;
   overflow-y: auto;
   display: flex;
-  padding: 1rem 0;
+  padding: 1rem 0.7rem 1rem 1rem;
   z-index: auto;
   justify-content: center;
 }
@@ -131,7 +130,6 @@
   animation: contentShow1 150ms cubic-bezier(0.16, 1, 0.3, 1);
   max-height: 80vh;
 }
-
 
 @keyframes overlayShow {
   from {
@@ -204,4 +202,3 @@
 .dialog-body-minimized {
   display: none;
 }
-

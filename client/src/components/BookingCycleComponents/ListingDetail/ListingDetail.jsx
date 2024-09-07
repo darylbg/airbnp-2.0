@@ -1,24 +1,36 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import mapboxgl from "mapbox-gl";
 import { Link, useLocation } from "react-router-dom";
+import TrackIcon from "../../../assets/icons/ListingDetailIcons/track.png";
 import "./ListingDetail.css";
+import ShieldIcon from "../../../assets/icons/ListingDetailIcons/user-shield.png";
+import ReservationIcon from "../../../assets/icons/ListingDetailIcons/reservation-smartphone.png";
 import "mapbox-gl/dist/mapbox-gl.css";
 import PinIcon from "../../../assets/images/icons/pin_icon3.png";
 import ButtonComponent from "../../PrimitiveComponents/ButtonComponent/ButtonComponent";
 import Carousel from "react-multi-carousel";
 import BookingInfo from "../BookingInfo/BookingInfo";
 import toast from "react-hot-toast";
+import { GET_LISTING_REVIEWS } from "../../../utils/queries/reviewsQueries";
 import WindowControlButton from "../../PrimitiveComponents/WindowControlButton/WindowControlButton";
 import ToastComponent from "../../PrimitiveComponents/ToastComponent/ToastComponent";
 import RatingComponent from "../../PrimitiveComponents/RatingComponent/RatingComponent";
+import { useQuery } from "@apollo/client";
+import { Rating } from "react-simple-star-rating";
+import { setListingReviews } from "../../../reducers/reviewsReducer";
 
 export default function ListingDetail() {
+  const dispatch = useDispatch();
   const listing = useSelector(
     (state) => state.bookingCycle.booking.listingDetail?.listing
   );
 
   const userLocation = useSelector((state) => state.bookingCycle.userLocation);
+
+  const listingReviews = useSelector(
+    (state) => state.reviews.listingReviews.reviews
+  );
 
   const [routeType, setRouteType] = useState("walking");
   const [routeData, setRouteData] = useState(null);
@@ -291,6 +303,61 @@ export default function ListingDetail() {
     toast.success(<ToastComponent message="Share link copied" />);
   };
 
+  const {
+    data: listingReviewsData,
+    error: listingReviewsError,
+    loading: listingReviewsLoading,
+  } = useQuery(GET_LISTING_REVIEWS, {
+    variables: { listingId: listing?.id },
+    skip: !listing?.id,
+  });
+
+  useEffect(() => {
+    if (listingReviewsData && !listingReviewsError && !listingReviewsLoading) {
+      const reviews = listingReviewsData.getListingReviews;
+      const count = reviews.length;
+      const value =
+        reviews.reduce((sum, review) => sum + review.rating_value, 0) / count ||
+        0;
+      const reviewData = {
+        count: count,
+        value: value,
+        reviews: reviews,
+      };
+      dispatch(setListingReviews(reviewData));
+    } else {
+      console.log(listingReviewsError);
+    }
+  }, [dispatch, listingReviewsData]);
+
+  function timeAgo(timestamp) {
+    const now = Date.now(); // Get the current timestamp in milliseconds
+    const secondsAgo = Math.floor((now - Number(timestamp)) / 1000); // Calculate the difference in seconds
+  
+    const minutes = Math.floor(secondsAgo / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+    const weeks = Math.floor(days / 7);
+    const months = Math.floor(days / 30);
+    const years = Math.floor(days / 365);
+  
+    if (secondsAgo < 60) {
+      return 'now'; // If less than 60 seconds ago
+    } else if (minutes < 60) {
+      return minutes === 1 ? '1 minute ago' : `${minutes} minutes ago`;
+    } else if (hours < 24) {
+      return hours === 1 ? '1 hour ago' : `${hours} hours ago`;
+    } else if (days < 7) {
+      return days === 1 ? '1 day ago' : `${days} days ago`;
+    } else if (weeks < 4) {
+      return weeks === 1 ? '1 week ago' : `${weeks} weeks ago`;
+    } else if (months < 12) {
+      return months === 1 ? '1 month ago' : `${months} months ago`;
+    } else {
+      return years === 1 ? '1 year ago' : `${years} years ago`;
+    }
+  }
+
   return (
     <div
       className={`listing-booking-content ${listing?.availability}-listing-booking-content`}
@@ -377,10 +444,10 @@ export default function ListingDetail() {
               <div className="availability">
                 <span>{listing?.availability ? "Open now" : "closed"}</span>
               </div>
-              <div className="distance">
+              {formattedRouteData.distance !== null ? <div className="distance">
                 <span class="material-symbols-outlined">location_on</span>
                 <span>{formattedRouteData.distance}</span>
-              </div>
+              </div> : null}
             </div>
           </div>
           <div className="booking-heading-action">
@@ -429,149 +496,80 @@ export default function ListingDetail() {
           </div>
           <div className="booking-amenities"></div>
           <div className="booking-specifics">
-            <div className="specific">Online booking required</div>
-            <div className="specific">Address given at checkout</div>
-            <div className="specific">Personal protection guaranteed</div>
+            <div className="specific">
+              <img src={ReservationIcon} alt="location icon" />
+              <span className="text">Online booking required.</span>
+            </div>
+            <div className="specific">
+              <img src={TrackIcon} alt="location icon" />
+              <span className="text">Full address provided at checkout.</span>
+            </div>
+            <div className="specific">
+              <img src={ShieldIcon} alt="location icon" />
+              <span className="text">Protection up to £10,000</span>
+            </div>
           </div>
           <div className="booking-reviews">
             <div className="booking-reviews-header">
-              <div className="booking-body-caption"></div>
-              <div className="rating"></div>
-              <div className="rating-stars">
-                <div className="stars"></div>
-                <div className="text"></div>
+              <div className="caption">
+                <span class="star">&#9733; Rating</span>
+              </div>
+              <div className="rating-overview">
+                <span className="rating-value">
+                  {listing?.average_rating.value.toFixed(1)}
+                </span>
+                <div className="rating-stars">
+                  <Rating
+                    size={16}
+                    allowFraction={true}
+                    readonly={true}
+                    count={5}
+                    initialValue={listing?.average_rating.value}
+                  />
+                  <span className="text">
+                    {listing?.average_rating.count} reviews
+                  </span>
+                </div>
               </div>
             </div>
             <div className="booking-reviews-list">
-              <ul>
-                <li>review</li>
-                <li>review</li>
-                <li>review</li>
-                <li>review</li>
-                <li>review</li>
+              <ul className="listing-reviews">
+                {listingReviews &&
+                  listingReviews.map((review) => {
+                    return (
+                      <li key={review.id} className="listing-review">
+                        <div className="listing-review-header">
+                          <div className="review-details">
+                            <img
+                              className="image"
+                              src={review.user.user_image}
+                              alt=""
+                            />
+                            <div className="text">
+                              <h3 className="display-name">{review.user.display_name}</h3>
+                              <span className="created-at">{timeAgo(review.createdAt)}</span>
+                            </div>
+                          </div>
+                          <Rating
+                            size={16}
+                            allowFraction={true}
+                            readonly={true}
+                            count={5}
+                            initialValue={review.rating_value}
+                          />
+                        </div>
+                        {review.message !== "" ? (
+                          <div className="listing-review-body">
+                            <p className="message">{review.rating_text}</p>
+                          </div>
+                        ) : null}
+                      </li>
+                    );
+                  })}
               </ul>
             </div>
           </div>
         </div>
-
-        {/* <div className="booking-images">
-          {listing ? (
-            <Carousel
-              swipeable={false}
-              draggable={false}
-              showDots={listing?.listing_image.length > 1}
-              arrows={listing?.listing_image.length > 1}
-              responsive={responsive}
-              infinite={true}
-              keyBoardControl={true}
-              customTransition="all .5"
-              transitionDuration={500}
-              containerClass="carousel-container"
-              dotListClass="custom-dot-list-style"
-              itemClass="carousel-item-padding-40-px"
-            >
-              {listing?.listing_image.map((image, index) => (
-                <img key={index} src={image} alt="image" className="" />
-              ))}
-            </Carousel>
-          ) : (
-            <div>no images</div>
-          )}
-        </div>
-        <div className="booking-header">
-          <p className="house-type">private home</p>
-          <h2 className="title">{listing?.listing_title}</h2>
-          <div className="booking-header-subtitle">
-            {listing?.availability ? (
-              <span className="available">Open now</span>
-            ) : (
-              <span className="unavailable">Closed</span>
-            )}
-            {userLocation.coordinates.lng == null ||
-            userLocation.coordinates.lat == null ? (
-              <span>set your location to view travel</span>
-            ) : (
-              <div className="travel">
-                <div className="duration">
-                  <span className="material-symbols-outlined">directions_walk</span>
-                  <span className="text">
-                    {formattedWalkingRouteData?.duration !== null
-                      ? formattedWalkingRouteData.duration
-                      : ""}
-                  </span>
-                </div>
-                <div className="distance">
-                  <span className="material-symbols-outlined">
-                    radio_button_unchecked
-                  </span>
-                  <strong className="text">
-                    {formattedWalkingRouteData?.distance !== null
-                      ? formattedWalkingRouteData.distance
-                      : ""}
-                  </strong>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-        <div className="booking-body"></div> */}
-        {/* <div
-          style={{ height: "500px", width: "100%" }} 
-          ref={mapContainerRef}
-          className="map-container"
-        ></div> */}
-        {/* {(userLocation.coordinates.lat !== null ||
-          userLocation.coordinates.lng !== null) && (
-          <div className="search-route-types">
-            <div className="button-group">
-              <ButtonComponent
-                type="button"
-                className={`route-type-btn ${
-                  routeType === "walking" ? "active" : ""
-                }`}
-                action={() => handleRouteTypeSwitch("walking")}
-              >
-                <span className="material-symbols-outlined">directions_walk</span>
-                <span> Walk</span>
-              </ButtonComponent>
-              <ButtonComponent
-                type="button"
-                className={`route-type-btn ${
-                  routeType === "cycling" ? "active" : ""
-                }`}
-                action={() => handleRouteTypeSwitch("cycling")}
-              >
-                <span className="material-symbols-outlined">directions_bike</span>
-                <span> Cycle</span>
-              </ButtonComponent>
-              <ButtonComponent
-                type="button"
-                className={`route-type-btn ${
-                  routeType === "driving" ? "active" : ""
-                }`}
-                action={() => handleRouteTypeSwitch("driving")}
-              >
-                <span className="material-symbols-outlined">directions_car</span>
-                <span> Drive</span>
-              </ButtonComponent>
-            </div>
-            <div className="route-type-result">
-              <strong className="distance">
-                {formattedRouteData.distance}
-              </strong>
-              <strong className="duration">
-                {formattedRouteData.duration}
-              </strong>
-              <Link
-                to={formattedRouteData.googleMapsLink}
-                className="get-directions"
-                target="_blank"
-              >
-                Get directions
-              </Link>
-            </div>
-          </div>
-        )} */}
       </div>
       <div className="listing-booking-info">
         <BookingInfo

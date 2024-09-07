@@ -108,11 +108,6 @@
   justify-content: space-between;
 }
 
-
-body {
-	font-family: Arial, sans-serif;
-}
-
 .feedback-form {
 	max-width: 400px;
 	margin: 0 auto;
