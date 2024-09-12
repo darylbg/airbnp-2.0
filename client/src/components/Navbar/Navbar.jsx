@@ -126,7 +126,7 @@ export default function Navbar({}) {
                 </NavigationMenu.Item>
                 <NavigationMenu.Item className="navigation-menu-item" asChild>
                   <NavLink
-                    to="/profile"
+                    to="/my-profile"
                     className={({ isActive }) =>
                       `navigation-menu-link dropdown-menu-link ${
                         isActive ? "active" : ""

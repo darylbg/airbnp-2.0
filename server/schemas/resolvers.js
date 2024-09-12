@@ -53,7 +53,17 @@ const resolvers = {
       }
       throw new AuthenticationError("You need to be logged in");
     },
-
+    getUserProfile: async (parent, {userId}, context) => {
+      try {
+        const userProfile = await User.findById(userId).populate({path: "user_listings"});
+        if (!userProfile) {
+          console.log("user not found");
+        }
+        return userProfile;
+      } catch (error) {
+        
+      }
+    },
     getListingByUserId: async (parent, args, context) => {
       try {
         if (context.user) {

@@ -180,7 +180,7 @@ const MobileNavbar = forwardRef((props, ref) => {
               </NavigationMenu.Item>
               <NavigationMenu.Item className="mobile-navbar-item">
                 <NavLink
-                  to="/profile"
+                  to="/my-profile"
                   onClick={() => setToggleAccountSubmenu(false)}
                   className={({ isActive }) =>
                     `mobile-navbar-link clickable ${isActive ? "active" : ""}`

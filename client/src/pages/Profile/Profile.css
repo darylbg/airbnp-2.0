@@ -1,0 +1,45 @@
+.profile-page {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    flex-direction: row;
+    padding: 5%;
+    max-width: 1200px;
+    flex: 1;
+
+}
+
+.profile-page .profile-heading-wrapper {
+    width: 300px;
+}
+
+.profile-page .profile-heading {
+    display: flex;
+    flex-direction: row;
+    position: fixed;
+    box-shadow: rgba(100, 100, 111, 0.31) 0px 1px 15px 0px;
+    border-radius: 20px;
+    padding: 1rem;
+    gap: 1rem;
+}
+
+.profile-heading img {
+    height: 100px;
+    width: 100px;
+}
+
+.profile-heading .user-stats .stat {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+}
+
+.profile-heading .user-stats .stat:not(:last-child){
+    border-bottom: 1px solid var(--black-2);
+}
+
+.profile-page .profile-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}

@@ -14,7 +14,7 @@ export default function NotificationsWatcher({ events }) {
 
   useEffect(() => {
     if (data && !loading) {
-      console.log("running notification watcher", data);
+      // console.log("running notification watcher", data);
 
       // Filter out notifications with the "Deleted" status
       const allNotifications = data.getAllUserNotifications.filter(

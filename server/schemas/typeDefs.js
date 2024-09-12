@@ -221,6 +221,7 @@ const typeDefs = gql`
   # queries
   type Query {
     user(id: ID!): User
+    getUserProfile(userId: ID!): User
     getListingByUserId(user_id: ID!): Listing
     getAllListings: [Listing]
     getListingById(listingId: ID!): Listing

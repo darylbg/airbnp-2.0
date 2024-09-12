@@ -5,7 +5,8 @@ import {
   ApolloProvider,
   createHttpLink,
 } from "@apollo/client";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { HelperFunctionsProvider } from "./HelperFunctions";
+import { BrowserRouter as Router, Route, Routes, useParams } from "react-router-dom";
 import { setContext } from "@apollo/client/link/context";
 import { Toaster } from "react-hot-toast";
 import Home from "./pages/Home/Home";
@@ -103,6 +104,7 @@ function App() {
 
   return (
     <ApolloProvider client={client}>
+      <HelperFunctionsProvider>
       <Router>
         <div className="app-div">
           <Navbar />
@@ -130,7 +132,8 @@ function App() {
                 <Route path="reviews" element={<Reviews />} />
               </Route>
 
-              <Route path="profile" element={<Profile />}></Route>
+              <Route path="my-profile" element={<Profile myProfile={true} />}></Route>
+              <Route path="profile/:userId" element={<Profile myProfile={false} />}></Route>
 
               <Route path="account" element={<Account />}>
                 <Route path="" element={<AccountComponentsMenu />} />
@@ -161,6 +164,7 @@ function App() {
           {isLoggedIn && isChatBotOpen && <ChatBot />}
         </div>
       </Router>
+      </HelperFunctionsProvider>
     </ApolloProvider>
   );
 }

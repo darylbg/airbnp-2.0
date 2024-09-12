@@ -13,3 +13,36 @@ query User($userId: ID!) {
     user_image
   }
 }`
+
+export const GET_USER_PROFILE = gql`
+query GetUserProfile($userId: ID!) {
+  getUserProfile(userId: $userId) {
+    id
+    first_name
+    display_name
+    created_at
+    last_name
+    average_rating {
+      value
+      count
+    }
+    reviews
+    user_image
+    user_listings {
+      availability
+      average_rating {
+        value
+        count
+      }
+      created_at
+      fullAddress
+      id
+      listing_image
+      reviews
+      price
+      listing_title
+      listing_description
+      user_id
+    }
+  }
+}`;
