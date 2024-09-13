@@ -55,7 +55,12 @@ const resolvers = {
     },
     getUserProfile: async (parent, {userId}, context) => {
       try {
-        const userProfile = await User.findById(userId).populate({path: "user_listings"});
+        const userProfile = await User.findById(userId).populate({
+          path: "reviews",
+          populate: {
+            path: "user"
+          }
+        }).populate({path: "user_listings"});
         if (!userProfile) {
           console.log("user not found");
         }

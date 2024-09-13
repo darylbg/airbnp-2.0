@@ -6,6 +6,7 @@ import {
   resetBooking,
   setCheckoutInfo,
 } from "../../../reducers/bookingReducer";
+import RatingComponent from "../../PrimitiveComponents/RatingComponent/RatingComponent";
 import DialogComponent from "../../PrimitiveComponents/DialogComponent/DialogComponent";
 import ButtonComponent from "../../PrimitiveComponents/ButtonComponent/ButtonComponent";
 import { loadStripe } from "@stripe/stripe-js";
@@ -87,17 +88,16 @@ export default function Checkout() {
                     <img src={listing?.listing_image[0]} alt="" />
                     <div className="checkout-listing-card-text">
                       <div className="header">
-                        <h3 className="title">{listing?.listing_title}</h3>
+                        <span>private residence</span>
                         <div className="rating">
-                          <span className="material-symbols-outlined">star</span>
-                          <span>4.8</span>
+                          <RatingComponent value={listing?.average_rating.value} count={listing?.average_rating.count} />
                         </div>
                       </div>
                       <div className="body">
+                      <h2 className="title">{listing?.listing_title}</h2>
                         <span className="description">
                           {listing?.listing_description}
                         </span>
-                        <h3 className="price">{listing?.price}</h3>
                       </div>
                     </div>
                   </div>

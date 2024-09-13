@@ -21,6 +21,21 @@ const typeDefs = gql`
     guest_reservations: [ID]
   }
 
+  type UserProfile {
+    id: ID!
+    first_name: String!
+    last_name: String!
+    display_name: String!
+    gender: String
+    email: String!
+    created_at: String
+    user_image: String
+    user_listings: [Listing]
+    saved_listings: [Listing]
+    average_rating: AverageRating
+    reviews: [Review]
+  }
+
   type Listing {
     id: ID!
     listing_title: String!
@@ -221,7 +236,7 @@ const typeDefs = gql`
   # queries
   type Query {
     user(id: ID!): User
-    getUserProfile(userId: ID!): User
+    getUserProfile(userId: ID!): UserProfile
     getListingByUserId(user_id: ID!): Listing
     getAllListings: [Listing]
     getListingById(listingId: ID!): Listing

@@ -26,7 +26,21 @@ query GetUserProfile($userId: ID!) {
       value
       count
     }
-    reviews
+    reviews {
+      createdAt
+      id
+      listing_id
+      rating_text
+      rating_value
+      review_type
+      reviewed_user_id
+      updatedAt
+      user {
+        id
+        display_name
+        user_image
+      }
+    }
     user_image
     user_listings {
       availability

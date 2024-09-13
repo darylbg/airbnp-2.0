@@ -47,6 +47,7 @@
     object-fit: cover;
     object-position: center center;
     border-radius: 20px;
+    border: 1px solid var(--black-2);
 }
 
 .checkout-listing-card-text {

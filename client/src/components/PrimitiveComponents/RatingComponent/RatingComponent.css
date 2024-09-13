@@ -23,6 +23,7 @@
     font-size: 1em;
     line-height: 1;
     text-align: center;    
+    color: var(--black-10);
   }
 
   .ratingComponent .count {

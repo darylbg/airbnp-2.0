@@ -86,20 +86,29 @@ export default function MapMarkerPopup({
           </div>
           <div className="popup-rating">
             <span className="caption">Rating</span>
-            <RatingComponent value={listing?.average_rating.value} count={listing?.average_rating.count} />
+            <RatingComponent
+              value={listing?.average_rating.value}
+              count={listing?.average_rating.count}
+            />
           </div>
         </div>
 
         <div className="line-2">
           <div className="popup-directions">
             <span className="material-symbols-outlined">directions_walk</span>
-            <span className="text">
-              {handleDistanceFormat(route?.distance)}
-            </span>
-            <span className="text duration">
-              {" "}
-              {handleDurationFormat(route?.duration)}
-            </span>
+            {route !== null ? (
+              <>
+                <span className="text">
+                  {handleDistanceFormat(route?.distance)}
+                </span>
+                <span className="text duration">
+                  {" "}
+                  {handleDurationFormat(route?.duration)}
+                </span>
+              </>
+            ) : (
+              <span>set location to view travel</span>
+            )}
           </div>
         </div>
       </div>
