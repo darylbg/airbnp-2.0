@@ -56,7 +56,7 @@ query GetUserProfile($userId: ID!) {
       price
       listing_title
       listing_description
-      user_id
+      
     }
   }
 }`;

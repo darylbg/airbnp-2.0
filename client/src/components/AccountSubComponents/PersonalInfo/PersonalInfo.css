@@ -34,8 +34,41 @@
     margin: 0;
 }
 
-.edit-personal-info-field {
-    /* background-color: red; */
+.user-image-preview {
+    height: 200px;
+    width: 200px;
+    position: relative;
+    margin: 10px 0;
+}
+.user-image-preview img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 1px solid var(--black-2);
+}
+
+.user-image-preview .custom-file-upload {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: rgb(0, 0, 0, 0.2);
+}
+
+.user-image-preview .custom-file-upload:hover {
+    cursor: pointer;
+    background-color: rgb(0, 0, 0, 0.5);
+}
+
+.user-image-preview .custom-file-upload .material-symbols-outlined {
+    color: var(--white-13);
+    font-size: 3rem;
 }
 
 /* password visibility toggle */

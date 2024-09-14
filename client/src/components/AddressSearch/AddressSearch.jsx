@@ -125,11 +125,12 @@ export default function AddressSearch({
       <div className="address-search-container">
         <div className="address-input-section">
           <div className="address-inputs">
+          <label className="address-label">Address</label>
             <Form.Field>
               <AddressAutofill accessToken={token} onRetrieve={handleRetrieve}>
-                <Form.Label className="address-label">Address</Form.Label>
+        
                 <Form.Control
-                  className="address-input autofill-address-input"
+                  className="input-outlined address-input autofill-address-input"
                   placeholder="Start typing your address, e.g. 123 Main..."
                   autoComplete="address-line1"
                   id="mapbox-autofill"
@@ -158,7 +159,7 @@ export default function AddressSearch({
                   Address Line 2
                 </Form.Label>
                 <Form.Control
-                  className="address-input"
+                  className="address-input input-outlined"
                   placeholder="Apartment, suite, unit, building, floor, etc."
                   autoComplete="address-line2"
                   {...addressLine2}
@@ -171,7 +172,7 @@ export default function AddressSearch({
               <Form.Field>
                 <Form.Label className="address-label">City</Form.Label>
                 <Form.Control
-                  className="address-input"
+                  className="address-input input-outlined"
                   placeholder="City"
                   autoComplete="address-level2"
                   {...addressCity}
@@ -186,7 +187,7 @@ export default function AddressSearch({
                   State / Region
                 </Form.Label>
                 <Form.Control
-                  className="address-input"
+                  className="address-input input-outlined"
                   placeholder="State / Region"
                   autoComplete="address-level1"
                   {...addressRegion}
@@ -201,7 +202,7 @@ export default function AddressSearch({
                   ZIP / Postcode
                 </Form.Label>
                 <Form.Control
-                  className="address-input"
+                  className="address-input input-outlined"
                   placeholder="ZIP / Postcode"
                   autoComplete="postal-code"
                   {...addressPostCode}

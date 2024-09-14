@@ -27,8 +27,22 @@
 
 .profile-page .profile-heading {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     position: fixed;
+    gap: 2rem;
+}
+
+.profile-heading .edit-profile-button {
+    text-decoration: none;
+    gap: 1rem;
+}
+
+.profile-heading .edit-profile-button .material-symbols-outlined {
+    font-size: 1.1rem;
+}
+
+.profile-heading .user-overview {
+display: flex;
     box-shadow: rgba(100, 100, 111, 0.31) 0px 1px 15px 0px;
     border-radius: 20px;
     padding: 2rem;
@@ -36,9 +50,19 @@
     align-items: center;
 }
 
-.profile-heading img {
+.profile-heading .user-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.profile-heading .user-overview img {
     height: 100px;
     width: 100px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 .profile-heading .user-stats .stat {

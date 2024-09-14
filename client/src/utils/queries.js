@@ -19,7 +19,20 @@ export const GET_ALL_LISTINGS = gql`
       listing_title
       longitude
       price
-      user_id
+      user_id {
+      id
+      gender
+      first_name
+      email
+      display_name
+      created_at
+      average_rating {
+        count
+        value
+      }
+      last_name
+      user_image
+    }
       average_rating {
         count
         value
@@ -47,7 +60,9 @@ export const GET_LISTING_BY_ID = gql`
       listing_title
       longitude
       price
-      user_id
+      user_id {
+        id
+      }
       average_rating {
         count
         value

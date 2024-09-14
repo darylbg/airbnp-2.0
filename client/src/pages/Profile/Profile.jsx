@@ -10,8 +10,20 @@ import "./Profile.css";
 
 export default function Profile({ myProfile }) {
   const currentUser = useSelector((state) => state.auth.currentUser);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const { userId } = useParams();
   const [actualUserId, setActualUserId] = useState(null);
+
+  const [showMyProfile, setShowMyProfile] = useState(false);
+
+  useEffect(() => {
+    if (myProfile || userId === currentUser) {
+      setShowMyProfile(true);
+    } else {
+      setShowMyProfile(false);
+    }
+  }, []);
+  console.log(showMyProfile);
 
   const { formatDateFromTimestamp } = useHelperFunctions();
 
@@ -77,13 +89,11 @@ export default function Profile({ myProfile }) {
 
   return (
     <>
-      {myProfile && !currentUser ? (
-        <p>please log in</p>
-      ) : (
-        <div className="profile-page">
-          <div className="profile-heading-wrapper">
-            <div className="profile-heading">
-              <div className="user-overview">
+      <div className="profile-page">
+        <div className="profile-heading-wrapper">
+          <div className="profile-heading">
+            <div className="user-overview">
+              <div className="user-details">
                 <img
                   src={userProfile?.user_image}
                   className="profile-header-image"
@@ -92,6 +102,7 @@ export default function Profile({ myProfile }) {
                   <h3>{userProfile?.display_name}</h3>
                 </div>
               </div>
+
               <div className="user-stats">
                 <div className="stat">
                   <strong className="value">
@@ -112,113 +123,130 @@ export default function Profile({ myProfile }) {
                 </div>
               </div>
             </div>
+            {showMyProfile && (
+              <NavLink
+                to="/account/personal-info"
+                className="default-button primary-button edit-profile-button"
+              >
+                <span class="material-symbols-outlined">edit</span>
+                <span>Update personal info</span>
+              </NavLink>
+            )}
           </div>
-          <div className="profile-body">
-          <div className="profile-page-caption">This is your public profile for others to see.</div>
-            <div className="profile-listings">
-              <h2 className="profile-section-title">
-                {myProfile ? "My" : `${userProfile?.display_name}'s`} listings
-              </h2>
-              <ul>
-                {userProfile?.user_listings &&
-                  userProfile.user_listings.map((listing) => {
-                    return (
-                      <li key={listing.id} className="profile-listing">
-                        <NavLink
-                          to={`http://localhost:3000/search?dialog=${listing.id}`}
-                        >
-                          <img
-                            src={listing.listing_image[0]}
-                            className="profile-listing-img"
-                          />
-                          <div className="profile-listing-text">
-                            <div className="profile-listing-header">
-                              <span className="home-type">
-                                private residence
-                              </span>
-                              <RatingComponent value={listing.average_rating.value} />
-                            </div>
-                            <h2 className="title">{listing.listing_title}</h2>
-                            <p className="description">
-                              {listing.listing_description}
-                            </p>
-                          </div>
-                        </NavLink>
-                      </li>
-                    );
-                  })}
-              </ul>
+        </div>
+        <div className="profile-body">
+          {showMyProfile && (
+            <div className="profile-page-caption">
+              This is your public profile for others to see.
             </div>
-            <div className="profile-reviews">
-              <h2 className="profile-section-title">
+          )}
+          <div className="profile-listings">
+            <h2 className="profile-section-title">
+              {myProfile ? "My" : `${userProfile?.display_name}'s`} listings
+            </h2>
+            <ul>
+              {userProfile?.user_listings &&
+                userProfile.user_listings.map((listing) => {
+                  return (
+                    <li key={listing.id} className="profile-listing">
+                      <NavLink
+                        to={
+                          myProfile
+                            ? "/dashboard/listings"
+                            : `http://localhost:3000/search?dialog=${listing.id}`
+                        }
+                      >
+                        <img
+                          src={listing.listing_image[0]}
+                          className="profile-listing-img"
+                        />
+                        <div className="profile-listing-text">
+                          <div className="profile-listing-header">
+                            <span className="home-type">private residence</span>
+                            <RatingComponent
+                              value={listing.average_rating.value}
+                            />
+                          </div>
+                          <h2 className="title">{listing.listing_title}</h2>
+                          <p className="description">
+                            {listing.listing_description}
+                          </p>
+                        </div>
+                      </NavLink>
+                    </li>
+                  );
+                })}
+            </ul>
+          </div>
+          <div className="profile-reviews">
+            <h2 className="profile-section-title">
               {myProfile ? "My" : `${userProfile?.display_name}'s`} reviews
-              </h2>
-              <div className="booking-reviews">
-                <div className="booking-reviews-header">
-                  <div className="rating-overview">
-                    <span className="rating-value">
-                      {userProfile?.average_rating.value.toFixed(1)}
+            </h2>
+            <div className="booking-reviews">
+              <div className="booking-reviews-header">
+                <div className="rating-overview">
+                  <span className="rating-value">
+                    {userProfile?.average_rating.value.toFixed(1)}
+                  </span>
+                  <div className="rating-stars">
+                    <Rating
+                      size={16}
+                      allowFraction={true}
+                      readonly={true}
+                      count={5}
+                      initialValue={userProfile?.average_rating.value}
+                    />
+                    <span className="text">
+                      {userProfile?.average_rating.count} reviews
                     </span>
-                    <div className="rating-stars">
-                      <Rating
-                        size={16}
-                        allowFraction={true}
-                        readonly={true}
-                        count={5}
-                        initialValue={userProfile?.average_rating.value}
-                      />
-                      <span className="text">
-                        {userProfile?.average_rating.count} reviews
-                      </span>
-                    </div>
                   </div>
                 </div>
-                <div className="booking-reviews-list">
-                  <ul className="listing-reviews">
-                    {userProfile?.reviews &&
-                      userProfile.reviews.map((review) => {
-                        return (
-                          <li key={review.id} className="listing-review">
-                            <div className="listing-review-header">
-                              <div className="review-details">
-                                <img
-                                  className="image"
-                                  src={review.user.user_image}
-                                  alt=""
-                                />
-                                <div className="text">
-                                  {/* <h3>user</h3> */}
-                                  <h3 className="display-name">
-                                    {review.user.display_name}
-                                  </h3>
-                                  <span className="created-at">
-                                    {timeAgo(review.createdAt)}
-                                  </span>
-                                </div>
-                              </div>
-                              <Rating
-                                size={16}
-                                allowFraction={true}
-                                readonly={true}
-                                count={5}
-                                initialValue={review.rating_value}
+              </div>
+              <div className="booking-reviews-list">
+                <ul className="listing-reviews">
+                  {userProfile?.reviews &&
+                    userProfile.reviews.map((review) => {
+                      return (
+                        <li key={review.id} className="listing-review">
+                          <div className="listing-review-header">
+                            <div className="review-details">
+                              <img
+                                className="image"
+                                src={review.user.user_image}
+                                alt=""
                               />
-                            </div>
-                            {review.message !== "" ? (
-                              <div className="listing-review-body">
-                                <p className="message">{review.rating_text}</p>
+                              <div className="text">
+                                {/* <h3>user</h3> */}
+                                <h3 className="display-name">
+                                  {review.user.display_name}
+                                </h3>
+                                <span className="created-at">
+                                  {timeAgo(review.createdAt)}
+                                </span>
                               </div>
-                            ) : null}
-                          </li>
-                        );
-                      })}
-                  </ul>
-                </div>
+                            </div>
+                            <Rating
+                              size={16}
+                              allowFraction={true}
+                              readonly={true}
+                              count={5}
+                              initialValue={review.rating_value}
+                            />
+                          </div>
+                          {review.message !== "" ? (
+                            <div className="listing-review-body">
+                              <p className="message">{review.rating_text}</p>
+                            </div>
+                          ) : null}
+                        </li>
+                      );
+                    })}
+                </ul>
               </div>
             </div>
           </div>
         </div>
-      )}
+      </div>
     </>
   );
 }

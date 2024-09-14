@@ -98,7 +98,7 @@ export default function SearchListing({
         </div>
         <div className="search-listing-body">
           <div className="line-1">
-          <RatingComponent value={listing?.average_rating.value} count={listing?.average_rating.count} />
+          <RatingComponent value={listing?.average_rating?.value} count={listing?.average_rating?.count} />
             <div className="listing-availability">
               {listing?.availability ? "Open now" : "Closed"}
             </div>

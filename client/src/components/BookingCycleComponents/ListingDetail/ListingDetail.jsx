@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import mapboxgl from "mapbox-gl";
-import { Link, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import TrackIcon from "../../../assets/icons/ListingDetailIcons/track.png";
 import "./ListingDetail.css";
 import ShieldIcon from "../../../assets/icons/ListingDetailIcons/user-shield.png";
@@ -25,6 +25,7 @@ export default function ListingDetail() {
   const listing = useSelector(
     (state) => state.bookingCycle.booking.listingDetail?.listing
   );
+  console.log("this listing:", listing);
 
   const userLocation = useSelector((state) => state.bookingCycle.userLocation);
 
@@ -333,28 +334,28 @@ export default function ListingDetail() {
   function timeAgo(timestamp) {
     const now = Date.now(); // Get the current timestamp in milliseconds
     const secondsAgo = Math.floor((now - Number(timestamp)) / 1000); // Calculate the difference in seconds
-  
+
     const minutes = Math.floor(secondsAgo / 60);
     const hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
     const weeks = Math.floor(days / 7);
     const months = Math.floor(days / 30);
     const years = Math.floor(days / 365);
-  
+
     if (secondsAgo < 60) {
-      return 'now'; // If less than 60 seconds ago
+      return "now"; // If less than 60 seconds ago
     } else if (minutes < 60) {
-      return minutes === 1 ? '1 minute ago' : `${minutes} minutes ago`;
+      return minutes === 1 ? "1 minute" : `${minutes} minutes`;
     } else if (hours < 24) {
-      return hours === 1 ? '1 hour ago' : `${hours} hours ago`;
+      return hours === 1 ? "1 hour" : `${hours} hours`;
     } else if (days < 7) {
-      return days === 1 ? '1 day ago' : `${days} days ago`;
+      return days === 1 ? "1 day" : `${days} days`;
     } else if (weeks < 4) {
-      return weeks === 1 ? '1 week ago' : `${weeks} weeks ago`;
+      return weeks === 1 ? "1 week" : `${weeks} weeks`;
     } else if (months < 12) {
-      return months === 1 ? '1 month ago' : `${months} months ago`;
+      return months === 1 ? "1 month" : `${months} months`;
     } else {
-      return years === 1 ? '1 year ago' : `${years} years ago`;
+      return years === 1 ? "1 year" : `${years} years`;
     }
   }
 
@@ -444,10 +445,12 @@ export default function ListingDetail() {
               <div className="availability">
                 <span>{listing?.availability ? "Open now" : "closed"}</span>
               </div>
-              {formattedRouteData.distance !== null ? <div className="distance">
-                <span class="material-symbols-outlined">location_on</span>
-                <span>{formattedRouteData.distance}</span>
-              </div> : null}
+              {formattedRouteData.distance !== null ? (
+                <div className="distance">
+                  <span class="material-symbols-outlined">location_on</span>
+                  <span>{formattedRouteData.distance}</span>
+                </div>
+              ) : null}
             </div>
           </div>
           <div className="booking-heading-action">
@@ -491,6 +494,19 @@ export default function ListingDetail() {
           )}
         </div>
         <div className="booking-body">
+          <div className="booking-host">
+            <NavLink to={`/profile/${listing?.user_id.id}`}>
+              <img src={listing?.user_id.user_image} alt="" />
+            </NavLink>
+            <div className="booking-host-text">
+              <span className="display-name">
+                Hosted by <strong>{listing?.user_id.display_name}</strong>
+              </span>
+              <span className="time-hosting">
+                {timeAgo(listing?.user_id.created_at)} hosting
+              </span>
+            </div>
+          </div>
           <div className="booking-description">
             <p>{listing?.listing_description}</p>
           </div>
@@ -546,8 +562,12 @@ export default function ListingDetail() {
                               alt=""
                             />
                             <div className="text">
-                              <h3 className="display-name">{review.user.display_name}</h3>
-                              <span className="created-at">{timeAgo(review.createdAt)}</span>
+                              <h3 className="display-name">
+                                {review.user.display_name}
+                              </h3>
+                              <span className="created-at">
+                                {timeAgo(review.createdAt)} ago
+                              </span>
                             </div>
                           </div>
                           <Rating

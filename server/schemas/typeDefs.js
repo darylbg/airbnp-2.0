@@ -53,7 +53,8 @@ const typeDefs = gql`
     availability: Boolean!
     price: Float!
     created_at: String
-    user_id: ID!
+    # user_id: ID!
+    user_id: User!
     amenities: [ListingAmenity]
     reviews: [ID]
     average_rating: AverageRating

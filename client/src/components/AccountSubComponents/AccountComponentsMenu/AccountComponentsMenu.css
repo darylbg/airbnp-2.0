@@ -25,9 +25,9 @@
     flex: 1;
     padding: 20px;
     height: -webkit-fill-available;
-    -webkit-box-shadow: 0px 0px 20px 10px rgba(0,0,0,0.1);
-    -moz-box-shadow: 0px 0px 20px 10px rgba(0,0,0,0.1);
-    box-shadow: 0px 0px 20px 10px rgba(0,0,0,0.1);
+    -webkit-box-shadow: 0px 0px 15px 1px rgba(0,0,0,0.1);
+    -moz-box-shadow: 0px 0px 15px 1px rgba(0,0,0,0.1);
+    box-shadow: 0px 0px 15px 1px rgba(0,0,0,0.1);
     border-radius: inherit;
 }
 
@@ -42,19 +42,19 @@
 .profile-menu-card .material-symbols-outlined {
     font-size: 2rem;
     margin-bottom: 30px;
-    color: var(--black-100);
+    color: var(--black-12);
 }
 
 .profile-menu-card h3 {
     margin: 0;
     font-weight: 600;
     margin-bottom: 10px;
-    color: var(--black-100);
+    color: var(--black-12);
 }
 
 .profile-menu-card p {
     margin: 0;
-    color: var(--black-60);
+    color: var(--black-8);
     font-size: 1rem;
 }
 

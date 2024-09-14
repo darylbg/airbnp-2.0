@@ -92,6 +92,7 @@ const resolvers = {
           .populate({ path: "amenities" })
           // .populate({ path: "notifications" })
           .populate({ path: "reviews" })
+          .populate({path: "user_id"})
           .populate({ path: "payments" });
 
         return allListings;

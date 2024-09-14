@@ -164,6 +164,7 @@ export default function NewListing({ closeDialog }) {
           <Form.Label>listing title</Form.Label>
           <Form.Control asChild>
             <input
+            className="input-outlined"
               type="text"
               {...register("listing_title", {
                 required: "This is required",
@@ -180,6 +181,7 @@ export default function NewListing({ closeDialog }) {
           <Form.Label>listing description</Form.Label>
           <Form.Control asChild>
             <textarea
+            className="input-outlined"
               type="text"
               {...register("listing_description", {
                 required: "This is required",
@@ -191,10 +193,24 @@ export default function NewListing({ closeDialog }) {
             {errors.listing_description?.message}
           </div>
         </Form.Field>
+        <div className="house-type-picker">
+          <label>Residence type</label>
+          <Form.Field>
+            <Form.Control asChild>
+              <input type="radio" value="Commercial building" />
+            </Form.Control>
+          </Form.Field>
+          <Form.Field>
+            <Form.Control asChild>
+              <input type="radio" value="Private house" />
+            </Form.Control>
+          </Form.Field>
+        </div>
         <Form.Field className="new-listing-form-field" name="contact_method">
           <Form.Label>listing contact method</Form.Label>
           <Form.Control asChild>
-            <textarea
+            <input
+            className="input-outlined"
               type="text"
               {...register("contact_method", {
                 required: "This is required",
@@ -244,12 +260,13 @@ export default function NewListing({ closeDialog }) {
           showExpandedAddressSearch={true}
         />
         <Form.Field
-          className="new-listing-form-field price-form-field"
+          className="new-listing-form-field"
           name="price"
         >
           <Form.Label>listing price</Form.Label>
           <Form.Control asChild>
             <input
+            className="input-outlined"
               type="number"
               {...register("price", {
                 required: "This is required",

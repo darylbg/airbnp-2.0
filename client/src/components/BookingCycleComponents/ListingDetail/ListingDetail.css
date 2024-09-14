@@ -171,7 +171,36 @@
   border-bottom: 1px solid var(--black-2);
 }
 
-.booking-description {
+.booking-body .booking-host {
+  display: flex;
+  gap: 1rem;
+}
+
+.booking-body .booking-host a {
+  border-radius: 50%;
+}
+
+.booking-body .booking-host img {
+  height: 3rem;
+  width: 3rem;
+  border-radius: 50%;
+}
+
+.booking-host .booking-host-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.booking-host-text .display-name {
+  font-size: 1.2rem;
+}
+
+.booking-host-text .time-hosting {
+  font-size: 0.8rem;
+}
+
+.booking-body .booking-description {
   color: var(--black-10);
 }
 
@@ -262,6 +291,7 @@
 .listing-review-header .review-details img {
   height: 3rem;
   width: 3rem;
+  border-radius: 50%;
 }
 
 .listing-review-header .review-details .text {

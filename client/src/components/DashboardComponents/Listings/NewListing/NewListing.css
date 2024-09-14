@@ -22,9 +22,6 @@
   width: 100%;
 }
 
-.price-form-field {
-  flex-direction: row;
-}
 
 .new-listing-form-field textarea {
   resize: none;

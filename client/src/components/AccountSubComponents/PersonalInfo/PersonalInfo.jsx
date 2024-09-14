@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Form from "@radix-ui/react-form";
 import ToastComponent from "../../PrimitiveComponents/ToastComponent/ToastComponent";
@@ -14,12 +14,11 @@ import "./PersonalInfo.css";
 export default function PersonalInfo() {
   const currentUser = useSelector((state) => state.userDetails.byId);
   const dispatch = useDispatch();
-  // console.log(currentUser.user_image)
   const [loading, setLoading] = useState(false);
   const [personalInfoEditSaving, setPersonalInfoEditSaving] = useState(false);
   const [editable, setEditable] = useState(false);
-
-  console.log("input disabled", editable, loading);
+  const [userImagePreview, setUserImagePreview] = useState(null);
+  const [base64Image, setBase64Image] = useState(null); // Track base64 image string
 
   const {
     register,
@@ -33,6 +32,7 @@ export default function PersonalInfo() {
       lastName: currentUser.last_name,
       displayName: currentUser.display_name,
       email: currentUser.email,
+      userImage: currentUser.user_image,
     },
   });
 
@@ -46,32 +46,35 @@ export default function PersonalInfo() {
     setValue("lastName", currentUser.last_name);
     setValue("displayName", currentUser.display_name);
     setValue("email", currentUser.email);
+    setValue("userImage", currentUser.user_image);
 
     clearErrors("firstName");
     clearErrors("lastName");
     clearErrors("displayName");
     clearErrors("email");
+    clearErrors("userImage");
+
+    setUserImagePreview(currentUser.user_image); // Reset image preview
+    setBase64Image(null); // Clear base64 image
   };
 
   const [updateUserMutation] = useMutation(UPDATE_USER_MUTATION);
 
-  const handlePersonalInfoEdit = async (FormData) => {
+  const handlePersonalInfoEdit = async (formData) => {
     setLoading(true);
     setPersonalInfoEditSaving(true);
 
-    // setTimeout(async () => {
     try {
-      setEditable(false);
-      console.log(FormData);
+      // Send the base64 image string (or keep the existing image if no new one is selected)
       const updatedUser = await updateUserMutation({
         variables: {
           userData: {
-            first_name: FormData.firstName,
-            last_name: FormData.lastName,
-            display_name: FormData.displayName,
-            email: FormData.email,
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+            display_name: formData.displayName,
+            email: formData.email,
             gender: currentUser.gender,
-            user_image: currentUser.image,
+            user_image: base64Image || currentUser.user_image, // Send the base64 image string
           },
         },
       });
@@ -89,13 +92,17 @@ export default function PersonalInfo() {
       setValue("lastName", updatedUser.data.updateUser.last_name);
       setValue("displayName", updatedUser.data.updateUser.display_name);
       setValue("email", updatedUser.data.updateUser.email);
+      setValue("userImage", updatedUser.data.updateUser.user_image);
 
-      // clear errors
+      // Clear errors
       clearErrors("firstName");
       clearErrors("lastName");
       clearErrors("displayName");
       clearErrors("email");
+      clearErrors("userImage");
 
+      setEditable(false);
+      setLoading(false);
       toast.success(<ToastComponent message="Successfully updated." />);
     } catch (error) {
       console.log(error);
@@ -103,8 +110,24 @@ export default function PersonalInfo() {
       setLoading(false);
       setPersonalInfoEditSaving(false);
     }
-    // }, 5000);
   };
+
+  const selectNewUserImage = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result;
+        setBase64Image(base64String); // Set base64 string to state
+        setUserImagePreview(base64String); // Update preview
+      };
+      reader.readAsDataURL(file); // Convert image file to base64 string
+    }
+  };
+
+  useEffect(() => {
+    setUserImagePreview(currentUser.user_image);
+  }, [currentUser.user_image]);
 
   return (
     <section className="personal-info">
@@ -133,11 +156,38 @@ export default function PersonalInfo() {
           onSubmit={handleSubmit(handlePersonalInfoEdit)}
           className="edit-personal-info-form"
         >
+          <Form.Field>              <Form.Label className="field-label">Profile image</Form.Label>
+
+            <div className="user-image-preview">
+              {userImagePreview ? (
+                <img src={userImagePreview} alt="User Preview" />
+              ) : (
+                <span>No Image</span>
+              )}
+              <Form.Control asChild>
+                <input
+                  disabled={!editable || loading}
+                  name="userImage"
+                  id="userImage"
+                  type="file"
+                  accept="image/*"
+                  {...register("userImage")}
+                  onChange={selectNewUserImage}
+                  style={{ display: "none" }}
+                />
+              </Form.Control>
+              {editable && !loading && (
+                <label htmlFor="userImage" className="custom-file-upload">
+                  <span class="material-symbols-outlined">edit</span>
+                </label>
+              )}
+            </div>
+          </Form.Field>
           <Form.Field className="edit-personal-info-field">
             <Form.Label className="field-label">First Name</Form.Label>
             <Form.Control asChild>
               <input
-              className="input-underline"
+                className="input-underline"
                 disabled={!editable || loading}
                 type="text"
                 {...register("firstName", {
@@ -169,7 +219,7 @@ export default function PersonalInfo() {
             <Form.Label className="field-label">Display Name</Form.Label>
             <Form.Control asChild>
               <input
-              className="input-underline"
+                className="input-underline"
                 disabled={!editable || loading}
                 type="text"
                 {...register("displayName", {
@@ -185,7 +235,7 @@ export default function PersonalInfo() {
             <Form.Label className="field-label">Email</Form.Label>
             <Form.Control asChild>
               <input
-              className="input-underline"
+                className="input-underline"
                 disabled={!editable || loading}
                 type="text"
                 {...register("email", {

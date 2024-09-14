@@ -95,7 +95,7 @@ export const NEW_LISTING_MUTATION = gql`
   mutation CreateListing($listingData: listingInput) {
     createListing(listingData: $listingData) {
       id
-      user_id
+      # user_id
       listing_title
       listing_description
       listing_image
@@ -150,7 +150,9 @@ export const EDIT_LISTING_MUTATION = gql`
       }
       price
       reviews
-      user_id
+      # user_id {
+      #   id
+      # }
     }
   }
 `;
@@ -182,7 +184,9 @@ export const DELETE_LISTING_MUTATION = gql`
         }
         price
         reviews
-        user_id
+        # user_id {
+        #   id
+        # }
       }
     }
   }

@@ -27,7 +27,7 @@ export default function Account() {
                   {", "}
                   {currentUser.email}
                 </div>
-                <Link to="/profile" className="subheader-link">
+                <Link to="/my-profile" className="subheader-link">
                   Go to profile
                 </Link>
               </div>

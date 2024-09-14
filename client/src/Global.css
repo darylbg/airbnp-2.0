@@ -171,7 +171,7 @@ body {
   background-color: var(--white-13);
   border: 1px solid var(--black-10);
   border-radius: 4px;
-  padding: 1rem;
+  padding: 0.8rem;
   font-size: 1rem;
 }
 
