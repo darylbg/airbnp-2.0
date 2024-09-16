@@ -38,7 +38,7 @@ const CheckoutForm = ({
   const createBookingEntry = async () => {
     const listingId = listing.id;
     const guestId = userId;
-    const hostId = listing.user_id;
+    const hostId = listing.user_id.id;
     const now = new Date();
 
     const { protocol, hostname, port } = window.location;
