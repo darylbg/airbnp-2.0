@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/static/css/main.c78478a7.css",
+    "main.js": "/static/js/main.e4e27b82.js",
+    "static/media/HeroImage.jpg": "/static/media/HeroImage.da7b751275cc2712eef7.jpg",
+    "static/media/placeholder-page.png": "/static/media/placeholder-page.22f1e7791f95de950656.png",
+    "static/media/detailed.png": "/static/media/detailed.94370500fc292591d3ec.png",
+    "static/media/Montserrat-VariableFont_wght.ttf": "/static/media/Montserrat-VariableFont_wght.7e687123cd4528224ce5.ttf",
+    "static/media/phone2.png": "/static/media/phone2.800758294240fe53f616.png",
+    "static/media/Figtree-VariableFont_wght.ttf": "/static/media/Figtree-VariableFont_wght.5ecd3f8010e7190b961b.ttf",
+    "static/media/satellite.png": "/static/media/satellite.bfc9d23075830f908188.png",
+    "static/media/street.png": "/static/media/street.9d098a7305773cfebdca.png",
+    "static/media/user-shield.png": "/static/media/user-shield.5ae176cec06e515c5962.png",
+    "static/media/track.png": "/static/media/track.71598b10930579110c85.png",
+    "static/media/reservation-smartphone.png": "/static/media/reservation-smartphone.6c49caee14416d397a16.png",
+    "static/media/TestSohne-Buch-BF663d89cd32e6a.otf": "/static/media/TestSohne-Buch-BF663d89cd32e6a.7545d9ee48524b72b6ab.otf",
+    "static/media/revicons.eot": "/static/media/revicons.a77de540a38981833f9e.eot",
+    "static/media/revicons.ttf": "/static/media/revicons.57fd05d4ae650374c8de.ttf",
+    "static/media/revicons.woff": "/static/media/revicons.e8746a624ed098489406.woff",
+    "index.html": "/index.html",
+    "main.c78478a7.css.map": "/static/css/main.c78478a7.css.map",
+    "main.e4e27b82.js.map": "/static/js/main.e4e27b82.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c78478a7.css",
+    "static/js/main.e4e27b82.js"
+  ]
+}
