@@ -22,7 +22,9 @@ export const GET_USER_GUEST_RESERVATIONS = gql`
         listing_title
         longitude
         price
-        user_id
+        # user_id {
+        #   id
+        # }
         average_rating {
           count
           value
@@ -59,7 +61,9 @@ export const GET_USER_BOOKING_HISTORY = gql`
         listing_title
         longitude
         price
-        user_id
+        # user_id {
+        #   id
+        # }
         average_rating {
           count
           value

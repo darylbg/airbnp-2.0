@@ -42,7 +42,7 @@ export const SIGN_IN_MUTATION = gql`
         user_image
         user_listings {
           id
-          user_id
+          # user_id
           created_at
           listing_title
           listing_description

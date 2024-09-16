@@ -42,9 +42,9 @@
 }
 
 /* address search autocomplete */
-.search-listings-form {
+/* .search-listings-input .locators .locator-search {
   flex: 1;
-}
+} */
 
 /* locate me button */
 .locate-user-button {

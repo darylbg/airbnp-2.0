@@ -17,7 +17,7 @@ import { setUserLocation, setMapCenter } from "../../reducers/bookingReducer";
 import { Link } from "react-router-dom";
 import DialogComponent from "../../components/PrimitiveComponents/DialogComponent/DialogComponent";
 
-export default function Search() {
+export default function Search({}) {
   const dispatch = useDispatch();
   const [listings, setListings] = useState([]);
   const [searchFilterDialog, setSearchFilterDialog] = useState(false);
@@ -67,7 +67,7 @@ export default function Search() {
 
   useEffect(() => {
     if (data) {
-      console.log("all listings", data);
+      // console.log("all listings", data);
       const listings = data.getAllListings;
       dispatch(setAllListings(listings));
     }
@@ -81,6 +81,42 @@ export default function Search() {
 
   const handleAddressChange = (d) => {
     setAddressValue(d);
+  };
+
+  const handleLocateUser = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+
+          const userLocation = {
+            coordinates: {
+              lng: longitude,
+              lat: latitude,
+            },
+            fullAddress: "",
+          };
+
+          const mapCenter = {
+            coordinates: {
+              lng: userLocation.coordinates.lng,
+              lat: userLocation.coordinates.lat,
+            },
+          };
+
+          // Dispatch location and map center to Redux store
+          dispatch(setUserLocation(userLocation));
+          dispatch(setMapCenter(mapCenter));
+        },
+        (error) => {
+          // Handle geolocation errors here if needed
+          console.error("Error getting location", error);
+          alert("Unable to retrieve your location");
+        }
+      );
+    } else {
+      alert("Geolocation is not supported by your browser");
+    }
   };
 
   const handleAddressSearch = (result) => {
@@ -153,32 +189,6 @@ export default function Search() {
     }
   }, [routeData]);
 
-  const handleLocateUser = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const { latitude, longitude } = position.coords;
-        const userLocation = {
-          coordinates: {
-            lng: longitude,
-            lat: latitude,
-          },
-          fullAddress: "",
-        };
-        const mapCenter = {
-          coordinates: {
-            lng: userLocation.coordinates.lng,
-            lat: userLocation.coordinates.lat,
-          },
-        };
-        dispatch(setUserLocation(userLocation));
-        dispatch(setMapCenter(mapCenter));
-      });
-    } else {
-      console.log("error");
-      alert("geolocation not supported on this browser");
-    }
-  };
-
   const {
     register,
     handleSubmit,
@@ -192,17 +202,16 @@ export default function Search() {
 
   const handleFilterSearch = (formState) => {
     const defaultCriteria = formState;
-    console.log(defaultCriteria)
+    // console.log(defaultCriteria)
     setSearchFilter({
       default: true,
       availability: formState.availability,
       distance: formState.distance,
       rating: formState.rating,
     });
-    
+
     setSearchFilterDialog(false);
   };
-  console.log("filtered", searchFilter);
 
   if (error) {
     console.log(error);
@@ -215,21 +224,19 @@ export default function Search() {
         <div className="search-listings-header">
           <div className="search-listings-input">
             <div className="locators">
-              <Form.Root className="search-listings-form">
-                <Form.Field>
-                  <SearchBox
-                    accessToken="pk.eyJ1IjoiZGF6emExMjMiLCJhIjoiY2x5MDM4c29yMGh1eTJqcjZzZTRzNzEzaiJ9.dkx0lvLDJy35oWNvOW5mFg"
-                    options={{
-                      language: "en",
-                      country: "GB",
-                    }}
-                    placeholder="Search address or city"
-                    onRetrieve={handleAddressSearch}
-                    onChange={handleAddressChange}
-                    value={addressValue}
-                  />
-                </Form.Field>
-              </Form.Root>
+              <div className="locator-search">
+              <SearchBox
+              className="search-page-location-search"
+                accessToken="pk.eyJ1IjoiZGF6emExMjMiLCJhIjoiY2x5MDM4c29yMGh1eTJqcjZzZTRzNzEzaiJ9.dkx0lvLDJy35oWNvOW5mFg"
+                options={{
+                  language: "en",
+                  country: "GB",
+                }}
+                placeholder="Search address or city"
+                onRetrieve={handleAddressSearch}
+                onChange={handleAddressChange}
+                value={addressValue}
+              /></div>
               <ButtonComponent
                 className="locate-user-button default-button primary-button"
                 action={handleLocateUser}

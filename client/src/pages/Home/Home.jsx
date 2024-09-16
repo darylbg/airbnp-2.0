@@ -12,27 +12,16 @@ import "./Home.css";
 import { useNavigate } from "react-router-dom";
 
 export default function Home() {
-  const [addressData, setAddressData] = useState(null);
   const [addressValue, setAddressValue] = React.useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      addressSearch: "",
-    },
-  });
-
   const handleAddressChange = (d) => {
     setAddressValue(d);
   };
 
-  const handleAddressRetrieve = (result) => {
+  const onAddressSubmit = (result) => {
     const features = result.features[0];
     const userLocation = {
       coordinates: {
@@ -41,28 +30,72 @@ export default function Home() {
       },
       fullAddress: features.properties.full_address,
     };
-    // dispatch(setUserLocation(userLocation))
-    setAddressData(userLocation);
+    const mapCenter = {
+      coordinates: {
+        lng: features.geometry.coordinates[0],
+        lat: features.geometry.coordinates[1],
+      },
+    };
+    dispatch(setUserLocation(userLocation));
+    dispatch(setMapCenter(mapCenter));
+    navigate("/search");
   };
 
-  const onSubmit = () => {
-    if (addressData) {
-      const mapCenter = {
-        coordinates: addressData.coordinates,
-      };
-      console.log("address data", addressData);
-      dispatch(setUserLocation(addressData));
-      dispatch(setMapCenter(mapCenter));
+  const handleLocateUser = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
 
-      navigate("/search");
+          const userLocation = {
+            coordinates: {
+              lng: longitude,
+              lat: latitude,
+            },
+            fullAddress: "",
+          };
+
+          const mapCenter = {
+            coordinates: {
+              lng: userLocation.coordinates.lng,
+              lat: userLocation.coordinates.lat,
+            },
+          };
+
+          // Dispatch location and map center to Redux store
+          dispatch(setUserLocation(userLocation));
+          dispatch(setMapCenter(mapCenter));
+
+          // Navigate to the search page only after dispatching the location
+          navigate("/search");
+        },
+        (error) => {
+          // Handle geolocation errors here if needed
+          console.error("Error getting location", error);
+          alert("Unable to retrieve your location");
+        }
+      );
+    } else {
+      alert("Geolocation is not supported by your browser");
     }
   };
 
   const searchBoxTheme = {
-    variables: { 
-      border: "none"
-    }
-  }
+    variables: {
+      border: "none",
+      borderRadius: "5px",
+      boxShadow: "none",
+      border: "1px solid #acacac",
+      elements: {
+        searchIcon: {
+          display: "none"
+        },
+        input: {
+          borderRadius: "50px"
+        }
+      }
+    },
+  };
 
   return (
     <div className="home-page">
@@ -77,37 +110,29 @@ export default function Home() {
               <p className="subtitle-2">Go out stress free</p>
             </div>
             <div className="search">
-              <Form.Root
-                onSubmit={handleSubmit(onSubmit)}
-                className="hero-search-form"
+              <div className="search-input">
+                <SearchBox
+                  style={{ width: "100%", borderRadius: "50px" }}
+                  className="hero-address-searchBox"
+                  accessToken="pk.eyJ1IjoiZGF6emExMjMiLCJhIjoiY2x5MDM4c29yMGh1eTJqcjZzZTRzNzEzaiJ9.dkx0lvLDJy35oWNvOW5mFg"
+                  options={{
+                    language: "en",
+                    country: "GB",
+                  }}
+                  theme={searchBoxTheme}
+                  placeholder="Search address or city"
+                  onRetrieve={onAddressSubmit}
+                  value={addressValue}
+                  onChange={handleAddressChange}
+                />
+              </div>
+              <ButtonComponent
+                type="submit"
+                className="large-rounded-button action-button"
+                action={handleLocateUser}
               >
-                <Form.Field className="search-field">
-                  <SearchBox
-                    style={{ width: "100%" }}
-                    className="hero-address-searchBox"
-                    accessToken="pk.eyJ1IjoiZGF6emExMjMiLCJhIjoiY2x5MDM4c29yMGh1eTJqcjZzZTRzNzEzaiJ9.dkx0lvLDJy35oWNvOW5mFg"
-                    options={{
-                      language: "en",
-                      country: "GB",
-                    }}
-                    theme={searchBoxTheme}
-                    placeholder="Search address or city"
-                    onRetrieve={handleAddressRetrieve}
-                    value={addressValue}
-                    onChange={handleAddressChange}
-                  />
-                </Form.Field>
-                <Form.Field className="search-button">
-                  <Form.Submit asChild>
-                    <ButtonComponent
-                      type="submit"
-                      className="large-rounded-button action-button"
-                    >
-                      Search closest locations
-                    </ButtonComponent>
-                  </Form.Submit>
-                </Form.Field>
-              </Form.Root>
+                Search closest locations
+              </ButtonComponent>
             </div>
           </div>
           <div className="hero-content-img">

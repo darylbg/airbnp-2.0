@@ -73,27 +73,26 @@
 }
 
 /* hero section search form */
-
-
-.hero-search-form {
+.home-hero-section .search {
   display: flex;
   flex-direction: column;
   gap: 30px;
 }
 
-.hero-search-form .search-field {
-  display: flex;
+.home-hero-section .search mapbox-search-box {
+  
 }
 
-.hero-search-form .search-field input {
-  width: 100%;
-  border-radius: 50px;
-  padding: 18px 30px;
-  border: 1px solid var(--black-6);
+.home-hero-section .search mapbox-search-box input {
+  /* padding: 1rem 1rem 1rem 2rem;
   height: auto;
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: var(--black-11);
+  border-radius: 50px !important; */
+  padding: 18px 30px 18px 35px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 50px;
+    height: auto;
 }
 
 .hero-content .hero-content-img {
