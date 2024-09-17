@@ -1,7 +1,8 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useContext } from "react";
 import DialogComponent from "../PrimitiveComponents/DialogComponent/DialogComponent";
 import { createRoot } from "react-dom/client";
 import mapboxgl from "mapbox-gl";
+import { useHelperFunctions } from "../../HelperFunctions";
 import ButtonComponent from "../PrimitiveComponents/ButtonComponent/ButtonComponent";
 import {
   setSelectedListing,
@@ -21,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import PinIcon from "../../assets/images/icons/pin_icon3.png";
 import ListingDetail from "../BookingCycleComponents/ListingDetail/ListingDetail";
 import { setListingReviews } from "../../reducers/reviewsReducer";
+import { HelperFunctionsProvider } from "../../HelperFunctions";
 
 export default function SearchMap({
   listings,
@@ -31,6 +33,8 @@ export default function SearchMap({
   setRouteData,
 }) {
   mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
+
+  const { windowSize } = useHelperFunctions();
 
   const [mapStyle, setMapStyle] = useState(mapStyleOptions[0]);
   const [mapStylePicker, setMapStylePicker] = useState(false);
@@ -211,20 +215,26 @@ export default function SearchMap({
           );
 
           popup.on("open", () => {
-            setPopupOpen(listing);
-            dispatch(setSelectedListing(listing));
-            createRoot(popupContainer).render(
-              <MapMarkerPopup
-                listing={listing}
-                openDetailDialog={openDetailDialog}
-                closeDetailDialog={closeDetailDialog}
-                startLngLat={[
-                  userLocation.coordinates.lng,
-                  userLocation.coordinates.lat,
-                ]}
-                accessToken={mapboxgl.accessToken}
-              />
-            );
+            if (windowSize > 768) {
+              setPopupOpen(listing);
+              dispatch(setSelectedListing(listing));
+              createRoot(popupContainer).render(
+                <MapMarkerPopup
+                  listing={listing}
+                  openDetailDialog={openDetailDialog}
+                  closeDetailDialog={closeDetailDialog}
+                  startLngLat={[
+                    userLocation.coordinates.lng,
+                    userLocation.coordinates.lat,
+                  ]}
+                  accessToken={mapboxgl.accessToken}
+                />
+              );
+            } else {
+              dispatch(setSelectedListing(listing));
+              openDetailDialog(listing);
+              // popup.style.display = "none";
+            }
           });
 
           popup.on("close", () => {
@@ -292,7 +302,7 @@ export default function SearchMap({
         });
       }
     }
-  }, [listings, userLocation, dispatch]);
+  }, [listings, userLocation, dispatch, windowSize]);
 
   useEffect(() => {
     listings &&
@@ -329,8 +339,8 @@ export default function SearchMap({
     setMapStyle(style);
   };
 
-  const openDetailDialog = (e, listing) => {
-    e.preventDefault();
+  const openDetailDialog = (listing) => {
+    // e.preventDefault();
     dispatch(setListingDetails({ listing: listing }));
     setDetailDialog(true);
 
@@ -358,11 +368,15 @@ export default function SearchMap({
 
   return (
     <div className="search-map-wrapper">
-      <div className="map-styles"
-      onMouseEnter={() => setMapStylePicker(true)}
-      onMouseLeave={() => setMapStylePicker(false)}
+      <div
+        className="map-styles"
+        onMouseEnter={() => setMapStylePicker(true)}
+        onMouseLeave={() => setMapStylePicker(false)}
       >
-        <div className="map-styles-dropdown" style={{display: mapStylePicker ? "flex" : "none"}}>
+        <div
+          className="map-styles-dropdown"
+          style={{ display: mapStylePicker ? "flex" : "none" }}
+        >
           {mapStyleOptions.map((style) => (
             <div className="map-style" key={style.option}>
               <button
@@ -380,7 +394,7 @@ export default function SearchMap({
             </div>
           ))}
         </div>
-         <div className="map-styles-trigger">
+        <div className="map-styles-trigger">
           <button>
             <span class="material-symbols-outlined">stacks</span>
           </button>

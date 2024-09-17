@@ -241,7 +241,7 @@ export default function Search({}) {
                 className="locate-user-button default-button primary-button"
                 action={handleLocateUser}
               >
-                Near me
+                <span className="text">Near me</span>
                 <span className="material-symbols-outlined">
                   location_searching
                 </span>

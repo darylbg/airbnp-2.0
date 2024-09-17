@@ -324,3 +324,26 @@
   max-width: 420px;
   position: relative;
 }
+
+.continue-to-book-button {
+  display: none;
+  position: fixed;
+  bottom: 1rem;
+  max-width: 500px;
+  margin: 0 1rem;
+  width: 100vw;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.continue-to-book-button:hover,
+.continue-to-book-button:active,
+.continue-to-book-button:focus {
+  position: fixed;
+}
+
+@media screen and (max-width: 768px) {
+  .continue-to-book-button {
+    display: flex;
+  }
+}

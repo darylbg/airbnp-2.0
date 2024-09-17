@@ -5,6 +5,7 @@
   width: 100%;
   height: calc(100vh - 58px);
   overflow: hidden;
+  position: relative;
 }
 
 .search-listings {
@@ -41,10 +42,9 @@
   gap: 1rem;
 }
 
-/* address search autocomplete */
-/* .search-listings-input .locators .locator-search {
+.search-listings-input .locators .locator-search {
   flex: 1;
-} */
+}
 
 /* locate me button */
 .locate-user-button {
@@ -53,10 +53,7 @@
   padding-top: 0;
   padding-bottom: 0;
   height: 100%;
-}
-
-.locate-user-button:hover {
-  /* box-shadow: rgba(100, 100, 111, 0.3) 0px 3px 20px 0px; */
+  text-wrap: nowrap;
 }
 
 .locate-user-button .material-symbols-outlined {
@@ -172,8 +169,59 @@
   width: 100%;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1000px) {
   .search-listings {
+    min-width: 500px;
+    max-width: 500px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .search-page {
+    height: calc(100vh - 74px);
+  }
+
+  .search-listings {
+    position: absolute;
+    z-index: 10;
+    top: 0.5rem;
+    left: 0.5rem;
+    right: 0.5rem;
+    max-width: none;
+    min-width: 0;
+    height: fit-content;
+    border-radius: 10px;
+    box-shadow: rgba(100, 100, 111, 0.1) 0px 1px 10px 0px;
+  }
+
+  .search-listings-display {
+    display: none;
+  }
+
+  .locate-user-button {
+    padding: 0.6rem 1.2rem;
+  }
+
+  .search-route-types {
+    max-width: none;
+    padding: 0.5rem;
+  }
+
+  .mapboxgl-popup {
+    display: none !important;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .search-page {
+    height: calc(100vh - 52px);
+  }
+
+}
+
+@media screen and (max-width: 400px) {
+
+  .locate-user-button .text {
     display: none;
   }
 }

@@ -1,7 +1,9 @@
-import React, { createContext } from "react";
+import React, { createContext, useEffect, useState } from "react";
 
+// Create the context
 const HelperFunctionsContext = createContext();
 
+// Function to format the date from a timestamp
 function formatDateFromTimestamp(timestamp) {
   // Convert the timestamp to milliseconds
   const date = new Date(parseInt(timestamp, 10));
@@ -15,12 +17,31 @@ function formatDateFromTimestamp(timestamp) {
   return `${day}-${month}-${year}`;
 }
 
+// The HelperFunctionsProvider component
 export const HelperFunctionsProvider = ({ children }) => {
+  // State to store the current window size
+  const [windowSize, setWindowSize] = useState(window.innerWidth);
+
+  // Update windowSize whenever the window is resized
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setWindowSize(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleWindowResize);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []); // Empty dependency array ensures this effect runs once when the component mounts
+
   return (
-    <HelperFunctionsContext.Provider value={{formatDateFromTimestamp}}>
+    <HelperFunctionsContext.Provider value={{ formatDateFromTimestamp, windowSize }}>
       {children}
     </HelperFunctionsContext.Provider>
   );
 };
 
+// Hook to use the HelperFunctionsContext
 export const useHelperFunctions = () => React.useContext(HelperFunctionsContext);

@@ -46,12 +46,6 @@
   z-index: auto;
 }
 
-@media screen and (max-width: 650px) {
-  .dialog-header-spacer {
-    display: none;
-  }
-}
-
 .dialog-header .text {
   margin: 0;
   text-wrap: nowrap;
@@ -195,10 +189,26 @@
   gap: 3rem;
 }
 
-.dialog-header-minimized .dialog-header-spacer {
+.dialog-body-minimized {
   display: none;
 }
 
-.dialog-body-minimized {
-  display: none;
+@media screen and (max-width: 768px) {
+  .dialog-backdrop-minimized {
+    background-color: transparent;
+    height: fit-content;
+    width: auto;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    /* border-radius: 20px; */
+  }
+
+  .minimized-dialog-content {
+    width: 100vw;
+    max-width: none;
+    border-radius: 10px;
+    padding-bottom: 3rem;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 3px 20px 0px;
+  }
 }

@@ -19,9 +19,10 @@ import RatingComponent from "../../PrimitiveComponents/RatingComponent/RatingCom
 import { useQuery } from "@apollo/client";
 import { Rating } from "react-simple-star-rating";
 import { setListingReviews } from "../../../reducers/reviewsReducer";
-
+import { useHelperFunctions } from "../../../HelperFunctions";
 export default function ListingDetail() {
   const dispatch = useDispatch();
+  const { windowSize } = useHelperFunctions();
   const listing = useSelector(
     (state) => state.bookingCycle.booking.listingDetail?.listing
   );
@@ -267,8 +268,8 @@ export default function ListingDetail() {
       const formattedDuration = handleDurationFormat(routeData.duration);
       const originLat = userLocation.coordinates.lat;
       const originLng = userLocation.coordinates.lng;
-      const destinationLat = listing.latitude;
-      const destinationLng = listing.longitude;
+      const destinationLat = listing?.latitude;
+      const destinationLng = listing?.longitude;
       const travelMode = routeType;
       const directionsUrl = `https://www.google.com/maps/dir/?api=1&origin=${originLat},${originLng}&destination=${destinationLat},${destinationLng}&travelmode=${travelMode}`;
       setFormattedRouteData({
@@ -590,16 +591,24 @@ export default function ListingDetail() {
             </div>
           </div>
         </div>
+        <ButtonComponent
+          type="button"
+          className="continue-to-book-button default-button action-button"
+        >
+          Continue to book
+        </ButtonComponent>
       </div>
-      <div className="listing-booking-info">
-        <BookingInfo
-          routeType={routeType}
-          handleRouteTypeSwitch={handleRouteTypeSwitch}
-          formattedRouteData={formattedRouteData}
-          arrivalTime={arrivalTime}
-          setArrivalTime={setArrivalTime}
-        />
-      </div>
+      {windowSize > 768 && (
+        <div className="listing-booking-info">
+          <BookingInfo
+            routeType={routeType}
+            handleRouteTypeSwitch={handleRouteTypeSwitch}
+            formattedRouteData={formattedRouteData}
+            arrivalTime={arrivalTime}
+            setArrivalTime={setArrivalTime}
+          />
+        </div>
+      )}
     </div>
   );
 }

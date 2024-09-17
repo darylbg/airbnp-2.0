@@ -117,7 +117,7 @@ export default function MapMarkerPopup({
           type="button"
           className="default-button action-button map-popup-button"
           loading={!listing.availability}
-          action={(e) => openDetailDialog(e, listing)}
+          action={(e) => openDetailDialog(listing)}
         >
           Book this bathroom
         </PrimaryButton>
