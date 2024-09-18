@@ -9,6 +9,7 @@ import LoginRegisterComponent from "../../LoginRegisterComponents/LoginRegisterC
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import * as Form from "@radix-ui/react-form";
+import { useHelperFunctions } from "../../../HelperFunctions";
 import DialogComponent from "../../PrimitiveComponents/DialogComponent/DialogComponent";
 import "./BookingInfo.css";
 import { VALIDATE_TOKEN } from "../../../utils/mutations/urlGenerationMutations";
@@ -186,7 +187,7 @@ export default function BookingInfo({
     url.searchParams.delete("dialog");
     
     // Set the required search parameters
-    url.searchParams.set("listing", listing.id);
+    url.searchParams.set("listing", listing?.id);
     url.searchParams.set("token", token);
     
     // Use navigate with the full URL including the search parameters

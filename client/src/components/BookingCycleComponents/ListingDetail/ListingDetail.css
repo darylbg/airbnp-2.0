@@ -340,10 +340,31 @@
 .continue-to-book-button:active,
 .continue-to-book-button:focus {
   position: fixed;
+  transform: translateX(-50%);
+}
+
+.listing-booking-info .back-button {
+  display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8rem;
 }
 
 @media screen and (max-width: 768px) {
+  .listing-booking-content {
+    height: auto;
+  }
+  
+  .listing-booking-details {
+    padding-bottom: 4.5rem;
+  }
   .continue-to-book-button {
     display: flex;
+  }
+
+  .listing-booking-info {
+    max-width: none;
+    justify-content: space-between;
   }
 }

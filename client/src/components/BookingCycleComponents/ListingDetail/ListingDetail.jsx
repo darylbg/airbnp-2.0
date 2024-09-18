@@ -360,252 +360,273 @@ export default function ListingDetail() {
     }
   }
 
+  // const {windowSize} = useHelperFunctions();
+  const [mobileBookingInfo, setMobileBookingInfo] = useState(false);
+  console.log("mobile bookinginfo:", mobileBookingInfo);
+  useEffect(() => {
+    if (windowSize > 768) {
+      setMobileBookingInfo(false);
+    }
+  }, [windowSize, mobileBookingInfo]);
   return (
     <div
       className={`listing-booking-content ${listing?.availability}-listing-booking-content`}
     >
-      <div className="listing-booking-details">
-        <div className="booking-travel">
-          <div className="booking-map-wrapper">
-            <div
-              style={{ height: "200px", width: "100%", borderRadius: "10px" }}
-              ref={mapContainerRef}
-              className="map-container booking-map"
-            ></div>
-          </div>
-          {userLocation.coordinates.lat !== null ||
-          userLocation.coordinates.lng !== null ? (
-            <div className="search-route-types">
-              <div className="button-group">
-                <ButtonComponent
-                  type="button"
-                  className={`route-type-btn ${
-                    routeType === "walking" ? "active" : ""
-                  }`}
-                  action={() => handleRouteTypeSwitch("walking")}
-                >
-                  <span className="material-symbols-outlined">
-                    directions_walk
-                  </span>
-                  <span> Walk</span>
-                </ButtonComponent>
-                <ButtonComponent
-                  type="button"
-                  className={`route-type-btn ${
-                    routeType === "cycling" ? "active" : ""
-                  }`}
-                  action={() => handleRouteTypeSwitch("cycling")}
-                >
-                  <span className="material-symbols-outlined">
-                    directions_bike
-                  </span>
-                  <span> Cycle</span>
-                </ButtonComponent>
-                <ButtonComponent
-                  type="button"
-                  className={`route-type-btn ${
-                    routeType === "driving" ? "active" : ""
-                  }`}
-                  action={() => handleRouteTypeSwitch("driving")}
-                >
-                  <span className="material-symbols-outlined">
-                    directions_car
-                  </span>
-                  <span> Drive</span>
-                </ButtonComponent>
-              </div>
-              <div className="route-type-result">
-                <strong className="distance">
-                  {formattedRouteData.distance}
-                </strong>
-                <strong className="duration">
-                  {formattedRouteData.duration}
-                </strong>
-                <Link
-                  to={formattedRouteData.googleMapsLink}
-                  className="get-directions"
-                  target="_blank"
-                >
-                  Get directions
-                </Link>
-              </div>
+      {!mobileBookingInfo && (
+        <div className="listing-booking-details">
+          <div className="booking-travel">
+            <div className="booking-map-wrapper">
+              <div
+                style={{ height: "200px", width: "100%", borderRadius: "10px" }}
+                ref={mapContainerRef}
+                className="map-container booking-map"
+              ></div>
             </div>
-          ) : (
-            <span>Set your location to view travel options</span>
-          )}
-        </div>
-        <div className="booking-heading">
-          <div className="booking-heading-text">
-            <span className="building-type">Private residence</span>
-            <h1>{listing?.listing_title}</h1>
-            <div className="subheading">
-              <RatingComponent
-                value={listing?.average_rating.value}
-                count={listing?.average_rating.count}
-              />
-              <div className="availability">
-                <span>{listing?.availability ? "Open now" : "closed"}</span>
-              </div>
-              {formattedRouteData.distance !== null ? (
-                <div className="distance">
-                  <span class="material-symbols-outlined">location_on</span>
-                  <span>{formattedRouteData.distance}</span>
+            {userLocation.coordinates.lat !== null ||
+            userLocation.coordinates.lng !== null ? (
+              <div className="search-route-types">
+                <div className="button-group">
+                  <ButtonComponent
+                    type="button"
+                    className={`route-type-btn ${
+                      routeType === "walking" ? "active" : ""
+                    }`}
+                    action={() => handleRouteTypeSwitch("walking")}
+                  >
+                    <span className="material-symbols-outlined">
+                      directions_walk
+                    </span>
+                    <span> Walk</span>
+                  </ButtonComponent>
+                  <ButtonComponent
+                    type="button"
+                    className={`route-type-btn ${
+                      routeType === "cycling" ? "active" : ""
+                    }`}
+                    action={() => handleRouteTypeSwitch("cycling")}
+                  >
+                    <span className="material-symbols-outlined">
+                      directions_bike
+                    </span>
+                    <span> Cycle</span>
+                  </ButtonComponent>
+                  <ButtonComponent
+                    type="button"
+                    className={`route-type-btn ${
+                      routeType === "driving" ? "active" : ""
+                    }`}
+                    action={() => handleRouteTypeSwitch("driving")}
+                  >
+                    <span className="material-symbols-outlined">
+                      directions_car
+                    </span>
+                    <span> Drive</span>
+                  </ButtonComponent>
                 </div>
-              ) : null}
-            </div>
-          </div>
-          <div className="booking-heading-action">
-            <WindowControlButton
-              type="button"
-              className="default-button booking-heading-button"
-              icon="favorite"
-              tooltip="Like"
-            ></WindowControlButton>
-            <WindowControlButton
-              type="button"
-              className="default-button booking-heading-button"
-              icon="ios_share"
-              tooltip="Share"
-              action={getSharableLink}
-            ></WindowControlButton>
-          </div>
-        </div>
-        <div className="booking-images">
-          {listing ? (
-            <Carousel
-              swipeable={false}
-              draggable={false}
-              showDots={listing?.listing_image.length > 1}
-              arrows={listing?.listing_image.length > 1}
-              responsive={responsive}
-              infinite={true}
-              keyBoardControl={true}
-              customTransition="all .5"
-              transitionDuration={500}
-              containerClass="carousel-container"
-              dotListClass="custom-dot-list-style"
-              itemClass="carousel-item-padding-40-px"
-            >
-              {listing?.listing_image.map((image, index) => (
-                <img key={index} src={image} alt="image" className="" />
-              ))}
-            </Carousel>
-          ) : (
-            <div>no images</div>
-          )}
-        </div>
-        <div className="booking-body">
-          <div className="booking-host">
-            <NavLink to={`/profile/${listing?.user_id.id}`}>
-              <img src={listing?.user_id.user_image} alt="" />
-            </NavLink>
-            <div className="booking-host-text">
-              <span className="display-name">
-                Hosted by <strong>{listing?.user_id.display_name}</strong>
-              </span>
-              <span className="time-hosting">
-                {timeAgo(listing?.user_id.created_at)} hosting
-              </span>
-            </div>
-          </div>
-          <div className="booking-description">
-            <p>{listing?.listing_description}</p>
-          </div>
-          <div className="booking-amenities"></div>
-          <div className="booking-specifics">
-            <div className="specific">
-              <img src={ReservationIcon} alt="location icon" />
-              <span className="text">Online booking required.</span>
-            </div>
-            <div className="specific">
-              <img src={TrackIcon} alt="location icon" />
-              <span className="text">Full address provided at checkout.</span>
-            </div>
-            <div className="specific">
-              <img src={ShieldIcon} alt="location icon" />
-              <span className="text">Protection up to £10,000</span>
-            </div>
-          </div>
-          <div className="booking-reviews">
-            <div className="booking-reviews-header">
-              <div className="caption">
-                <span class="star">&#9733; Rating</span>
+                <div className="route-type-result">
+                  <strong className="distance">
+                    {formattedRouteData.distance}
+                  </strong>
+                  <strong className="duration">
+                    {formattedRouteData.duration}
+                  </strong>
+                  <Link
+                    to={formattedRouteData.googleMapsLink}
+                    className="get-directions"
+                    target="_blank"
+                  >
+                    Get directions
+                  </Link>
+                </div>
               </div>
-              <div className="rating-overview">
-                <span className="rating-value">
-                  {listing?.average_rating.value.toFixed(1)}
+            ) : (
+              <span>Set your location to view travel options</span>
+            )}
+          </div>
+          <div className="booking-heading">
+            <div className="booking-heading-text">
+              <span className="building-type">Private residence</span>
+              <h1>{listing?.listing_title}</h1>
+              <div className="subheading">
+                <RatingComponent
+                  value={listing?.average_rating.value}
+                  count={listing?.average_rating.count}
+                />
+                <div className="availability">
+                  <span>{listing?.availability ? "Open now" : "closed"}</span>
+                </div>
+                {formattedRouteData.distance !== null ? (
+                  <div className="distance">
+                    <span class="material-symbols-outlined">location_on</span>
+                    <span>{formattedRouteData.distance}</span>
+                  </div>
+                ) : null}
+              </div>
+            </div>
+            <div className="booking-heading-action">
+              <WindowControlButton
+                type="button"
+                className="default-button booking-heading-button"
+                icon="favorite"
+                tooltip="Like"
+              ></WindowControlButton>
+              <WindowControlButton
+                type="button"
+                className="default-button booking-heading-button"
+                icon="ios_share"
+                tooltip="Share"
+                action={getSharableLink}
+              ></WindowControlButton>
+            </div>
+          </div>
+          <div className="booking-images">
+            {listing ? (
+              <Carousel
+                swipeable={false}
+                draggable={false}
+                showDots={listing?.listing_image.length > 1}
+                arrows={listing?.listing_image.length > 1}
+                responsive={responsive}
+                infinite={true}
+                keyBoardControl={true}
+                customTransition="all .5"
+                transitionDuration={500}
+                containerClass="carousel-container"
+                dotListClass="custom-dot-list-style"
+                itemClass="carousel-item-padding-40-px"
+              >
+                {listing?.listing_image.map((image, index) => (
+                  <img key={index} src={image} alt="image" className="" />
+                ))}
+              </Carousel>
+            ) : (
+              <div>no images</div>
+            )}
+          </div>
+          <div className="booking-body">
+            <div className="booking-host">
+              <NavLink to={`/profile/${listing?.user_id.id}`}>
+                <img src={listing?.user_id.user_image} alt="" />
+              </NavLink>
+              <div className="booking-host-text">
+                <span className="display-name">
+                  Hosted by <strong>{listing?.user_id.display_name}</strong>
                 </span>
-                <div className="rating-stars">
-                  <Rating
-                    size={16}
-                    allowFraction={true}
-                    readonly={true}
-                    count={5}
-                    initialValue={listing?.average_rating.value}
-                  />
-                  <span className="text">
-                    {listing?.average_rating.count} reviews
-                  </span>
-                </div>
+                <span className="time-hosting">
+                  {timeAgo(listing?.user_id.created_at)} hosting
+                </span>
               </div>
             </div>
-            <div className="booking-reviews-list">
-              <ul className="listing-reviews">
-                {listingReviews &&
-                  listingReviews.map((review) => {
-                    return (
-                      <li key={review.id} className="listing-review">
-                        <div className="listing-review-header">
-                          <div className="review-details">
-                            <img
-                              className="image"
-                              src={review.user.user_image}
-                              alt=""
-                            />
-                            <div className="text">
-                              <h3 className="display-name">
-                                {review.user.display_name}
-                              </h3>
-                              <span className="created-at">
-                                {timeAgo(review.createdAt)} ago
-                              </span>
+            <div className="booking-description">
+              <p>{listing?.listing_description}</p>
+            </div>
+            <div className="booking-amenities"></div>
+            <div className="booking-specifics">
+              <div className="specific">
+                <img src={ReservationIcon} alt="location icon" />
+                <span className="text">Online booking required.</span>
+              </div>
+              <div className="specific">
+                <img src={TrackIcon} alt="location icon" />
+                <span className="text">Full address provided at checkout.</span>
+              </div>
+              <div className="specific">
+                <img src={ShieldIcon} alt="location icon" />
+                <span className="text">Protection up to £10,000</span>
+              </div>
+            </div>
+            <div className="booking-reviews">
+              <div className="booking-reviews-header">
+                <div className="caption">
+                  <span class="star">&#9733; Rating</span>
+                </div>
+                <div className="rating-overview">
+                  <span className="rating-value">
+                    {listing?.average_rating.value.toFixed(1)}
+                  </span>
+                  <div className="rating-stars">
+                    <Rating
+                      size={16}
+                      allowFraction={true}
+                      readonly={true}
+                      count={5}
+                      initialValue={listing?.average_rating.value}
+                    />
+                    <span className="text">
+                      {listing?.average_rating.count} reviews
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="booking-reviews-list">
+                <ul className="listing-reviews">
+                  {listingReviews &&
+                    listingReviews.map((review) => {
+                      return (
+                        <li key={review.id} className="listing-review">
+                          <div className="listing-review-header">
+                            <div className="review-details">
+                              <img
+                                className="image"
+                                src={review.user.user_image}
+                                alt=""
+                              />
+                              <div className="text">
+                                <h3 className="display-name">
+                                  {review.user.display_name}
+                                </h3>
+                                <span className="created-at">
+                                  {timeAgo(review.createdAt)} ago
+                                </span>
+                              </div>
                             </div>
+                            <Rating
+                              size={16}
+                              allowFraction={true}
+                              readonly={true}
+                              count={5}
+                              initialValue={review.rating_value}
+                            />
                           </div>
-                          <Rating
-                            size={16}
-                            allowFraction={true}
-                            readonly={true}
-                            count={5}
-                            initialValue={review.rating_value}
-                          />
-                        </div>
-                        {review.message !== "" ? (
-                          <div className="listing-review-body">
-                            <p className="message">{review.rating_text}</p>
-                          </div>
-                        ) : null}
-                      </li>
-                    );
-                  })}
-              </ul>
+                          {review.message !== "" ? (
+                            <div className="listing-review-body">
+                              <p className="message">{review.rating_text}</p>
+                            </div>
+                          ) : null}
+                        </li>
+                      );
+                    })}
+                </ul>
+              </div>
             </div>
           </div>
+          <ButtonComponent
+            type="button"
+            className="continue-to-book-button default-button action-button"
+            action={() => setMobileBookingInfo(true)}
+          >
+            Continue to book
+          </ButtonComponent>
         </div>
-        <ButtonComponent
-          type="button"
-          className="continue-to-book-button default-button action-button"
-        >
-          Continue to book
-        </ButtonComponent>
-      </div>
-      {windowSize > 768 && (
+      )}
+      {(mobileBookingInfo || windowSize > 768) && (
         <div className="listing-booking-info">
+          {mobileBookingInfo && (
+            <div className="back-button">
+              <WindowControlButton
+                icon="arrow_back"
+                action={() => setMobileBookingInfo(false)}
+              />
+              <span>Back to listing</span>
+            </div>
+          )}
           <BookingInfo
             routeType={routeType}
             handleRouteTypeSwitch={handleRouteTypeSwitch}
             formattedRouteData={formattedRouteData}
             arrivalTime={arrivalTime}
             setArrivalTime={setArrivalTime}
+            setMobileBookingInfo={setMobileBookingInfo}
           />
         </div>
       )}

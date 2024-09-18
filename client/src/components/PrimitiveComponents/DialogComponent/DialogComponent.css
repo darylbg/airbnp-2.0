@@ -79,6 +79,7 @@
   display: flex;
   padding: 1rem 0.7rem 0rem 1rem;
   z-index: auto;
+  flex: 1;
   justify-content: center;
 }
 

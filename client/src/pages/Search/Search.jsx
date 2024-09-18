@@ -16,6 +16,7 @@ import ButtonComponent from "../../components/PrimitiveComponents/ButtonComponen
 import { setUserLocation, setMapCenter } from "../../reducers/bookingReducer";
 import { Link } from "react-router-dom";
 import DialogComponent from "../../components/PrimitiveComponents/DialogComponent/DialogComponent";
+import { useHelperFunctions } from "../../HelperFunctions";
 
 export default function Search({}) {
   const dispatch = useDispatch();
@@ -118,6 +119,8 @@ export default function Search({}) {
       alert("Geolocation is not supported by your browser");
     }
   };
+
+  const {windowSize} = useHelperFunctions();
 
   const handleAddressSearch = (result) => {
     const features = result.features[0];
@@ -225,18 +228,19 @@ export default function Search({}) {
           <div className="search-listings-input">
             <div className="locators">
               <div className="locator-search">
-              <SearchBox
-              className="search-page-location-search"
-                accessToken="pk.eyJ1IjoiZGF6emExMjMiLCJhIjoiY2x5MDM4c29yMGh1eTJqcjZzZTRzNzEzaiJ9.dkx0lvLDJy35oWNvOW5mFg"
-                options={{
-                  language: "en",
-                  country: "GB",
-                }}
-                placeholder="Search address or city"
-                onRetrieve={handleAddressSearch}
-                onChange={handleAddressChange}
-                value={addressValue}
-              /></div>
+                <SearchBox
+                  className="search-page-location-search"
+                  accessToken="pk.eyJ1IjoiZGF6emExMjMiLCJhIjoiY2x5MDM4c29yMGh1eTJqcjZzZTRzNzEzaiJ9.dkx0lvLDJy35oWNvOW5mFg"
+                  options={{
+                    language: "en",
+                    country: "GB",
+                  }}
+                  placeholder="Search address or city"
+                  onRetrieve={handleAddressSearch}
+                  onChange={handleAddressChange}
+                  value={addressValue}
+                />
+              </div>
               <ButtonComponent
                 className="locate-user-button default-button primary-button"
                 action={handleLocateUser}
@@ -308,13 +312,15 @@ export default function Search({}) {
           </div>
           <div className="search-listings-filter">
             <p className="text">{listings?.length}+ locations near you</p>
-            <ButtonComponent
-              action={() => setSearchFilterDialog(true)}
-              type="button"
-              className="default-button control-button"
-            >
-              Filter
-            </ButtonComponent>
+            {windowSize > 768 && (
+              <ButtonComponent
+                action={() => setSearchFilterDialog(true)}
+                type="button"
+                className="default-button control-button"
+              >
+                Filter
+              </ButtonComponent>
+            )}
           </div>
         </div>
         <div className="search-listings-display scrollbar-1">
