@@ -329,11 +329,11 @@
   display: none;
   position: fixed;
   bottom: 1rem;
-  max-width: 500px;
-  margin: 0 1rem;
-  width: 100vw;
   left: 50%;
   transform: translateX(-50%);
+  width: 90%;
+  max-width: 400px;
+  padding: 0.8rem 1.5rem;
 }
 
 .continue-to-book-button:hover,
@@ -354,6 +354,7 @@
 @media screen and (max-width: 768px) {
   .listing-booking-content {
     height: auto;
+    padding-bottom: 1rem;
   }
   
   .listing-booking-details {

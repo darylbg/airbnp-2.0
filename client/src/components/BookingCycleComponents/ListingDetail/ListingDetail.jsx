@@ -26,7 +26,7 @@ export default function ListingDetail() {
   const listing = useSelector(
     (state) => state.bookingCycle.booking.listingDetail?.listing
   );
-  console.log("this listing:", listing);
+  // console.log("this listing:", listing);
 
   const userLocation = useSelector((state) => state.bookingCycle.userLocation);
 
@@ -362,7 +362,7 @@ export default function ListingDetail() {
 
   // const {windowSize} = useHelperFunctions();
   const [mobileBookingInfo, setMobileBookingInfo] = useState(false);
-  console.log("mobile bookinginfo:", mobileBookingInfo);
+  // console.log("mobile bookinginfo:", mobileBookingInfo);
   useEffect(() => {
     if (windowSize > 768) {
       setMobileBookingInfo(false);

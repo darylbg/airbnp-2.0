@@ -55,24 +55,8 @@
     font-size: 11px;
 }
 
-.mobile-signIn-button {
-    height: 100%;
+.mobile-nav-login-button {
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: var(--white-13);
-    border: none;
-    background-color: var(--blue-10);
-    justify-content: space-around;
-    padding: 12px 0;
-    border-radius: 0;
-}
-
-.mobile-signIn-button:hover {
-    background-color: var(--blue--11);
-    border: none;
-    transition: all ease-in-out 0.1s;
 }
 
 /* account submenu */

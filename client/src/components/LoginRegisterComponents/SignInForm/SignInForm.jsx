@@ -14,7 +14,8 @@ import "./SignInRegisterForms.css";
 import ButtonComponent from "../../PrimitiveComponents/ButtonComponent/ButtonComponent";
 
 export default function SignInForm({
-  setLoginRegisterDialog
+  setLoginRegisterDialog,
+  handleLoginToCheckout,
 }) {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
@@ -41,19 +42,18 @@ export default function SignInForm({
       const userListingsData = loggedInUserData.user.user_listings;
 
       console.log(loggedInUserData);
+      Auth.login(loggedInUserData.token);
       // updated redux dispatch
       dispatch(loginUser({ id: userId, token: loggedInUserData.token }));
       dispatch(setUserDetails(loggedInUserData.user));
       dispatch(setUserListings(userListingsData));
-      
 
-      // if loggin in to checkout, redirect to checkout page
-      // handleLoginToCheckout();
-      setLoginRegisterDialog(false);
       console.log("this is the token", loggedInUser.data);
-      Auth.login(loggedInUser.data.login.token);
 
-      // closeLoginRegisterDialog();
+      // should run from checkout login
+      handleLoginToCheckout();
+      // should run from normal login
+      setLoginRegisterDialog(false);
 
       const firstName = loggedInUserData.user.first_name;
       toast.success(<ToastComponent message={`Welcome ${firstName}.`} />);
@@ -136,7 +136,7 @@ export default function SignInForm({
           <Form.Label className="field-label">Email</Form.Label>
           <Form.Control asChild>
             <input
-            className="input-outlined"
+              className="input-outlined"
               type="text"
               {...register("email", {
                 required: "Email is required",
@@ -158,7 +158,7 @@ export default function SignInForm({
           <div className="password-input-wrapper">
             <Form.Control asChild>
               <input
-              className="input-outlined"
+                className="input-outlined"
                 type={passwordVisibility ? "text" : "password"}
                 {...register("password", { required: "Password is required" })}
                 onChange={handlePasswordValidation}
@@ -181,7 +181,10 @@ export default function SignInForm({
         </Form.Field>
         <Form.Field className="form-submit-button">
           <Form.Submit asChild>
-          <ButtonComponent type="submit" className="default-button action-button signIn-register-button">
+            <ButtonComponent
+              type="submit"
+              className="default-button action-button signIn-register-button"
+            >
               <strong>Sign in</strong>
             </ButtonComponent>
           </Form.Submit>

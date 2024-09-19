@@ -177,47 +177,43 @@ export default function BookingInfo({
   };
 
   const bookingToCheckout = async () => {
-    // generate a token, set to url
+    console.log("running bookingToCheckout");
     const token = await setUniqueUrl();
     if (token) {
       const url = new URL(window.location);
-    url.pathname = "/checkout";
-    
-    // Remove the existing dialog parameter if it exists
-    url.searchParams.delete("dialog");
-    
-    // Set the required search parameters
-    url.searchParams.set("listing", listing?.id);
-    url.searchParams.set("token", token);
-    
-    // Use navigate with the full URL including the search parameters
-    navigate(`${url.pathname}${url.search}`);
-
+      url.pathname = "/checkout";
+      url.searchParams.delete("dialog");
+      url.searchParams.set("listing", listing?.id);
+      url.searchParams.set("token", token);
+  
+      // Navigate only after these steps
+      navigate(`${url.pathname}${url.search}`);
+      
       localStorage.setItem("checkoutToken", token);
+      dispatch(
+        setBookingDetails({
+          listing,
+          numberOfPeople,
+          arrivalTime: { hour: `${arrivalTime.hour}`, minute: `${arrivalTime.minute}` },
+          specialRequests: "",
+          pricing: pricingDetails,
+        })
+      );
+      console.log("checkout token successfull");
     } else {
       console.error("Failed to generate checkout token");
     }
-    // send booking details to redux
-    dispatch(
-      setBookingDetails({
-        listing: listing,
-        numberOfPeople: numberOfPeople,
-        arrivalTime: {
-          hour: `${arrivalTime.hour}`,
-          minute: `${arrivalTime.minute}`,
-        },
-        specialRequests: "",
-        pricing: pricingDetails,
-      })
-    );
   };
+  
 
   // if logged out, show loggin prompt then proceed to checkout
   const handleLoggedOutBookingToCheckout = () => {
     if (isLoggedIn) {
       bookingToCheckout();
+      return;
     } else {
       setShowLoginRequiredPrompt(true);
+      return;
     }
   };
 

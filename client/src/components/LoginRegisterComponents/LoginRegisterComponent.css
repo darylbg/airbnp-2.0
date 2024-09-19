@@ -1,9 +1,15 @@
 .login-register-wrapper {
-    width: 100%;
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .signInRegister-form {
-    padding: 1rem
+    padding: 1rem;
+    width: 100%;
+    max-width: 400px;
 }
 
 .signInRegister-form-toggle {

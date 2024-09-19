@@ -14,6 +14,7 @@ import ButtonComponent from "../../PrimitiveComponents/ButtonComponent/ButtonCom
 
 export default function RegisterForm({
   setLoginRegisterDialog,
+  handleLoginToCheckout
 }) {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
@@ -71,11 +72,13 @@ export default function RegisterForm({
 
       // if loggin in to checkout, redirect to checkout page
       setLoginRegisterDialog(false);
-      // handleLoginToCheckout();
+      
 
       // set token in local storage
       Auth.login(registeredUser.data.register.token);
+      handleLoginToCheckout();
       toast.success(<ToastComponent message={`Welcome ${registeredUserData.user.first_name}.`}/>);
+      
     } catch (error) {
       if (error.graphQLErrors && error.graphQLErrors.length > 0) {
         const firstGraphQLErrorCode = error.graphQLErrors[0].extensions.code;

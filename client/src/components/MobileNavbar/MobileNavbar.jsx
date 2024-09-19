@@ -5,7 +5,9 @@ import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import * as Dialog from "@radix-ui/react-dialog";
 import { HomeIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import authService from "../../utils/auth";
-
+import LoginRegisterComponent from "../LoginRegisterComponents/LoginRegisterComponent";
+import DialogComponent from "../PrimitiveComponents/DialogComponent/DialogComponent";
+import ButtonComponent from "../PrimitiveComponents/ButtonComponent/ButtonComponent";
 import SignInForm from "../LoginRegisterComponents/SignInForm/SignInForm";
 import RegisterForm from "../LoginRegisterComponents/RegisterForm/RegisterForm";
 import "./MobileNavbar.css";
@@ -37,6 +39,17 @@ const MobileNavbar = forwardRef((props, ref) => {
     authService.logout().then(() => {
       window.location.assign("/"); // This reloads the page and redirects to the root URL
     });
+  };
+  const [loginRegisterDialog, setLoginRegisterDialog] = useState(false);
+
+  const openLoginRegisterDialog = (e) => {
+    e.preventDefault();
+    setLoginRegisterDialog(true);
+  };
+
+  const closeLoginRegisterDialog = (e) => {
+    e.preventDefault();
+    setLoginRegisterDialog(false);
   };
 
   return (
@@ -120,44 +133,16 @@ const MobileNavbar = forwardRef((props, ref) => {
             </NavigationMenu.Item>
           ) : (
             <NavigationMenu.Item className="mobile-navbar-item">
-              <NavigationMenu.Link className="mobile-navbar-link" asChild>
-                <Dialog.Root
-                  open={dialogOpen}
-                  onOpenChange={() => setDialogOpen(!dialogOpen)}
-                  ref={ref}
-                >
-                  <Dialog.Trigger className="sign-in-button mobile-signIn-button clickable">
-                    <span className="material-symbols-outlined mobile-navbar-icon">
-                      account_circle
-                    </span>
-                    <span className="mobile-navbar-text">Sign in</span>
-                  </Dialog.Trigger>
-                  <Dialog.Portal>
-                    <Dialog.Overlay className="signIn-dialog-overlay" />
-                    <Dialog.Content className="default-button">
-                      {toggleSignInRegister ? (
-                        <SignInForm
-                          handleSignInRegisterToggle={
-                            handleSignInRegisterToggle
-                          }
-                        />
-                      ) : (
-                        <RegisterForm
-                          handleSignInRegisterToggle={
-                            handleSignInRegisterToggle
-                          }
-                        />
-                      )}
-                      <Dialog.Close asChild className=" clickable">
-                        <span className="material-symbols-outlined signIn-dialog-close">
-                          close
-                        </span>
-                      </Dialog.Close>
-                    </Dialog.Content>
-                  </Dialog.Portal>
-                </Dialog.Root>
-              </NavigationMenu.Link>
-            </NavigationMenu.Item>
+            <ButtonComponent
+              type="button"
+              action={openLoginRegisterDialog}
+              className="default-button mobile-navbar-link clickable mobile-nav-login-button"
+            >
+              <span className="mobile-navbar-icon material-symbols-outlined mobile-navbar-icon">
+                account_circle
+              </span>
+              <span className="mobile-navbar-text">Login</span>
+            </ButtonComponent></NavigationMenu.Item>
           )}
         </NavigationMenu.List>
         {/* mobile navbar account submenu popup */}
@@ -193,32 +178,44 @@ const MobileNavbar = forwardRef((props, ref) => {
                 </NavLink>
               </NavigationMenu.Item>
               <NavigationMenu.Item className="mobile-navbar-item">
-              <NavLink
-              to="/dashboard/bookings"
-              onClick={() => setToggleAccountSubmenu(false)}
-              className={({ isActive }) =>
-                `mobile-navbar-link clickable ${isActive ? "active" : ""}`
-              }
-            >
-              <span className="material-symbols-outlined mobile-navbar-icon">
-                dashboard_customize
-              </span>
-              <span className="mobile-navbar-text">Dashboard</span>
-            </NavLink>
+                <NavLink
+                  to="/dashboard/bookings"
+                  onClick={() => setToggleAccountSubmenu(false)}
+                  className={({ isActive }) =>
+                    `mobile-navbar-link clickable ${isActive ? "active" : ""}`
+                  }
+                >
+                  <span className="material-symbols-outlined mobile-navbar-icon">
+                    dashboard_customize
+                  </span>
+                  <span className="mobile-navbar-text">Dashboard</span>
+                </NavLink>
               </NavigationMenu.Item>
               <NavigationMenu.Item className="mobile-navbar-item">
-                  <Link onClick={logout} className="mobile-navbar-link clickable">
-                    {" "}
-                    <span className="material-symbols-outlined mobile-navbar-icon">
-                      logout
-                    </span>
-                    <span className="mobile-navbar-text">Logout</span>
-                  </Link>
+                <Link onClick={logout} className="mobile-navbar-link clickable">
+                  {" "}
+                  <span className="material-symbols-outlined mobile-navbar-icon">
+                    logout
+                  </span>
+                  <span className="mobile-navbar-text">Logout</span>
+                </Link>
               </NavigationMenu.Item>
             </NavigationMenu.List>
           </NavigationMenu.Sub>
         ) : null}
       </NavigationMenu.Root>
+      <DialogComponent
+        className="full-width-dialog login-register-dialog"
+        backdropClosable={true}
+        dialogState={loginRegisterDialog}
+        closeDialog={closeLoginRegisterDialog}
+        icon="close"
+        dialogHeader="Login/Register"
+      >
+        <LoginRegisterComponent
+          setLoginRegisterDialog={setLoginRegisterDialog}
+        />
+      </DialogComponent>
     </>
   );
 });
