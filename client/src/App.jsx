@@ -43,6 +43,7 @@ import NotificationsWatcher from "./components/DashboardComponents/Notifications
 const httpLink = createHttpLink({
   // development: "http://localhost:3001/graphql", production: "/graphql"
   uri: process.env.REACT_APP_HTTPLINK_URI,
+  credentials: 'same-origin',
 });
 
 console.log(process.env.REACT_APP_HTTPLINK_URI);
