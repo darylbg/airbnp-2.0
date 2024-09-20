@@ -228,7 +228,7 @@ export default function BookingInfo({
             />
             <span>Sign in to complete checkout</span>
           </div>
-          <LoginRegisterComponent handleLoginToCheckout={bookingToCheckout} />
+          <LoginRegisterComponent handleLoginToCheckout={bookingToCheckout} toCheckoutFlag={true} />
         </>
       ) : (
         <>

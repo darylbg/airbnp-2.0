@@ -7,6 +7,7 @@ export default function LoginRegisterComponent({
   // closeLoginRegisterDialog,
   handleLoginToCheckout,
   setLoginRegisterDialog,
+  toCheckoutFlag
 }) {
   const [toggleSignInRegister, setToggleSignInRegister] = useState("signIn");
   const handleSignInRegisterToggle = (e) => {
@@ -19,11 +20,13 @@ export default function LoginRegisterComponent({
         <SignInForm
           handleLoginToCheckout={handleLoginToCheckout}
           setLoginRegisterDialog={setLoginRegisterDialog}
+          toCheckoutFlag={toCheckoutFlag}
         />
       ) : (
         <RegisterForm
           handleLoginToCheckout={handleLoginToCheckout}
           setLoginRegisterDialog={setLoginRegisterDialog}
+          toCheckoutFlag={toCheckoutFlag}
         />
       )}
       <div className="signInRegister-form-toggle">

@@ -41,9 +41,11 @@ import * as Realm from "realm-web";
 import NotificationsWatcher from "./components/DashboardComponents/Notifications/NotificationsWatcher";
 
 const httpLink = createHttpLink({
-  // uri: "http://localhost:3001/graphql",
-  uri: "/graphql",
+  // development: "http://localhost:3001/graphql", production: "/graphql"
+  uri: process.env.REACT_APP_HTTPLINK_URI,
 });
+
+console.log(process.env.REACT_APP_HTTPLINK_URI);
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem("id_token");

@@ -14,7 +14,8 @@ import ButtonComponent from "../../PrimitiveComponents/ButtonComponent/ButtonCom
 
 export default function RegisterForm({
   setLoginRegisterDialog,
-  handleLoginToCheckout
+  handleLoginToCheckout,
+  toCheckoutFlag,
 }) {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
@@ -52,7 +53,8 @@ export default function RegisterForm({
             email: formData.email,
             // password: formData.password,
             gender: "",
-            user_image: "https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg",
+            user_image:
+              "https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg",
             user_listings: [],
             saved_listings: [],
             notifications: [],
@@ -62,23 +64,30 @@ export default function RegisterForm({
           },
         },
       });
+
       console.log(registeredUser);
       const registeredUserData = registeredUser.data.register;
       const userId = registeredUserData.user.id;
 
+      // set token in local storage
+      Auth.login(registeredUserData.token);
+
       // dispatch to updated redux store
-      dispatch(loginUser({id: userId, token: registeredUserData.token}));
+      dispatch(loginUser({ id: userId, token: registeredUserData.token }));
       dispatch(setUserDetails(registeredUserData.user));
 
-      // if loggin in to checkout, redirect to checkout page
-      setLoginRegisterDialog(false);
-      
+      // login to checkout logic
+      if (toCheckoutFlag) {
+        handleLoginToCheckout();
+      } else {
+        setLoginRegisterDialog(false);
+      }
 
-      // set token in local storage
-      Auth.login(registeredUser.data.register.token);
-      handleLoginToCheckout();
-      toast.success(<ToastComponent message={`Welcome ${registeredUserData.user.first_name}.`}/>);
-      
+      toast.success(
+        <ToastComponent
+          message={`Welcome ${registeredUserData.user.first_name}.`}
+        />
+      );
     } catch (error) {
       if (error.graphQLErrors && error.graphQLErrors.length > 0) {
         const firstGraphQLErrorCode = error.graphQLErrors[0].extensions.code;
@@ -131,7 +140,7 @@ export default function RegisterForm({
           <Form.Label className="field-label">First name</Form.Label>
           <Form.Control asChild>
             <input
-            className="input-outlined"
+              className="input-outlined"
               type="text"
               {...register("firstName", {
                 required: "First name is required",
@@ -144,7 +153,7 @@ export default function RegisterForm({
           <Form.Label className="field-label">Last name</Form.Label>
           <Form.Control asChild>
             <input
-            className="input-outlined"
+              className="input-outlined"
               type="text"
               {...register("lastName", {
                 required: "Last name is required",
@@ -157,7 +166,7 @@ export default function RegisterForm({
           <Form.Label className="field-label">Email</Form.Label>
           <Form.Control asChild>
             <input
-            className="input-outlined"
+              className="input-outlined"
               type="text"
               {...register("email", {
                 required: "Email is required",
@@ -177,7 +186,7 @@ export default function RegisterForm({
           <div className="password-input-wrapper">
             <Form.Control asChild>
               <input
-              className="input-outlined"
+                className="input-outlined"
                 type={passwordVisibility ? "text" : "password"}
                 {...register("password", {
                   required: "Password is required",
@@ -198,7 +207,10 @@ export default function RegisterForm({
         </Form.Field>
         <Form.Field className="form-submit-button">
           <Form.Submit asChild>
-            <ButtonComponent type="submit" className="default-button action-button signIn-register-button">
+            <ButtonComponent
+              type="submit"
+              className="default-button action-button signIn-register-button"
+            >
               <strong>Register</strong>
             </ButtonComponent>
           </Form.Submit>

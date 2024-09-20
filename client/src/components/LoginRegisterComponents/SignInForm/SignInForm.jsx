@@ -16,6 +16,7 @@ import ButtonComponent from "../../PrimitiveComponents/ButtonComponent/ButtonCom
 export default function SignInForm({
   setLoginRegisterDialog,
   handleLoginToCheckout,
+  toCheckoutFlag
 }) {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
@@ -47,13 +48,13 @@ export default function SignInForm({
       dispatch(loginUser({ id: userId, token: loggedInUserData.token }));
       dispatch(setUserDetails(loggedInUserData.user));
       dispatch(setUserListings(userListingsData));
-
-      console.log("this is the token", loggedInUser.data);
-
-      // should run from checkout login
-      handleLoginToCheckout();
-      // should run from normal login
-      setLoginRegisterDialog(false);
+      
+      // login to checkout logic
+      if (toCheckoutFlag) {
+        handleLoginToCheckout();
+      } else {
+        setLoginRegisterDialog(false);
+      }   
 
       const firstName = loggedInUserData.user.first_name;
       toast.success(<ToastComponent message={`Welcome ${firstName}.`} />);
