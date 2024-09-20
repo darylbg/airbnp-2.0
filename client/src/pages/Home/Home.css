@@ -250,7 +250,7 @@
 }
 
 .book-now-section-img img {
-  max-height: 500px;
+  max-height: 400px;
   position: relative;
 }
 
@@ -264,14 +264,13 @@
   display: flex;
   align-items: center;
   width: 100%;
-  background-color: var(--white-12);
-  border-top: 1px solid var(--black-5);
+  background-color: var(--white-13);
+  border-top: 1px solid var(--black-4);
   border-bottom: none;
   border-left: none;
   border-right: none;
   justify-content: space-between;
-  /* margin: 0; */
-  padding: 15px 0;
+  padding: 1.5rem 0;
 }
 
 .AccordionTrigger span {
@@ -292,12 +291,13 @@
 
 .AccordionContent {
   overflow: hidden;
+  padding-bottom: 1.5rem;
 }
 .AccordionContent[data-state='open'] {
-  animation: slideDown 200ms ease-out;
+  /* animation: slideDown 200ms ease-out; */
 }
 .AccordionContent[data-state='closed'] {
-  animation: slideUp 200ms ease-in;
+  /* animation: slideUp 200ms ease-in; */
 }
 
 @keyframes slideDown {

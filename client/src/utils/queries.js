@@ -62,6 +62,16 @@ export const GET_LISTING_BY_ID = gql`
       price
       user_id {
         id
+        display_name
+        first_name
+        last_name
+        user_image
+        created_at
+        gender
+        average_rating {
+          value
+          count
+        }
       }
       average_rating {
         count

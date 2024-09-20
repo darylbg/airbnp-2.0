@@ -113,6 +113,7 @@ const resolvers = {
       try {
         // Fetch the listing by ID
         const listing = await Listing.findById(listingId)
+        .populate({path: "user_id"})
           .populate({ path: "amenities" })
           .populate({ path: "reviews" })
           .populate({ path: "payments" });
@@ -122,7 +123,7 @@ const resolvers = {
           console.log("Listing not found for ID:", listingId);
           return null; // or throw an error based on your use case
         }
-        console.log(listing);
+        // console.log(listing);
         return listing;
       } catch (error) {
         console.error("Error fetching listing:", error);

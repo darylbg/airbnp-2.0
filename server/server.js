@@ -33,9 +33,9 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // this code block, when enabled, occasionally shows a blank page on http://localhost:3001/graphql
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
-});
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../client/build", "index.html"));
+// });
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build/index.html"));

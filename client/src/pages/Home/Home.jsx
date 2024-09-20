@@ -1,15 +1,14 @@
-import React, { useState } from "react";
-import * as Form from "@radix-ui/react-form";
+import React from "react";
 import * as Accordion from "@radix-ui/react-accordion";
 import ButtonComponent from "../../components/PrimitiveComponents/ButtonComponent/ButtonComponent";
-import HeroImage from "../../assets/images/HeroImage.jpg";
+import HeroImage from "../../assets/images/HeroImage2.jpg";
 import Phone1 from "../../assets/images/phone2.png";
-import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { SearchBox } from "@mapbox/search-js-react";
 import { setUserLocation, setMapCenter } from "../../reducers/bookingReducer";
 import "./Home.css";
 import { useNavigate } from "react-router-dom";
+import Footer from "../../components/Footer/Footer";
 
 export default function Home() {
   const [addressValue, setAddressValue] = React.useState("");
@@ -211,8 +210,12 @@ export default function Home() {
               <p className="section-subheading">
                 Instantly find close, clean bathrooms to use.
               </p>
-              <ButtonComponent className="large-rounded-button action-button">
-                Find nearest locations
+              <ButtonComponent
+                type="submit"
+                className="large-rounded-button action-button"
+                action={handleLocateUser}
+              >
+                Search closest locations
               </ButtonComponent>
             </div>
             <div className="book-now-section-img">
@@ -293,6 +296,7 @@ export default function Home() {
           </Accordion.Root>
         </div>
       </section>
+      <Footer />
     </div>
   );
 }

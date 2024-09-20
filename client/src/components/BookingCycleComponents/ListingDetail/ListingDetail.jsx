@@ -223,18 +223,12 @@ export default function ListingDetail() {
 
     now.setSeconds(now.getSeconds() + seconds);
 
-    // Extract the hours, minutes, and seconds from the new time
     const hours = now.getHours();
     const minutes = now.getMinutes();
-    // const secs = now.getSeconds();
 
-    // Format the time components to always be two digits
     const formattedHours = hours.toString().padStart(2, "0");
     const formattedMinutes = minutes.toString().padStart(2, "0");
-    // const formattedSeconds = secs.toString().padStart(2, "0");
 
-    // Combine the formatted time components into the desired format
-    // setArrivalTime(`${formattedHours}:${formattedMinutes}`);
     setArrivalTime((prev) => ({
       ...prev,
       hour: formattedHours,
@@ -360,9 +354,8 @@ export default function ListingDetail() {
     }
   }
 
-  // const {windowSize} = useHelperFunctions();
   const [mobileBookingInfo, setMobileBookingInfo] = useState(false);
-  // console.log("mobile bookinginfo:", mobileBookingInfo);
+
   useEffect(() => {
     if (windowSize > 768) {
       setMobileBookingInfo(false);

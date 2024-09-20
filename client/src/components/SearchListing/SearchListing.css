@@ -142,6 +142,7 @@
 
 .search-listing:hover .search-listing-image .custom-arrow {
     display: flex !important;
+    position: absolute;
 }
 
 .custom-arrow .material-symbols-outlined {

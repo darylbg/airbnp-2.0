@@ -48,7 +48,7 @@ export default function Checkout() {
 
   const handleBack = () => {
     navigate(-1);
-    dispatch(setBookingDetails(resetBooking()));
+    // dispatch(setBookingDetails(resetBooking()));
   };
 
   const handlePaymentSuccess = () => {

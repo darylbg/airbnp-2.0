@@ -134,41 +134,45 @@ export default function Profile({ myProfile }) {
               <h2 className="profile-section-title">
                 {myProfile ? "My" : `${userProfile?.display_name}'s`} listings
               </h2>
-              <ul>
-                {userProfile?.user_listings &&
-                  userProfile.user_listings.map((listing) => {
-                    return (
-                      <li key={listing.id} className="profile-listing">
-                        <NavLink
-                          to={
-                            myProfile
-                              ? "/dashboard/listings"
-                              : `http://localhost:3000/search?dialog=${listing.id}`
-                          }
-                        >
-                          <img
-                            src={listing.listing_image[0]}
-                            className="profile-listing-img"
-                          />
-                          <div className="profile-listing-text">
-                            <div className="profile-listing-header">
-                              <span className="home-type">
-                                private residence
-                              </span>
-                              <RatingComponent
-                                value={listing.average_rating.value}
-                              />
+              {userProfile?.user_listings.length < 1 ? (
+                <span>No listings yet</span>
+              ) : (
+                <ul>
+                  {userProfile?.user_listings &&
+                    userProfile.user_listings.map((listing) => {
+                      return (
+                        <li key={listing.id} className="profile-listing">
+                          <NavLink
+                            to={
+                              myProfile
+                                ? "/dashboard/listings"
+                                : `http://localhost:3000/search?dialog=${listing.id}`
+                            }
+                          >
+                            <img
+                              src={listing.listing_image[0]}
+                              className="profile-listing-img"
+                            />
+                            <div className="profile-listing-text">
+                              <div className="profile-listing-header">
+                                <span className="home-type">
+                                  private residence
+                                </span>
+                                <RatingComponent
+                                  value={listing.average_rating.value}
+                                />
+                              </div>
+                              <h2 className="title">{listing.listing_title}</h2>
+                              <p className="description">
+                                {listing.listing_description}
+                              </p>
                             </div>
-                            <h2 className="title">{listing.listing_title}</h2>
-                            <p className="description">
-                              {listing.listing_description}
-                            </p>
-                          </div>
-                        </NavLink>
-                      </li>
-                    );
-                  })}
-              </ul>
+                          </NavLink>
+                        </li>
+                      );
+                    })}
+                </ul>
+              )}
             </div>
             <div className="profile-reviews">
               <h2 className="profile-section-title">

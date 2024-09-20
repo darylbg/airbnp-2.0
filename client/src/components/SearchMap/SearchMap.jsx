@@ -62,28 +62,34 @@ export default function SearchMap({
 
   const location = useLocation();
 
-  const [getListingById, { data, loading, error }] =
-    useLazyQuery(GET_LISTING_BY_ID);
+  // const [getListingById, { data, loading, error }] =
+  //   useLazyQuery(GET_LISTING_BY_ID);
+
+  const queryParams = new URLSearchParams(location.search);
+  const listingId = queryParams.get("dialog");
+
+  const {
+    data: urlListingData,
+    loading: urlListingLoading,
+    error: urlListingError,
+  } = useQuery(GET_LISTING_BY_ID, {
+    variables: { listingId },
+    skip: !listingId,
+  });
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const listingId = queryParams.get("dialog"); // Adjust this if your parameter is different
-
-    if (listingId) {
-      // console.log("running", listingDetail.listing)
-      getListingById({ variables: { listingId } })
-        .then((response) => {
-          // console.log(response.data.getListingById);
-          dispatch(
-            setListingDetails({ listing: response.data.getListingById })
-          );
-          setDetailDialog(true);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+    if (!listingId) {
+      console.log("no listing id");
     }
-  }, []);
+
+    if (urlListingData) {
+      console.log(urlListingData.getListingById);
+      const listingData = urlListingData.getListingById;
+
+      dispatch(setListingDetails({ listing: listingData }));
+      setDetailDialog(true);
+    }
+  }, [listingId, urlListingData]);
 
   useEffect(() => {
     if (selectedListing && userLocation) {
