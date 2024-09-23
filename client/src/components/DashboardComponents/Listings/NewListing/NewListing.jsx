@@ -4,6 +4,7 @@ import { ApolloError, useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import AddressSearch from "../../../AddressSearch/AddressSearch";
 import * as Form from "@radix-ui/react-form";
+import * as RadioGroup from "@radix-ui/react-radio-group";
 import toast from "react-hot-toast";
 import ToastComponent from "../../../PrimitiveComponents/ToastComponent/ToastComponent";
 import { NEW_LISTING_MUTATION } from "../../../../utils/mutations";
@@ -53,8 +54,11 @@ export default function NewListing({ closeDialog }) {
     control,
     setValue,
     reset,
+    watch,
     formState: { errors },
   } = useForm();
+
+  const residenceType = watch("residenceType");
 
   const [newListingMutation] = useMutation(NEW_LISTING_MUTATION);
 
@@ -101,7 +105,7 @@ export default function NewListing({ closeDialog }) {
           listingData: {
             listing_title: formData.listing_title,
             listing_description: formData.listing_description,
-            contact_method: formData.contact_method,
+            contact_method: formData.residenceType,
             listing_image: listingImages,
             fullAddress: fullAddress,
             addressLine1: formData.addressAutofillInput,
@@ -164,7 +168,7 @@ export default function NewListing({ closeDialog }) {
           <Form.Label>listing title</Form.Label>
           <Form.Control asChild>
             <input
-            className="input-outlined"
+              className="input-outlined"
               type="text"
               {...register("listing_title", {
                 required: "This is required",
@@ -181,7 +185,7 @@ export default function NewListing({ closeDialog }) {
           <Form.Label>listing description</Form.Label>
           <Form.Control asChild>
             <textarea
-            className="input-outlined"
+              className="input-outlined"
               type="text"
               {...register("listing_description", {
                 required: "This is required",
@@ -196,30 +200,53 @@ export default function NewListing({ closeDialog }) {
         <div className="house-type-picker">
           <label>Residence type</label>
           <Form.Field>
-            <Form.Control asChild>
-              <input type="radio" value="Commercial building" />
-            </Form.Control>
-          </Form.Field>
-          <Form.Field>
-            <Form.Control asChild>
-              <input type="radio" value="Private house" />
-            </Form.Control>
+            <RadioGroup.Root
+              value={residenceType}
+              onValueChange={(value) => setValue("residenceType", value)}
+              className="RadioGroupRoot"
+              defaultValue="Private residence"
+              aria-label="View density"
+            >
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <RadioGroup.Item
+                  className="RadioGroupItem"
+                  value="Private residence"
+                  id="r1"
+                >
+                  <RadioGroup.Indicator className="RadioGroupIndicator" />
+                </RadioGroup.Item>
+                <label className="Label" htmlFor="r1">
+                  Private residence
+                </label>
+              </div>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <RadioGroup.Item
+                  className="RadioGroupItem"
+                  value="Commercial building"
+                  id="r2"
+                >
+                  <RadioGroup.Indicator className="RadioGroupIndicator" />
+                </RadioGroup.Item>
+                <label className="Label" htmlFor="r2">
+                  Commercial building
+                </label>
+              </div>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <RadioGroup.Item
+                  className="RadioGroupItem"
+                  value="Other"
+                  id="r3"
+                >
+                  <RadioGroup.Indicator className="RadioGroupIndicator" />
+                </RadioGroup.Item>
+                <label className="Label" htmlFor="r3">
+                  Other
+                </label>
+              </div>
+            </RadioGroup.Root>
           </Form.Field>
         </div>
-        <Form.Field className="new-listing-form-field" name="contact_method">
-          <Form.Label>listing contact method</Form.Label>
-          <Form.Control asChild>
-            <input
-            className="input-outlined"
-              type="text"
-              {...register("contact_method", {
-                required: "This is required",
-              })}
-              disabled={loading}
-            />
-          </Form.Control>
-          <div className="field-message">{errors.contact_method?.message}</div>
-        </Form.Field>
+
         <Form.Field className="new-listing-form-field" name="listing_image">
           <Form.Label>Listing Images</Form.Label>
           <div className="image-upload-widgets">
@@ -259,14 +286,11 @@ export default function NewListing({ closeDialog }) {
           loading={loading}
           showExpandedAddressSearch={true}
         />
-        <Form.Field
-          className="new-listing-form-field"
-          name="price"
-        >
+        <Form.Field className="new-listing-form-field" name="price">
           <Form.Label>listing price</Form.Label>
           <Form.Control asChild>
             <input
-            className="input-outlined"
+              className="input-outlined"
               type="number"
               {...register("price", {
                 required: "This is required",

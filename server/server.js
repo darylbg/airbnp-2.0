@@ -32,10 +32,14 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../client/build")));
 }
 
-// this code block, when enabled, occasionally shows a blank page on http://localhost:3001/graphql
+if (process.env.NODE_ENV === "production") {
+  // this code block, when enabled, occasionally shows a blank page on http://localhost:3001/graphql
+  // to be run in production
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build", "index.html"));
 });
+}
+
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build/index.html"));

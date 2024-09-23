@@ -180,19 +180,35 @@
   width: fit-content;
   max-width: 800px;
   border-radius: 10px;
-  padding-bottom: 1rem;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 3px 20px 0px;
 }
 
 .dialog-header-minimized {
-  padding-bottom: 0rem;
+  padding: 0rem;
   border-bottom: none;
-  gap: 3rem;
+  gap: 2rem;
+  margin-left: 0;
+}
+
+.dialog-header-minimized .minimized-preview-img {
+  height: 70px;
+  width: 70px;
+  overflow: hidden;
+  padding: 2px 0;
+}
+
+.dialog-header-minimized .minimized-preview-img img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 
 .dialog-body-minimized {
   display: none;
 }
+
 
 @media screen and (max-width: 768px) {
   .dialog-backdrop-minimized {

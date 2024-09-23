@@ -417,6 +417,7 @@ export default function SearchMap({
         dialogHeader={listingDetail?.listing_title}
         minimize={true}
         tooltip="Close"
+        image={listingDetail?.listing_image[0]}
       >
         <ListingDetail />
       </DialogComponent>

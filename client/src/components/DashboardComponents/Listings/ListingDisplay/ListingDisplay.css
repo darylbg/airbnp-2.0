@@ -130,6 +130,13 @@
 
 .edit-listing-dialog .dialog-content .dialog-body {
     flex-direction: column;
+    gap: 2rem;
+}
+
+.edit-listing-dialog .button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
 }
 
 @media screen and (max-width: 1000px) {

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import * as Form from "@radix-ui/react-form";
 import { useMutation } from "@apollo/client";
+import * as RadioGroup from "@radix-ui/react-radio-group";
 import { EDIT_LISTING_MUTATION } from "../../../../utils/mutations";
 import { DELETE_LISTING_MUTATION } from "../../../../utils/mutations";
 import ImageUploadWidget from "../../../PrimitiveComponents/ImageUploadWidget/ImageUploadWidget";
@@ -73,6 +74,7 @@ export default function EditListing({
     control,
     setValue,
     reset,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -90,6 +92,8 @@ export default function EditListing({
       price: listing.price,
     },
   });
+
+  const residenceType = watch("residenceType");
 
   const [editListingMutation] = useMutation(EDIT_LISTING_MUTATION);
   const [deleteListingMutation] = useMutation(DELETE_LISTING_MUTATION);
@@ -129,7 +133,7 @@ export default function EditListing({
           listingData: {
             listing_title: formData.listing_title,
             listing_description: formData.listing_description,
-            contact_method: formData.contact_method,
+            contact_method: formData.residenceType,
             listing_image: listingImages,
             fullAddress: fullAddress,
             addressLine1: formData.addressAutofillInput,
@@ -209,6 +213,7 @@ export default function EditListing({
           <Form.Label>Listing Title</Form.Label>
           <Form.Control asChild>
             <input
+            className="input-outlined"
               disabled={loading}
               type="text"
               {...register("listing_title", {
@@ -225,6 +230,7 @@ export default function EditListing({
           <Form.Label>Listing Description</Form.Label>
           <Form.Control asChild>
             <textarea
+            className="input-outlined"
               disabled={loading}
               type="text"
               {...register("listing_description", {
@@ -236,19 +242,55 @@ export default function EditListing({
             {errors.listing_description?.message}
           </div>
         </Form.Field>
-        <Form.Field className="new-listing-form-field" name="contact_method">
-          <Form.Label>Contact Method</Form.Label>
-          <Form.Control asChild>
-            <textarea
-              disabled={loading}
-              type="text"
-              {...register("contact_method", {
-                required: "This is required",
-              })}
-            />
-          </Form.Control>
-          <div className="field-message">{errors.contact_method?.message}</div>
-        </Form.Field>
+        <div className="house-type-picker">
+          <label>Residence type</label>
+          <Form.Field>
+            <RadioGroup.Root
+            value={residenceType}
+            onValueChange={(value) => setValue("residenceType", value)}
+              className="RadioGroupRoot"
+              defaultValue={residenceType}
+              aria-label="View density"
+            >
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <RadioGroup.Item
+                  className="RadioGroupItem"
+                  value="Private residence"
+                  id="r1"
+                >
+                  <RadioGroup.Indicator className="RadioGroupIndicator" />
+                </RadioGroup.Item>
+                <label className="Label" htmlFor="r1">
+                  Private residence
+                </label>
+              </div>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <RadioGroup.Item
+                  className="RadioGroupItem"
+                  value="Commercial building"
+                  id="r2"
+                >
+                  <RadioGroup.Indicator className="RadioGroupIndicator" />
+                </RadioGroup.Item>
+                <label className="Label" htmlFor="r2">
+                  Commercial building
+                </label>
+              </div>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <RadioGroup.Item
+                  className="RadioGroupItem"
+                  value="Other"
+                  id="r3"
+                >
+                  <RadioGroup.Indicator className="RadioGroupIndicator" />
+                </RadioGroup.Item>
+                <label className="Label" htmlFor="r3">
+                  Other
+                </label>
+              </div>
+            </RadioGroup.Root>
+          </Form.Field>
+        </div>
         <Form.Field className="new-listing-form-field" name="listing_image">
           <Form.Label>Listing Images</Form.Label>
           <div className="image-upload-widgets">
@@ -300,6 +342,7 @@ export default function EditListing({
           <Form.Label>Listing Price</Form.Label>
           <Form.Control asChild>
             <input
+            className="input-outlined"
               disabled={loading}
               type="number"
               {...register("price", {

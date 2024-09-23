@@ -13,9 +13,10 @@ export default function DialogComponent({
   children,
   minimize,
   tooltip,
+  image,
 }) {
   const [minimized, setMinimized] = useState(false);
-  const {windowSize} = useHelperFunctions();
+  const { windowSize } = useHelperFunctions();
 
   useEffect(() => {
     if (dialogState) {
@@ -72,15 +73,32 @@ export default function DialogComponent({
           className={`dialog-header ${
             minimized ? "dialog-header-minimized" : ""
           }`}
+          style={
+            minimized && image && windowSize < 768
+              ? { paddingTop: "1rem", marginLeft: "1rem" }
+              : null
+          }
         >
           <div className="dialog-header-mobile">
-            {windowSize < 769 && minimize && (
+            {windowSize < 769 && minimize ? (
               <WindowControlButton
                 action={minimized ? handleMaximizeDialog : handleMinimizeDialog}
-                icon={windowSize < 769 ? (minimized ? "keyboard_arrow_up" : "keyboard_arrow_down") : (minimized ? "rectangle" : "remove")}
+                icon={
+                  windowSize < 769
+                    ? minimized
+                      ? "keyboard_arrow_up"
+                      : "keyboard_arrow_down"
+                    : minimized
+                    ? "rectangle"
+                    : "remove"
+                }
                 tooltip={minimized ? "Expand" : "Minimize"}
               />
-            )}
+            ) : windowSize > 769 && minimized ? (
+              <div className="minimized-preview-img">
+                <img src={image} alt="" />
+              </div>
+            ) : null}
           </div>
           <h4 className="text">
             {dialogHeader}

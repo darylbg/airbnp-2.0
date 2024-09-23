@@ -2,8 +2,15 @@ import React from "react";
 import "./Footer.css";
 import { NavLink } from "react-router-dom";
 import ButtonComponent from "../PrimitiveComponents/ButtonComponent/ButtonComponent";
-
+import Logo from "../../assets/images/logo_colour_100px.png"
 export default function Footer() {
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
   return (
     <div className="page-footer">
       <div className="footer-links">
@@ -69,11 +76,11 @@ export default function Footer() {
         </div>
       </div>
       <div className="footer-branding">
-        <span className="logo"></span>
+        <img src={Logo} className="logo"/>
         <span className="brand">AIRBNP</span>
       </div>
       <div className="footer-footer">
-        <ButtonComponent className="default-button page-footer-button">Back to top</ButtonComponent>
+        <ButtonComponent action={scrollToTop} className="default-button page-footer-button">Back to top</ButtonComponent>
       </div>
     </div>
   );
