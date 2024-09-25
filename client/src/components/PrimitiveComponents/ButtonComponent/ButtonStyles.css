@@ -40,19 +40,6 @@ button:disabled {
   width: fit-content;
 }
 
-@media screen and (max-width: 1000px) {
-  .default-button {
-    /* padding: 0.5rem 1rem; */
-  }
-}
-
-@media screen and (max-width: 550px) {
-  .default-button {
-    padding: 0.4rem 0.8rem;
-    /* font-weight: 300; */
-  }
-}
-
 /* action button for MAIN ACTIONS/RESERVE/BOOKINGS */
 .action-button {
   background-color: var(--pink-10);

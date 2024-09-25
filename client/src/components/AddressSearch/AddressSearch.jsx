@@ -10,6 +10,7 @@ import {
 
 import "./AddressSearch.css";
 import { useController } from "react-hook-form";
+import ButtonComponent from "../PrimitiveComponents/ButtonComponent/ButtonComponent";
 
 export default function AddressSearch({
   control,
@@ -169,7 +170,7 @@ export default function AddressSearch({
                   {errors.addressLine2?.message}
                 </div>
               </Form.Field>
-              <Form.Field>
+              <Form.Field style={{display: "flex", flexDirection: "column"}}>
                 <Form.Label className="address-label">City</Form.Label>
                 <Form.Control
                   className="address-input input-outlined"
@@ -225,14 +226,14 @@ export default function AddressSearch({
         </div>
         {showFormExpanded && (
           <div className="form-buttons-section">
-            <button
-              type="button"
-              className="clear-button"
-              id="btn-reset"
-              onClick={resetForm}
+            <ButtonComponent
+            type="button"
+            className="clear-button default-button control-button"
+            // id="btn-reset"
+            action={resetForm}
             >
-              Clear
-            </button>
+              Clear form
+            </ButtonComponent>
           </div>
         )}
       </div>

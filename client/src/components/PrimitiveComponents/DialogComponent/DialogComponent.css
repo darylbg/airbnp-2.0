@@ -83,6 +83,10 @@
   justify-content: center;
 }
 
+.full-width-dialog .dialog-body {
+  margin-bottom: 1rem;
+}
+
 /* custom scrollbar styling */
 .scrollbar-1::-webkit-scrollbar {
   width: 5px;
@@ -227,5 +231,20 @@
     border-radius: 10px;
     padding-bottom: 3rem;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 3px 20px 0px;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .content-width-dialog {
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    padding-bottom: 1rem;
+    width: 100vw;
+    bottom: 0;
+    min-width: 0;
+    height: fit-content;
+    align-self: flex-end;
+    animation: contentShow2 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    max-height: 80vh;
   }
 }

@@ -6,6 +6,7 @@
   display: flex;
   flex: 1;
   justify-content: center;
+  max-width: 100%;
 }
 
 .new-listing-form {
@@ -65,6 +66,14 @@
   flex-direction: row;
   gap: 10px;
   justify-content: space-between;
+  flex-wrap: wrap;
+  padding-top: 10px;
+}
+
+.house-type-radio {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
 }
 
 .RadioGroupItem {
@@ -98,8 +107,25 @@
   background-color: var(--blue-11);
 }
 
-.Label {
-  font-size: 15px;
-  line-height: 1;
-  padding-left: 15px;
+
+.new-listing-save-button {
+  padding: 0.8rem 1.8rem;
+ width: fit-content;
+}
+
+@media screen and (max-width: 500px) {
+  .image-upload-widgets {
+    grid-template-columns: repeat(1, 2fr);
+    height: auto;
+  }
+
+  .image-upload-widgets .first-image-widget {
+    grid-template-columns: repeat(1, 2fr);
+    height: 100px;
+  }
+
+  .image-upload-widgets .other-image-widgets {
+    grid-template-columns: repeat(1, 2fr);
+    height: 100px;
+  }
 }

@@ -32,13 +32,12 @@
 .mobile-listing-header-button-group {
   display: flex;
   width: 100%;
-  gap: 3%;
+  gap: 3rem;
 }
 
 .mobile-listing-header-button-group button {
   display: flex;
   flex: 1;
-  padding: 8px 12px;
 }
 
 /* listings sort form */

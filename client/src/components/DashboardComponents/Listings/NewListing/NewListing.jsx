@@ -207,7 +207,7 @@ export default function NewListing({ closeDialog }) {
               defaultValue="Private residence"
               aria-label="View density"
             >
-              <div style={{ display: "flex", alignItems: "center" }}>
+              <div className="house-type-radio">
                 <RadioGroup.Item
                   className="RadioGroupItem"
                   value="Private residence"
@@ -219,7 +219,7 @@ export default function NewListing({ closeDialog }) {
                   Private residence
                 </label>
               </div>
-              <div style={{ display: "flex", alignItems: "center" }}>
+              <div className="house-type-radio">
                 <RadioGroup.Item
                   className="RadioGroupItem"
                   value="Commercial building"
@@ -231,7 +231,7 @@ export default function NewListing({ closeDialog }) {
                   Commercial building
                 </label>
               </div>
-              <div style={{ display: "flex", alignItems: "center" }}>
+              <div className="house-type-radio">
                 <RadioGroup.Item
                   className="RadioGroupItem"
                   value="Other"
@@ -303,7 +303,7 @@ export default function NewListing({ closeDialog }) {
         <Form.Field className="new-listing-form-field" name="availability">
           <Form.Submit asChild>
             <PrimaryButton
-              className="default-button save-button"
+              className="default-button save-button new-listing-save-button"
               type="submit"
               loading={loading}
             >

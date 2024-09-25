@@ -1,6 +1,6 @@
 .place-holder-page {
     display: flex;
-    height: 90vh;
+    padding: 5%;
     width: 100vw;
     position: relative;
     overflow: hidden;
@@ -14,8 +14,3 @@
 .place-holder-page h2 {
     color: var(--black-10);
 }
-/* .place-holder-page img  {
-    max-width: 90%;
-    max-height: 90%;
-    overflow: hidden;
-} */

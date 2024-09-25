@@ -62,19 +62,6 @@ const listingSchema = new Schema(
       ref: "User",
       required: true,
     },
-    amenities: [
-      {
-        amenity_id: {
-          type: Schema.Types.ObjectId,
-          ref: "Amenity",
-          required: true,
-        },
-        available: {
-          type: Boolean,
-          default: false,
-        },
-      },
-    ],
     notifications: [
       {
         type: Schema.Types.ObjectId,
@@ -105,6 +92,22 @@ const listingSchema = new Schema(
         required: true,
       },
     ],
+    amenities: [
+      {
+        name: {
+          type: String,
+          required: true,
+        },
+        icon: {
+          type: String, // URL or identifier for the amenity icon
+          required: true,
+        },
+        available: {
+          type: Boolean, // True if the amenity is available, false otherwise
+          default: false,
+        },
+      },
+    ],
   },
   {
     toJSON: {
@@ -112,6 +115,9 @@ const listingSchema = new Schema(
     },
   }
 );
+
+
+// function to insert defaultAmenites with availability false here so they are immediatly accessible when addeing  a new listing on the front end ie display all of them with unchecked checkbox
 
 const Listing = model("Listing", listingSchema);
 
