@@ -13,11 +13,10 @@ import { updateUserDetails } from "../../../../reducers/userDetailsReducer";
 import { addListing } from "../../../../reducers/userListingsReducer";
 import { addToAllListings } from "../../../../reducers/allListingsReducer";
 import "./NewListing.css";
-
+import AmenitiesData from "./Amenities.json";
 import { useConfirmAddress } from "@mapbox/search-js-react";
 import PrimaryButton from "../../../PrimitiveComponents/ButtonComponent/ButtonComponent";
 import Spinner from "../../../PrimitiveComponents/Spinner/Spinner";
-import { setAllListings } from "../../../../reducers/allListingsReducer";
 
 export default function NewListing({ closeDialog }) {
   const currentUser = useSelector((state) => state.userDetails.byId);
@@ -117,7 +116,7 @@ export default function NewListing({ closeDialog }) {
             longitude: formData.addressLongitude,
             availability: false,
             price: price,
-            amenities: [],
+            amenities: amenities,
             payments: [],
             reviews: [],
           },
@@ -156,6 +155,19 @@ export default function NewListing({ closeDialog }) {
     skipConfirmModal: (feature) =>
       ["exact", "high"].includes(feature.properties.match_code.confidence),
   });
+
+  const [amenities, setAmenities] = useState(AmenitiesData); // Track all amenities
+
+  const handleAmenityChange = (amenity) => {
+    setAmenities((prevAmenities) =>
+      prevAmenities.map(
+        (a) =>
+          a.name === amenity.name
+            ? { ...a, available: !a.available } // Toggle available status
+            : a // Keep the other amenities unchanged
+      )
+    );
+  };
 
   return (
     <div className="new-listing-container">
@@ -246,7 +258,6 @@ export default function NewListing({ closeDialog }) {
             </RadioGroup.Root>
           </Form.Field>
         </div>
-
         <Form.Field className="new-listing-form-field" name="listing_image">
           <Form.Label>Listing Images</Form.Label>
           <div className="image-upload-widgets">
@@ -286,6 +297,19 @@ export default function NewListing({ closeDialog }) {
           loading={loading}
           showExpandedAddressSearch={true}
         />
+        <div className="amenities-section">
+          <h3>Select Amenities</h3>
+          {amenities.map((amenity) => (
+            <div key={amenity.name}>
+              <input
+                type="checkbox"
+                checked={amenity.available}
+                onChange={() => handleAmenityChange(amenity)}
+              />
+              <label>{amenity.name}</label>
+            </div>
+          ))}
+        </div>
         <Form.Field className="new-listing-form-field" name="price">
           <Form.Label>listing price</Form.Label>
           <Form.Control asChild>

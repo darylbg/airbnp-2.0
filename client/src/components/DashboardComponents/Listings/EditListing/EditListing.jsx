@@ -11,7 +11,10 @@ import {
   updateListing,
   deleteListing,
 } from "../../../../reducers/userListingsReducer";
-import { updateToAllListings, removeFromAllListings } from "../../../../reducers/allListingsReducer";
+import {
+  updateToAllListings,
+  removeFromAllListings,
+} from "../../../../reducers/allListingsReducer";
 import DialogComponent from "../../../PrimitiveComponents/DialogComponent/DialogComponent";
 import { useConfirmAddress } from "@mapbox/search-js-react";
 import { updateUserDetails } from "../../../../reducers/userDetailsReducer";
@@ -144,6 +147,7 @@ export default function EditListing({
             latitude: formData.latitude,
             longitude: formData.longitude,
             price: +formData.price,
+            amenities: amenities,
           },
         },
       });
@@ -201,6 +205,18 @@ export default function EditListing({
     setCancelEditDialog(false);
   };
 
+  const [amenities, setAmenities] = useState(listing.amenities); // Track all amenities
+// console.log(listing.amenities)
+const handleAmenityChange = (amenity) => {
+  setAmenities((prevAmenities) =>
+    prevAmenities.map((a) =>
+      a.name === amenity.name
+        ? { ...a, available: !a.available } // Toggle available status
+        : a // Keep the other amenities unchanged
+    )
+  );
+};
+
   return (
     <>
       <Form.Root
@@ -213,7 +229,7 @@ export default function EditListing({
           <Form.Label>Listing Title</Form.Label>
           <Form.Control asChild>
             <input
-            className="input-outlined"
+              className="input-outlined"
               disabled={loading}
               type="text"
               {...register("listing_title", {
@@ -230,7 +246,7 @@ export default function EditListing({
           <Form.Label>Listing Description</Form.Label>
           <Form.Control asChild>
             <textarea
-            className="input-outlined"
+              className="input-outlined"
               disabled={loading}
               type="text"
               {...register("listing_description", {
@@ -246,8 +262,8 @@ export default function EditListing({
           <label>Residence type</label>
           <Form.Field>
             <RadioGroup.Root
-            value={residenceType}
-            onValueChange={(value) => setValue("residenceType", value)}
+              value={residenceType}
+              onValueChange={(value) => setValue("residenceType", value)}
               className="RadioGroupRoot"
               defaultValue={residenceType}
               aria-label="View density"
@@ -335,6 +351,19 @@ export default function EditListing({
           />
           <div className="field-message">{errors.address?.message}</div>
         </Form.Field>
+        <div className="amenities-section">
+          <h3>Select Amenities</h3>
+          {amenities.map((amenity) => (
+            <div key={amenity.name}>
+              <input
+                type="checkbox"
+                checked={amenity.available} // Use the updated available state
+                onChange={() => handleAmenityChange(amenity)}
+              />
+              <label>{amenity.name}</label>
+            </div>
+          ))}
+        </div>
         <Form.Field
           className="new-listing-form-field price-form-field"
           name="price"
@@ -342,7 +371,7 @@ export default function EditListing({
           <Form.Label>Listing Price</Form.Label>
           <Form.Control asChild>
             <input
-            className="input-outlined"
+              className="input-outlined"
               disabled={loading}
               type="number"
               {...register("price", {

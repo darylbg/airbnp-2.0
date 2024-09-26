@@ -59,7 +59,6 @@ export const SIGN_IN_MUTATION = gql`
           availability
           contact_method
           amenities {
-            amenity_id
             available
           }
           payments {
@@ -109,7 +108,8 @@ export const NEW_LISTING_MUTATION = gql`
       latitude
       contact_method
       amenities {
-        amenity_id
+        name
+        icon
         available
       }
       availability
@@ -133,7 +133,8 @@ export const EDIT_LISTING_MUTATION = gql`
       addressRegion
       addressPostCode
       amenities {
-        amenity_id
+        name
+        icon
         available
       }
       availability
@@ -150,9 +151,6 @@ export const EDIT_LISTING_MUTATION = gql`
       }
       price
       reviews
-      # user_id {
-      #   id
-      # }
     }
   }
 `;

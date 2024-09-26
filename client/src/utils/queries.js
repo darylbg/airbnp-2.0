@@ -12,6 +12,11 @@ export const GET_ALL_LISTINGS = gql`
       addressPostCode
       availability
       contact_method
+      amenities {
+        name
+        icon
+        available
+      }
       created_at
       latitude
       listing_description
@@ -55,6 +60,11 @@ export const GET_LISTING_BY_ID = gql`
       contact_method
       created_at
       latitude
+      amenities {
+        name
+        icon
+        available
+      }
       listing_description
       listing_image
       listing_title

@@ -74,8 +74,8 @@ export default function Listings() {
       >
         <div className="listing-header-button-group">
           <PrimaryButton
-          className="default-button white-button"
-          action={() => setFilterDialog(true)}
+            className="default-button white-button"
+            action={() => setFilterDialog(true)}
           >
             <span className="text">
               {sortCriteria === "dateAdded"
@@ -87,8 +87,8 @@ export default function Listings() {
             <span className="material-symbols-outlined">filter_list</span>
           </PrimaryButton>
           <PrimaryButton
-          className="default-button action-button new-listing-button"
-          action={() => setNewListingDialog(true)}
+            className="default-button action-button new-listing-button"
+            action={() => setNewListingDialog(true)}
           >
             <span className="text">New Listing</span>
             <span className="material-symbols-outlined">add</span>
@@ -130,8 +130,9 @@ export default function Listings() {
               <Form.Label>Availability</Form.Label>
             </Form.Field>
             <Form.Submit asChild>
-              <ButtonComponent
-              className="default-button primary-button">Update listings</ButtonComponent>
+              <ButtonComponent className="default-button primary-button">
+                Update listings
+              </ButtonComponent>
             </Form.Submit>
           </Form.Root>
         </DialogComponent>
@@ -154,9 +155,9 @@ export default function Listings() {
       <div className="dashboard-content-body">
         {/* filter and new listing buttons for mobile devices */}
         <div className="mobile-listing-header-button-group">
-        <PrimaryButton
-          className="default-button white-button"
-          action={() => setFilterDialog(true)}
+          <PrimaryButton
+            className="default-button white-button"
+            action={() => setFilterDialog(true)}
           >
             <span className="text">
               {sortCriteria === "dateAdded"
@@ -168,32 +169,12 @@ export default function Listings() {
             <span className="material-symbols-outlined">filter_list</span>
           </PrimaryButton>
           <PrimaryButton
-          className="default-button action-button new-listing-button"
-          action={() => setNewListingDialog(true)}
+            className="default-button action-button new-listing-button"
+            action={() => setNewListingDialog(true)}
           >
             <span className="text">New Listing</span>
             <span className="material-symbols-outlined">add</span>
           </PrimaryButton>
-          {/* <button
-            className="filter-listings"
-            onClick={() => setFilterDialog(true)}
-          >
-            <span className="text">
-              {sortCriteria === "dateAdded"
-                ? "Date"
-                : sortCriteria === "availability"
-                ? "Availability"
-                : "Sort"}
-            </span>
-            <span className="material-symbols-outlined">filter_list</span>
-          </button>
-          <button
-            className="new-listing"
-            onClick={() => setNewListingDialog(true)}
-          >
-            <span className="text">New Listing</span>
-            <span className="material-symbols-outlined">add</span>
-          </button> */}
         </div>
 
         {/* display user listings */}

@@ -68,7 +68,6 @@ export default function Search({}) {
 
   useEffect(() => {
     if (data) {
-      // console.log("all listings", data);
       const listings = data.getAllListings;
       dispatch(setAllListings(listings));
     }

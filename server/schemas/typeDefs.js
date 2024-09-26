@@ -67,7 +67,8 @@ const typeDefs = gql`
   }
 
   type ListingAmenity {
-    amenity_id: ID!
+    name: String
+    icon: String
     available: Boolean!
   }
 
@@ -166,6 +167,13 @@ const typeDefs = gql`
     listing_id: ID!
   }
 
+  input ListingAmenityInput {
+  name: String!
+  icon: String!
+  available: Boolean
+}
+
+
   input listingInput {
     listing_title: String!
     listing_description: String
@@ -181,7 +189,7 @@ const typeDefs = gql`
     longitude: Float!
     availability: Boolean
     price: Float!
-    amenities: [ID] # List of amenity IDs to mark as available
+    amenities: [ListingAmenityInput]
     payments: [ID]
     reviews: [ID]
   }
