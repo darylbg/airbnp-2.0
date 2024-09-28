@@ -168,11 +168,10 @@ const typeDefs = gql`
   }
 
   input ListingAmenityInput {
-  name: String!
-  icon: String!
-  available: Boolean
-}
-
+    name: String!
+    icon: String!
+    available: Boolean
+  }
 
   input listingInput {
     listing_title: String!
@@ -283,7 +282,10 @@ const typeDefs = gql`
     updateBooking(bookingId: ID!, bookingInput: bookingInput): Booking
 
     createNotification(notificationInput: notificationInput): Notification
-    updateNotificationStatus(notificationId: ID!, notificationStatus: String!): Notification
+    updateNotificationStatus(
+      notificationId: ID!
+      notificationStatus: String!
+    ): Notification
     deleteNotification(receiverId: ID!, notificationId: ID!): Notification
   }
 `;

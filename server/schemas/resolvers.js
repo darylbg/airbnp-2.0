@@ -457,6 +457,7 @@ const resolvers = {
                 longitude: listingData.longitude,
                 availability: listingData.availability,
                 price: listingData.price,
+                amenities: listingData.amenities
               },
             },
             { new: true }

@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectedListing, setMapCenter } from "../../reducers/bookingReducer";
+import {
+  setSelectedListing,
+  setMapCenter,
+} from "../../reducers/bookingReducer";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import ButtonComponent from "../PrimitiveComponents/ButtonComponent/ButtonComponent";
@@ -34,7 +37,7 @@ export default function SearchListing({
     const mapCenter = {
       coordinates: {
         lng: listing.longitude,
-        lat: listing.latitude
+        lat: listing.latitude,
       },
     };
     console.log(mapCenter);
@@ -94,20 +97,27 @@ export default function SearchListing({
       <div className="search-listing-content">
         <div className="search-listing-header">
           <span className="subheading">private home</span>
-          <h3 className="heading">{listing?.listing_title}</h3>
+          <h3 className="heading">{listing?.listing_title}<div className="overflow-fade"></div></h3>
         </div>
         <div className="search-listing-body">
           <div className="line-1">
-          <RatingComponent value={listing?.average_rating?.value} count={listing?.average_rating?.count} />
+            <RatingComponent
+              value={listing?.average_rating?.value}
+              count={listing?.average_rating?.count}
+            />
             <div className="listing-availability">
               {listing?.availability ? "Open now" : "Closed"}
             </div>
           </div>
-              <div className="line-2">
-                <div className="listing-address">
-                  <span className="post-code">{listing?.addressPostCode}...</span><span>full address on checkout</span>
-                </div>
-              </div>
+          <div className="line-2">
+            <div className="listing-amenities">
+              {listing?.amenities.map((amenity, index) => {
+                if (amenity.available) {
+                  return (<img src={amenity.icon} alt={`${amenity.name}-icon`}/>)
+                }
+              })}
+            </div>
+          </div>
         </div>
         <div className="search-listing-footer">
           <div className="search-listing-price">

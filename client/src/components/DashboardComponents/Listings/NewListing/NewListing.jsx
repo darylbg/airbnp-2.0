@@ -17,6 +17,7 @@ import AmenitiesData from "./Amenities.json";
 import { useConfirmAddress } from "@mapbox/search-js-react";
 import PrimaryButton from "../../../PrimitiveComponents/ButtonComponent/ButtonComponent";
 import Spinner from "../../../PrimitiveComponents/Spinner/Spinner";
+import ButtonComponent from "../../../PrimitiveComponents/ButtonComponent/ButtonComponent";
 
 export default function NewListing({ closeDialog }) {
   const currentUser = useSelector((state) => state.userDetails.byId);
@@ -28,6 +29,7 @@ export default function NewListing({ closeDialog }) {
     null,
     null,
   ]);
+  const [amenities, setAmenities] = useState(AmenitiesData); // Track all amenities
   const [showFormExpanded, setShowFormExpanded] = useState(false);
   const [showMinimap, setShowMinimap] = useState(false);
 
@@ -74,6 +76,7 @@ export default function NewListing({ closeDialog }) {
   const handleNewListing = async (formData, event) => {
     event.preventDefault();
     setLoading(true);
+    console.log("new listing amenities", amenities);
     try {
       const base64URLs = await Promise.all(
         selectedImages.map(async (image) => {
@@ -138,6 +141,7 @@ export default function NewListing({ closeDialog }) {
 
       closeDialog();
       setSelectedImages([null, null, null, null, null]);
+      setAmenities(AmenitiesData);
       setShowFormExpanded(false);
       setShowMinimap(false);
       reset();
@@ -155,8 +159,6 @@ export default function NewListing({ closeDialog }) {
     skipConfirmModal: (feature) =>
       ["exact", "high"].includes(feature.properties.match_code.confidence),
   });
-
-  const [amenities, setAmenities] = useState(AmenitiesData); // Track all amenities
 
   const handleAmenityChange = (amenity) => {
     setAmenities((prevAmenities) =>
@@ -298,17 +300,21 @@ export default function NewListing({ closeDialog }) {
           showExpandedAddressSearch={true}
         />
         <div className="amenities-section">
-          <h3>Select Amenities</h3>
-          {amenities.map((amenity) => (
-            <div key={amenity.name}>
-              <input
-                type="checkbox"
-                checked={amenity.available}
-                onChange={() => handleAmenityChange(amenity)}
-              />
-              <label>{amenity.name}</label>
-            </div>
-          ))}
+          <span>Select Amenities</span>
+          <div className="amenities-list">
+            {amenities.map((amenity) => (
+              <div key={amenity.name}>
+                <button
+                  className={`default-button amenity-button amenity-${amenity.available}`}
+                  type="button"
+                  onClick={() => handleAmenityChange(amenity)}
+                >
+                  <img src={amenity.icon} alt={`${amenity.name} icon`}/>
+                  {amenity.name}
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
         <Form.Field className="new-listing-form-field" name="price">
           <Form.Label>listing price</Form.Label>

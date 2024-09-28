@@ -95,9 +95,6 @@ export default function Checkout() {
                       </div>
                       <div className="body">
                       <h2 className="title">{listing?.listing_title}</h2>
-                        <span className="description">
-                          {listing?.listing_description}
-                        </span>
                       </div>
                     </div>
                   </div>

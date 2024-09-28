@@ -12,7 +12,7 @@ import { useDispatch } from "react-redux";
 export default function ListingDisplay({ props }) {
   const [editListingDialog, setEditListingDialog] = useState(false);
   const [cancelEditDialog, setCancelEditDialog] = useState(false);
-// console.log("listing", props.average_rating?.value)
+  // console.log("listing", props.average_rating?.value)
   // formate date back to 01/01/2001 formate
   const formateDate = (date) => {
     date = new Date(+date);
@@ -45,12 +45,19 @@ export default function ListingDisplay({ props }) {
         </div>
         <div className="listing-body-content">
           <h2 className="listing-title">{props.listing_title}</h2>
-          <p>{formateDate(props.created_at)}</p>
+          <p className="listing-date">{formateDate(props.created_at)}</p>
           <p className="listing-description">{props.listing_description}</p>
           <div className="listing-amenities">
-            <p>Amenities</p>
-            <ul>
-              <li className="listing-amenity"></li>
+            <ul className="">
+              {props.amenities.map((amenity) => {
+                if (amenity.available) {
+                  return (
+                    <li className="listing-amenity" key={amenity.name}>
+                      <img src={amenity.icon} alt={`${amenity.name}-icon`} />
+                    </li>
+                  );
+                }
+              })}
             </ul>
           </div>
         </div>
@@ -86,7 +93,9 @@ export default function ListingDisplay({ props }) {
               <p className="insight-text">Booked</p>
             </div>
             <div className="insight">
-              <strong className="insight-number">{props.average_rating?.value.toFixed(1)}</strong>
+              <strong className="insight-number">
+                {props.average_rating?.value.toFixed(1)}
+              </strong>
               <p className="insight-text">Rating</p>
             </div>
           </div>
@@ -97,14 +106,14 @@ export default function ListingDisplay({ props }) {
 }
 
 export function SwitchComponent({ listing }) {
-  // const listing = useState((state) => state.userListings.byId); 
+  // const listing = useState((state) => state.userListings.byId);
   const [checked, setChecked] = useState(listing.availability);
-  
+
   const dispatch = useDispatch();
   const [editListingMutation] = useMutation(EDIT_LISTING_MUTATION);
 
   const handleAvailabilityToggle = useCallback(async (checked) => {
-    console.log("checked", listing)
+    console.log("checked", listing);
     try {
       const updatedListing = await editListingMutation({
         variables: {

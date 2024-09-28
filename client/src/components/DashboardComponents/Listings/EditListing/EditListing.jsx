@@ -45,6 +45,8 @@ export default function EditListing({
     (_, i) => listing.listing_image[i] || null
   );
   const [selectedImages, setSelectedImages] = useState(initialImages);
+  const [amenities, setAmenities] = useState(listing.amenities || []); // Track all amenities
+
   const dispatch = useDispatch();
 
   const handleImageSelect = (image, index) => {
@@ -98,12 +100,17 @@ export default function EditListing({
 
   const residenceType = watch("residenceType");
 
+  const sanitizeAmenities = (amenities) => {
+    return amenities.map(({ __typename, ...rest }) => rest);
+  };
+
   const [editListingMutation] = useMutation(EDIT_LISTING_MUTATION);
   const [deleteListingMutation] = useMutation(DELETE_LISTING_MUTATION);
 
   const handleUpdatingListing = async (formData, event) => {
     event.preventDefault();
     setLoading(true);
+
     try {
       const formDataImages = selectedImages.filter((img) => img);
       const listingImages = await Promise.all(
@@ -130,6 +137,9 @@ export default function EditListing({
         .filter((component) => component && component.trim() !== "")
         .join(", ");
 
+      // Remove __typename from amenities before sending mutation
+      const sanitizedAmenities = sanitizeAmenities(amenities);
+
       const updatedListing = await editListingMutation({
         variables: {
           listingId: listing.id,
@@ -147,7 +157,7 @@ export default function EditListing({
             latitude: formData.latitude,
             longitude: formData.longitude,
             price: +formData.price,
-            amenities: amenities,
+            amenities: sanitizedAmenities,
           },
         },
       });
@@ -205,17 +215,16 @@ export default function EditListing({
     setCancelEditDialog(false);
   };
 
-  const [amenities, setAmenities] = useState(listing.amenities); // Track all amenities
-// console.log(listing.amenities)
-const handleAmenityChange = (amenity) => {
-  setAmenities((prevAmenities) =>
-    prevAmenities.map((a) =>
-      a.name === amenity.name
-        ? { ...a, available: !a.available } // Toggle available status
-        : a // Keep the other amenities unchanged
-    )
-  );
-};
+  const handleAmenityChange = (amenity) => {
+    setAmenities((prevAmenities) =>
+      prevAmenities.map(
+        (a) =>
+          a.name === amenity.name
+            ? { ...a, available: !a.available } // Toggle available status
+            : a // Keep the other amenities unchanged
+      )
+    );
+  };
 
   return (
     <>
@@ -268,7 +277,7 @@ const handleAmenityChange = (amenity) => {
               defaultValue={residenceType}
               aria-label="View density"
             >
-              <div style={{ display: "flex", alignItems: "center" }}>
+              <div className="house-type-radio" style={{ display: "flex", alignItems: "center" }}>
                 <RadioGroup.Item
                   className="RadioGroupItem"
                   value="Private residence"
@@ -280,7 +289,7 @@ const handleAmenityChange = (amenity) => {
                   Private residence
                 </label>
               </div>
-              <div style={{ display: "flex", alignItems: "center" }}>
+              <div className="house-type-radio" style={{ display: "flex", alignItems: "center" }}>
                 <RadioGroup.Item
                   className="RadioGroupItem"
                   value="Commercial building"
@@ -292,7 +301,7 @@ const handleAmenityChange = (amenity) => {
                   Commercial building
                 </label>
               </div>
-              <div style={{ display: "flex", alignItems: "center" }}>
+              <div className="house-type-radio" style={{ display: "flex", alignItems: "center" }}>
                 <RadioGroup.Item
                   className="RadioGroupItem"
                   value="Other"
@@ -352,17 +361,21 @@ const handleAmenityChange = (amenity) => {
           <div className="field-message">{errors.address?.message}</div>
         </Form.Field>
         <div className="amenities-section">
-          <h3>Select Amenities</h3>
-          {amenities.map((amenity) => (
-            <div key={amenity.name}>
-              <input
-                type="checkbox"
-                checked={amenity.available} // Use the updated available state
-                onChange={() => handleAmenityChange(amenity)}
-              />
-              <label>{amenity.name}</label>
-            </div>
-          ))}
+          <span>Select Amenities</span>
+          <div className="amenities-list">
+            {amenities.map((amenity) => (
+              <div key={amenity.name}>
+                <button
+                  className={`default-button amenity-button amenity-${amenity.available}`}
+                  type="button"
+                  onClick={() => handleAmenityChange(amenity)}
+                >
+                  <img src={amenity.icon} alt={`${amenity.name} icon`} />
+                  {amenity.name}
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
         <Form.Field
           className="new-listing-form-field price-form-field"

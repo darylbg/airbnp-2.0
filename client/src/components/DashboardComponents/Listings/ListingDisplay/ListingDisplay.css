@@ -70,11 +70,45 @@
 .listing-body-content {
     flex: 1;
     padding-right: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 5px
 }
 
-.listing-title {
+.listing-body-content .listing-title {
     margin-top: 0;
 }
+
+.listing-body-content .listing-date {
+    font-size: 0.8rem;
+    color: var(--black-9);
+    font-family: var(--font-figtree);
+}
+
+.listing-body-content .listing-description {
+    font-size: 1rem;
+    color: var(--black-10);
+}
+
+.listing-amenities ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0;
+    padding: 10px 0;
+    gap: 0.8rem;
+}
+
+.listing-amenities .listing-amenity {
+    list-style-type: none;
+}
+
+.listing-amenities .listing-amenity img {
+    height: 1.1rem;
+    width: auto;
+    filter: grayscale(100%) brightness(80%) opacity(0.7);
+
+} 
 
 .listing-body-actions {
     flex: 0 1 auto;

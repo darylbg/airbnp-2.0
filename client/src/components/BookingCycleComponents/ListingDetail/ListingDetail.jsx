@@ -513,7 +513,21 @@ export default function ListingDetail() {
             <div className="booking-description">
               <p>{listing?.listing_description}</p>
             </div>
-            <div className="booking-amenities"></div>
+            <div className="booking-amenities">
+              <h3>Amenities</h3>
+              <div className="booking-amenities-list">
+                {listing?.amenities.map((amenity, index) => {
+                  if (amenity.available) {
+                    return (
+                      <div key={index} className="amenity">
+                        <img src={amenity.icon} alt={`${amenity.name}-icon`} />
+                        <span>{amenity.name}</span>
+                      </div>
+                    );
+                  }
+                })}
+              </div>
+            </div>
             <div className="booking-specifics">
               <div className="specific">
                 <img src={ReservationIcon} alt="location icon" />
