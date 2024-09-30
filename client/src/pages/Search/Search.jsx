@@ -22,12 +22,7 @@ export default function Search({}) {
   const dispatch = useDispatch();
   const [listings, setListings] = useState([]);
   const [searchFilterDialog, setSearchFilterDialog] = useState(false);
-  const [searchFilter, setSearchFilter] = useState({
-    default: true,
-    availability: false,
-    distance: false,
-    rating: false,
-  });
+
   const [hoveredListing, setHoveredListing] = useState(null);
   const [routeType, setRouteType] = useState("walking");
   const [routeData, setRouteData] = useState(null);
@@ -73,11 +68,65 @@ export default function Search({}) {
     }
   }, [data, dispatch]);
 
+  const [searchFilter, setSearchFilter] = useState({
+    default: true,
+    availability: false,
+    distance: false,
+    rating: false,
+  });
+
+  // listing filtering
+  // on user location change should automatically filter by closest
+
+  // all these are checkable at the same time
+  // nearest to me - filter by closest location (userlocation & coordinates function)
+  // open now - availability obvs
+  // Highly rated - 4 stars and up
+  // console.log("userLocation", userLocation);
+  // Haversine formula to calculate distance between two coordinates (in kilometers)
+  const haversineDistance = (listing, userCoord) => {
+    console.log("haversion running...");
+    const toRadians = (degrees) => degrees * (Math.PI / 180);
+
+    const lat1 = toRadians(listing.latitude); // listing's lat
+    const lon1 = toRadians(listing.longitude); // listing's lng
+    const lat2 = toRadians(userCoord.lat); // user's lat
+    const lon2 = toRadians(userCoord.lng); // user's lng
+    // console.log("listing coord", listing);
+
+    const R = 6371; // Radius of the Earth in kilometers
+    const dLat = lat2 - lat1;
+    const dLon = lon2 - lon1;
+
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return R * c; // Distance in kilometers
+  };
+
+  // Function to sort listings by proximity to user's location
+  const filterByLocation = (listings, userLocation) => {
+    return listings.sort((a, b) => {
+      const distanceA = haversineDistance(a, userLocation);
+      const distanceB = haversineDistance(b, userLocation);
+      console.log(distanceA, distanceB);
+      return distanceA - distanceB;
+    });
+  };
+
   useEffect(() => {
-    if (allListingEntities) {
-      setListings(Object.values(allListingEntities));
+    if (allListingEntities && userLocation) {
+      // Ensure both listings and userLocation are available
+      const sortedListings = filterByLocation(
+        Object.values(allListingEntities),
+        userLocation
+      );
+      setListings(sortedListings); // Update the listings state with the sorted data
     }
-  }, [allListingEntities]);
+  }, [allListingEntities, userLocation]);
 
   const handleAddressChange = (d) => {
     setAddressValue(d);
@@ -119,7 +168,7 @@ export default function Search({}) {
     }
   };
 
-  const {windowSize} = useHelperFunctions();
+  const { windowSize } = useHelperFunctions();
 
   const handleAddressSearch = (result) => {
     const features = result.features[0];
