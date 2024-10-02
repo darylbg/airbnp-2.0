@@ -73,7 +73,7 @@ export default function Checkout() {
               </span>
               <span>
               {" "}View your booking{" "}
-                <NavLink to="/account/booking-history">here</NavLink>.
+                <NavLink to="/dashboard/bookings/my-booking-history">here</NavLink>.
               </span>
             </div>
           ) : (
