@@ -33,6 +33,11 @@ export default function Search({}) {
   });
   const [addressValue, setAddressValue] = useState("");
 
+  const [searchFilter, setSearchFilter] = useState({
+    availability: false,
+    rating: false,
+  });
+
   const { error, loading, data, refetch } = useQuery(GET_ALL_LISTINGS);
   const allListingEntities = useSelector(
     (state) => state.allListings.defaultListings.entities
@@ -67,66 +72,6 @@ export default function Search({}) {
       dispatch(setAllListings(listings));
     }
   }, [data, dispatch]);
-
-  const [searchFilter, setSearchFilter] = useState({
-    default: true,
-    availability: false,
-    distance: false,
-    rating: false,
-  });
-
-  // listing filtering
-  // on user location change should automatically filter by closest
-
-  // all these are checkable at the same time
-  // nearest to me - filter by closest location (userlocation & coordinates function)
-  // open now - availability obvs
-  // Highly rated - 4 stars and up
-  // console.log("userLocation", userLocation);
-  // Haversine formula to calculate distance between two coordinates (in kilometers)
-  const haversineDistance = (listing, userCoord) => {
-    console.log("haversion running...");
-    const toRadians = (degrees) => degrees * (Math.PI / 180);
-
-    const lat1 = toRadians(listing.latitude); // listing's lat
-    const lon1 = toRadians(listing.longitude); // listing's lng
-    const lat2 = toRadians(userCoord.lat); // user's lat
-    const lon2 = toRadians(userCoord.lng); // user's lng
-    // console.log("listing coord", listing);
-
-    const R = 6371; // Radius of the Earth in kilometers
-    const dLat = lat2 - lat1;
-    const dLon = lon2 - lon1;
-
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-    return R * c; // Distance in kilometers
-  };
-
-  // Function to sort listings by proximity to user's location
-  const filterByLocation = (listings, userLocation) => {
-    return listings.sort((a, b) => {
-      const distanceA = haversineDistance(a, userLocation);
-      const distanceB = haversineDistance(b, userLocation);
-      console.log(distanceA, distanceB);
-      return distanceA - distanceB;
-    });
-  };
-
-  useEffect(() => {
-    if (allListingEntities && userLocation) {
-      // Ensure both listings and userLocation are available
-      const sortedListings = filterByLocation(
-        Object.values(allListingEntities),
-        userLocation
-      );
-      setListings(sortedListings); // Update the listings state with the sorted data
-    }
-  }, [allListingEntities, userLocation]);
 
   const handleAddressChange = (d) => {
     setAddressValue(d);
@@ -244,30 +189,110 @@ export default function Search({}) {
     register,
     handleSubmit,
     clearErrors,
+    setValue,
+    reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      availability: searchFilter.availability,
+      rating: searchFilter.rating,
+    },
+  });
 
   const closeSearchFilterDialog = () => {
     setSearchFilterDialog(false);
+    reset({
+      rating: searchFilter.rating,
+      availability: searchFilter.availability,
+    });
   };
 
   const handleFilterSearch = (formState) => {
-    const defaultCriteria = formState;
-    // console.log(defaultCriteria)
+    console.log(formState);
+
     setSearchFilter({
-      default: true,
       availability: formState.availability,
-      distance: formState.distance,
       rating: formState.rating,
     });
 
     setSearchFilterDialog(false);
   };
 
+  const haversineDistance = (listing, userCoord) => {
+    const toRadians = (degrees) => degrees * (Math.PI / 180);
+
+    const lat1 = toRadians(listing.latitude); // listing's lat
+    const lon1 = toRadians(listing.longitude); // listing's lng
+    const lat2 = toRadians(userCoord.lat); // user's lat
+    const lon2 = toRadians(userCoord.lng); // user's lng
+    // console.log("listing coord", listing);
+
+    const R = 6371; // Radius of the Earth in kilometers
+    const dLat = lat2 - lat1;
+    const dLon = lon2 - lon1;
+
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return R * c; // Distance in kilometers
+  };
+
+  // Function to sort listings by proximity to user's location
+  const filterByLocation = (listings, userLocation) => {
+    return listings.sort((a, b) => {
+      const distanceA = haversineDistance(a, userLocation);
+      const distanceB = haversineDistance(b, userLocation);
+      // console.log(distanceA, distanceB);
+      return distanceA - distanceB;
+    });
+  };
+
+  // Chain the filters based on the searchFilter state
+  useEffect(() => {
+    if (allListingEntities && userLocation) {
+      let filteredListings = filterByLocation(
+        Object.values(allListingEntities),
+        userLocation
+      );
+
+      if (searchFilter.rating) {
+        filteredListings = filterByRating(filteredListings);
+      }
+
+      if (searchFilter.availability) {
+        filteredListings = filterByAvailability(filteredListings);
+      }
+
+      setListings(filteredListings);
+    }
+  }, [allListingEntities, userLocation, searchFilter]);
+
+  // Updated filterByRating function to return the filtered listings
+  const filterByRating = (listings) => {
+    return listings.filter((listing) => listing.average_rating.value >= 4);
+  };
+
+  // Updated filterByAvailability function to return the filtered listings
+  const filterByAvailability = (listings) => {
+    return listings.filter((listing) => listing.availability === true);
+  };
+
+  const countAppliedFilters = () => {
+    // Get the values from the searchFilter object (e.g., [false, true])
+    const values = Object.values(searchFilter);
+
+    const count = values.filter((value) => value === true).length;
+
+    return count === 0 ? "" : count;
+  };
+
   if (error) {
     console.log(error);
   }
-  if (error) return <p>Error :</p>;
+  // if (error) return <p>Error :</p>;
 
   return (
     <div className="search-page">
@@ -364,9 +389,10 @@ export default function Search({}) {
               <ButtonComponent
                 action={() => setSearchFilterDialog(true)}
                 type="button"
-                className="default-button control-button"
+                className="default-button control-button search-filter-button"
               >
-                Filter
+                <span>Filters</span>
+                <span className="filter-count">{countAppliedFilters()}</span>
               </ButtonComponent>
             )}
           </div>
@@ -387,6 +413,11 @@ export default function Search({}) {
       <div className="search-map">
         {loading ? (
           <p>Loading locations...</p>
+        ) : error ? (
+          <p>
+            Error loading locations, please check your internet connection and
+            try again...
+          </p>
         ) : (
           <SearchMap
             listings={listings}
@@ -408,20 +439,14 @@ export default function Search({}) {
         icon="close"
         tooltip="Close"
       >
-        <Form.Root onSubmit={handleSubmit(handleFilterSearch)}>
-          <Form.Field>
-            <Form.Control asChild>
-              <input type="checkbox" {...register("distance")} />
-            </Form.Control>
-            <Form.Label>Distance from me</Form.Label>
-          </Form.Field>
-          <Form.Field>
+        <Form.Root onSubmit={handleSubmit(handleFilterSearch)} className="search-filter-form">
+          <Form.Field className="form-field">
             <Form.Control asChild>
               <input type="checkbox" {...register("rating")} />
             </Form.Control>
-            <Form.Label>Average rating</Form.Label>
+            <Form.Label>Highly rated</Form.Label>
           </Form.Field>
-          <Form.Field>
+          <Form.Field className="form-field">
             <Form.Control asChild>
               <input type="checkbox" {...register("availability")} />
             </Form.Control>
@@ -429,10 +454,10 @@ export default function Search({}) {
           </Form.Field>
           <Form.Submit asChild>
             <ButtonComponent
-              className="default-button secondary-button"
+              className="default-button primary-button"
               type="submit"
             >
-              Filter
+              Apply filters
             </ButtonComponent>
           </Form.Submit>
         </Form.Root>
