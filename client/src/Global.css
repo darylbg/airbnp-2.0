@@ -181,7 +181,6 @@ body {
   border: 1px solid var(--black-10) !important;
 }
 
-
 /* media queries */
 @media screen and (min-width: 768px) {
   .app-pages {

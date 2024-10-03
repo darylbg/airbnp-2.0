@@ -10,6 +10,7 @@
     display: flex;
     flex-direction: column;
     min-width: 300px;
+    max-width: 350px;
     font-size: 1rem;
     padding: 1rem;
 }
@@ -27,7 +28,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding-top: 3px;
+    padding-top: 10px;
     align-items: center;
 }
 

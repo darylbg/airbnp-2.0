@@ -21,7 +21,7 @@ import PersonalInfo from "./components/AccountSubComponents/PersonalInfo/Persona
 import LoginAndSecurity from "./components/AccountSubComponents/LoginAndSecurity/LoginAndSecurity";
 import AccountComponentsMenu from "./components/AccountSubComponents/AccountComponentsMenu/AccountComponentsMenu";
 import PaymentInfo from "./components/AccountSubComponents/PaymentInfo/PaymentInfo";
-import BookingHistory from "./components/AccountSubComponents/BookingHistory/BookingHistory";
+import LikedListings from "./components/AccountSubComponents/LikedListings/LikedListings"
 import PrivacyPolicy from "./components/AccountSubComponents/PrivacyPolicy/PrivacyPolicy";
 import TermsAndConditions from "./components/AccountSubComponents/TermsAndConditions/TermsAndConditions";
 import MobileNavbar from "./components/MobileNavbar/MobileNavbar";
@@ -146,7 +146,7 @@ function App() {
                   path="login-and-security"
                   element={<LoginAndSecurity />}
                 />
-                <Route path="booking-history" element={<BookingHistory />} />
+                <Route path="liked-listings" element={<LikedListings />} />
                 <Route path="payment-info" element={<PaymentInfo />} />
                 <Route path="privacy-policy" element={<PrivacyPolicy />} />
                 <Route

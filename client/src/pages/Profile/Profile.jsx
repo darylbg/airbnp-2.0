@@ -8,6 +8,7 @@ import { Rating } from "react-simple-star-rating";
 import RatingComponent from "../../components/PrimitiveComponents/RatingComponent/RatingComponent";
 import "./Profile.css";
 import PlaceHolderPage from "../PlaceHolderPage/PlaceHolderPage";
+import Footer from "../../components/Footer/Footer";
 
 export default function Profile({ myProfile }) {
   const currentUser = useSelector((state) => state.auth.currentUser);
@@ -75,7 +76,7 @@ export default function Profile({ myProfile }) {
   const [timeAgoValue, timeAgoUnit] = timeAgo(userProfile?.created_at);
 
   return (
-    <>
+    <div className="profile-page-wrapper">
       {myProfile && !isLoggedIn ? (
         <PlaceHolderPage title="Log in to view your profile." />
       ) : (
@@ -244,6 +245,7 @@ export default function Profile({ myProfile }) {
           </div>
         </div>
       )}
-    </>
+      <Footer />
+    </div>
   );
 }

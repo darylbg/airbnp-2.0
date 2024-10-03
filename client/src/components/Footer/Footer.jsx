@@ -18,25 +18,25 @@ export default function Footer() {
           <h2 className="footer-links-title">Menu</h2>
           <ul>
             <li className="footer-link-item">
-              <NavLink>Home</NavLink>
+              <NavLink to="/">Home</NavLink>
             </li>
             <li className="footer-link-item">
-              <NavLink>Search</NavLink>
+              <NavLink to="/search">Search</NavLink>
             </li>
             <li className="footer-link-item">
-              <NavLink>About</NavLink>
+              <NavLink to="/about">About</NavLink>
             </li>
             <li className="footer-link-item">
-              <NavLink>Contact us</NavLink>
+              <NavLink to="/contact">Contact us</NavLink>
             </li>
             <li className="footer-link-item">
-              <NavLink>Account</NavLink>
+              <NavLink to="/account">Account</NavLink>
             </li>
+            {/* <li className="footer-link-item">
+              <NavLink to="/my-profile">Profile</NavLink>
+            </li> */}
             <li className="footer-link-item">
-              <NavLink>Profile</NavLink>
-            </li>
-            <li className="footer-link-item">
-              <NavLink>Dashboard</NavLink>
+              <NavLink to="/dashboard/bookings">Dashboard</NavLink>
             </li>
           </ul>
         </div>

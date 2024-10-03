@@ -22,9 +22,9 @@ security
         </Link>
       </li>
       <li>
-        <Link to="booking-history" className="profile-menu-card">
-        <span className="material-symbols-outlined">history</span>
-          <h3>Booking History</h3>
+        <Link to="liked-listings" className="profile-menu-card">
+        <span className="material-symbols-outlined">favorite</span>
+          <h3>Liked listings</h3>
           <p>Update your personal details</p>
         </Link>
       </li>

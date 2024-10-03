@@ -1,3 +1,10 @@
+
+.profile-page-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
 .profile-page {
     display: flex;
     position: relative;
@@ -6,6 +13,7 @@
     padding: 5%;
     max-width: 1200px;
     flex: 1;
+    gap: 1rem;
 }
 
 .profile-page-caption {
@@ -28,7 +36,7 @@
 .profile-page .profile-heading {
     display: flex;
     flex-direction: column;
-    position: fixed;
+    max-width: 350px;
     gap: 2rem;
 }
 
@@ -111,7 +119,7 @@ display: flex;
 
 .profile-listing {
     list-style-type: none;
-    max-width: 500px;
+    max-width: 600px;
 }
 
 .profile-listing a {

@@ -2,9 +2,21 @@
     display: flex;
     flex-direction: column;
     flex: 1;
+    /* flex: 1;
+    padding: 5%;
+    gap: 30px;
+    max-width: 1200px; */
+}
+
+.account-page-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
     padding: 5%;
     gap: 30px;
     max-width: 1200px;
+    width: 100%;
+    align-self: center;
 }
 
 .account-page-breadcrumbs {
