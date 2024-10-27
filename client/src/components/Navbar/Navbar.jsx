@@ -98,7 +98,7 @@ export default function Navbar({}) {
                 `navigation-menu-link ${isActive ? "active" : ""}`
               }
             >
-              Contact us
+              Help center
             </NavLink>
           </NavigationMenu.Item>
           {isLoggedIn ? (

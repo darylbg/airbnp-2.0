@@ -109,7 +109,7 @@ const MobileNavbar = forwardRef((props, ref) => {
               <span className="material-symbols-outlined mobile-navbar-icon">
                 Call
               </span>
-              <span className="mobile-navbar-text">Contact</span>
+              <span className="mobile-navbar-text">Help center</span>
             </NavLink>
           </NavigationMenu.Item>
           {isLoggedIn ? (

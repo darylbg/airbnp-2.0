@@ -27,7 +27,7 @@ export default function Footer() {
               <NavLink to="/about">About</NavLink>
             </li>
             <li className="footer-link-item">
-              <NavLink to="/contact">Contact us</NavLink>
+              <NavLink to="/contact">Help center</NavLink>
             </li>
             <li className="footer-link-item">
               <NavLink to="/account">Account</NavLink>
