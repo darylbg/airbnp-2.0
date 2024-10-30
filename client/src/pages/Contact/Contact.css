@@ -91,7 +91,7 @@
     transform: translateX(3px);
 }
 
-@media screen and (max-width: 1300px) {
+@media screen and (max-width: 1440px) {
   .contact-page-content {
     width: 90%;
   }

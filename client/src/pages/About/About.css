@@ -17,6 +17,7 @@
 
 .about-summary-img {
   position: relative;
+  container-type: inline-size;
   /* padding-bottom: 2rem; */
 }
 
@@ -37,11 +38,15 @@
   line-height: 0.7;
 }
 
+.about-page-summary .subtitle {
+  padding: 5rem 0 1rem 0;
+}
+
 .about-page-summary .description {
     color: var(--black-10);
 }
 
-@media screen and (max-width: 1300px) {
+@media screen and (max-width: 1440px) {
   .about-page-content {
     width: 90%;
   }
