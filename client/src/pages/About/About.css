@@ -69,3 +69,10 @@
     height: 150px;
   }
 }
+
+@media screen and (min-width: 1400px) {
+
+  .about-page-summary h1 {
+    font-size: 180px;
+  }
+}

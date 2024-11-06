@@ -1,16 +1,19 @@
 import React from "react";
 import "./Footer.css";
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import ButtonComponent from "../PrimitiveComponents/ButtonComponent/ButtonComponent";
-import Logo from "../../assets/images/logo_colour_100px.png"
+import Logo from "../../assets/images/logo_colour_100px.png";
 export default function Footer() {
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth"
+      behavior: "smooth",
     });
-  }
+  };
+
   return (
     <div className="page-footer">
       <div className="footer-links">
@@ -29,15 +32,16 @@ export default function Footer() {
             <li className="footer-link-item">
               <NavLink to="/contact">Help center</NavLink>
             </li>
-            <li className="footer-link-item">
-              <NavLink to="/account">Account</NavLink>
-            </li>
-            {/* <li className="footer-link-item">
-              <NavLink to="/my-profile">Profile</NavLink>
-            </li> */}
-            <li className="footer-link-item">
-              <NavLink to="/dashboard/bookings">Dashboard</NavLink>
-            </li>
+            {isLoggedIn && (
+              <>
+                <li className="footer-link-item">
+                  <NavLink to="/account">Account</NavLink>
+                </li>
+                <li className="footer-link-item">
+                  <NavLink to="/dashboard/bookings">Dashboard</NavLink>
+                </li>
+              </>
+            )}
           </ul>
         </div>
         <div className="footer-links-legal">
@@ -76,11 +80,16 @@ export default function Footer() {
         </div>
       </div>
       <div className="footer-branding">
-        <img src={Logo} className="logo"/>
+        <img src={Logo} className="logo" />
         <span className="brand">AIRBNP</span>
       </div>
       <div className="footer-footer">
-        <ButtonComponent action={scrollToTop} className="default-button page-footer-button">Back to top</ButtonComponent>
+        <ButtonComponent
+          action={scrollToTop}
+          className="default-button page-footer-button"
+        >
+          Back to top
+        </ButtonComponent>
       </div>
     </div>
   );

@@ -169,6 +169,8 @@
 .step {
   display: flex;
   flex-direction: column;
+  flex: 1;
+  gap: 1rem
 }
 
 .step-img {
@@ -178,6 +180,23 @@
   border-radius: 50%;
   position: relative;
   align-self: flex-start;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.step-img img {
+  height: 80%;
+  max-width: 80%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.step-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  
 }
 
 .step-img .step-index {
@@ -211,6 +230,7 @@
 
 .home-book-now-section .section-heading {
   color: var(--white-12);
+  z-index: 1;
 }
 
 .home-book-now-section .background-pattern {

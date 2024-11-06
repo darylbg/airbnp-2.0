@@ -19,6 +19,12 @@
 .page-footer .footer-links {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.footer-links div {
+    padding: 10px 0;
 }
 
 .page-footer .footer-links ul {

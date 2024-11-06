@@ -9,6 +9,9 @@ import { setUserLocation, setMapCenter } from "../../reducers/bookingReducer";
 import "./Home.css";
 import { useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
+import MapIcon from "../../assets/icons/StepIcons/map.png";
+import BikeIcon from "../../assets/icons/StepIcons/bike.png";
+import BbqIcon from "../../assets/icons/StepIcons/bbq.png";
 
 export default function Home() {
   const [addressValue, setAddressValue] = React.useState("");
@@ -173,29 +176,32 @@ export default function Home() {
           <div className="steps">
             <div className="step">
               <div className="step-img">
+                <img src={MapIcon} alt="" />
                 <div className="step-index">1.</div>
               </div>
               <div className="step-text">
                 <h1>Book online or on the app</h1>
-                <p>Head to our website or book from your phone on our app.</p>
+                <p>Search you location and see nearby bathrooms available to book and use.</p>
               </div>
             </div>
             <div className="step">
               <div className="step-img">
+              <img src={BikeIcon} alt="" />
                 <div className="step-index">2.</div>
               </div>
               <div className="step-text">
-                <h1>Book online or on the app</h1>
-                <p>Head to our website or book from your phone on our app.</p>
+                <h1>Head to the location.</h1>
+                <p>Travel to the selected location and be at peace.</p>
               </div>
             </div>
             <div className="step">
               <div className="step-img">
+              <img src={BbqIcon} alt="" />
                 <div className="step-index">3.</div>
               </div>
               <div className="step-text">
-                <h1>Book online or on the app</h1>
-                <p>Head to our website or book from your phone on our app.</p>
+                <h1>Continue on with your day!</h1>
+                <p>Do whatever you like with the rest of your day.</p>
               </div>
             </div>
           </div>

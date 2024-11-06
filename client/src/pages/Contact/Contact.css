@@ -28,6 +28,7 @@
 .contact-cards {
   display: flex;
   gap: 2rem;
+  flex-wrap: wrap;
 }
 
 .contact-option {
@@ -94,5 +95,28 @@
 @media screen and (max-width: 1440px) {
   .contact-page-content {
     width: 90%;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .contact-option img {
+    height: 30px;
+    width: auto;
+  }
+
+  /* .contact-option {
+    padding: 1rem;
+  } */
+}
+
+@media screen and (max-width: 760px) {
+  .contact-option img {
+    height: 50px;
+    width: auto;
+  }
+
+  .contact-option {
+    padding: 1rem;
+    flex: 1;
   }
 }

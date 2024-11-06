@@ -28,7 +28,7 @@ export default function About() {
             bathroom easy, reliable, and stress-free.
           </p>
         </div>
-        <div className="about-page-steps">
+        {/* <div className="about-page-steps">
           <h2>How it works</h2>
         </div>
         <div className="social-links">
@@ -36,7 +36,7 @@ export default function About() {
           <div className="social-links-group">
             
           </div>
-        </div>
+        </div> */}
       </div>
       <Footer />
     </div>
