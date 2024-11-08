@@ -50,6 +50,7 @@ export default function ListingDisplay({ props }) {
           <div className="listing-amenities">
             <ul className="">
               {props.amenities.map((amenity) => {
+                console.log(props.amenities)
                 if (amenity.available) {
                   return (
                     <li className="listing-amenity" key={amenity.name}>

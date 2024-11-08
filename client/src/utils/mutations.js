@@ -60,6 +60,8 @@ export const SIGN_IN_MUTATION = gql`
           contact_method
           amenities {
             available
+            name
+            icon
           }
           payments {
             id
