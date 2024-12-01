@@ -53,21 +53,21 @@ const resolvers = {
       }
       throw new AuthenticationError("You need to be logged in");
     },
-    getUserProfile: async (parent, {userId}, context) => {
+    getUserProfile: async (parent, { userId }, context) => {
       try {
-        const userProfile = await User.findById(userId).populate({
-          path: "reviews",
-          populate: {
-            path: "user"
-          }
-        }).populate({path: "user_listings"});
+        const userProfile = await User.findById(userId)
+          .populate({
+            path: "reviews",
+            populate: {
+              path: "user",
+            },
+          })
+          .populate({ path: "user_listings" });
         if (!userProfile) {
           console.log("user not found");
         }
         return userProfile;
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     },
     getListingByUserId: async (parent, args, context) => {
       try {
@@ -92,7 +92,7 @@ const resolvers = {
           .populate({ path: "amenities" })
           // .populate({ path: "notifications" })
           .populate({ path: "reviews" })
-          .populate({path: "user_id"})
+          .populate({ path: "user_id" })
           .populate({ path: "payments" });
 
         return allListings;
@@ -113,7 +113,7 @@ const resolvers = {
       try {
         // Fetch the listing by ID
         const listing = await Listing.findById(listingId)
-        .populate({path: "user_id"})
+          .populate({ path: "user_id" })
           .populate({ path: "amenities" })
           .populate({ path: "reviews" })
           .populate({ path: "payments" });
@@ -186,15 +186,15 @@ const resolvers = {
         throw new Error("Failed to fetch reviews");
       }
     },
-    getListingReviews: async (parent, {listingId}, context) => {
+    getListingReviews: async (parent, { listingId }, context) => {
       try {
         const listingReviews = await Review.find({
-          listing_id: listingId
-        }).populate({path: "user"});
+          listing_id: listingId,
+        }).populate({ path: "user" });
 
         return listingReviews;
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
     getAllUserNotifications: async (parent, { userId }, context) => {
@@ -291,7 +291,8 @@ const resolvers = {
 
         const newUser = await User.create({
           ...userData,
-        password: password});
+          password: password,
+        });
         const token = signToken(newUser);
 
         console.log("token:", JSON.stringify(token));
@@ -353,9 +354,10 @@ const resolvers = {
                 const uploadedResponse = await cloudinary.uploader.upload(
                   image,
                   {
-                    upload_preset: "n5btmxuv",
+                    upload_preset: "listing_images_preset",
                   }
                 );
+                console.log("upload response", uploadedResponse);
                 return uploadedResponse.secure_url;
               } catch (uploadError) {
                 console.error(
@@ -457,7 +459,7 @@ const resolvers = {
                 longitude: listingData.longitude,
                 availability: listingData.availability,
                 price: listingData.price,
-                amenities: listingData.amenities
+                amenities: listingData.amenities,
               },
             },
             { new: true }
@@ -485,6 +487,27 @@ const resolvers = {
             { $pull: { user_listings: { _id: listingId } } },
             { new: true }
           ).populate("user_listings");
+
+          async function delete_cloudinary_images() {
+            const listing_images = listing.listing_image;
+            const image_names = [];
+            for (var image of listing_images) {
+              console.log(image);
+              const image_name = image.split("/").pop().split(".")[0];
+              image_names.push(`airbnp_2.0/listing_images/${image_name}`);
+            }
+
+            try {
+              console.log("image names", image_names);
+              const result = await cloudinary.api.delete_resources(image_names);
+              console.log(result)
+              
+            } catch (error) {
+              console.log("Error deleting images", error);
+            }
+          }
+
+          delete_cloudinary_images();
 
           return user;
         } catch (error) {
@@ -676,8 +699,8 @@ const resolvers = {
       }
       try {
         const deletedNotification = await Notification.findOneAndDelete(
-          {_id: notificationId},
-          {new: true}
+          { _id: notificationId },
+          { new: true }
         );
         // console.log("deleted noti")
         if (!deletedNotification) {

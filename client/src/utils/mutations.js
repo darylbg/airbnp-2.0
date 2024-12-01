@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const REGISTER_MUTATION = gql`
-mutation Register($userData: userInput!, $password: String!) {
-  register(userData: $userData, password: $password) {
+  mutation Register($userData: userInput!, $password: String!) {
+    register(userData: $userData, password: $password) {
       token
       user {
         id
@@ -170,7 +170,9 @@ export const DELETE_LISTING_MUTATION = gql`
         contact_method
         availability
         amenities {
-          amenity_id
+          name
+          icon
+          available
         }
         fullAddress
         addressLine1
